@@ -1,0 +1,412 @@
+@import "../App.css";
+
+:root {
+    --padding-x: 24px;
+    --padding-x-lg: 32px;
+
+    --body-gap: 8px;
+    --content-body-gap: 16px;
+
+    --margin-top: 24px;
+    --padding-bottom: 16px;
+
+    --height__food-card__coverflow-escape: 32px;
+    --appbar-height: 56px;
+    --topnav-height: 90px;
+}
+
+/* Page */
+.page {
+    width: 100vw;
+    outline-color: blue;
+    /* min-height: 100vh;  */
+    /* overflow-y: scroll; */
+    overflow: hidden;
+}
+
+.page__container {
+    position: relative;
+}
+
+.page__swiper.swiper {
+    outline-color: blueviolet;
+    position: relative;
+    display: flex;
+    justify-content: center;
+
+}
+
+.page__pagination-container {
+    position: absolute;
+    top: 8px;
+    /* width: 100%; */
+    display: flex;
+    justify-content: center;
+    z-index: 1;
+}
+
+/* AppBar */
+.MuiAppBar-root {
+    height: var(--appbar-height);
+}
+.MuiAppBar-positionSticky {
+    top: 0px;
+    left: 0px;
+    &.MuiPaper-root {
+        width: 100vw;
+    }
+}
+
+.app-bar__body {
+    height: 100%;
+    padding: 0 var(--padding-x);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.app-body {
+    margin-top: var(--appbar-height);
+}
+
+/* TopNav */
+.top-nav {
+    z-index: 1000;
+    position: fixed;
+    top : var(--appbar-height);
+    height: var(--topnav-height);
+}
+
+.top-nav__placeholder {
+    height: var(--topnav-height);
+}
+
+.top-nav__swiper {
+    &.swiper {
+        padding: 0 var(--padding-x);
+        background-color: rgb(242, 244, 246);
+    }
+
+    &.swiper-slide {
+        width: fit-content;
+        height: 100%;
+        padding: 12px 0px;
+    }
+}
+
+/* Layouts */
+
+/* Body */
+.body {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding-left: var(--padding-x);
+    padding-right: var(--padding-x);
+}
+
+.body--padding-y {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--body-gap);
+    padding: var(--padding-x);
+}
+
+.body--full {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--body-gap);
+}
+
+.container--center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Content */
+.content.swiper-slide {
+    width: 100%;
+    background-color: bisque;
+    padding: 0px;
+    outline-color: aqua;
+}
+
+.content__body {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--content-body-gap);
+}
+
+.content__body--gray {
+    background-color: rgb(242, 244, 246);
+}
+
+.content__body--padding-lg {
+    padding: var(--padding-x-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    /* background-color:chocolate; */
+    margin: 0px;
+}
+
+/* Section */
+
+.title {
+    margin: 0;
+}
+
+.subtitle {
+    margin: 0;
+}
+
+/* Avatar */
+.avatar {
+    width: 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    gap: 4px;
+    margin: 0px;
+
+    & * {
+        margin: 0px;
+        text-align: center
+    }
+}
+
+.avatar__icon {
+    width: 20px;
+    aspect-ratio: 1/1;
+    border-radius: 35%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar__label {
+    color: rgb(78, 89, 104);
+}
+
+/* Carousel */
+.carousel__swiper {
+    &.swiper {
+        margin: 0;
+        overflow: visible;
+    }
+
+    &.swiper-slide {
+        width: fit-content;
+        height: fit-content;
+    }
+}
+
+/* Food Carousel */
+.food-carousel__container {
+    width: 100%;
+    max-width: 640px;
+}
+
+.food-carousel__swiper {
+    &.swiper {
+        height: fit-content;
+        width: "100%";
+        overflow: visible;
+        padding-bottom: var(--height__food-card__coverflow-escape);
+    }
+
+    &.swiper-slide {
+        height: fit-content;
+        width: fit-content;
+        visibility: hidden;
+        overflow-y: visible;
+    }
+
+    &.swiper-slide-active,
+    &.swiper-slide-prev,
+    &.swiper-slide-next {
+        visibility: visible;
+    }
+
+    &.swiper-slide-prev,
+    &.swiper-slide-next {
+        & .food-carousel__escape-coverflow {
+            opacity: 0.75;
+        }
+    }
+}
+
+.food-carousel__escape-coverflow__container {
+    position: relative;
+    width: 100%;
+}
+
+.food-carousel__escape-coverflow {
+    position: absolute;
+    height: var(--height__food-card__coverflow-escape);
+}
+
+.card__title {
+    margin: 0px;
+}
+
+/* Test */
+.content__title {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    margin: 12px;
+
+    & .content__title__text {
+        text-align: center;
+        margin: 0;
+    }
+}
+
+.test__title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & .test__title__text {
+        max-width: 90%;
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+        letter-spacing: 0px;
+        line-height: 1.3;
+    }
+}
+
+.test__answer {
+    text-align: center;
+    font-size: x-large;
+    color: rgb(107, 118, 132);
+}
+
+.section {
+    gap: 24px;
+}
+
+.test__google-map-container {
+    width: 100%;
+    height: 288px;
+}
+
+.test__instruction {
+    text-align: center;
+    font-size: x-large;
+    font-weight: 300;
+    color: rgb(107, 118, 132);
+}
+
+/* Option Card */
+.option-card__detail {
+    text-align: center;
+    font-size: small;
+}
+
+/* Google Map */
+.modal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 3;
+}
+
+.modal__container {
+    position: relative;
+}
+
+.backdrop {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    opacity: 0.75;
+    z-index: 2;
+}
+
+.detail-text {    
+    line-height: 25px;
+    font-size: 16px;
+}
+
+/* Button */
+
+.MuiButton-root {
+    &.MuiButtonBase-root {
+        border-radius: 16px;
+        padding: 16px;
+    }
+
+    & p {
+        font-size: 14px;
+        font-weight: bold;
+    }
+}
+
+.toggle-icon-button {
+    &.MuiButton-root {
+        width: 64px;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* justify-content: center; */
+        gap: 4px;
+        margin: 0;
+        border-radius: 0;
+        padding: 0;
+
+        & * {            
+            text-align: center;
+        }
+        & .toggle-icon-button__label {
+            /* font-size: ; */
+            font-weight: lighter;
+        }
+
+
+        & .MuiToggleButton-root {
+            height: 40px;
+            width: 40px;
+            aspect-ratio: 1/1;
+            border-radius: 16px;
+        }
+
+        &:hover {
+            & .MuiToggleButton-root {
+                background-color: aqua;
+            }
+        }
+    }
+
+}
+
+/* Card */
+.MuiCard-root.MuiPaper-root {
+    border-radius: 16px;
+}
+
+/* Stack */
+.MuiStack-root {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.stack {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

@@ -1,0 +1,1 @@
+https://engineering.linecorp.com/ko/blog/typescript-enum-tree-shaking
