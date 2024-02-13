@@ -1,0 +1,62 @@
+@font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 100;
+  src: url("./AppleSDGothicNeo/AppleSDGothicNeoT.ttf") format("truetype");
+}
+@font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 200;
+  src: url("./AppleSDGothicNeo/AppleSDGothicNeoUL.ttf") format("truetype");
+}
+@font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 300;
+  src: url("./AppleSDGothicNeo/AppleSDGothicNeoL.ttf") format("truetype");
+}
+@font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 400;
+  src: url("./AppleSDGothicNeo/AppleSDGothicNeoR.ttf") format("truetype");
+}
+@font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 500;
+  src: url("./AppleSDGothicNeo/AppleSDGothicNeoM.ttf") format("truetype");
+}
+@font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 600;
+  src: url("./AppleSDGothicNeo/AppleSDGothicNeoSB.ttf") format("truetype");
+}
+@font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 700;
+  src: url("./AppleSDGothicNeo/AppleSDGothicNeoB.ttf") format("truetype");
+}
+@font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 800;
+  src: url("./AppleSDGothicNeo/AppleSDGothicNeoEB.ttf") format("truetype");
+}
+@font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 900;
+  src: url("./AppleSDGothicNeo/AppleSDGothicNeoH.ttf") format("truetype");
+}
+
+/* @font-face {
+  font-family: 'SF Pro Display';
+  font-style: normal;
+  font-weight: 600;
+  src: url("./SF-Pro-Display/SF-Pro-Display-Semibold.otf") format("opentype");
+} */
+

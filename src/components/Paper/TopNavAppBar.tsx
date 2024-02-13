@@ -1,5 +1,4 @@
 import { AppBar, AppBarProps, styled } from "@mui/material";
-import withStepCheckpoint from "../Step/withStepCheckpoint";
 
 const TopNavAppBar = styled( AppBar )<AppBarProps>(({ theme }) => ({
     elevation: 6,
@@ -14,7 +13,7 @@ const TopNavAppBar = styled( AppBar )<AppBarProps>(({ theme }) => ({
     alignItems: "center",
 }));
 
-const TopNavAppBarWithStep = withStepCheckpoint(TopNavAppBar);
+// const TopNavAppBarWithStep = withStepCheckpoint(TopNavAppBar);
 
 export default TopNavAppBar;
-export { TopNavAppBarWithStep };
+// export { TopNavAppBarWithStep };

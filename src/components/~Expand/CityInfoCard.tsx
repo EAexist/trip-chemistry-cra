@@ -45,4 +45,4 @@ function CityInfoCard({ alt, image, children } : PropsWithChildren<CityInfoCardP
         </Expandable>
     );
 }
-export default CityInfoCard;
+// export default CityInfoCard;

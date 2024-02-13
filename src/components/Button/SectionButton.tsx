@@ -1,6 +1,6 @@
-import withSetSectionOnChange from "../../hocs/withSetSectionOnChange";
-import ToggleIconButton from "./ToggleIconButton";
+import ToggleProfileButton from "./ToggleProfileButton";
+import withSetStepOnChange from "../../hocs/withSetStepOnChange";
 
-const SectionButton = withSetSectionOnChange( ToggleIconButton );
+const SectionButton = withSetStepOnChange( ToggleProfileButton );
 
 export default SectionButton;

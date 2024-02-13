@@ -2,7 +2,7 @@ import { Button, Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { ContentKey, useContentString, useStrings } from "../texts";
 import withTestAnswer, { WithTestAnswerProps } from "../hocs/withTestAnswer";
 import { SX_AVATAR__ICON } from "../mui-material/sx";
-import ToggleIconButton from "./Button/ToggleIconButton";
+import ToggleProfileButton from "./Button/ToggleProfileButton";
 
 interface AnswerButtonGroupProps extends WithTestAnswerProps {
 
@@ -17,18 +17,12 @@ function AnswerButtonGroup( { testIndex, answer, setAnswer } : AnswerButtonGroup
     }   
 
     return(
-        <Stack direction={"row"} spacing={2} justifyContent="space-around" alignItems="stretch"> 
+        <Stack direction={"row"} spacing={2} justifyContent="space-around" alignItems="stretch" className="button-group--in-body"> 
         {
-            ( strings.answers as { icon: string, label: string, value: number }[]).map(({ icon, label, value }) =>(
-                <ToggleIconButton value={ value } selected={ value === answer } onChange={ () => handleAnswerChange( value ) } label={ label }>
+            ( Object.values(strings.answers) as { icon: string, label: string, value: number }[]).map(({ icon, label, value }) =>(
+                <ToggleProfileButton contained size={'small'} key={ value } value={ value } selected={ value === answer } onChange={ (_, value) => handleAnswerChange( value ) } label={label}>
                     { icon }
-                </ToggleIconButton>
-                // <div key={label} className="avatar">
-                //     <ToggleButton value={ value } selected={ value === answer } onChange={ () => handleAnswerChange( value ) }>
-                //         { icon }
-                //     </ToggleButton>
-                //     <h6 className="avatar__label">{ label }</h6>
-                // </div>
+                </ToggleProfileButton>
             ))
         }
         </Stack>

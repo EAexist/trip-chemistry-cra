@@ -10,27 +10,27 @@ interface SectionButtonGroupProps {
 function SectionButtonGroup({ children }: PropsWithChildren<SectionButtonGroupProps>) {
 
     const { stepCheckpointList } = useStepCheckpoint();
-    const { section, setSection } = useStepContext();
+    const { step, setStep } = useStepContext();
 
     const handleChange = useCallback((
         event: React.MouseEvent<HTMLElement>,
         newIndex: number,
     ) => {
         if (newIndex as number < stepCheckpointList.current.length) {
-            setSection(newIndex as number);
+            setStep(newIndex as number);
             window.scrollTo({ top: stepCheckpointList.current[newIndex as number].offsetTop, behavior: "smooth" });
         }
         else {
-            console.log(`useSection: warning: Section with index {${newIndex}} is missing.`);
+            console.log(`useSTepsetStep: warning: STepsetStep with index {${newIndex}} is missing.`);
         }
-    }, [ setSection, stepCheckpointList ]);
+    }, [ setStep, stepCheckpointList ]);
 
     return (
         <ToggleButtonGroup
-            value={ section }
+            value={ step }
             exclusive
             onChange={ handleChange }
-            aria-label="sections"
+            aria-label="steps"
             sx={{ width: "100%" }}
         >
             {children}

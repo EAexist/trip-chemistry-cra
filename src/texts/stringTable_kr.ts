@@ -531,23 +531,26 @@ const stringTable_kr = {
                     "leadership": {
                         title: "일행과 여행을 준비할 때의 나는?",
                         instruction: "답변을 눌러서 선택해봐!",
-                        "answers": [
+                        "answers": {
+                            1:
                             {
                                 value: 1,
                                 icon: "1",
                                 label: "잘 따르는 팀원",
                             },
+                            2:
                             {
                                 value: 2,
                                 icon: "2",
                                 label: "꽤 적극적인 팀원",
                             },
+                            3:
                             {
                                 value: 3,
                                 icon: "3",
                                 label: "적극적인 리더",
                             },
-                        ],
+                        },
                     },
                     "schedule": {
                         title: "일정은 얼마나 알차면 좋을까?",
@@ -557,38 +560,43 @@ const stringTable_kr = {
                             "min": 0,
                             "max": 4
                         },
-                        "answers": [
+                        "answers": {
+                            1:
                             {
                                 value: 1,
-                                icon: 1,
+                                icon: "1",
                                 label: "아주 널널하게",
                                 "prefix": "아주 널널한게 좋은"
                             },
+                            2:
                             {
                                 value: 2,
-                                icon: 2,
+                                icon: "2",
                                 label: "널널하게",
                                 "prefix": "널널한게 좋은"
                             },
+                            3:
                             {
                                 value: 3,
-                                icon: 3,
+                                icon: "3",
                                 label: "아무래도 상관없어",
                                 "prefix": "아무래도 상관 없는"
                             },
+                            4:
                             {
                                 value: 4,
-                                icon: 4,
+                                icon: "4",
                                 label: "알차게",
                                 "prefix": "알찬게 좋은"
                             },
+                            5:
                             {
                                 value: 5,
-                                icon: 5,
+                                icon: "5",
                                 label: "매우 알차게",
                                 "prefix": "매우 알찬게 좋은"
                             }
-                        ],
+                        },
                     },
                     "budget": {
                         title: "예산은 얼마나 쓰면 좋을까?",
@@ -610,111 +618,85 @@ const stringTable_kr = {
                             "min": 0,
                             "max": 4
                         },
-                        "answers": [
+                        "answers": {
+                            1:
                             {
                                 value: 1,
                                 icon: "😡",
                                 label: "싫어!",
                                 "emoji": "😡",
                             },
+                            2:
                             {
                                 value: 2,
                                 icon: "😤",
                                 label: "별로야..",
                                 "emoji": "😤",
                             },
+                            3:
                             {
                                 value: 3,
                                 icon: "🤔",
                                 label: "상관없어",
                                 "emoji": "🤔",
                             },
+                            4:
                             {
                                 value: 4,
                                 icon: "😃",
                                 label: "좋아",
                                 "emoji": "😃",
                             },
+                            5:
                             {
                                 value: 5,
                                 icon: "😍",
                                 label: "완전 내 취향!",
                                 "emoji": "😍",
                             },
-                        ],
+                        },
                     },
                     "activity": {
                         title: "이런 활동은 어때?",
                         subtitle: "즐기기",
                         instruction: "",
-                        "answers": [
+                        "answers": {
+                            1:
                             {
                                 label: "-2",
                                 "value": 0,
                                 "quote": "싫어!",
                                 "emoji": "😡",
                             },
+                            2:
                             {
                                 label: "-1",
                                 "value": 1,
                                 "quote": "별로야..",
                                 "emoji": "😤",
                             },
+                            3:
                             {
                                 label: "0",
                                 "value": 2,
                                 "quote": "상관없어",
                                 "emoji": "🤔",
                             },
+                            4:
                             {
                                 label: "1",
                                 "value": 3,
                                 "quote": "좋아",
                                 "emoji": "😃",
                             },
+                            5:
                             {
                                 label: "2",
                                 "value": 4,
                                 "quote": "완전 내 취향!",
                                 "emoji": "😍",
                             },
-                        ],
-                        "subTests": {
-                            "food": {
-                                title: "식도락",
-                                "id": "food",
-                                "examples": ["tokyo", "osaka", "yokohama"]
-                            },
-                            "walk": {
-                                title: "주변 감상하며 걷기",
-                                "id": "walk",
-                                "examples": ["tokyo", "osaka", "yokohama"]
-                            },
-                            "photo": {
-                                title: "사진찍기",
-                                "id": "photo",
-                                "examples": ["kyoto", "nara", "kamakura"]
-                            },
-                            "shopping": {
-                                title: "쇼핑",
-                                label: "shopping",
-                                "examples": ["shiretoko", "yakushima", "biei"]
-                            },
-                            "museum": {
-                                title: "박물관 미술관",
-                                label: "museum",
-                                "examples": ["shiretoko", "yakushima", "biei"]
-                            },
-                            "themePark": {
-                                title: "테마파크",
-                                label: "themePark",
-                                "examples": ["shiretoko", "yakushima", "biei"]
-                            },
-                            // {
-                            //     title: "한적한 시골마을",
-                            //     label: "country" 
-                            // },
-                        }
+                        },
                     },
                 },
                 "subTest": {
@@ -987,13 +969,13 @@ const stringTable_kr = {
                 "sections": {
                     "tripCharacter":
                     {
-                        label: "내 여행\nMBTI",
+                        title: "내 여행 타입",
                         icon: "pets",
                         typeIntro: "내 여행 MBTI는",
                     },
                     "city":
                     {
-                        label: "추천\n여행지",
+                        title: "추천\n여행지",
                         icon: "travel_explore",
                         citySuffix: "당신을 위한 여행지",
                         // "cityListTitle": "아름다운 자연경관, 산책과 하이킹 명소",
@@ -1003,7 +985,7 @@ const stringTable_kr = {
                     },
                     "chemistry":
                     {
-                        label: "여행 케미\n확인하러 가기",
+                        title: "여행 케미\n확인하러 가기",
                         icon: "flight",
                         startChemistryIntro: "이제 친구랑 같이 떠나볼까?",
                         startChemistryTitle: "여행 케미 확인하러 가기",
@@ -1013,37 +995,45 @@ const stringTable_kr = {
             },
             "chemistry": {
                 "label": "내 여행 케미",
+                "addFriend": {
+                    label: "친구 추가",
+                    icon: "group_add",
+                    me: "Me",
+                    // addByName: "친구 추가",
+                    searchFormPlaceholder: "친구의 닉네임을 입력해주세요",
+                    giveMyName: "내 닉네임",
+                    userApiMissMessage: "친구를 찾지 못했어요.\nID를 다시 확인해주세요.",
+                    userApiFailMessage: "현재 서버에 접속할 수 없어요.\n잠시 후 다시 시도해주세요.",
+                    add: "친구 추가",
+                    confirm: "확인",
+                    pending: "...",
+                    startChemistryButton: "케미 확인하기",
+                    chemistryUpdated: "결과가 준비되었어. 스크롤을 내려 확인해봐!",
+                },
                 "sections": {
                     "addFriend": {
-                        label: "친구 추가",
-                        icon: "group_add",
-                        me: "Me",
-                        addFriendButton: "친구 추가하기",
-                        // addByName: "친구 추가",
-                        friendNameFormLabel: "닉네임을 입력하세요 (e.g. 우동#1234)",
-                        giveMyName: "내 닉네임",
-                        userApiMissMessage: "친구를 찾지 못했어요.\nID를 다시 확인해주세요.",
-                        userApiFailMessage: "현재 서버에 접속할 수 없어요.\n잠시 후 다시 시도해주세요.",
-                        add: "친구 추가",
                         confirm: "확인",
+                        addFriendButton: "친구 추가하기",
                         startChemistryButton: "케미 확인하기",
+                        scrollDownButton: "스크롤을 내려 결과 확인하기",
                         chemistryUpdated: "결과가 준비되었어. 스크롤을 내려 확인해봐!",
                         tooltips: {
                             addAtLeastOneFriend: "친구를 한 명 이상 추가해주세요.",
+                            chemistryFail: "문제가 발생했어요.\n잠시 후 다시 시도해주세요.",
                             startChemistry: "친구를 모두 추가한 후에\n\"케미 확인하기\" 버튼을 클릭하세요.",
                         },
                     },
                     "tripCharacter": {
                         label: "여행 MBTI",
                         icon: "pets",
-                        title: "일행의 여행 MBTI 알아보기",
+                        title: "여행 MBTI 알아보기",
                         subtitle: "일행의 여행 MBTI를 통해 서로가 원하는 여행 스타일을 이해해봐요",
                         "howTo": "카드를 클릭해봐!",
                     },
                     "leadership": {
                         label: "리더",
                         icon: "groups",
-                        title: "이번 여행의 대장님은 누구?",
+                        title: "이번 여행의 믿음직한 대장님",
                         "leaderTitle": "듬직한 대장",
                         "idPostfix": "님",
                         "and": ",",

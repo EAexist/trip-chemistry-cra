@@ -1,10 +1,12 @@
-import { Autoplay, EffectCoverflow, Navigation, Pagination } from "swiper/modules";
+import { Autoplay, EffectCards, EffectCoverflow, Navigation, Pagination } from "swiper/modules";
 import { SwiperOptions } from "swiper/types";
 
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-export const SWIPERPROPS_PAGE : SwiperOptions | { className: string } = {
+export const AUTOPLAY_DELAY = 4000;
+
+export const SWIPERPROPS_CITYDETAILCONTENT : SwiperOptions | { className: string } = {
     modules: [ Pagination, Navigation ],
     loop: true,
     // rewind: true,
@@ -20,6 +22,24 @@ export const SWIPERPROPS_PAGE : SwiperOptions | { className: string } = {
     },
     autoHeight: true,
     // className: "carousel__swiper",
+}
+
+export const SWIPERPROPS_HOMECONTENT : SwiperOptions | { className: string } = {
+    modules: [ Pagination, Autoplay ],
+    // mousewheel: { thresholdDelta: 100, forceToAxis: true },
+    loop: true,
+    // rewind: true,
+    speed: 800,
+    slidesPerView: 1,
+    pagination: {
+        clickable: true,
+        el: '.pageSwiper-pagination', 
+    },
+    // autoHeight: true,
+    autoplay : {
+        delay: AUTOPLAY_DELAY,
+        disableOnInteraction: false,
+    }
 }
 
 export const SWIPERPROPS_TOPNAV : SwiperOptions | { className: string } = {
@@ -59,4 +79,15 @@ export const SWIPERPROPS_FOODCARDCAROUSEL : SwiperOptions | { className: string 
     speed: 500,
     allowTouchMove: false,
     centeredSlides: true,
+}
+
+export const SWIPERPROPS_CHARACTER_CAROUSEL: SwiperOptions | { className: string } = {
+    modules: [ EffectCards ],
+    effect: 'cards',
+    centeredSlides: true,
+    grabCursor: true,
+    cardsEffect: {
+        perSlideOffset: 48,
+        slideShadows: false,
+    },     
 }

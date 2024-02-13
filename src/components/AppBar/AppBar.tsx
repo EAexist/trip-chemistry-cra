@@ -1,22 +1,39 @@
 import { Close, Menu } from "@mui/icons-material";
-import { IconButton, Toolbar, AppBar as MuiAppBar, Drawer, List, ListItem, ListItemButton, ListItemText, ListItemIcon, Stack, Box } from "@mui/material";
-import { useState } from "react";
+import { IconButton, Toolbar, AppBar as MuiAppBar, Drawer, List, ListItem, ListItemButton, ListItemText, ListItemIcon, Stack, Box, Button, ButtonBase, ListItemAvatar } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useAppBar } from "../../contexts/AppBarContext";
 import { useStrings } from "../../texts";
 import { CONTENTS } from "../../common/app-const";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import UserAvatar from "../Avatar/UserAvatar";
+import { useUser } from "../../reducers/profileReducer";
+import { useIsAuthorized } from "../../reducers/authReducer";
 
 interface AppBarProps {
 };
 
 function AppBar({ }: AppBarProps) {
 
-    const strings = useStrings();
     const navigate = useNavigate();
+    const strings = useStrings();
+    
     const showAppBar = useAppBar();
+
+
+    const { pathname }  = useLocation();
 
     const [showDrawer, setShowDrawer] = useState(false);
 
+    /* Store */
+    const isAuthorized = useIsAuthorized();
+    const user = useUser();
+
+
+
+    /* Event handlers  */
+    const handleTitleButtonClick = () => {
+        navigate('/home');        
+    }
     const handleMenuButtonClick = () => {
         setShowDrawer(true);
     };
@@ -27,13 +44,27 @@ function AppBar({ }: AppBarProps) {
         navigate(`/${content}`);
         handleDrawerClose();
     };
+    const handleProfileClick = () => {
+        navigate(`/login/oauth2/code/kakao`);
+        handleDrawerClose();
+    };
+
+    useEffect(()=>{
+        console.log(`[AppBar]\n\tpathname=${pathname}`);
+    }, [ pathname ])
+
+    useEffect(()=>{
+        console.log(`[AppBar]\n\tuser=${JSON.stringify(user)}`);
+    }, [ user ])
 
     return (
         showAppBar &&
         <div>
             <MuiAppBar>
-                <Toolbar sx={{ justifyContent: 'space-between' }}>
-                    <h3 className='app-title'>{strings.public.common.title}</h3>
+                <Toolbar className="">
+                    <ButtonBase style={{ height: '100%' }} onClick={handleTitleButtonClick}>
+                    <h2 className='app-title'>{strings.public.common.title}</h2>
+                    </ButtonBase>
                     {
                         showDrawer
                             ?
@@ -63,11 +94,35 @@ function AppBar({ }: AppBarProps) {
                 >
                     <Toolbar />
                     <List>
+                        <ListItem key={ "profile" }>
+                            <ListItemButton onClick={handleProfileClick} disableGutters className="block--with-padding-x">
+                                <ListItemAvatar>
+                                    <UserAvatar showLabel={false}/>
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={
+                                        isAuthorized
+                                        ?
+                                        user.nickname
+                                        : "로그인 해주세요"
+                                    }
+                                    secondary={
+                                        isAuthorized && `${user.nickname}#${user.discriminator}`
+                                    } 
+                                />
+                                {/* </div> */}
+                            </ListItemButton>
+                        </ListItem>
                         {
-                            Object.keys(CONTENTS).map((content) =>
-                                <ListItem>
-                                    <ListItemButton onClick={() => handleDrawerItemClick(content)}>
-                                        <ListItemText primary={strings.public.contents[content as keyof typeof strings.public.contents].label} />
+                            Object.keys(CONTENTS).map(( content ) =>
+                                <ListItem key={ content }>
+                                    <ListItemButton onClick={() => handleDrawerItemClick(content)} disableGutters selected={ pathname === `/${content}` }>
+                                        <ListItemText 
+                                            primary={
+                                                strings.public.contents[content as keyof typeof strings.public.contents].label
+                                            } 
+                                            className="block--with-margin-x" 
+                                        />
                                     </ListItemButton>
                                 </ListItem>
                             )
@@ -75,7 +130,7 @@ function AppBar({ }: AppBarProps) {
                     </List>
                 </Drawer>
             </MuiAppBar>
-            <Toolbar />
+            {/* <Toolbar /> */}
         </div>
     );
 }

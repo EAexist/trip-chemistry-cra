@@ -1,0 +1,158 @@
+/*** React ***/
+import { useDispatch, useSelector } from "react-redux";
+import { createSlice, PayloadAction, createAsyncThunk, ThunkDispatch } from "@reduxjs/toolkit";
+
+/*** Trip Chemistry ***/
+/* Component */
+import { AppDispatch, RootState } from "../store";
+import { IWithLoadStatus, LoadStatus, IProfileId } from ".";
+import axios from "axios";
+import { HEADERS_AXIOS } from "../common/app-const";
+import { useCallback, useEffect } from "react";
+import { IProfile, IProfileDTO, profileDTOtoProfile, setProfile } from "./profileReducer";
+import { ITestAnswer } from "./testAnswerReducer";
+import { ITestResult, defaultTestResult } from "../interfaces/ITestResult";
+import { defaultTripCharacter } from "../interfaces/ITripCharacter";
+
+/* Types */
+// interface IProfileSearchResult {
+//     id: IProfileId
+//     discriminator: string
+//     nickname: string
+//     testResult : {
+//         data: {
+//             tripCharacter:
+//         }
+//         loadStatus : LoadStatus.REST
+//     }
+// }
+// interface IProfileprofileSearchState extends IWithLoadStatus<IProfileSearchResult[]> {};
+
+type IProfileprofileSearchState = IWithLoadStatus<{
+    searchedProfileList: IProfile[],
+    flaggedProfileList: { [id: IProfileId]: IProfile },
+}>;
+
+/* State */
+const initialState: IProfileprofileSearchState = {
+    data: {
+        searchedProfileList: [],
+        flaggedProfileList: {},
+    },
+    loadStatus: LoadStatus.REST,
+};
+
+/* Async Thunks */
+const asyncSearchProfile = createAsyncThunk("profileSearchSlice/asyncSearchProfile",
+    async (keyword: string, thunkAPI) => {
+        console.log(`[asyncSearchProfile] GET /profile/search?keyword=${keyword}`);
+        try {
+            const response = await axios.get(`/profile/search`,
+                {
+                    method: "GET",
+                    headers: HEADERS_AXIOS,
+                    params: {
+                        keyword: keyword
+                    },
+                });
+            return response.data;
+        }
+        catch (e: any) {
+            console.log(`[asyncSearchProfile] error: ${e}`);
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+/* Slice */
+const profileSearchSlice = createSlice({
+    name: 'profileSearch',
+    initialState: initialState,
+    reducers: {
+        setSearchStatus: (state, action: PayloadAction<LoadStatus>) => {
+            state.loadStatus = action.payload;
+        },
+        addFlagged: (state, action: PayloadAction<IProfile>) => {
+            state.data.flaggedProfileList = {
+                ...state.data.flaggedProfileList,
+                [action.payload.id]: action.payload,
+            };
+        },
+        deleteFlagged: (state, action: PayloadAction<IProfileId>) => {
+            const newData = { ...state.data.flaggedProfileList }
+            delete newData[action.payload]
+            state.data.flaggedProfileList = newData
+        },
+        resetFlag: (state) => {
+            state.data.flaggedProfileList = {};
+        },
+        resetSearch: (state) => {
+            state.data.searchedProfileList = [];
+        },
+    },
+    extraReducers: (builder) => {
+
+        /* asyncSearchProfile */
+        builder.addCase(asyncSearchProfile.fulfilled, (state, action: PayloadAction<IProfileDTO[]>) => {
+            console.log(`[asyncSearchProfile] fulfilled\n\tpayload=${action.payload}`);
+            state.data.searchedProfileList = action.payload.map( profileDTO => profileDTOtoProfile(profileDTO) );
+            state.loadStatus = LoadStatus.SUCCESS;
+        });
+        builder.addCase(asyncSearchProfile.pending, (state, action) => {
+            console.log(`[asyncSearchProfile] pending`);
+            /* https://github.com/reduxjs/redux-toolkit/issues/776 */
+            state.loadStatus = LoadStatus.PENDING;
+        });
+        builder.addCase(asyncSearchProfile.rejected, (state, action) => {
+            console.log(`[asyncSearchProfile] rejected`);
+            state.loadStatus = LoadStatus.FAIL;
+        });
+    },
+})
+
+export const useAddProfiles = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const flaggedProfileList = useFlaggedProfileList();
+    return (
+        useCallback(() => {
+            console.log(`[useAddProfiles] Callback`);
+            Object.values(flaggedProfileList).forEach( profile => {
+                console.log(`[useAddProfiles] profile=${JSON.stringify(profile)}`);
+                dispatch(
+                    setProfile( profile )
+                );
+            });
+            dispatch(profileSearchSlice.actions.resetFlag());
+        }, [ flaggedProfileList, dispatch ])
+    )
+}
+
+const useSearchedProfileList = () => {
+    return (
+        useSelector((state: RootState) => state.profileSearch.data.searchedProfileList)
+    );
+}
+
+const useFlaggedProfileList = () => {
+    return (
+        useSelector((state: RootState) => state.profileSearch.data.flaggedProfileList)
+    );
+}
+
+// const useUserSearchStatus = () => {
+//     return (useSelector((state: RootState) => state.profileSearch.loadStatus));
+// }
+
+const useProfileSearchStatus = () => {
+    const dispatch = useDispatch(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
+    return ([
+        useSelector((state: RootState) => state.profileSearch.loadStatus),
+        useCallback((loadStatus: LoadStatus) => {
+            dispatch( profileSearchSlice.actions.setSearchStatus( loadStatus )) ;
+        }, [ dispatch ])
+    ] as const);
+}
+
+export default profileSearchSlice.reducer;
+export const { resetSearch, addFlagged, deleteFlagged } = profileSearchSlice.actions;
+export { asyncSearchProfile, useSearchedProfileList, useFlaggedProfileList, useProfileSearchStatus };

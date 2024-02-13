@@ -1,27 +1,17 @@
-import { Paper, PaperProps, styled } from "@mui/material";
-import withStepCheckpoint from "../Step/withStepCheckpoint";
+import { Paper, PaperProps } from "@mui/material";
+import { ForwardedRef, forwardRef } from "react";
 
-// const SectionPaper = styled( Paper )<PaperProps>(({ theme }) => ({
-//     width: "100%",
-//     elevation: "3",
-//     borderRadius: "16px",
-//     padding: "16px",
-//     marginTop: "52px",
-//     display: "flex",
-//     flexDirection: "column",
-//     gap: "16px",
-// }));
-
-const SectionPaper = ({ children }: PaperProps) =>
+const SectionPaper = forwardRef(({ children }: PaperProps, ref: ForwardedRef<HTMLDivElement>) =>
     <Paper
-        square={ false }
-        elevation={ 0 }
-        className="body--padding-y section"
+        square={true}
+        elevation={0}
+        className="block--with-padding"
+        // ref={ref}
     >
-        { children }
-    </Paper>;
-
-const SectionPaperWithStep = withStepCheckpoint(SectionPaper);
+        {/* <div className="block--with-margin"> */}
+            {children}
+        {/* </div> */}
+    </Paper>
+);
 
 export default SectionPaper;
-export { SectionPaperWithStep };

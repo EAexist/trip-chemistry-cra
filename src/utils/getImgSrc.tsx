@@ -9,6 +9,7 @@ const basePath = '/static/images';
 const FORMATWEBP = 'webp';
 const FORMATSVG ='svg'
 const FORMATPNG ='png'
+const FORMATJPG ='jpg'
 
 export default getImgSrc;
-export { basePath, FORMATSVG, FORMATWEBP, FORMATPNG };
+export { basePath, FORMATSVG, FORMATWEBP, FORMATPNG, FORMATJPG };

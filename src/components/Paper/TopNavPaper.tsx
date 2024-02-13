@@ -1,5 +1,5 @@
 import { Paper, PaperProps, styled } from "@mui/material";
-import withStepCheckpoint from "../Step/withStepCheckpoint";
+// import withStepCheckpoint from "../Step/withStepCheckpoint";
 
 const TopNavPaper = styled( Paper )<PaperProps>(({ theme }) => ({
     elevation: 6,

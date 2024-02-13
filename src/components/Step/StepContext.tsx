@@ -1,44 +1,55 @@
-import { ComponentType, createContext, useCallback, useContext, useState } from "react";
+import { ComponentType, PropsWithChildren, createContext, useCallback, useContext, useRef, useState } from "react";
 
 type DynamicStep = [ step: number, isIncrementing: boolean ];
 
 interface StepContextProps{
-    section: number;
-    setSection: React.Dispatch<React.SetStateAction<number>>;
-    // section: DynamicStep;
-    // setSection: React.Dispatch<React.SetStateAction<DynamicStep>>;
+    step: number;
+    setStep: React.Dispatch<React.SetStateAction<number>>;
+    // step: DynamicStep;
+    // setStep: React.Dispatch<React.SetStateAction<DynamicStep>>;
 } 
 
 const StepContext = createContext<StepContextProps>({} as StepContextProps);
 
+export function StepContextProvider({ children }: PropsWithChildren) {
+
+    const [ step, setStep ] = useState<number>(0); 
+
+    return (
+        <StepContext.Provider value={{ step, setStep }}>
+            {children}
+        </StepContext.Provider>
+    );
+}
+
 const withStepContext = <T extends {}>( WrappedComponent: ComponentType<T> ) => ( props : T ) => {
 
-    const [ section, setSection ] = useState<number>(0); 
+    const [ step, setStep ] = useState<number>(0); 
 
     return(
-        <StepContext.Provider value={ { section, setSection } }>
+        <StepContext.Provider value={{ step, setStep }}>
             <WrappedComponent {...props}/>
         </StepContext.Provider>
     )
 }
 
-const useSection = () => useContext(StepContext).section;
-const useSetSection = () => useContext(StepContext).setSection;
+const useStep = () => useContext(StepContext).step;
+const useSetStep = () => useContext(StepContext).setStep;
 const useStepContext = () => useContext(StepContext);
 
-// const useSetSection = () => {
-//     const { section, setSection } = useStepContext();
+// const useSetStep = () => {
+//     const { step, setStep } = useStepContext();
 
 //     return(
-//         useCallback(( newSection: number ) => {        
-//             if( activeStep !== newSection ){
-//                 setSection([ newSection, activeStep < newSection ]);
+//         useCallback(( newStep: number ) => {        
+//             if( activeStep !== newStep ){
+//                 setStep([ newStep, activeStep < newStep ]);
 //             }
-//         }, [ section, setSection ])
+//         }, [ step, setStep ])
 //     )
 // }
 
 export default StepContext;
 
-export { withStepContext, useStepContext, useSection, useSetSection }
+export { withStepContext, useStepContext, useStep, useSetStep }
 export type { DynamicStep };

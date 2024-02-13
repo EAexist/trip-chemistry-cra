@@ -1,4 +1,5 @@
 import { ComponentType, PropsWithChildren, createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useValueToBound } from "../../hooks/useValueToBound";
 
 type IdToIndex = { [key: string] : number };
 
@@ -15,6 +16,22 @@ function StepCheckpointContextProvider({ children }: PropsWithChildren) {
     const [ idToIndex, setIdToIndex ] = useState<IdToIndex>({} as IdToIndex) 
     const stepCheckpointList = useRef<HTMLDivElement[]>([]); 
 
+    useEffect(()=>{        
+        console.log(`[StepCheckpointContextProvider]  stepCheckpointList.current=${stepCheckpointList.current}`);
+
+        stepCheckpointList.current.forEach((checkpoint, index)=>{
+            console.log(`[StepCheckpointContextProvider] checkpoints[${index}]=${checkpoint.offsetTop}`);
+        })
+    }, [ stepCheckpointList ]);
+
+    // const [ activeCheckpointIndex, ] = useValueToBound({ 
+    //     boundList: stepCheckpointList.current.filter((checkpoint) => (checkpoint.offsetTop !== null)).map(( checkpoint )=>{
+    //         return( checkpoint.offsetTop-(window.innerHeight-(checkpoint.offsetParent as HTMLDivElement).offsetTop)/2 )
+    //     }), 
+    //     value: value,
+    //     returnIndex: true, 
+    // }); /* Current active index */
+
     return (
         <StepCheckpointContext.Provider value={ { idToIndex : idToIndex, setIdToIndex : setIdToIndex, stepCheckpointList : stepCheckpointList } }>
             {children}
@@ -23,20 +40,41 @@ function StepCheckpointContextProvider({ children }: PropsWithChildren) {
 }
 
 /**** Custom Hooks ****/
-
 const useStepCheckpoint = () => useContext( StepCheckpointContext );
 
-const useSetStepCheckpoint = ( id: string ) => {
 
-    const { idToIndex, stepCheckpointList } = useStepCheckpoint();
+export const useScrollToCheckpoint = () => {
+
+    const { stepCheckpointList } = useContext( StepCheckpointContext );
+
+    return(
+        useCallback(( index: number )=>{
+            console.log(`[withSetStepOnChange]\n\tindex=${index}
+                \tlength=${stepCheckpointList.current.length} 
+            `);
+            stepCheckpointList.current[index as number].scrollIntoView({ });
+        }, [ stepCheckpointList ])
+    )    
+};
+
+const useSetStepCheckpoint = ( index: number, handleEntry : ([ entry ] : IntersectionObserverEntry[])=>void  = (() =>{}) ) => {
+
+    const { stepCheckpointList } = useStepCheckpoint();
 
     return({
-        setCheckpoint: useCallback((element: HTMLDivElement) => {
-            if (element) stepCheckpointList.current[ idToIndex[ id ] ] = element;
-        }, [ idToIndex, stepCheckpointList, id ]),
+        setCheckpoint: useCallback(( element: HTMLDivElement ) => {
+            if (element){
+                console.log(`[useSetStepCheckpoint] setCheckpoint. index=${index}`);
+                stepCheckpointList.current[ index ] = element;
+                // let observer = new IntersectionObserver( handleEntry, { threshold: 1 });
+                // observer.observe( element );
+            }
+        }, [ stepCheckpointList, index, handleEntry ]),
+
         removeCheckpoint: useCallback(() => {
-            stepCheckpointList.current = stepCheckpointList.current.splice(idToIndex[ id ], 1);
-        }, [ idToIndex, stepCheckpointList, id ]),    
+            console.log(`[useSetStepCheckpoint] removeCheckpoint. index=${index}`);
+            stepCheckpointList.current = stepCheckpointList.current.splice(index, 1);
+        }, [ stepCheckpointList, index ]),    
     });
 }
 

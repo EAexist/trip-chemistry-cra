@@ -9,30 +9,23 @@ import { useDispatch, useSelector } from "react-redux";
 /* App */
 import { AppDispatch, RootState } from "../store";
 import { StatusCodes } from "http-status-codes";
+import { IWithLoadStatus, LoadStatus, IProfileId } from ".";
+import { HEADERS_AXIOS } from "../common/app-const";
+import axios from "axios";
+import { useUserId } from "./authReducer";
 
 // interface TestAnswerState extends TestAnswer{
 //     loadStatus: LoadStatus; 
 // };
-type UserId = string;
 
-enum LoadStatus {
-    REST = 'rest',
-    PENDING = 'pending', 
-    SUCCESS = 'success',
-    MISS = 'miss',
-    FAIL = 'fail',
-}
-
-interface ITestAnswerState { 
+interface ITestAnswer { 
     [key: string] : {
         [key: string]: number | undefined
     }
 }
 
-type IWithLoadStatus<T> = { data: T,  loadStatus : LoadStatus };
-
-
-/* Deubg */const initialState : IWithLoadStatus<ITestAnswerState> = {
+/* Deubg */
+const initialState : IWithLoadStatus<ITestAnswer> = {
     data: {
         leadership : {
             leadership: 1
@@ -63,7 +56,7 @@ type IWithLoadStatus<T> = { data: T,  loadStatus : LoadStatus };
     loadStatus : LoadStatus.REST
 };
 
-// const initialState : IWithLoadStatus<ITestAnswerState> = {
+// const initialState : IWithLoadStatus<ITestAnswer> = {
 //     data: {
 //         leadership : {
 //             leadership: undefined
@@ -99,7 +92,7 @@ type TestName = keyof typeof initialState.data;
 
 type SubTestName = keyof typeof initialState.data[TestName];
 
-export interface TestIndex{
+interface TestIndex{
     index: TestName;
     subIndex: SubTestName;
 }
@@ -108,37 +101,23 @@ interface TestAnswerPayload extends TestIndex{
     value: typeof initialState.data[TestName][SubTestName];
 };
 
-// type SubTestName = keyof (typeof initialState.testAnswer)
-
-interface asyncPutResponseProps{
-    userId: UserId;
-    response: ITestAnswerState;
-};
-const asyncPutResponse = createAsyncThunk("testAnswer/putResponse", 
-    async ({userId, response}: asyncPutResponseProps, thunkAPI) => {
-        console.log(`asyncPutResponse: response=${JSON.stringify(response)}`);
-        try{
-            
-            const path = `user/${ userId }/response`;
-            const fetchProps = {
-                method: "PUT", 
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(response)
-            };
-
-            const data = await fetch(path, fetchProps) 
-                .then((response) => {
-                    console.log(`useServerAPI- response=${JSON.stringify(response)}`);
-                    if(!response.ok) throw new Error(response.statusText);
-                    else return response.status;
-                })
-
-            console.log(`asyncPutResponse: data=${JSON.stringify(data)}`);
-            return data;
+export const asyncSubmitAnswer = createAsyncThunk("testAnswer/submitAnswer",
+    async ({ id, answer }: { id: string, answer: ITestAnswer}, thunkAPI) => {
+        console.log(`[asyncSubmitAnswe] PUT /profile/answer?\n\tid=${id}\n\tanswer=${JSON.stringify(answer)}`);
+        try {
+            const response = await axios.put(`/profile/answer`,
+                answer,
+                {
+                    method: "PUT",
+                    headers: HEADERS_AXIOS,
+                    params: { 
+                        id: id,
+                    },
+                });
+            return response.data;
         }
         catch (e: any) {
+            console.log(`[asyncSubmitAnswe] error: ${e}`);
             return thunkAPI.rejectWithValue(e);
         }
     }
@@ -173,17 +152,17 @@ const testAnswerSlice = createSlice({
         },
     },
     extraReducers:(builder) => {
-        builder.addCase(asyncPutResponse.fulfilled, (state, action: PayloadAction<StatusCodes>) => {            
-            console.log(`asyncPutResponse.fulfilled - 
-            \naction.payload=${JSON.stringify(action.payload)}`);
-            state.loadStatus = LoadStatus.REST;
+        builder.addCase( asyncSubmitAnswer.fulfilled, (state, action: PayloadAction<StatusCodes> ) => {            
+            console.log(`[asyncSubmitAnswer] fulfilled\n\taction.payload=${JSON.stringify(action.payload)}`
+            );
+            state.loadStatus = LoadStatus.SUCCESS;
         });
-        builder.addCase(asyncPutResponse.pending, (state) => {
-            console.log(`asyncPutResponse.pending`);
+        builder.addCase(asyncSubmitAnswer.pending, (state) => {
+            console.log(`[asyncSubmitAnswer] pending`);
             state.loadStatus = LoadStatus.PENDING;
         });
-        builder.addCase(asyncPutResponse.rejected, (state) => {
-            console.log(`asyncPutResponse.rejected`);
+        builder.addCase(asyncSubmitAnswer.rejected, (state) => {
+            console.log(`[asyncSubmitAnswer] rejected`);
             state.loadStatus = LoadStatus.FAIL;
         });
     },
@@ -212,17 +191,24 @@ const useTestAnswerStatus = () => {
     ] as const);
 }
 
-const usePutResponse = () => {
+const useSubmitAnswer = () => {
     const dispatch = useDispatch<AppDispatch>(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
     const { data } = useSelector(( state:RootState ) => state.testAnswer );
-    return useCallback((userId: UserId) => 
-        dispatch( asyncPutResponse({userId: userId, response: data}) )
+
+    const id = useUserId();
+
+    return useCallback(() => {        
+        console.log("useSubmitAnswer");
+
+        dispatch( asyncSubmitAnswer({ id, answer: data }) );
+    }
     , [dispatch, data]);
 }
 
 export default testAnswerSlice.reducer;
-export { useTestAnswerStatus, usePutResponse };
-// export { useTestAnswer, useSetTestAnswer, usePutResponse, useTestAnswerStatus }
+export { useTestAnswerStatus, useSubmitAnswer };
+export type { ITestAnswer, TestIndex };
+// export { useTestAnswer, useSetTestAnswer, useSubmitAnswer, useTestAnswerStatus }
 // export type { TestAnswerPayload, TestAnswer, TestName, SubTestName, TestIndex, InterfaceWithLoadStatus }
 
 
@@ -234,11 +220,11 @@ export { useTestAnswerStatus, usePutResponse };
 //     , [dispatch]);
 // };
 
-// const usePutResponse = () => {
+// const useSubmitAnswer = () => {
 //     const dispatch = useDispatch<AppDispatch>(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
 //     const { loadStatus, data } = useSelector(( state:RootState )=>state.testAnswer)
-//     return useCallback((userId: UserId) => 
-//         dispatch(asyncPutResponse({userId: userId, response: data}))
+//     return useCallback((id: IProfileId) => 
+//         dispatch(asyncSubmitAnswer({id: id, response: data}))
 //     , [dispatch, data]);
 // }
 

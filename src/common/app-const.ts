@@ -1,9 +1,22 @@
+import { SliderProps } from "@mui/material";
+import { ChemistrySliderProps } from "../components/Slider/ChemistrySlider";
+
 export const CONTENTS = {
     home: {},
     test: {},
     result: {},
     chemistry: {},
 }
+
+export const HEADERS_AXIOS = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+};
+
+export const USERS_EXAMPLE = [
+    "udon1234",
+    "우동1234",
+]
 
 export const TEST  = {
     leadership: {
@@ -302,8 +315,16 @@ export const NATION = {
     },
 }
 
-export const SLIDERPROPS_BUDGET_FOOD = {
-    "step": 5000,
-    "min": 5000,
-    "max": 50000
+export const SLIDERPROPS_TEST_BUDGET_FOOD : SliderProps = {
+    step: 5000,
+    min: 5000,
+    max: 50000,
+    "aria-label": "budget"
+};
+
+export const SLIDERPROPS_CHEMISTRY_BUDGET_FOOD : ChemistrySliderProps = {
+    testIndex : { index: "budget", subIndex: "food" },
+    step: 5000,
+    min: 5000,
+    max: 50000,
 };
