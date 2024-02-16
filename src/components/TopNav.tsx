@@ -7,7 +7,7 @@
 //         <>
 //             <div className="top-nav">
 //                 <SectionButtonGroup>
-//                     <Swiper {...SWIPERPROPS_TOPNAV} className="top-nav__swiper">
+//                     <Swiper {...SWIPERPROPS_STEPPER} className="top-nav__swiper">
 //                         {
 //                             sectionList.map(([{ sectionIndex, label }], index) =>
 //                                 <SwiperSlide key={subIndex} className="top-nav__swiper">

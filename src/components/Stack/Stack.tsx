@@ -1,10 +1,10 @@
-import styled from "styled-components";
+// import styled from "styled-components";
 
-const Stack = styled.div(({ theme }) => ({
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",    
-    // height: 'fit-content'
-}));
+// const Stack = styled.div(({ theme }) => ({
+//     display: "flex",
+//     flexDirection: "row",
+//     alignItems: "center",    
+//     // height: 'fit-content'
+// }));
 
-// export default Stack;
+// // export default Stack;

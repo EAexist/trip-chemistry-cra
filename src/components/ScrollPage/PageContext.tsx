@@ -1,7 +1,11 @@
 import { PropsWithChildren, createContext, useContext } from "react";
 
-type PageContextProps = number | undefined;
-const PageContext = createContext<PageContextProps>( undefined );
+interface PageContextProps {
+    activePage: number; 
+    addPage: () => void;
+};
+
+const PageContext = createContext<PageContextProps>( {} as PageContextProps );
 
 const usePage = () => useContext(PageContext);
 

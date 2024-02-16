@@ -11,10 +11,11 @@ import { SWIPERPROPS_CITYDETAILCONTENT } from "../common/swiperProps";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useStrings } from "../texts";
 import { useEffect, useState } from "react";
-import { useCityChemistry } from "../reducers/chemistryReducer";
+import { useCityChemistry, useIsChemistryUpdated } from "../reducers/chemistryReducer";
 import { RootState } from "../store";
 import { useSelector } from "react-redux";
 import ProfileAvatar from "../components/Avatar/ProfileAvatar";
+import PaginationDiv from "../components/PaginationDiv";
 
 interface CityDetailContentProps {
     cityClass: keyof typeof TEST.city.subTests;
@@ -23,10 +24,11 @@ interface CityDetailContentProps {
 function CityDetailContent({ cityClass }: CityDetailContentProps) {
 
     const navigate = useNavigate();
-    const { initialIndex } = useLocation().state;
+    const { state } = useLocation();
 
-    const [ expanded, setExpanded ] = useState<boolean>(false);
+    const [expanded, setExpanded] = useState<boolean>(false);
 
+    const isChemistryUpdated = useIsChemistryUpdated();
 
     /* Strings */
     const strings = useStrings().public.contents.test;
@@ -38,32 +40,36 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
     };
 
     const handleChange = (event: React.SyntheticEvent, isExpanded: boolean) => {
-        setExpanded( isExpanded );
+        setExpanded(isExpanded);
     };
 
     /* Store */
     const score = useCityChemistry(cityClass);
-    const answerList = useSelector((state: RootState) => Object.entries( state.profile.data ).map(([id, { data: { testAnswer }}]) => (
-        { id: id, answer: testAnswer.data.city[cityClass] }
-    )))
+    const answerList = useSelector((state: RootState) =>
+        isChemistryUpdated
+            ? Object.entries(state.profile.data).map(([id, { data: { testAnswer } }]) => (
+                { id: id, answer: testAnswer.data[cityClass] }
+            ))
+            : []
+    )
 
     return (
         <div className="page">
             <AppBar>
                 <Toolbar className="margin-x--lg">
-                    <IconButton disabled>
-                        <Icon />
+                    <IconButton
+                        aria-label="close"
+                        onClick={handleClose}
+                    >
+                        <Close />
                     </IconButton>
                     {/* <div className="content__title"> */}
                     <Stack>
                         <h5 className="typography-note">{strings.test.city.title}</h5>
                     </Stack>
                     {/* </div> */}
-                    <IconButton
-                        aria-label="close"
-                        onClick={handleClose}
-                    >
-                        <Close />
+                    <IconButton disabled>
+                        <Icon />
                     </IconButton>
                 </Toolbar>
             </AppBar>
@@ -72,7 +78,7 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                 <h2 className="typography-heading">{strings.subTest[cityClass as keyof typeof strings.subTest].title}</h2>
             </div>
             {
-                score &&
+                isChemistryUpdated &&
                 <div className="block--with-margin-x--lg">
                     <Accordion expanded={expanded} onChange={handleChange}>
                         <AccordionSummary
@@ -108,9 +114,9 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                     </Accordion>
                 </div>
             }
-            <Swiper {...SWIPERPROPS_CITYDETAILCONTENT} initialSlide={initialIndex} className="page__swiper">
-                <div slot="container-start" className="page__pagination-container">
-                    <div className='pageSwiper-pagination page__pagination' />
+            <Swiper {...SWIPERPROPS_CITYDETAILCONTENT} initialSlide={state && state.initialIndex ? state.initialIndex : 0} className="page__swiper">
+                <div slot="container-start" >
+                    <PaginationDiv className='pageSwiper-pagination' sx={{ justifyContent: 'center' }} />
                 </div>
                 {
                     TEST.city.subTests[cityClass].examples.map((cityId) => (

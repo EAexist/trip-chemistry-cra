@@ -1,27 +1,27 @@
 import { Avatar, Popper, Slider, SliderOwnProps, SliderValueLabelProps, Stack, } from "@mui/material";
+
 import { priceText } from "../../utils/priceText";
 import useValueToProfileIdList from "../../hooks/useValueToProfileIdList";
-import { TestIndex } from "../../reducers/testAnswerReducer";
 import useProfileIdListByAnswer from "../../hooks/useProfileIdListByAnswer";
 import ProfileAvatar from "../Avatar/ProfileAvatar";
-import { useEffect, useRef } from "react";
 import Tooltip from "../Tooltip";
 import AvatarGroup from "../Avatar/AvatarGroup";
+import { TestName } from "../../reducers/testAnswerReducer";
 
 interface ChemistrySliderProps extends SliderOwnProps {
-    testIndex: TestIndex
+    testName: TestName
     min: number
     max: number
     step: number
 };
 
 interface ValueLabelComponentProps extends SliderValueLabelProps {
-    testIndex: TestIndex;
+    testName: TestName;
 }
 
-const valueLabelComponent_ = (testIndex: TestIndex) => ({ value, children }: SliderValueLabelProps) => {
+const valueLabelComponent_ = (testName: TestName) => ({ value, children }: SliderValueLabelProps) => {
 
-    const { userList, ascendingOrder } = useProfileIdListByAnswer(testIndex, value);
+    const { userList, ascendingOrder } = useProfileIdListByAnswer(testName, value);
     const isEven = ascendingOrder % 2 === 0;
 
     return (
@@ -43,9 +43,9 @@ const valueLabelComponent_ = (testIndex: TestIndex) => ({ value, children }: Sli
     );
 }
 
-const SliderValueLabel = ({ testIndex, value }: { testIndex: TestIndex, value: number }) => {
+const SliderValueLabel = ({ testName, value }: { testName: TestName, value: number }) => {
 
-    const { userList } = useProfileIdListByAnswer(testIndex, value);
+    const { userList } = useProfileIdListByAnswer(testName, value);
 
     return (
         userList.length > 0
@@ -63,12 +63,12 @@ const SliderValueLabel = ({ testIndex, value }: { testIndex: TestIndex, value: n
     );
 }
 
-function ChemistrySlider({ testIndex, ...sliderOwnProps }: ChemistrySliderProps) {
+function ChemistrySlider({ testName, ...sliderOwnProps }: ChemistrySliderProps) {
 
-    const budgetAnswerToProfiles = useValueToProfileIdList(testIndex);
+    const budgetAnswerToProfiles = useValueToProfileIdList(testName);
 
     const marks = Array.from(
-        { length: (sliderOwnProps.max - sliderOwnProps.min) / sliderOwnProps.step },
+        { length: (sliderOwnProps.max - sliderOwnProps.min) / sliderOwnProps.step + 1 },
         (value, index) => sliderOwnProps.max - index * sliderOwnProps.step
     )
 
@@ -77,8 +77,17 @@ function ChemistrySlider({ testIndex, ...sliderOwnProps }: ChemistrySliderProps)
             <Stack alignItems={'stretch'} className="slider">
                 <div className="flex" >
                     {
-                        marks.map((value) => (
-                            <h6 className="typography-marks body--centered" style={{ flexGrow: 1, transform: "translateY(-50%)", visibility: ((value % 10000 === 0) && !Object.keys(budgetAnswerToProfiles).includes(value.toString())) ? 'visible' : 'hidden' }}>
+                        marks.slice(0, marks.length-1).map((value) => (
+                            <h6 className="typography-marks body--centered" 
+                                style={{ 
+                                    flexGrow: 1, 
+                                    transform: "translateY(-50%)", 
+                                    visibility: (
+                                            (value % 10000 === 0) 
+                                            // && !Object.keys(budgetAnswerToProfiles).includes(value.toString())
+                                        )
+                                        ? 'visible' : 'hidden' 
+                                }}>
                                 {(value)}
                             </h6>))
                     }
@@ -91,7 +100,7 @@ function ChemistrySlider({ testIndex, ...sliderOwnProps }: ChemistrySliderProps)
                         height: 300,
                         zIndex: 1,
                     }}
-                    disabled
+                    // disabled
                     orientation="vertical"
                     size="small"
                     value={Object.keys(budgetAnswerToProfiles).map((answer) => Number(answer))}
@@ -102,7 +111,7 @@ function ChemistrySlider({ testIndex, ...sliderOwnProps }: ChemistrySliderProps)
             <div className="flex">
                 {
                     marks.map((value) => (
-                        <SliderValueLabel testIndex={testIndex} value={value} />
+                        <SliderValueLabel testName={testName} value={value} />
                     ))
                 }
             </div>

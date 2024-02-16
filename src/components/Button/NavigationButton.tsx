@@ -1,5 +1,5 @@
 import { NavigateBefore, NavigateNext } from "@mui/icons-material";
-import { IconButton, IconButtonProps, styled } from "@mui/material";
+import { IconButton, IconButtonProps } from "@mui/material";
 
 interface NavigationButtonProps extends IconButtonProps{ 
     position? : 'fixed' | 'absolute'

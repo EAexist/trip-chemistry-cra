@@ -1,22 +1,21 @@
 import { ComponentType } from "react";
-import { useSelector } from "react-redux";
 
-import { TestIndex } from "../reducers/testAnswerReducer";
-import { RootState } from "../store";
+import { TestName, useIsTestAnswered } from "../reducers/testAnswerReducer";
 
 interface WithIsTestAnsweredProps {
+    testName?: string;
     isAnswered?: boolean;
 };
 
 const withIsTestAnswered = <T extends WithIsTestAnsweredProps>( WrappedComponent: ComponentType<T> ) =>
-    ({ testIndex, ...props }: Omit<T, keyof WithIsTestAnsweredProps> & { testIndex: TestIndex }) => {
+    ({ testName, ...props }: Omit<T, keyof WithIsTestAnsweredProps> & { testName: TestName }) => {
 
-        const isAnswered = useSelector(( state:RootState )=>(state.testAnswer.data[testIndex.index][testIndex.subIndex]) !== undefined )
+        const isAnswered = useIsTestAnswered( testName );
 
         return (
             <WrappedComponent
                 {...{
-                    testIndex,
+                    testName,
                     isAnswered: isAnswered,
                 }}
                 {...props as unknown as T}

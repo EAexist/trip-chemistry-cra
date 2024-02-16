@@ -1,16 +1,17 @@
-import { Button, Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { ContentKey, useContentString, useStrings } from "../texts";
+import { Stack } from "@mui/material";
+
+import { useStrings } from "../texts";
 import withTestAnswer, { WithTestAnswerProps } from "../hocs/withTestAnswer";
-import { SX_AVATAR__ICON } from "../mui-material/sx";
 import ToggleProfileButton from "./Button/ToggleProfileButton";
+import { TEST, TEST_SECTIONS } from "../common/app-const";
 
 interface AnswerButtonGroupProps extends WithTestAnswerProps {
 
 };
 
-function AnswerButtonGroup( { testIndex, answer, setAnswer } : AnswerButtonGroupProps ){
+function AnswerButtonGroup( { testName, answer, setAnswer } : AnswerButtonGroupProps ){
 
-    const strings = Object(useStrings().public.contents.test.test)[testIndex.index];   
+    const strings = Object(useStrings().public.contents.test.test)[ TEST_SECTIONS[testName].type ];   
 
     const handleAnswerChange = ( value: number ) => {
         setAnswer( value );

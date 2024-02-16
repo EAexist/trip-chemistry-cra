@@ -1,4 +1,4 @@
-import { Avatar, ButtonBase, CardContent, CardMedia, Rating, Stack } from "@mui/material";
+import { ButtonBase, CardContent, Rating, Stack } from "@mui/material";
 import { TEST } from "../../common/app-const";
 import { useStrings } from "../../texts";
 import useValueToProfileIdList from "../../hooks/useValueToProfileIdList";
@@ -9,6 +9,7 @@ import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
 import ImageCard from "../../components/Card/ImageCard";
 import AvatarGroup from "../../components/Avatar/AvatarGroup";
 import { Star, StarBorder } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 interface CityChemistryContentProps {
     cityClass: keyof typeof TEST.city.subTests;
@@ -16,13 +17,15 @@ interface CityChemistryContentProps {
 
 function CityChemistryContent({ cityClass }: CityChemistryContentProps) {
 
+    const navigate = useNavigate();
+
     const testStrings = useStrings().public.contents.test;
-    const valueToProfileList = useValueToProfileIdList({ index: 'city', subIndex: cityClass });
+    const valueToProfileList = useValueToProfileIdList( cityClass );
 
     const score = useCityChemistry(cityClass);
 
     const handleClick = () => {
-
+        navigate(`/city/${cityClass}`);
     }
 
     useEffect(() => {

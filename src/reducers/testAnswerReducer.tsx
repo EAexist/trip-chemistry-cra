@@ -10,100 +10,159 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
 import { StatusCodes } from "http-status-codes";
 import { IWithLoadStatus, LoadStatus, IProfileId } from ".";
-import { HEADERS_AXIOS } from "../common/app-const";
+import { HEADERS_AXIOS, TEST, TEST_TYPE } from "../common/app-const";
 import axios from "axios";
 import { useUserId } from "./authReducer";
 
-// interface TestAnswerState extends TestAnswer{
-//     loadStatus: LoadStatus; 
-// };
-
-interface ITestAnswer { 
-    [key: string] : {
-        [key: string]: number | undefined
-    }
+export const ActivityTag = {
+    PHOTO : "photo",
+    INSTA : "insta",
+    NETWORK : "network",
+    EXTREME : "extreme",
+    SWIM : "swim",
+    DRIVE : "drive",
+    WALK : "walk",
+    THEMEPARK : "themepark",
+    MARKET : "market",
+    HOTEL : "hotel",
+    VLOG : "vlog",
+    WAITING : "waiting",
+    BAR : "bar",
+    CAFE : "cafe",
+    SHOPPING : "shopping",
+    SHOW : "show",
 }
+type ActivityTag = typeof ActivityTag[keyof typeof ActivityTag]; 
 
-/* Deubg */
-const initialState : IWithLoadStatus<ITestAnswer> = {
-    data: {
-        leadership : {
-            leadership: 1
-            // leadership: undefined
-        },
-        schedule : {
-            schedule: 5
-        },
-        budget : {
-            food: 15000, /* 식사 평균 */
-            // foodSpecial: 2, /* 특별한 식사 */
-            // accomodate: 2, /* 숙소 평균 */
-            // accomodateSpecial: 2, /* 특별한 숙소 */
-        },
-        city: {
-            metropolis: 1,
-            history: 3,
-            nature: 5,
-        },
-        // activity:{
-        //     food: 2,
-        //     walk: 2,
-        //     shopping: 2,
-        //     mesuem: 2,
-        //     themePark: 2,
-        // },
+export const ExpectationTag = {
+    HEAL: "heal",
+    COMPACT: "compact",
+    FULLFILL: "fullfill",
+    MEMORY: "memory",
+    RELAX: "relax",
+    COMFORT: "comfort",
+    ADVENTURE: "adventure",
+    NEW: "new",
+    DIGITAL_DETOX: "digital_detox",
+    REST: "rest",
+    VIEW: "view",  
+}
+type ExpectationTag = typeof ExpectationTag[keyof typeof ExpectationTag]; 
+
+interface ITestAnswer {
+    expectation: {
+        selected: ExpectationTag[],
+        unSelected: ExpectationTag[]
     },
+    activity: {
+        selected: ActivityTag[],
+        unSelected: ActivityTag[]
+    },
+    leadership: undefined | number,
+    schedule: undefined | number,
+    food: undefined | number, /* 식사 평균 */
+    // foodSpecial: undefined | number, /* 특별한 식사 */
+    // accomodate: undefined | number, /* 숙소 평균 */
+    // accomodateSpecial: undefined | number, /* 특별한 숙소 */
+
+    metropolis: undefined | number,
+    history: undefined | number,
+    nature: undefined | number,
+};
+
+interface ITestAnswerDTO {
+    expectation: ExpectationTag[],
+    activity: ActivityTag[],
+    leadership: number,
+    schedule: number,
+    food: number, 
+    metropolis: number,
+    history: number,
+    nature: number,
+};
+
+const testAnswerToDTO: (testAnswer: ITestAnswer) => ITestAnswerDTO = ( testAnswer ) => (
+    {
+        ...testAnswer,
+        expectation: testAnswer.expectation.selected,
+        activity: testAnswer.activity.selected,
+    } as ITestAnswerDTO
+);
+
+
+type TestName = keyof ITestAnswer;
+export type NumericTestName = keyof Omit<ITestAnswer, "activity" | "expectation">;
+export type SetTestName = keyof Pick<ITestAnswer, "activity" | "expectation">;
+
+export const defaultTestAnswer : ITestAnswer = {
+    expectation: {
+        selected: [],
+        unSelected: Object.values(ExpectationTag)
+    },
+    activity: {
+        selected: [],
+        unSelected: Object.values(ActivityTag)
+    },
+    leadership: undefined,
+    schedule: undefined,
+    food: undefined, /* 식사 평균 */
+    // foodSpecial: undefined, /* 특별한 식사 */
+    // accomodate: undefined, /* 숙소 평균 */
+    // accomodateSpecial: undefined, /* 특별한 숙소 */
+
+    metropolis: undefined,
+    history: undefined,
+    nature: undefined,
+};
+
+/* Debug */
+export const sampleTestAnswer : ITestAnswer = {
+    expectation: {
+        selected: [],
+        unSelected: Object.values(ExpectationTag)
+    },
+    activity: {
+        selected: [],
+        unSelected: Object.values(ActivityTag)
+    },
+    leadership: 1,
+    schedule: 4,
+    food: 20000, /* 식사 평균 */
+    // foodSpecial: undefined, /* 특별한 식사 */
+    // accomodate: undefined, /* 숙소 평균 */
+    // accomodateSpecial: undefined, /* 특별한 숙소 */
+
+    metropolis: 1,
+    history: 5,
+    nature: 4,
+};
+
+// type ITestAnswer = typeof defaultTestAnswer;
+
+const initialState : IWithLoadStatus<ITestAnswer> = {
+    data: sampleTestAnswer,
+    // data: defaultTestAnswer,
     loadStatus : LoadStatus.REST
 };
 
-// const initialState : IWithLoadStatus<ITestAnswer> = {
-//     data: {
-//         leadership : {
-//             leadership: undefined
-//             // leadership: undefined
-//         },
-//         schedule : {
-//             schedule: undefined
-//         },
-//         budget : {
-//             food: undefined, /* 식사 평균 */
-//             // foodSpecial: 2, /* 특별한 식사 */
-//             // accomodate: 2, /* 숙소 평균 */
-//             // accomodateSpecial: 2, /* 특별한 숙소 */
-//         },
-//         city: {
-//             metropolis: undefined,
-//             history: undefined,
-//             nature: undefined,
-//         },
-//         // activity:{
-//         //     food: 2,
-//         //     walk: 2,
-//         //     shopping: 2,
-//         //     mesuem: 2,
-//         //     themePark: 2,
-//         // },
-//     },
-//     loadStatus : LoadStatus.REST
-// };
+// interface TestName{
+//     index: TestName;
+//     subIndex: SubTestName;
+// }
 
+interface ISetNumericAnswerPayload {
+    testName: NumericTestName;
+    value: number;
+};
 
-type TestName = keyof typeof initialState.data;
-
-type SubTestName = keyof typeof initialState.data[TestName];
-
-interface TestIndex{
-    index: TestName;
-    subIndex: SubTestName;
-}
-
-interface TestAnswerPayload extends TestIndex{
-    value: typeof initialState.data[TestName][SubTestName];
+interface ISetSetAnswerPayload {
+    testName: SetTestName;
+    tag: string;
 };
 
 export const asyncSubmitAnswer = createAsyncThunk("testAnswer/submitAnswer",
-    async ({ id, answer }: { id: string, answer: ITestAnswer}, thunkAPI) => {
-        console.log(`[asyncSubmitAnswe] PUT /profile/answer?\n\tid=${id}\n\tanswer=${JSON.stringify(answer)}`);
+    async ({ id, answer }: { id: string, answer: ITestAnswerDTO}, thunkAPI) => {
+        console.log(`[asyncSubmitAnswer] PUT /profile/answer?\n\tid=${id}\n\tanswer=${JSON.stringify(answer)}`);
         try {
             const response = await axios.put(`/profile/answer`,
                 answer,
@@ -117,7 +176,7 @@ export const asyncSubmitAnswer = createAsyncThunk("testAnswer/submitAnswer",
             return response.data;
         }
         catch (e: any) {
-            console.log(`[asyncSubmitAnswe] error: ${e}`);
+            console.log(`[asyncSubmitAnswer] error: ${e}`);
             return thunkAPI.rejectWithValue(e);
         }
     }
@@ -128,24 +187,23 @@ const testAnswerSlice = createSlice({
     initialState: initialState,
     reducers:
     {
-        setTestAnswer : (state, action: PayloadAction<TestAnswerPayload>) => {
-            console.log(`[testAnswerSlice] [setTestAnswer]: state=${JSON.stringify(state)} payload=${JSON.stringify(action.payload)}` );
-            if ( state.data ) state.data[action.payload.index][action.payload.subIndex] = action.payload.value;
-            // return(
-            //     {
-            //         ...state,
-            //         testAnswer: {
-            //             ...state.testAnswer,
-            //             [action.payload.testName]:
-            //                 action.payload.subTestName === undefined ?
-            //                     action.payload.value
-            //                     : {
-            //                         ...state.testAnswer[action.payload.testName] as object,
-            //                         [action.payload.subTestName]: action.payload.value
-            //                     }
-            //         }
-            //     }
-            // ) 
+        setNumericAnswer : (state, action: PayloadAction<ISetNumericAnswerPayload>) => {
+            console.log(`[testAnswerSlice] [setNumericAnswer]: state=${JSON.stringify(state)} payload=${JSON.stringify(action.payload)}` );
+            if ( state.data ){
+                state.data[action.payload.testName] = action.payload.value;
+            }
+        },
+        addTagAnswer: (state, action: PayloadAction<ISetSetAnswerPayload>) => {
+            if( ! state.data[action.payload.testName].selected.includes( action.payload.tag )){
+                state.data[action.payload.testName].selected.push(action.payload.tag);
+            }
+            state.data[action.payload.testName].unSelected.splice( state.data[action.payload.testName].unSelected.indexOf(action.payload.tag), 1 );
+        },
+        deleteTagAnswer: (state, action: PayloadAction<ISetSetAnswerPayload>) => {
+            if( ! state.data[action.payload.testName].unSelected.includes( action.payload.tag )){
+                state.data[action.payload.testName].unSelected.unshift(action.payload.tag);
+            }
+            state.data[action.payload.testName].selected.splice( state.data[action.payload.testName].selected.indexOf(action.payload.tag), 1 );
         },
         setStatus: (state, action: PayloadAction<LoadStatus>) => {
             state.loadStatus = action.payload;
@@ -168,17 +226,33 @@ const testAnswerSlice = createSlice({
     },
 });
 
-export const useTestAnswer = ( testIndex: TestIndex ) => {
+export const useTestAnswer = ( testName: TestName ) => {
     const dispatch = useDispatch();
     return(
         [ 
-            useSelector(( state:RootState )=>(state.testAnswer.data[testIndex.index][testIndex.subIndex]) as number),  
-            useCallback(( payload: TestAnswerPayload ) => 
-                dispatch( testAnswerSlice.actions.setTestAnswer(payload) )
+            useSelector(( state:RootState )=>(state.testAnswer.data[testName]) as number),  
+            useCallback(( payload: ISetNumericAnswerPayload ) => 
+                dispatch( testAnswerSlice.actions.setNumericAnswer(payload) )
             , [dispatch])
         ] as const
     )
 };
+
+export const useTagSetAnswer = ( testName: SetTestName, selected = true ) => {
+    return(
+        useSelector(( state:RootState )=>( Array.from(state.testAnswer.data[testName][ selected ? "selected" : "unSelected" ].values() )) )
+    );
+};
+
+export const useIsTestAnswered = ( testName: TestName ) => {
+    return(
+        useSelector(( state:RootState )=>(
+            ( typeof state.testAnswer.data[testName] !== "object" )
+            ? state.testAnswer.data[ testName as NumericTestName ] !== undefined  
+            : state.testAnswer.data[ testName as SetTestName ].selected.length >= TEST_TYPE.tagSet.selectedMinLength
+        ))
+    );    
+}
 
 const useTestAnswerStatus = () => {
     const dispatch = useDispatch(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
@@ -196,27 +270,34 @@ const useSubmitAnswer = () => {
     const { data } = useSelector(( state:RootState ) => state.testAnswer );
 
     const id = useUserId();
+    const [ status, setStatus ] = useTestAnswerStatus();
+
+    // useEffect(()=>{
+    //     if( status === LoadStatus.SUCCESS ){
+
+    //     }
+    // }, [ status ])
 
     return useCallback(() => {        
-        console.log("useSubmitAnswer");
-
-        dispatch( asyncSubmitAnswer({ id, answer: data }) );
+        console.log(`[useSubmitAnswer] id=${id} answer=${JSON.stringify(testAnswerToDTO(data))}`);
+        dispatch( asyncSubmitAnswer({ id, answer: testAnswerToDTO(data) }) );
     }
-    , [dispatch, data]);
+    , [ dispatch, data, id ]);
 }
 
 export default testAnswerSlice.reducer;
 export { useTestAnswerStatus, useSubmitAnswer };
-export type { ITestAnswer, TestIndex };
+export const { addTagAnswer, deleteTagAnswer } = testAnswerSlice.actions;
+export type { ITestAnswer, TestName };
 // export { useTestAnswer, useSetTestAnswer, useSubmitAnswer, useTestAnswerStatus }
-// export type { TestAnswerPayload, TestAnswer, TestName, SubTestName, TestIndex, InterfaceWithLoadStatus }
+// export type { TestAnswerPayload, TestAnswer, TestName, SubTestName, TestName, InterfaceWithLoadStatus }
 
 
 
 // const useSetTestAnswer = () => {
 //     const dispatch = useDispatch();
 //     return useCallback((payload: TestAnswerPayload) => 
-//         dispatch(testAnswerSlice.actions.setTestAnswer(payload))
+//         dispatch(testAnswerSlice.actions.setNumericAnswer(payload))
 //     , [dispatch]);
 // };
 
@@ -265,7 +346,7 @@ export type { ITestAnswer, TestIndex };
 
 // const mapDispatch = (testName : TestName) => (
 //     {   
-//         setTestAnswer: (value: TestAnswer[TestName]) => {testAnswerSlice.actions.setTestAnswer({
+//         setNumericAnswer: (value: TestAnswer[TestName]) => {testAnswerSlice.actions.setNumericAnswer({
 //         testName: testName,
 //         value: value
 //     })},

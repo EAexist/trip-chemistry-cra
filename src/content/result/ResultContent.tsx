@@ -5,17 +5,17 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion"
 
 
-import SectionPaper from "../components/Paper/SectionPaper";
-import { RESULT } from "../common/app-const";
-import { useStrings } from "../texts";
-import TestResultBox from "../components/Card/TestResultBox";
+import SectionPaper from "../../components/Paper/SectionPaper";
+import { RESULT } from "../../common/app-const";
+import { useStrings } from "../../texts";
+import TestResultBox from "../../components/Card/TestResultBox";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../store";
+import { AppDispatch, RootState } from "../../store";
 import { Button, Toolbar } from "@mui/material";
-import { asyncGetTestResult, useProfileLoadStatus, useProfileStatus, useUser } from "../reducers/profileReducer";
+import { asyncGetTestResult, useProfileLoadStatus, useProfileStatus, useUser } from "../../reducers/profileReducer";
 import { useEffect, useState } from "react";
-import { useUserId } from "../reducers/authReducer";
-import { IProfileId } from "../reducers";
+import { useUserId } from "../../reducers/authReducer";
+import { IProfileId } from "../../reducers";
 
 interface ResultContentProps {
 

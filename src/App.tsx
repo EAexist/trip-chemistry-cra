@@ -14,14 +14,14 @@ import { useState } from 'react';
 import { AppBarContextProvider } from './contexts/AppBarContext';
 import GlobalStyles from './components/GlobalStyles';
 import Page from './content/Page';
-import ResultContent from './content/ResultContent';
+import ResultContent from './content/result/ResultContent';
 import ChemistryContent from './content/chemistry/ChemistryContent';
 import AddFriendContent from './content/chemistry/AddFriendContent';
 import ChemistryResultContent from './content/chemistry/ChemistryResultContent';
 import { theme } from './theme';
 import HomeContent from './content/home/HomeContent';
 import TestContent from './content/test/TestContent';
-import LoginContent from './content/LoginContent';
+import LoginContent from './content/login/LoginContent';
 import AuthRequiredContent from './content/AuthRequiredContent';
 import TestRequiredContent from './content/TestRequiredContent';
 
@@ -31,10 +31,17 @@ function App() {
         createRoutesFromElements(
             <>
                 <Route path={'/*'} element={<Page />}>
-                    <Route key={'index'} index element={<Navigate to={'login/oauth2/code/kakao'} replace />} />
+                    <Route key={'index'} index element={<Navigate to={'login'} replace />} />
                     <Route key={'home'} path={'home'} element={<HomeContent />} />
                     {/* <Route key={'auth'} path={'auth'} element={<AuthContent />} /> */}
-                    <Route key={'login'} path={'login/oauth2/code/kakao'} element={<LoginContent />} />
+                    <Route key={'login'} path={'login'} element={<LoginContent />} />
+                    <Route key={'city'} path={'city'} element={<Outlet />} >
+                        {
+                            Object.keys(TEST.city.subTests).map((cityClass) => (
+                                <Route key={cityClass} path={cityClass} element={<CityDetailContent cityClass={cityClass as keyof typeof TEST.city.subTests} />} />
+                            ))
+                        }
+                    </Route>
                     <Route key={'authRequired'} element={<AuthRequiredContent />}>
                         <Route key={'test'} path={'test'} element={
                             <>
@@ -60,13 +67,6 @@ function App() {
                                     <Route path={'result'} element={<ChemistryResultContent />} />
                                 </Route>
                                 <Route key={'addFriend'} path={'addFriend'} element={<AddFriendContent />} />
-                            </Route>
-                            <Route key={'city'} path={'city'} element={<Outlet />} >
-                                {
-                                    Object.keys(TEST.city.subTests).map((cityClass) => (
-                                        <Route key={cityClass} path={cityClass} element={<CityDetailContent cityClass={cityClass as keyof typeof TEST.city.subTests} />} />
-                                    ))
-                                }
                             </Route>
                         </Route>
                     </Route>

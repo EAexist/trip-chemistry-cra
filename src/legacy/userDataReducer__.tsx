@@ -9,7 +9,7 @@
 // import { useHandleLoadSuccess } from "../hooks/useHandleLoadSuccess";
 // import { ITestResult } from "../interfaces/ITestResult";
 // import { IWithLoadStatus, LoadStatus, IProfileId } from ".";
-// import { ITestAnswer, TestIndex } from "./testAnswerReducer";
+// import { ITestAnswer, TestName } from "./testAnswerReducer";
 // import useServerAPI from "../hooks/useServerAPI";
 // import { ITripCharacter } from "../interfaces/ITripCharacter";
 // import { setStatusAll } from "./profileReducer";
@@ -36,7 +36,7 @@
 //     testAnswer: IWithLoadStatus<ITestAnswer>;
 //     testResult: IWithLoadStatus<ITestResult>;
 // };
-// type ProfileKey = keyof Profile
+// type TestDataKey = keyof Profile
 
 // type Chemistry = {
 //     leaderList: IProfileId[]; 
@@ -420,7 +420,7 @@
 //     return ( idList );
 // }
 
-// const useTestAnswerObject = ( testIndex: TestIndex ) => {
+// const useTestAnswerObject = ( testName: TestName ) => {
 
 //     // const ob = useSelector(( state:RootState ) => state.profile);
 //     useEffect(()=>{
@@ -435,7 +435,7 @@
 //                     return ([ id, profile ] as const);
 //                 }).filter(([ , profile ]) => profile.testAnswer.loadStatus === LoadStatus.REST && Object.keys( profile.testAnswer.data ).length > 0 )
 //                 .map( ([ id, profile ])=>{
-//                     return( [ id, profile.testAnswer.data[testIndex.index][testIndex.subIndex] ] as const )
+//                     return( [ id, profile.testAnswer.data[testName] ] as const )
 //                 })
 //             ), shallowEqual   
 //         )
@@ -502,7 +502,7 @@
 
 
 // /* 1 id */
-// const useLoadData = ( id : IProfileId, key : ProfileKey ) => {
+// const useLoadData = ( id : IProfileId, key : TestDataKey ) => {
 //     const [ doWaitApi, setDoWaitApi ] = useState<boolean>(true);
 //     const [ status, setStatus ] = useProfileLoadStatus( id, key );
 
@@ -529,7 +529,7 @@
 //     return ({ status: status, setStatus: setStatus, doWaitApi: doWaitApi });
 // };
 
-// const useHandleSuccessAll = ( status : LoadStatus, setStatus: ( loadStatus: LoadStatus ) => void, key : ProfileKey ) => {
+// const useHandleSuccessAll = ( status : LoadStatus, setStatus: ( loadStatus: LoadStatus ) => void, key : TestDataKey ) => {
 //     const dispatch = useDispatch();
 //     // const [ isSucess, setIsSuccess ]= useState();
 
@@ -548,7 +548,7 @@
 // }
 
 // /* Multiple Profiles */
-// const useLoadDataAll = ( idList : IProfileId[], key : ProfileKey ) => {
+// const useLoadDataAll = ( idList : IProfileId[], key : TestDataKey ) => {
 //     const [ doWaitApi, setDoWaitApi ] = useState<boolean>(true);
 //     const [ status, setStatus ] = useProfileLoadStatusAll( key );
 
@@ -581,7 +581,7 @@
 //     });
 // };
 
-// const useLoadDataAll_ = ( key : ProfileKey ) => {
+// const useLoadDataAll_ = ( key : TestDataKey ) => {
 //     const [ doWaitApi, setDoWaitApi ] = useState<boolean>(true);
 //     const [ status, setStatus ] = useProfileLoadStatusAll( key );
 //     const idList : IProfileId[] = useProfileList();
@@ -641,7 +641,7 @@
 // //     , [dispatch]);
 // // }
 
-// const useGetData = ( id: IProfileId, key : ProfileKey ) => {
+// const useGetData = ( id: IProfileId, key : TestDataKey ) => {
 //     const dispatch = useDispatch<AppDispatch>(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
 //     dispatch( profileSlice.actions.setStatus( { loadStatus: LoadStatus.PENDING, id, key }) );
 //     if( key === 'testAnswer' ){     
@@ -664,7 +664,7 @@
 //     , [ idList ]);
 // }
 
-// const useProfileLoadStatus = ( id : IProfileId, key : ProfileKey ) => {
+// const useProfileLoadStatus = ( id : IProfileId, key : TestDataKey ) => {
 //     const isAdded = useProfileList().includes( id );
 //     const dispatch = useDispatch(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
 //     return ([
@@ -735,7 +735,7 @@
 
 
 
-// const useProfileLoadStatusAll = ( key : ProfileKey ) => {
+// const useProfileLoadStatusAll = ( key : TestDataKey ) => {
     
 //     const [ status, setStatus ] = useState<LoadStatus>( LoadStatus.REST );
 
@@ -820,17 +820,17 @@
 
 // interface valueToProfileListType {[value: string] : IProfileId[]};
 
-// const useValueToProfileIdList = ( testIndex : TestIndex ) => {
+// const useValueToProfileIdList = ( testName : TestName ) => {
     
 //     /* @TODO 완성 후 testAnswerDefault 제거 */
-//     // const testAnswerDefault = useSelector(( state:RootState )=>(state.testAnswer.data[testIndex.testName][testIndex.subTestName]));
+//     // const testAnswerDefault = useSelector(( state:RootState )=>(state.testAnswer.data[testName.testName][testName.subTestName]));
     
 //     const [ valueToProfileList, setValueToProfileIdList ] = useState<valueToProfileListType>({} as valueToProfileListType);
-//     const testAnswerObject = useTestAnswerObject( testIndex );
+//     const testAnswerObject = useTestAnswerObject( testName );
 
 //     /* Debug */
 //     useEffect(()=>{
-//         console.log(`[useValueToProfileIdList]: testAnswerObject Updated\n testIndex=${ JSON.stringify( testIndex ) } testAnswerObject=${ JSON.stringify( testAnswerObject ) }`);  
+//         console.log(`[useValueToProfileIdList]: testAnswerObject Updated\n testName=${ JSON.stringify( testName ) } testAnswerObject=${ JSON.stringify( testAnswerObject ) }`);  
         
 //         let valueToProfileListTemp : {[value: string] : IProfileId[]} = {};
 //         valueToProfileListTemp = {};
@@ -867,7 +867,7 @@
 // //     useChemistryLoadStatus, useSearchStatus,   useLoadStatusAll,
 // //     useFindUser, useValueToProfileIdList, useHandleSuccessAll, useITestResult };
 
-// // export type { ProfileKey };
+// // export type { TestDataKey };
 
 // /* Deprecated */
 // // function dataReducer(state=initialState, action: dataAction) {

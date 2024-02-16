@@ -93,9 +93,9 @@ function LoadContent({
                 <div className='flex-grow body--centered'>
                     <LazyImage
                         alt={delayedStatus}
-                        src={getImgSrc('/character', delayedStatus, FORMATPNG)}
+                        src={getImgSrc('/info', delayedStatus, FORMATPNG)}
                         containerClassName="load-content-item__image"
-                        containerSx={{ height: "192px" }}
+                        containerSx={{ height: "256px", width: "256px" }}
                     />
                     {
                         (() => {

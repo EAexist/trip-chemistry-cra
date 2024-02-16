@@ -439,12 +439,50 @@ const stringTable_kr = {
             "result": "내 결과",
             "chemistry": "케미 보기",
         },
+        "test": {
+            activity: {
+                title: "액티비티",
+                tagSet: {
+                    photo: "사진",
+                    insta: "인스타그램",
+                    network: "여행지에서 친구 사귀기",
+                    extreme: "익스트림 액티비티",
+                    swim: "물놀이",
+                    drive: "드라이브",
+                    walk: "산책",
+                    themepark: "테마파크",
+                    market: "시장 구경",
+                    hotel: "호캉스",
+                    vlog: "브이로그",
+                    waiting: "맛집 웨이팅",
+                    bar: "근사한 바에서 술",
+                    cafe: "카페 탐방",
+                    shopping: "쇼핑",
+                    show: "공연",
+                }
+            },
+            expectation: {
+                title: "제네럴",
+                tagSet: {
+                    heal: "치유되는",
+                    compact: "알찬",
+                    fullfill: "보람있는",
+                    memory: "추억",
+                    relax: "여유로운",
+                    comfort: "편안한",
+                    adventure: "모험",
+                    new: "새로운 경험",
+                    digital_detox: "디지털 디톡스",
+                    rest: "휴식",
+                    view: "풍경",
+                }
+            },
+        },
         "contents": {
             "home": {
                 "label": "소개",
                 "appTitle": "여행 케미 테스트",
-                "loginButton": "로그인하고 시작하기",
-                "startButton": "로그인 없이 시작하기",
+                "startButton": "테스트 시작하기",
                 "sections": [
                     {
                         "id": "title",
@@ -601,13 +639,13 @@ const stringTable_kr = {
                     "budget": {
                         title: "예산은 얼마나 쓰면 좋을까?",
                         subtitle: "예산",
-                        "instruction": "슬라이더를 움직여봐!",
+                        "instruction": "슬라이더를 움직여보세요.",
                         "linkText": "에서 보기",
                     },
                     "city": {
                         title: "이런 곳은 어때?",
                         titleTextList: [
-                            "/subIndex",
+                            "/testName",
                             " 여행은 어때?"
                         ],
                         subtitle: "여행지",
@@ -656,6 +694,13 @@ const stringTable_kr = {
                             },
                         },
                     },
+                    "tagSet" : {
+                        instruction: "태그를 두 개 이상 선택해주세요.",
+                        selectWarningStringList : [
+                            "",
+                            "개 이상 선택해주세요.",
+                        ]
+                    },
                     "activity": {
                         title: "이런 활동은 어때?",
                         subtitle: "즐기기",
@@ -700,6 +745,16 @@ const stringTable_kr = {
                     },
                 },
                 "subTest": {
+                    "expectation": {
+                        label: "여행 기대하기",
+                        title: "나는 이런 여행을 하고 싶어",                        
+                        particle: "",
+                    },
+                    "activity": {
+                        label: "액티비티",
+                        title: "여행지에서는 이런 걸 해보고 싶어",                        
+                        particle: "",
+                    },
                     "leadership": {
                         icon: "groups",
                         label: "여행 준비",
@@ -912,7 +967,6 @@ const stringTable_kr = {
                         label: "현대적인 대도시",
                         title: "현대적인 대도시",
                         particle: "는",
-                        icon: "domain",
                         "id": "metropolis",
                         "examples": [
                             "tokyo",
@@ -926,7 +980,6 @@ const stringTable_kr = {
                         label: "유서 깊은 도시",
                         title: "유서 깊은 도시",
                         particle: "는",
-                        icon: "temple_buddhist",
                         "id": "history",
                         "examples": [
                             "kyoto",
@@ -939,7 +992,6 @@ const stringTable_kr = {
                         label: "아름다운 자연경관",
                         title: "자연경관이 아름다운 곳",
                         particle: "이 있는 곳은",
-                        icon: "forest",
                         "examples": [
                             "shiretoko",
                             "yakushima",

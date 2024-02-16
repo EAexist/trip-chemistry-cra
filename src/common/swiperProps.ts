@@ -42,7 +42,7 @@ export const SWIPERPROPS_HOMECONTENT : SwiperOptions | { className: string } = {
     }
 }
 
-export const SWIPERPROPS_TOPNAV : SwiperOptions | { className: string } = {
+export const SWIPERPROPS_STEPPER : SwiperOptions | { className: string } = {
     modules: [ Navigation ],
     // loop: true,
     speed: 500,

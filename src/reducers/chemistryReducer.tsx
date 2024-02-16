@@ -27,15 +27,8 @@ interface IChemistry {
 type IChemistryState = IWithLoadStatus<IChemistry | undefined>;
 
 const initialState: IChemistryState = {
+    data: undefined,
     loadStatus: LoadStatus.REST,
-    data: {
-        leaderList: ["디클1234"],
-        cityChemistry : {
-            metropolis : 2.5, 
-            history : 3.5,
-            nature : 4.5,
-        }
-    }
 };
 
 const asyncGetChemistry = createAsyncThunk("chemistry",
@@ -69,6 +62,9 @@ const chemistrySlice = createSlice({
         setChemistryLoadStatus: (state, action: PayloadAction<LoadStatus>) => {
             state.loadStatus = action.payload;
         },
+        clearChemistry: ( state ) => {
+            state.data = undefined;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(asyncGetChemistry.fulfilled, (state, action: PayloadAction<{ idList: IProfileId[], chemistry: IChemistry }>) => {
@@ -90,6 +86,10 @@ const chemistrySlice = createSlice({
 
 const useChemistry = () => {
     return ( useSelector((state: RootState) => state.chemistry ));
+};
+
+const useIsChemistryUpdated = () => {
+    return ( useSelector((state: RootState) => ( state.chemistry.loadStatus === LoadStatus.REST ) && ( state.chemistry.data !== undefined ) ));
 };
 
 const useCityChemistry = ( cityClass : string ) => {
@@ -125,7 +125,8 @@ const useChemistryLoadStatus = () => {
 }
 
 export default chemistrySlice.reducer;
-export { useChemistry, useGetChemistry, useChemistryLoadStatus, useCityChemistry, useSortedCityList };
+export const { clearChemistry } = chemistrySlice.actions;
+export { useChemistry, useGetChemistry, useChemistryLoadStatus, useCityChemistry, useSortedCityList, useIsChemistryUpdated };
 
 /* Deprecated */
 /* 데이터 Fetch, 로드 상태 관리, 로드 전 초기 렌더 방지. */

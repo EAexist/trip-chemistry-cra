@@ -1,7 +1,7 @@
 // import { ComponentType, useEffect } from "react";
 // import { useValueToProfileIdList } from "../reducers/profileReducer";
 // import { IProfileId } from "../reducers";
-// import { TestIndex } from "../reducers/testAnswerReducer";
+// import { TestName } from "../reducers/testAnswerReducer";
 
 
 // interface withTestAnaswerToProfilesProps{
@@ -9,16 +9,16 @@
 //     idList: IProfileId[];
 // };
 // const withTestAnaswerToProfiles = <T extends withTestAnaswerToProfilesProps>( WrappedComponent: ComponentType<T> ) =>
-//     ({ className, ...props } : Omit<T & TestIndex & { filter?: 'all' | 'odd' | 'even', isReversed?: boolean, className?: string }, keyof withTestAnaswerToProfilesProps> ) => {
+//     ({ className, ...props } : Omit<T & TestName & { filter?: 'all' | 'odd' | 'even', isReversed?: boolean, className?: string }, keyof withTestAnaswerToProfilesProps> ) => {
         
 //     const valueToProfileList = useValueToProfileIdList({ index: props.index, subIndex: props.subIndex });
 //     const answers = Object.keys(useTestString({ index: props.index }).answers );
 
 //     useEffect(()=>{
-//         console.log(`[withTestAnaswerToProfiles] Mounting. testIndex=${props.index}/${props.subIndex}\n`);
+//         console.log(`[withTestAnaswerToProfiles] Mounting. testName=${props.index}/${props.subIndex}\n`);
 //     }, []);
 //     useEffect(()=>{
-//         console.log(`[withTestAnaswerToProfiles] valueToProfileList updated\ntestIndex=${props.index}/${props.subIndex}\nvalueToProfileList=${JSON.stringify( valueToProfileList )}`);
+//         console.log(`[withTestAnaswerToProfiles] valueToProfileList updated\ntestName=${props.index}/${props.subIndex}\nvalueToProfileList=${JSON.stringify( valueToProfileList )}`);
 //     }, [ valueToProfileList ]);
 
 //     return(

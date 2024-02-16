@@ -27,9 +27,7 @@ function AppBar({ }: AppBarProps) {
     /* Store */
     const isAuthorized = useIsAuthorized();
     const user = useUser();
-
-
-
+    
     /* Event handlers  */
     const handleTitleButtonClick = () => {
         navigate('/home');        
@@ -40,22 +38,18 @@ function AppBar({ }: AppBarProps) {
     const handleDrawerClose = () => {
         setShowDrawer(false);
     }
-    const handleDrawerItemClick = (content: string) => {
+    const handleDrawerItemClick = ( content: string ) => {
         navigate(`/${content}`);
         handleDrawerClose();
     };
-    const handleProfileClick = () => {
-        navigate(`/login/oauth2/code/kakao`);
-        handleDrawerClose();
-    };
 
-    useEffect(()=>{
-        console.log(`[AppBar]\n\tpathname=${pathname}`);
-    }, [ pathname ])
+    // useEffect(()=>{
+    //     console.log(`[AppBar]\n\tpathname=${pathname}`);
+    // }, [ pathname ])
 
-    useEffect(()=>{
-        console.log(`[AppBar]\n\tuser=${JSON.stringify(user)}`);
-    }, [ user ])
+    // useEffect(()=>{
+    //     console.log(`[AppBar]\n\tuser=${JSON.stringify(user)}`);
+    // }, [ user ])
 
     return (
         showAppBar &&
@@ -95,7 +89,7 @@ function AppBar({ }: AppBarProps) {
                     <Toolbar />
                     <List>
                         <ListItem key={ "profile" }>
-                            <ListItemButton onClick={handleProfileClick} disableGutters className="block--with-padding-x">
+                            <ListItemButton onClick={isAuthorized ? undefined : () => handleDrawerItemClick( 'profile' )} disableGutters className="block--with-padding-x">
                                 <ListItemAvatar>
                                     <UserAvatar showLabel={false}/>
                                 </ListItemAvatar>
@@ -116,7 +110,7 @@ function AppBar({ }: AppBarProps) {
                         {
                             Object.keys(CONTENTS).map(( content ) =>
                                 <ListItem key={ content }>
-                                    <ListItemButton onClick={() => handleDrawerItemClick(content)} disableGutters selected={ pathname === `/${content}` }>
+                                    <ListItemButton onClick={() => handleDrawerItemClick( content )} disableGutters selected={ pathname === `/${content}` }>
                                         <ListItemText 
                                             primary={
                                                 strings.public.contents[content as keyof typeof strings.public.contents].label

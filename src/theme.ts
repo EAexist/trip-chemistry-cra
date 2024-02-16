@@ -22,9 +22,14 @@ export const theme = createTheme({
         },
         secondary: {
             main: '#fff'
-        },
-        
+        },        
 
+    },
+    typography: {
+      fontFamily: [
+        'Apple SD Gothic Neo', 
+        'sans-serif'
+      ].join(','),
     },
     components: {
         MuiAppBar: {

@@ -1,5 +1,6 @@
 import { SliderProps } from "@mui/material";
 import { ChemistrySliderProps } from "../components/Slider/ChemistrySlider";
+import { SetTestName } from "../reducers/testAnswerReducer";
 
 export const CONTENTS = {
     home: {},
@@ -18,7 +19,108 @@ export const USERS_EXAMPLE = [
     "우동1234",
 ]
 
-export const TEST  = {
+export const TEST_TYPE = {
+    "leadership": {
+        "answers": {
+            1:
+            {
+                value: 1,
+                icon: "1",
+            },
+            2:
+            {
+                value: 2,
+                icon: "2",
+            },
+            3:
+            {
+                value: 3,
+                icon: "3",
+            },
+        },
+    },
+    "schedule": {
+        title: "일정은 얼마나 알차면 좋을까?",
+        instruction: "답변을 눌러서 선택해봐!",
+        "sliderProps": {
+            "step": 1,
+            "min": 0,
+            "max": 4
+        },
+        "answers": {
+            1:
+            {
+                value: 1,
+                icon: "1",
+            },
+            2:
+            {
+                value: 2,
+                icon: "2",
+            },
+            3:
+            {
+                value: 3,
+                icon: "3",
+            },
+            4:
+            {
+                value: 4,
+                icon: "4",
+            },
+            5:
+            {
+                value: 5,
+                icon: "5",
+            }
+        },
+    },
+    "budget": {
+    },
+    "city": {
+        titleTextList: [
+            "/testName",
+            " 여행은 어때?"
+        ],
+        "sliderProps": {
+            "step": 1,
+            "min": 0,
+            "max": 4
+        },
+        "answers": {
+            1:
+            {
+                value: 1,
+                icon: "😡",                
+            },
+            2:
+            {
+                value: 2,
+                icon: "😤",
+            },
+            3:
+            {
+                value: 3,
+                icon: "🤔",
+            },
+            4:
+            {
+                value: 4,
+                icon: "😃",
+            },
+            5:
+            {
+                value: 5,
+                icon: "😍",
+            },
+        },
+    },
+    "tagSet": {
+        selectedMinLength: 2
+    },
+}
+
+export const TEST = {
     leadership: {
         subTests: {
             leadership:
@@ -34,7 +136,7 @@ export const TEST  = {
             {
                 icon: "edit_calendar",
                 sectionIndex: 1,
-                airportPlace: 
+                airportPlace:
                 {
                     position: {
                         lat: 33.596306,
@@ -215,13 +317,248 @@ export const TEST  = {
             },
         }
     },
+    tag: {
+        subTests: {
+            tag: {
+                icon: "edit_calendar",
+                sectionIndex: 6,
+                list: {
+                    activity: [
+                        "photo",
+                        "insta",
+                        "network",
+                        "extreme",
+                        "swim",
+                        "drive",
+                        "walk",
+                        "themepark",
+                        "market",
+                        "hotel",
+                        "vlog",
+                        "waiting",
+                        "bar",
+                        "cafe",
+                        "shopping",
+                        "show",
+                    ],
+                    general: [
+                        "heal",
+                        "compact",
+                        "fullfill",
+                        "memory",
+                        "relax",
+                        "comfort",
+                        "adventure",
+                        "new",
+                        "digital_detox",
+                        "rest",
+                        "view",
+                    ],
+                },
+            }
+        }
+    },
 }
 
+
+export const TEST_SECTIONS = {
+    expectation:
+    {
+        type: "tagSet",
+        icon: "temple_buddhist",
+    },
+    activity:
+    {
+        type: "tagSet",
+        icon: "temple_buddhist",
+    },
+    leadership:
+    {
+        type: 'leadership',
+        icon: "groups",
+    },
+    schedule:
+    {
+        type: 'schedule',
+        icon: "edit_calendar",
+        airportPlace:
+        {
+            position: {
+                lat: 33.596306,
+                lng: 130.4293798,
+            },
+            label: '공항',
+            icon: 'flight',
+        },
+        examples: {
+            1: {
+                places: [
+                    {
+                        position: {
+                            lat: 33.5897988,
+                            lng: 130.4085279,
+                        },
+                        label: '캐널시티',
+                        icon: 'shopping_cart',
+                    },
+                    {
+                        position: {
+                            lat: 33.5932449,
+                            lng: 130.4020225,
+                        },
+                        label: '이치란\n본점',
+                        icon: 'restaurant',
+                    },
+                ],
+                zoom: 13.5,
+                center: { lat: 33.5900, lng: 130.415 },
+            },
+            2: {
+                places: [
+                    {
+                        position: {
+                            lat: 33.6133009,
+                            lng: 130.4307441,
+                        },
+                        label: '하쿠하쿠',
+                        icon: 'museum',
+                    },
+                    {
+                        position: {
+                            lat: 33.6147611,
+                            lng: 130.4216325,
+                        },
+                        label: '하코자키 궁',
+                        icon: 'temple_buddhist',
+                    },
+                ],
+                zoom: 13,
+                center: { lat: 33.5950, lng: 130.425 },
+            },
+            3: {
+                places: [
+                    {
+                        position: {
+                            lat: 33.5893684,
+                            lng: 130.4172629,
+                        },
+                        label: '한큐백화점\n하카타점',
+                        icon: 'shopping_cart',
+                    },
+                    {
+                        position: {
+                            lat: 33.5838392,
+                            lng: 130.4539866,
+                        },
+                        label: '덴푸라 히라오\n본점',
+                        icon: 'restaurant',
+                    },
+                ],
+                zoom: 13,
+                center: { lat: 33.5950, lng: 130.425 },
+            },
+            4: {
+                places: [
+                    {
+                        position: {
+                            lat: 33.5626837,
+                            lng: 130.3738197,
+                        },
+                        label: '유센테이',
+                        icon: 'tour',
+                    },
+                    {
+                        position: {
+                            lat: 33.5650103,
+                            lng: 130.4388288,
+                        },
+                        label: '건담 파크\n후쿠오카',
+                        icon: 'tour',
+
+                    },
+                ],
+                zoom: 12,
+                center: { lat: 33.5800, lng: 130.40 },
+            },
+            5: {
+                places: [
+                    {
+                        position: {
+                            lat: 33.5897904,
+                            lng: 130.3504891,
+                        },
+                        label: '후쿠오카시\n박물관',
+                        icon: 'museum',
+                    },
+                    {
+                        position: {
+                            lat: 33.5934691,
+                            lng: 130.3465043,
+                        },
+                        label: '모모치해변',
+                        icon: 'beach_access',
+                    },
+                ],
+                zoom: 12,
+                center: { lat: 33.5800, lng: 130.40 },
+            },
+        }
+    },
+    food:
+    {
+        type: 'budget',
+        icon: "restaurant",
+        "examples": {
+            5000: "kyudong",
+            10000: "wantang",
+            15000: "ramen",
+            20000: "dumpling",
+            25000: "afternoon-tea",
+            30000: "sushi",
+            35000: "chili-crab",
+            40000: "yakitori",
+            45000: "hitsumabushi",
+            50000: "more",
+        },
+    },
+    metropolis:
+    {
+        type: "city",
+        icon: "domain",
+        examples: [
+            "tokyo",
+            "osaka",
+            "yokohama",
+            "hongkong",
+        ],
+    },
+    history:
+    {
+        type: "city",
+        icon: "temple_buddhist",
+        examples: [
+            "kyoto",
+            "nara",
+            "kamakura",
+        ]
+    },
+    nature:
+    {
+        type: "city",
+        icon: "forest",
+        examples: [
+            "shiretoko",
+            "yakushima",
+            "biei",
+        ]
+    }
+};
+
 export const RESULT = {
-    sections : [ 'tripCharacter', 'city', 'chemistry' ]
+    sections: ['tripCharacter', 'city', 'chemistry']
 };
 export const CHEMISTRY = {
-    sections : [ 'tripCharacter', 'leadership', 'chemistry' ]
+    sections: ['tripCharacter', 'leadership', 'chemistry']
 };
 
 export const CITY = {
@@ -300,6 +637,7 @@ export const CITY = {
         linkType: "discovering-hongkong",
     },
 }
+
 export const NATION = {
     "jp": {
         flag: true
@@ -315,15 +653,15 @@ export const NATION = {
     },
 }
 
-export const SLIDERPROPS_TEST_BUDGET_FOOD : SliderProps = {
+export const SLIDERPROPS_TEST_BUDGET_FOOD: SliderProps = {
     step: 5000,
     min: 5000,
     max: 50000,
     "aria-label": "budget"
 };
 
-export const SLIDERPROPS_CHEMISTRY_BUDGET_FOOD : ChemistrySliderProps = {
-    testIndex : { index: "budget", subIndex: "food" },
+export const SLIDERPROPS_CHEMISTRY_BUDGET_FOOD: ChemistrySliderProps = {
+    testName: "food",
     step: 5000,
     min: 5000,
     max: 50000,

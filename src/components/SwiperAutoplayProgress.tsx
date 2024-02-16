@@ -4,11 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 /* Mui */
 import { Icon, IconButton, useTheme } from "@mui/material";
 
+
 /* Swiper */
 import SwiperType from "swiper";
 import { AUTOPLAY_DELAY } from "../common/swiperProps";
-import { Pause, PlayArrow } from "@mui/icons-material";
-
 interface SwiperAutoplayProgressProps {
     swiper: SwiperType;
     className?: string;
@@ -47,7 +46,7 @@ function SwiperAutoplayProgress({ swiper, className }: SwiperAutoplayProgressPro
     const [isMouseEntered, setIsMouseEntered] = useState(false);
 
     return (
-        <div className="autoplay-progress">
+        <div className="autoplay-progress" style={{ color: theme.palette.primary.main }}>
             <div className={`autoplay-progress__button`}
                 onMouseEnter={() => setIsMouseEntered(true)}
                 onMouseLeave={() => setIsMouseEntered(false)}
@@ -57,6 +56,7 @@ function SwiperAutoplayProgress({ swiper, className }: SwiperAutoplayProgressPro
                         isMouseEntered
                             ? (
                                 <IconButton
+                                    sx={{ color: "inherit" }}
                                     onClick={isPaused ?
                                         () => {
                                             console.log(`onClick: resume`);
@@ -74,8 +74,8 @@ function SwiperAutoplayProgress({ swiper, className }: SwiperAutoplayProgressPro
                                     }>
                                     {
                                         isPaused
-                                            ? <PlayArrow />
-                                            : <Pause />
+                                            ? <Icon>play_arrow</Icon>
+                                            : <Icon>pause</Icon>
                                     }
                                 </IconButton>
                             )
@@ -83,13 +83,13 @@ function SwiperAutoplayProgress({ swiper, className }: SwiperAutoplayProgressPro
                                 swiper.autoplay &&
                                 (
                                     isPaused
-                                        ? <Pause />
-                                        : <div>{`${secondsLeft}`}</div>
+                                        ? <Icon>pause</Icon>
+                                        : <p className="typography-label">{`${secondsLeft}`}</p>
                                 )
                             )
                     )}
-                <svg className="autoplay-progress__svg" viewBox="0 0 48 48" style={{ 'strokeDashoffset': `${125.6 * (1 - progress)}`, 'zIndex': -20 }}>
-                    <circle cx="24" cy="24" r="20"></circle>
+                <svg viewBox="0 0 48 48" style={{ 'strokeDashoffset': `${125.6 * (1 - progress)}`, 'zIndex': -20 }}>
+                    <circle cx="24" cy="24" r="20" stroke={theme.palette.primary.main} ></circle>
                 </svg>
             </div>
         </div>

@@ -15,7 +15,7 @@ import { IProfile } from "./profileReducer";
 /* Async Thunks */
 const asyncLogin = createAsyncThunk("authSlice/asyncLogin",
     async (code: string, thunkAPI) => {
-        console.log(`[asyncLogin] GET /auth/kakao`);
+        console.log(`[asyncLogin] GET /auth/kakao code=${code}`);
         try {
             const response = await axios.get(`/auth/kakao`,
                 {
@@ -35,15 +35,17 @@ const asyncLogin = createAsyncThunk("authSlice/asyncLogin",
 );
 type IAuthState = IWithLoadStatus<{
     isAuthorized: boolean,
-    id?: IProfileId
+    id?: IProfileId,
+    redirectPath: string,
 }>;
 
 const initialState: IAuthState = ({
     data: {
         isAuthorized: false,
         id: undefined,
+        redirectPath: "/home"
     },
-    loadStatus: LoadStatus.REST
+    loadStatus: LoadStatus.REST,
 });
 
 /* Slice */
@@ -56,6 +58,9 @@ const authSlice = createSlice({
         },
         authorize: (state) => {
             state.data.isAuthorized = true;
+        },
+        setRedirectpath: (state, action: PayloadAction<string>) => {
+            state.data.redirectPath = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -99,7 +104,18 @@ const useAuthLoadStatus = () => {
     ] as const);
 }
 
+const useRedirectPath = () => {
+    const dispatch = useDispatch();
+
+    return ([
+        useSelector(( state: RootState ) => state.auth.data.redirectPath),
+        useCallback(( redirectPath: string ) =>
+            dispatch(authSlice.actions.setRedirectpath(redirectPath))
+            , [dispatch]),
+    ] as const);
+}
+
 export default authSlice.reducer;
 export const { authorize, setLoadStatus } = authSlice.actions;
 export { asyncLogin };
-export { useIsAuthorized, useUserId, useAuthLoadStatus };
+export { useIsAuthorized, useUserId, useAuthLoadStatus, useRedirectPath };

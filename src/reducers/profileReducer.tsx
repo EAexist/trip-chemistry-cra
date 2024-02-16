@@ -7,11 +7,12 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 /* Component */
 import { AppDispatch, RootState } from "../store";
 import { IWithLoadStatus, LoadStatus, IProfileId } from ".";
-import { ITestAnswer, TestIndex } from "./testAnswerReducer";
+import { ITestAnswer, TestName, defaultTestAnswer } from "./testAnswerReducer";
 import { ITestResult, defaultTestResult } from "../interfaces/ITestResult";
 import { HEADERS_AXIOS } from "../common/app-const";
 import axios from "axios";
 import { useUserId } from "./authReducer";
+import { getImpliedNodeFormatForFile } from "typescript";
 
 /* Types */
 type IProfileDataState = {
@@ -32,7 +33,7 @@ export const defaultProfile : IProfile =  {
     nickname: "",
     discriminator: "",
     testResult: { data: defaultTestResult, loadStatus: LoadStatus.REST },
-    testAnswer: { data: {}, loadStatus: LoadStatus.REST },
+    testAnswer: { data: defaultTestAnswer, loadStatus: LoadStatus.REST },
 }
 
 export interface IProfileDTO {
@@ -54,7 +55,8 @@ export const profileDTOtoProfile = ( profileDTO : IProfileDTO ) => ({
     testResult: withloadStatus(profileDTO.testResult, defaultTestResult),
 } as IProfile)
 
-type ProfileKey = 'testAnswer' | 'testResult';
+type ProfileKey = keyof IProfile;
+type TestDataKey = 'testAnswer' | 'testResult';
 
 /* Debug */
 const initialState: IProfileDataState = {
@@ -126,7 +128,7 @@ const initialState: IProfileDataState = {
 // };
 
 export const asyncGetProfile = createAsyncThunk("profileSlice/asyncGetProfile",
-    async ({ id, keyList = [] }:{ id: IProfileId, keyList?: ProfileKey[] }, thunkAPI) => {
+    async ({ id, keyList = [] }:{ id: IProfileId, keyList?: TestDataKey[] }, thunkAPI) => {
         console.log(`[asyncGetInfo] GET /profile?id=${id}`);
         try {
             const response = await axios.get(`/profile`,
@@ -147,7 +149,7 @@ export const asyncGetProfile = createAsyncThunk("profileSlice/asyncGetProfile",
 );
 
 export const asyncGetInfo = createAsyncThunk("profileSlice/asyncGetInfo",
-    async ({ id, keyList = [] }:{ id: IProfileId, keyList?: ProfileKey[] }, thunkAPI) => {
+    async ({ id, keyList = [] }:{ id: IProfileId, keyList?: TestDataKey[] }, thunkAPI) => {
         console.log(`[asyncGetInfo] GET /profile/info?id=${id}`);
         try {
             const response = await axios.get(`/profile/info`,
@@ -247,7 +249,7 @@ const profileSlice = createSlice({
                 loadStatus: LoadStatus.REST
             };
         },
-        setStatus: (state, action: PayloadAction<{ loadStatus: LoadStatus, id?: IProfileId, key?: ProfileKey}>) => {
+        setStatus: (state, action: PayloadAction<{ loadStatus: LoadStatus, id?: IProfileId, key?: TestDataKey}>) => {
             if (action.payload.id !== undefined) {
                 if (action.payload.key === undefined) {
                     state.data[action.payload.id].loadStatus = action.payload.loadStatus;
@@ -263,7 +265,7 @@ const profileSlice = createSlice({
                 data.testResult.loadStatus = LoadStatus.REST;
             })
         },
-        setStatusAll: (state, action: PayloadAction<{ loadStatus: LoadStatus, key: ProfileKey }>) => {
+        setStatusAll: (state, action: PayloadAction<{ loadStatus: LoadStatus, key: TestDataKey }>) => {
             Object.entries( state.data ).forEach(([, { data }]) => {
                 data[action.payload.key].loadStatus = action.payload.loadStatus;
             })
@@ -274,7 +276,7 @@ const profileSlice = createSlice({
     },
     extraReducers: (builder) => {
 
-        /* asyncGetInfo */
+        /* asyncGetProfile */
         builder.addCase(asyncGetProfile.fulfilled, (state, action: PayloadAction<IProfileDTO>) => {
             console.log(`[asyncGetProfile] fulfilled\n\taction.payload=${JSON.stringify(action.payload as IProfileDTO)}\n }`);
             state.data[action.payload.id].data = {
@@ -387,11 +389,33 @@ const profileSlice = createSlice({
 })
 
 export const useProfile : ( id? : IProfileId ) => IProfile = ( id ) => {
-    return ( useSelector(( state: RootState ) => id ? ( Object.keys( state.profile.data ).includes( id ) ? state.profile.data[ id ].data : { id : "HI", nickname: "HI" } as IProfile ) : defaultProfile ) );
+    return ( useSelector(( state: RootState ) => id 
+    ? ( Object.keys( state.profile.data ).includes( id ) 
+        ? state.profile.data[ id ].data 
+        : defaultProfile ) 
+    : defaultProfile ) );
 }
 
-export const useProfileList : () => IProfile[] = ( ) => {
-    return ( useSelector(( state: RootState ) => Object.values( state.profile.data ).map(({ data, loadStatus }) => data )));
+export const useProfileList : ( key? : ProfileKey ) => IProfile[] = ( key ) => {
+    return ( useSelector(( state: RootState ) => 
+        Object.values( state.profile.data ).map(({ data, loadStatus }) => 
+            key
+            ? data
+            : data 
+        ))
+    );
+}
+
+export function useProfileDataList<T extends (keyof IProfile) | IProfile>( idList? : IProfileId[], key? : keyof IProfile ) : T[] {
+    return ( useSelector(( state: RootState ) => 
+        Object.entries( state.profile.data ).filter(([k, v]) => idList ? idList.includes(k) : true )
+            .map(([ k, { data }]) => 
+                key
+                ? data[key]
+                : data
+            )
+        ) as T[]
+    );
 }
 
 export const useUser : ( ) => IProfile = ( ) => {
@@ -412,7 +436,7 @@ export const useProfileStatus = (idList: IProfileId[], key: 'testResult' | 'test
     )));
 }
 
-export const useProfileLoadStatus = ( id: IProfileId, key?: ProfileKey ) => {
+export const useProfileLoadStatus = ( id: IProfileId, key?: TestDataKey ) => {
     const isAdded = useProfileIdList().includes(id);
     const dispatch = useDispatch(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
     return ([
@@ -435,7 +459,7 @@ const useProfileIdList = () => {
     return (idList);
 }
 
-const useTestAnswerObject = (testIndex: TestIndex) => {
+const useTestAnswerObject = (testName: TestName) => {
 
     useEffect(() => {
         console.log(`[useTestAnswerObject] Using`);
@@ -449,7 +473,7 @@ const useTestAnswerObject = (testIndex: TestIndex) => {
                     return ([id, data] as const);
                 }).filter(([, data]) => data.testAnswer.loadStatus === LoadStatus.REST && Object.keys(data.testAnswer.data).length > 0)
                     .map(([id, data]) => {
-                        return ([id, data.testAnswer.data[testIndex.index][testIndex.subIndex]] as const)
+                        return ([id, data.testAnswer.data[testName]] as const)
                     })
             )
             , shallowEqual
@@ -483,7 +507,7 @@ const useFindUser = () => {
 }
 
 /* 1 id */
-const useLoadData = (id: IProfileId, key: ProfileKey) => {
+const useLoadData = (id: IProfileId, key: TestDataKey) => {
     const [doWaitApi, setDoWaitApi] = useState<boolean>(true);
     const [status, setStatus] = useProfileLoadStatus(id, key);
 
@@ -510,7 +534,7 @@ const useLoadData = (id: IProfileId, key: ProfileKey) => {
     return ({ status: status, setStatus: setStatus, doWaitApi: doWaitApi });
 };
 
-const useHandleSuccessAll = (status: LoadStatus, setStatus: (loadStatus: LoadStatus) => void, key: ProfileKey) => {
+const useHandleSuccessAll = (status: LoadStatus, setStatus: (loadStatus: LoadStatus) => void, key: TestDataKey) => {
     const dispatch = useDispatch();
     // const [ isSucess, setIsSuccess ]= useState();
 
@@ -529,7 +553,7 @@ const useHandleSuccessAll = (status: LoadStatus, setStatus: (loadStatus: LoadSta
 }
 
 /* Multiple Profiles */
-const useLoadDataAll = (idList: IProfileId[], key: ProfileKey) => {
+const useLoadDataAll = (idList: IProfileId[], key: TestDataKey) => {
 
     const [doWaitApi, setDoWaitApi] = useState<boolean>(true);
     const [status, setStatus] = useProfileLoadStatusAll(key);
@@ -563,7 +587,7 @@ const useLoadDataAll = (idList: IProfileId[], key: ProfileKey) => {
     });
 };
 
-const useLoadDataAll_ = (key: ProfileKey) => {
+const useLoadDataAll_ = (key: TestDataKey) => {
     const [doWaitApi, setDoWaitApi] = useState<boolean>(true);
     const [status, setStatus] = useProfileLoadStatusAll(key);
     const idList: IProfileId[] = useProfileIdList();
@@ -623,7 +647,7 @@ const useLoadDataAll_ = (key: ProfileKey) => {
 //     , [dispatch]);
 // }
 
-const useGetData = (id: IProfileId, key: ProfileKey) => {
+const useGetData = (id: IProfileId, key: TestDataKey) => {
     const dispatch = useDispatch<AppDispatch>(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
     dispatch(profileSlice.actions.setStatus({ loadStatus: LoadStatus.PENDING, id, key }));
     if (key === 'testAnswer') {
@@ -635,7 +659,7 @@ const useGetData = (id: IProfileId, key: ProfileKey) => {
 }
 
 
-const useProfileLoadStatusAll = (key: ProfileKey) => {
+const useProfileLoadStatusAll = (key: TestDataKey) => {
 
     const [status, setStatus] = useState<LoadStatus>(LoadStatus.REST);
 
@@ -721,7 +745,7 @@ export {
     useFindUser, useHandleSuccessAll, useTestResult
 };
 
-export type { ProfileKey };
+export type { TestDataKey };
 
 /* Deprecated */
 // function dataReducer(state=initialState, action: dataAction) {

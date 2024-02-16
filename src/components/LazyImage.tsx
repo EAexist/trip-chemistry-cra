@@ -46,10 +46,8 @@ function LazyImage ({ src, alt, ref, sx = { objectFit: 'contain', width: '100%',
   };
 
   return (
-    <div style={ containerSx } className={ containerClassName }>
-      <div ref={placeholderRef}>
-        {!isLoaded && <Skeleton variant="rectangular" className="full"/>}
-      </div>      
+    <div style={ containerSx } className={ containerClassName } ref={placeholderRef}>
+      {!isLoaded && <Skeleton variant="rectangular" width={"100%"} height={"100%"}/>}
       <img
         // ref={ref}
         style ={{

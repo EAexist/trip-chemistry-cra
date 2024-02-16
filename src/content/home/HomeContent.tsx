@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useMotionValueEvent, useScroll } from "framer-motion"
 
-import { Button, Stack, Toolbar } from "@mui/material";
+import { Button, Stack, Toolbar, useTheme } from "@mui/material";
 
 
 /* Swiper */
@@ -17,6 +17,7 @@ import 'swiper/css/pagination';
 import { useStrings } from "../../texts";
 import { SWIPERPROPS_HOMECONTENT } from "../../common/swiperProps";
 import SwiperAutoplayProgress from "../../components/SwiperAutoplayProgress";
+import PaginationDiv from "../../components/PaginationDiv";
 
 interface HomeContentProps {
 
@@ -27,6 +28,7 @@ function HomeContent({ }: HomeContentProps) {
     const strings = useStrings().public.contents.home;
     const navigate = useNavigate();
 
+    const theme = useTheme();
     /* States */
     const [showFloatingButton, setShowFloatingButton] = useState<boolean>(true);
 
@@ -75,15 +77,15 @@ function HomeContent({ }: HomeContentProps) {
                         </div>
                     </SwiperSlide>
                 ))}
-                <div slot="container-end">
+                <div slot="container-end" style={{ color: theme.palette.primary.main }}>
                     <div className="block--with-margin-x block__body">
                         <Stack>
                             {
                                 swiper &&
                                 <SwiperAutoplayProgress swiper={swiper} />
                             }
-                            <div className="pagination">
-                                <div className='pageSwiper-pagination pagination__bullets' />
+                            <PaginationDiv className='pageSwiper-pagination pagination__bullets'/>
+                            <div>
                             </div>
                         </Stack>
                     </div>

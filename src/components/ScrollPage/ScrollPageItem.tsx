@@ -1,4 +1,4 @@
-import { ForwardedRef, PropsWithChildren, forwardRef, useRef } from "react";
+import { ForwardedRef, PropsWithChildren, forwardRef, useEffect, useRef } from "react";
 import { usePage } from "./PageContext";
 import { Fade } from "@mui/material";
 
@@ -13,13 +13,17 @@ interface ScrollPageItemProps {
 
 const ScrollPageItem = ({ page, children, className }: PropsWithChildren<ScrollPageItemProps>) => {
 
-    const activePage = usePage();
+    const { activePage, addPage } = usePage();
     const pageRef = useRef<HTMLDivElement>(null);
+
+    useEffect(()=>{
+        addPage();
+    }, [ ])
 
     return (
         <motion.div
             ref={pageRef}
-            animate={(activePage === page) ? { opacity: 1, visibility: 'visible' } : { opacity: 0, visibility: 'hidden' }}
+            animate={(activePage === page) ? { opacity: 1, visibility: 'visible', zIndex: 0 } : { opacity: 0, visibility: 'hidden', zIndex: -2 }}
             className="scroll-page__item fullscreen"
         >
             {children}

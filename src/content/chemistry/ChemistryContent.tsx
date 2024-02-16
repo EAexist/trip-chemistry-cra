@@ -14,7 +14,7 @@ import { useStrings } from "../../texts";
 import { asyncGetProfile, asyncGetTestAnswer, asyncGetTestResult, deleteUser, setAllREST, setStatus, useProfileIdList, useProfileList } from "../../reducers/profileReducer";
 import { AppDispatch } from "../../store";
 import { LoadStatus, IProfileId } from "../../reducers";
-import { useChemistryLoadStatus, useGetChemistry } from "../../reducers/chemistryReducer";
+import { clearChemistry, useChemistryLoadStatus, useGetChemistry, useIsChemistryUpdated } from "../../reducers/chemistryReducer";
 import ProfileAvatar from "../../components/Avatar/ProfileAvatar";
 import { Outlet, useNavigate } from "react-router-dom";
 import Tooltip from "../../components/Tooltip";
@@ -40,14 +40,14 @@ function ChemistryContent({ }: ChemistryContentProps) {
     const isChemistryEnabled = idList.length > 1;
 
     const [chemistryLoadStatus, setChemistryLoadStatus] = useChemistryLoadStatus();
+    const isChemistryUpdated = useIsChemistryUpdated();
 
     const getChemistry = useGetChemistry();
 
     /* States */
-    const [isChemistryUpdated, setIsChemistryUpdated] = useState<boolean>(false);
     const [isStartTooltipOpen, setIsStartTooltipOpen] = useState(false);
 
-    const [characterSectionActiveIProfileId, setCharacterSectionActiveIProfileId] = useState<IProfileId | undefined>(userId);
+    // const [characterSectionActiveIProfileId, setCharacterSectionActiveIProfileId] = useState<IProfileId | undefined>(userId);
 
     const resultContentTopRef = useRef<HTMLDivElement>(null);
 
@@ -55,11 +55,13 @@ function ChemistryContent({ }: ChemistryContentProps) {
     
     /* Event Handlers */
     const handleDelete = (id: IProfileId) => {
-        dispatch(deleteUser(id));
+        navigate('');
+        dispatch( clearChemistry() );
+        dispatch( deleteUser(id) );
     }
 
     const handleAddFriendButtonClick = () => {
-        navigate('/chemistry/addFriend');
+        navigate('addFriend');
     }
 
     const handleStartButtonClick = () => {
@@ -89,14 +91,18 @@ function ChemistryContent({ }: ChemistryContentProps) {
 
     useEffect(() => {
         if (chemistryLoadStatus === LoadStatus.SUCCESS) {
-            dispatch(setAllREST());
+            dispatch( setAllREST() );
             /* @TODO Animate */
             setChemistryLoadStatus(LoadStatus.REST);
-            navigate('/chemistry/result');
-            setIsChemistryUpdated(true);
         }
         console.log(`[ChemistryContent] chemistryLoadStatus=${chemistryLoadStatus}`);
-    }, [chemistryLoadStatus, navigate, dispatch, setChemistryLoadStatus]);
+    }, [ chemistryLoadStatus, dispatch, setChemistryLoadStatus ]);
+
+    useEffect(()=>{
+        if( isChemistryUpdated ){
+            navigate('result');
+        }
+    }, [ isChemistryUpdated, navigate ])
 
     /* Motion */
     const { scrollY } = useScroll();
@@ -170,6 +176,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                         >
                             <span className="block--with-margin-x flex">
                                 <Button
+                                    disabled={!isChemistryEnabled}
                                     onClick={isChemistryUpdated ? handleScrollDown : handleStartButtonClick}
                                     variant="contained"
                                     className="flex-row"

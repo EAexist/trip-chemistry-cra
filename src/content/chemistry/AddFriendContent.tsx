@@ -15,6 +15,7 @@ import AppBarContext from '../../contexts/AppBarContext';
 import { useNavigate } from 'react-router-dom';
 import { useUserId } from '../../reducers/authReducer';
 import { ProfileAvatar } from '../../components/Avatar/ProfileAvatar';
+import { clearChemistry } from '../../reducers/chemistryReducer';
 
 
 interface AddFriendContentProps {
@@ -54,6 +55,7 @@ function AddFriendContent({ handleSucess }: AddFriendContentProps) {
     }
 
     const handleAddFriendAndClose = () => {
+        dispatch( clearChemistry() );
         addusers();
         navigate('/chemistry');
     }
@@ -102,7 +104,7 @@ function AddFriendContent({ handleSucess }: AddFriendContentProps) {
         <Stack>
             {
                 Object.values(flaggedProfileList).map((profile) => (
-                    <ProfileAvatar key={profile.nickname} {...profile} />
+                    <ProfileAvatar key={profile.nickname} {...profile} labelSize="lg" />
                 ))
             }
         </Stack>
@@ -112,12 +114,12 @@ function AddFriendContent({ handleSucess }: AddFriendContentProps) {
         <div className="page fullscreen flex">
             {
                 isConfirmModalOpen ?
-                    <div className='block--with-margin block__body block--centered flex-grow'>
+                    <div className='block--with-margin block__body body--centered flex-grow'>
                         <h3 className='typography-label'>{`${flaggedProfileListLength}명을 친구로 추가할까요?`}</h3>
                         <FlaggedProfileAvatarGroup />
-                        <Stack>
+                        <Stack spacing={4}>
                             <Button onClick={handleAddFriendAndClose} startIcon={<Done />}>
-                                친구로 추가하기
+                                <p>친구로 추가하기</p>
                             </Button>
                             <Button onClick={handleClose} startIcon={<Close />}>
                                 그냥 닫기

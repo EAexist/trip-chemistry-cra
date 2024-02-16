@@ -1,32 +1,30 @@
 import { ComponentType } from "react";
-import { TestIndex, useTestAnswer } from "../reducers/testAnswerReducer";
+
+import { NumericTestName, useTestAnswer } from "../reducers/testAnswerReducer";
 // import { BudgetResponse, SubTestName, TestAnswer, TestName } from "../interface/interfaces";
 
 interface WithTestAnswerProps{
-    testIndex: TestIndex,
+    testName: NumericTestName,
     answer: number; 
     setAnswer: ( value: number ) => void;      
 };
 
-// interface WithTestAnswerHOCProps extends testIndex{
-// };
 
 /* HOC WithTestAnswer
     컴포넌트에 테스트 섹션 정보와 해당 정보에 대응하는 testAnswer 리듀서 state 와 setter 함수를 연결.   */
 const withTestAnswer = <T extends WithTestAnswerProps>(WrappedComponent: ComponentType<T>) => 
-    ( { testIndex, ...props }: Omit<T, keyof WithTestAnswerProps> & { testIndex: TestIndex }) => {
+    ( { testName, ...props }: Omit<T, keyof WithTestAnswerProps> & { testName: NumericTestName }) => {
     
-    const [ answer, setAnswer ] = useTestAnswer( testIndex as TestIndex );
-    
+    const [ answer, setAnswer ] = useTestAnswer( testName );
+
     return (
         <WrappedComponent 
         {...{
-            testIndex,
+            testName,
             answer,
             setAnswer: ( value: number ) => {
-                console.log(`WithTestAnswer-value=${value}`); 
                 setAnswer({
-                    ...testIndex as TestIndex,
+                    testName,
                     value,
             })}
         }}

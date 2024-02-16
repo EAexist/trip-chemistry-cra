@@ -1,6 +1,6 @@
 /*** React ***/
 import { useDispatch, useSelector } from "react-redux";
-import { createSlice, PayloadAction, createAsyncThunk, ThunkDispatch } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
 /*** Trip Chemistry ***/
 /* Component */
@@ -10,9 +10,6 @@ import axios from "axios";
 import { HEADERS_AXIOS } from "../common/app-const";
 import { useCallback, useEffect } from "react";
 import { IProfile, IProfileDTO, profileDTOtoProfile, setProfile } from "./profileReducer";
-import { ITestAnswer } from "./testAnswerReducer";
-import { ITestResult, defaultTestResult } from "../interfaces/ITestResult";
-import { defaultTripCharacter } from "../interfaces/ITripCharacter";
 
 /* Types */
 // interface IProfileSearchResult {

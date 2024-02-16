@@ -6,14 +6,14 @@ import { useSelector } from "react-redux";
 import { SwiperRef } from "swiper/react";
 import { motion } from "framer-motion"
 
-import { List, ListItem, Stack } from "@mui/material";
+import { Button, List, ListItem, Stack } from "@mui/material";
 
 /* Trip Chemistry */
 import { SLIDERPROPS_CHEMISTRY_BUDGET_FOOD, TEST } from "../../common/app-const";
 import SectionPaper from "../../components/Paper/SectionPaper";
 import { useStrings } from "../../texts";
 
-import { useProfileIdList } from "../../reducers/profileReducer";
+import { useProfile, useProfileDataList, useProfileIdList } from "../../reducers/profileReducer";
 import { AppDispatch, RootState } from "../../store";
 import { useChemistry, useSortedCityList } from "../../reducers/chemistryReducer";
 import useValueToProfileIdList from "../../hooks/useValueToProfileIdList";
@@ -43,15 +43,18 @@ function ChemistryResultContent({ }: ChemistryResultContentProps) {
     /* Store */
     const userId = useUserId();
     const idList = useProfileIdList();
+    const profile = useProfile();
 
     const chemistry = useChemistry();
 
-    const scheduleAnswerToProfiles = useValueToProfileIdList({ index: 'schedule', subIndex: 'schedule' });
-    const budgetAnswerToProfiles = useValueToProfileIdList({ index: 'budget', subIndex: 'food' });
+    const scheduleAnswerToProfiles = useValueToProfileIdList('schedule');
+    const budgetAnswerToProfiles = useValueToProfileIdList('food');
 
     const characterSectionCharacter = useSelector((state: RootState) =>
         state.profile.data[idList[characterSectionActiveUserIndex]].data.testResult.data.tripCharacter
     );
+
+    const leaderDataList = useProfileDataList( chemistry.data?.leaderList, "nickname" );
 
     const sortedCityList = useSortedCityList();
 
@@ -68,6 +71,7 @@ function ChemistryResultContent({ }: ChemistryResultContentProps) {
                         {
                             idList.map((id, index) => (
                                 <ToggleButton
+                                    key={id}
                                     value={index}
                                     onChange={(_, value) => setCharacterSectionActiveUserIndex(value)}
                                     selected={characterSectionActiveUserIndex === index}
@@ -109,7 +113,7 @@ function ChemistryResultContent({ }: ChemistryResultContentProps) {
                     </Stack>
                     <p>
                         { chemistry.data && chemistry.data.leaderList && strings.sections.leadership.body.map((string: string | undefined) => (
-                            string === "/idList" ? <b>{chemistry.data &&  chemistry.data.leaderList?.map((id) => ` ${id} ${strings.sections.leadership.idPostfix}`).join(', ')}</b> : string
+                            string === "/idList" ? chemistry.data && leaderDataList.map(( nickname ) => <><b>{`${nickname}`}</b> ${strings.sections.leadership.idPostfix}`</>).join(', ') : string
                         ))}
                     </p>
                 </div>
@@ -153,6 +157,9 @@ function ChemistryResultContent({ }: ChemistryResultContentProps) {
                         </div>
                     ))
                 }
+            </SectionPaper>
+            <SectionPaper>
+                <motion.h5 className="typography-heading">{" 친구에게 결과 공유하기 "}</motion.h5>
             </SectionPaper>
             <div />
         </div>
