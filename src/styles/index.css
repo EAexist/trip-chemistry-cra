@@ -266,16 +266,6 @@
     outline-color: aqua;
 }
 
-.content__body {
-    &>.body__head {
-        margin-top: 0;
-    }
-
-    &>* {
-        /* margin-top: var(--margin-top); */
-    }
-}
-
 .content__body--gray {
     background-color: rgb(242, 244, 246);
 }
@@ -303,9 +293,8 @@
 
 .block__body {
 
-    &>.body__head,
-    .body__head.swiper-slide {
-        margin-top: 0;
+    &>* {
+        margin-top: var(--margin-top);
     }
 
     &>h2,
@@ -322,8 +311,9 @@
         margin-top: 0.8em;
     }
 
-    &>* {
-        margin-top: var(--margin-top);
+    &>.body__head,
+    &>.body__head.swiper-slide {
+        margin-top: 0;
     }
 }
 

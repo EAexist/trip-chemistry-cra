@@ -1,4 +1,4 @@
-import { ComponentType, useEffect } from "react";
+import { ComponentType } from "react";
 import { IProfile, useProfile } from "../reducers/profileReducer";
 import { IProfileId } from "../reducers";
 

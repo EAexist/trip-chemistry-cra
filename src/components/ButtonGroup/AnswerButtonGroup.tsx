@@ -1,9 +1,9 @@
 import { Stack } from "@mui/material";
 
-import { useStrings } from "../texts";
-import withTestAnswer, { WithTestAnswerProps } from "../hocs/withTestAnswer";
-import ToggleProfileButton from "./Button/ToggleProfileButton";
-import { TEST, TEST_SECTIONS } from "../common/app-const";
+import { useStrings } from "../../texts";
+import withTestAnswer, { WithTestAnswerProps } from "../../hocs/withTestAnswer";
+import ToggleProfileButton from "../Button/ToggleProfileButton";
+import { TEST_SECTIONS } from "../../common/app-const";
 
 interface AnswerButtonGroupProps extends WithTestAnswerProps {
 
@@ -29,8 +29,5 @@ function AnswerButtonGroup( { testName, answer, setAnswer } : AnswerButtonGroupP
         </Stack>
     );
 }
-
-// const LeadershipAnswerButtonGroup = withTestAnswer( AnswerButtonGroup )({ index: "leadership", subIndex: "leadership" });
-// const ScheuleAnswerButtonGroup = withTestAnswer( AnswerButtonGroup )({ index: "Scheule", subIndex: "Scheule" });
 
 export default withTestAnswer( AnswerButtonGroup );

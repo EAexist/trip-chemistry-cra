@@ -92,7 +92,7 @@ function HomeContent({ }: HomeContentProps) {
                     <div className="floating-placeholder--bottom" style={{ visibility: 'hidden' }}>
                         <div className="block--with-margin-x flex">
                             <Button>
-                                <p> {strings.startButton} </p>
+                                {strings.startButton}
                             </Button>
                         </div>
                     </div>
@@ -106,7 +106,7 @@ function HomeContent({ }: HomeContentProps) {
                             onClick={handleTestStart}
                             variant="contained"
                         >
-                            <p> {strings.startButton} </p>
+                            {strings.startButton}
                         </Button>
                     </div>
                 </div>

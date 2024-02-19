@@ -1,5 +1,5 @@
 import { PropsWithChildren, useCallback, useEffect, useRef, useState } from "react";
-import PageContext, { PageContextProvider } from "./PageContext";
+import PageContext from "./PageContext";
 import { useMotionValueEvent, useScroll } from "framer-motion";
 import Step from "../Step/Step";
 

@@ -158,7 +158,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                     !isChemistryUpdated &&
                     <div className="floating-placeholder--bottom" >
                         <Button>
-                            <p>placeholder</p>
+                            placeholder
                         </Button>
                     </div>
                 }
@@ -181,13 +181,11 @@ function ChemistryContent({ }: ChemistryContentProps) {
                                     variant="contained"
                                     className="flex-row"
                                 >
-                                    <p>
                                         {
                                             isChemistryUpdated
                                                 ? strings.sections.addFriend.scrollDownButton
                                                 : strings.sections.addFriend.startChemistryButton
                                         }
-                                    </p>
                                     {
                                         isChemistryUpdated && <KeyboardArrowDown />
                                     }

@@ -1,7 +1,6 @@
-import { Button, Paper, SxProps, ToggleButton, ToggleButtonProps, useTheme } from "@mui/material";
+import { Button, Paper, SxProps, ToggleButtonProps, useTheme } from "@mui/material";
 import { PropsWithChildren, useEffect, useState } from "react";
 import Profile from "../Avatar/Profile";
-import ToggleButtonPaper from "./ToggleButtonPaper";
 import { WithIsTestAnsweredProps } from "../../hocs/withIsTestAnswered";
 import { Theme } from "@emotion/react";
 

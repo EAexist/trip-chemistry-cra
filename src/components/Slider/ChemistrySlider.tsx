@@ -1,10 +1,8 @@
-import { Avatar, Popper, Slider, SliderOwnProps, SliderValueLabelProps, Stack, } from "@mui/material";
+import { Slider, SliderOwnProps, Stack } from "@mui/material";
 
-import { priceText } from "../../utils/priceText";
 import useValueToProfileIdList from "../../hooks/useValueToProfileIdList";
 import useProfileIdListByAnswer from "../../hooks/useProfileIdListByAnswer";
 import ProfileAvatar from "../Avatar/ProfileAvatar";
-import Tooltip from "../Tooltip";
 import AvatarGroup from "../Avatar/AvatarGroup";
 import { TestName } from "../../reducers/testAnswerReducer";
 
@@ -14,34 +12,6 @@ interface ChemistrySliderProps extends SliderOwnProps {
     max: number
     step: number
 };
-
-interface ValueLabelComponentProps extends SliderValueLabelProps {
-    testName: TestName;
-}
-
-const valueLabelComponent_ = (testName: TestName) => ({ value, children }: SliderValueLabelProps) => {
-
-    const { userList, ascendingOrder } = useProfileIdListByAnswer(testName, value);
-    const isEven = ascendingOrder % 2 === 0;
-
-    return (
-        <Tooltip open={true} placement={isEven ? "left" : "right"} className="slider__value-label" title={
-            <Stack flexDirection={isEven ? "row-reverse" : "row"}>
-                <h2 className="typography-label">{value}</h2>
-                <AvatarGroup>
-                    {
-                        userList.map((id) => (
-                            <ProfileAvatar id={id} />
-                        ))
-                    }
-                </AvatarGroup>
-            </Stack>
-        }
-        >
-            {children}
-        </Tooltip>
-    );
-}
 
 const SliderValueLabel = ({ testName, value }: { testName: TestName, value: number }) => {
 
@@ -119,6 +89,34 @@ function ChemistrySlider({ testName, ...sliderOwnProps }: ChemistrySliderProps) 
     );
 }
 
-
 export default ChemistrySlider;
 export type { ChemistrySliderProps };
+
+
+// interface ValueLabelComponentProps extends SliderValueLabelProps {
+//     testName: TestName;
+// }
+
+// const valueLabelComponent_ = (testName: TestName) => ({ value, children }: SliderValueLabelProps) => {
+
+//     const { userList, ascendingOrder } = useProfileIdListByAnswer(testName, value);
+//     const isEven = ascendingOrder % 2 === 0;
+
+//     return (
+//         <Tooltip open={true} placement={isEven ? "left" : "right"} className="slider__value-label" title={
+//             <Stack flexDirection={isEven ? "row-reverse" : "row"}>
+//                 <h2 className="typography-label">{value}</h2>
+//                 <AvatarGroup>
+//                     {
+//                         userList.map((id) => (
+//                             <ProfileAvatar id={id} />
+//                         ))
+//                     }
+//                 </AvatarGroup>
+//             </Stack>
+//         }
+//         >
+//             {children}
+//         </Tooltip>
+//     );
+// }

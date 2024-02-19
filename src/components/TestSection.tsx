@@ -11,6 +11,4 @@ const TestSection = forwardRef(({ children }: PropsWithChildren, ref: ForwardedR
     </div>
 );
 
-// const TestSectionWithStep = withStepCheckpoint(TestSection);
-
 export default TestSection;

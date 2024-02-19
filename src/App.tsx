@@ -1,18 +1,15 @@
 /* React Packages */
 import { Navigate, Outlet, Route, RouterProvider, ScrollRestoration, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { ThemeProvider, createTheme } from '@mui/material';
-import { Menu } from '@mui/icons-material';
+import { ThemeProvider } from '@mui/material';
+import { AnimatePresence } from 'framer-motion';
 
 /* App */
 import './index.css';
 import { TEST } from './common/app-const';
 import CityDetailContent from './content/CityDetailContent';
 import { store } from './store';
-import { AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
 import { AppBarContextProvider } from './contexts/AppBarContext';
-import GlobalStyles from './components/GlobalStyles';
 import Page from './content/Page';
 import ResultContent from './content/result/ResultContent';
 import ChemistryContent from './content/chemistry/ChemistryContent';
@@ -78,7 +75,6 @@ function App() {
     return (
         <Provider store={store}>
             <ThemeProvider theme={theme}>
-                <GlobalStyles />
                 <AppBarContextProvider>
                     <AnimatePresence>
                         <RouterProvider router={router} />

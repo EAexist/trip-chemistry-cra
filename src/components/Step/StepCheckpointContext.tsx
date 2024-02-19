@@ -1,5 +1,4 @@
 import { ComponentType, PropsWithChildren, createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
-import { useValueToBound } from "../../hooks/useValueToBound";
 
 type IdToIndex = { [key: string] : number };
 
@@ -23,14 +22,6 @@ function StepCheckpointContextProvider({ children }: PropsWithChildren) {
             console.log(`[StepCheckpointContextProvider] checkpoints[${index}]=${checkpoint.offsetTop}`);
         })
     }, [ stepCheckpointList ]);
-
-    // const [ activeCheckpointIndex, ] = useValueToBound({ 
-    //     boundList: stepCheckpointList.current.filter((checkpoint) => (checkpoint.offsetTop !== null)).map(( checkpoint )=>{
-    //         return( checkpoint.offsetTop-(window.innerHeight-(checkpoint.offsetParent as HTMLDivElement).offsetTop)/2 )
-    //     }), 
-    //     value: value,
-    //     returnIndex: true, 
-    // }); /* Current active index */
 
     return (
         <StepCheckpointContext.Provider value={ { idToIndex : idToIndex, setIdToIndex : setIdToIndex, stepCheckpointList : stepCheckpointList } }>

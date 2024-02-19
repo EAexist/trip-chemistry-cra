@@ -52,10 +52,12 @@ ul {
 h1, h2, h3, h4, h5, h6, p, button {
   line-height: 1.7;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
   word-break: keep-all;
   margin: 0;
   white-space: pre-line;
+  /* color: #1d1d1f; */
+  color: #4e5968;
 }
 
 a {

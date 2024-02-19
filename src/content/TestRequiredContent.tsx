@@ -3,13 +3,11 @@ import { useEffect } from "react";
 
 /* React Packages */
 import { Outlet, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 
 /* Trip Chemistry */
 import LoadContent from "./LoadContent";
 import { useProfileLoadStatus, useUser } from "../reducers/profileReducer";
 import { useUserId } from "../reducers/authReducer";
-import { AppDispatch } from "../store";
 
 interface TestRequiredContentProps {
 
@@ -17,7 +15,6 @@ interface TestRequiredContentProps {
 
 function TestRequiredContent({ }: TestRequiredContentProps) {
 
-    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
 
     /* Store */

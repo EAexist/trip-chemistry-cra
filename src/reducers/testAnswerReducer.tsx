@@ -1,62 +1,86 @@
 /* React */
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 /* React Packages */
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-
+import { StatusCodes } from "http-status-codes";
+import axios from "axios";
 
 /* App */
 import { AppDispatch, RootState } from "../store";
-import { StatusCodes } from "http-status-codes";
-import { IWithLoadStatus, LoadStatus, IProfileId } from ".";
-import { HEADERS_AXIOS, TEST, TEST_TYPE } from "../common/app-const";
-import axios from "axios";
+import { IWithLoadStatus, LoadStatus } from ".";
+import { HEADERS_AXIOS, TEST_TYPE } from "../common/app-const";
 import { useUserId } from "./authReducer";
 
-export const ActivityTag = {
-    PHOTO : "photo",
-    INSTA : "insta",
-    NETWORK : "network",
-    EXTREME : "extreme",
-    SWIM : "swim",
-    DRIVE : "drive",
-    WALK : "walk",
-    THEMEPARK : "themepark",
-    MARKET : "market",
-    HOTEL : "hotel",
-    VLOG : "vlog",
-    WAITING : "waiting",
-    BAR : "bar",
-    CAFE : "cafe",
-    SHOPPING : "shopping",
-    SHOW : "show",
-}
-type ActivityTag = typeof ActivityTag[keyof typeof ActivityTag]; 
+const enumFromList = ( list : string[] ) => (
+    Object.fromEntries(
+        list.map(( key, index )=> [ key, index] )
+    )
+); 
 
-export const ExpectationTag = {
-    HEAL: "heal",
-    COMPACT: "compact",
-    FULLFILL: "fullfill",
-    MEMORY: "memory",
-    RELAX: "relax",
-    COMFORT: "comfort",
-    ADVENTURE: "adventure",
-    NEW: "new",
-    DIGITAL_DETOX: "digital_detox",
-    REST: "rest",
-    VIEW: "view",  
-}
-type ExpectationTag = typeof ExpectationTag[keyof typeof ExpectationTag]; 
+const TripTagList = [
+    "PHOTO",
+    "EAT",
+    "FRIENDSHIP",
+    "PHYSICAL",
+    "REST",
+    "INFLUENCER",
+    "COFFEE",
+    "CULTURE",
+    "ADVENTURE",
+    "PASSION",
+    "REFRESH"
+];
+export const TripTag = enumFromList(TripTagList);
+export type ITripTag = typeof TripTag[keyof typeof TripTag]; 
+
+const ActivityTagList = [
+    "PHOTO",
+    "INSTA",
+    "NETWORK",
+    "EXTREME",
+    "SWIM",
+    "DRIVE",
+    "WALK",
+    "THEMEPARK",
+    "MARKET",
+    "HOTEL",
+    "VLOG",
+    "WAITING",
+    "BAR",
+    "CAFE",
+    "SHOPPING",
+    "SHOW",
+]
+export const ActivityTag = enumFromList(ActivityTagList);
+export type IActivityTag = typeof ActivityTag[keyof typeof ActivityTag]; 
+
+const ExpectationTagList = [
+    "HEAL",
+    "COMPACT",
+    "FULLFILL",
+    "MEMORY",
+    "RELAX",
+    "COMFORT",
+    "ADVENTURE",
+    "NEW",
+    "DIGITAL_DETOX",
+    "REST",
+    "VIEW",  
+    "FRIENDSHIP",  
+];
+export const ExpectationTag = enumFromList(ExpectationTagList);
+export type IExpectationTag = typeof ExpectationTag[keyof typeof ExpectationTag]; 
 
 interface ITestAnswer {
     expectation: {
-        selected: ExpectationTag[],
-        unSelected: ExpectationTag[]
+        selected: IExpectationTag[],
+        unSelected: IExpectationTag[]
     },
     activity: {
-        selected: ActivityTag[],
-        unSelected: ActivityTag[]
+        selected: IActivityTag[],
+        unSelected: IActivityTag[]
     },
     leadership: undefined | number,
     schedule: undefined | number,
@@ -71,8 +95,8 @@ interface ITestAnswer {
 };
 
 interface ITestAnswerDTO {
-    expectation: ExpectationTag[],
-    activity: ActivityTag[],
+    expectation: IExpectationTag[],
+    activity: IActivityTag[],
     leadership: number,
     schedule: number,
     food: number, 
@@ -137,18 +161,11 @@ export const sampleTestAnswer : ITestAnswer = {
     nature: 4,
 };
 
-// type ITestAnswer = typeof defaultTestAnswer;
-
 const initialState : IWithLoadStatus<ITestAnswer> = {
     data: sampleTestAnswer,
     // data: defaultTestAnswer,
     loadStatus : LoadStatus.REST
 };
-
-// interface TestName{
-//     index: TestName;
-//     subIndex: SubTestName;
-// }
 
 interface ISetNumericAnswerPayload {
     testName: NumericTestName;
@@ -157,7 +174,7 @@ interface ISetNumericAnswerPayload {
 
 interface ISetSetAnswerPayload {
     testName: SetTestName;
-    tag: string;
+    tag: number;
 };
 
 export const asyncSubmitAnswer = createAsyncThunk("testAnswer/submitAnswer",
@@ -289,90 +306,3 @@ export default testAnswerSlice.reducer;
 export { useTestAnswerStatus, useSubmitAnswer };
 export const { addTagAnswer, deleteTagAnswer } = testAnswerSlice.actions;
 export type { ITestAnswer, TestName };
-// export { useTestAnswer, useSetTestAnswer, useSubmitAnswer, useTestAnswerStatus }
-// export type { TestAnswerPayload, TestAnswer, TestName, SubTestName, TestName, InterfaceWithLoadStatus }
-
-
-
-// const useSetTestAnswer = () => {
-//     const dispatch = useDispatch();
-//     return useCallback((payload: TestAnswerPayload) => 
-//         dispatch(testAnswerSlice.actions.setNumericAnswer(payload))
-//     , [dispatch]);
-// };
-
-// const useSubmitAnswer = () => {
-//     const dispatch = useDispatch<AppDispatch>(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
-//     const { loadStatus, data } = useSelector(( state:RootState )=>state.testAnswer)
-//     return useCallback((id: IProfileId) => 
-//         dispatch(asyncSubmitAnswer({id: id, response: data}))
-//     , [dispatch, data]);
-// }
-
-// const useTestAnswerStatus = () => {
-//     const dispatch = useDispatch(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
-//     const status = useSelector(( state:RootState )=>state.testAnswer.loadStatus);
-//     return ([
-//         status,
-//         useCallback((status: LoadStatus) =>
-//             dispatch(testAnswerSlice.actions.setStatus(status))
-//         , [dispatch])
-//     ] as const);
-// }
-
-/* Deprecated */
-// function testAnswerReducer(state=initialState, action: testAnswerAction) {
-//     switch(action.type) {
-//         case SET : 
-//             return {...state,
-//                 [action.payload.testName] : action.payload.value
-//             };
-//         case SETBUDGET : 
-//             return {...state,
-//                 [action.payload.testName] : {
-//                     ...state[action.payload.testName] as {},
-//                     [action.payload.SubTestName]: action.payload.value
-//                 }
-//             };
-//         default : 
-//             return state;
-//     }
-// }
-
-/* Deprecated */
-// const mapState = (TestName: TestName) => (state: RootState) => ({
-//     response: state.testAnswer[TestName]
-// });
-
-// const mapDispatch = (testName : TestName) => (
-//     {   
-//         setNumericAnswer: (value: TestAnswer[TestName]) => {testAnswerSlice.actions.setNumericAnswer({
-//         testName: testName,
-//         value: value
-//     })},
-//         setBudgetResponse: (SubTestName: SubTestName, value: BudgetResponse[SubTestName]) => {testAnswerSlice.actions.setBudgetResponse({
-//         testName: testName,
-//         SubTestName: SubTestName,
-//         value: value
-//     })}, 
-//     }
-// );
-
-// const connector = (TestName: TestName) => connect(
-//     mapState(TestName), 
-//     mapDispatch(TestName)
-// )
-
-// type PropsFromReduxTestAnswer = ConnectedProps<typeof connector>;
-
-// const useConnectTestAnswer = (component : ComponentType) => {
-//     const mapStateToProps = (state : RootState, TestName: TestName) => ({
-//         response: state.testAnswer
-//     });
-      
-//     const mapDispatchToProps = testAnswerSlice.actions   
-    
-//     return(
-//         connect(mapStateToProps, mapDispatchToProps)(component)
-//     )
-// }

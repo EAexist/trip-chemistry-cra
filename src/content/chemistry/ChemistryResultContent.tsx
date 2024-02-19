@@ -1,31 +1,29 @@
 /* React */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 /* React Packages */
 import { useSelector } from "react-redux";
-import { SwiperRef } from "swiper/react";
 import { motion } from "framer-motion"
 
-import { Button, List, ListItem, Stack } from "@mui/material";
+import { List, ListItem, Stack } from "@mui/material";
 
 /* Trip Chemistry */
 import { SLIDERPROPS_CHEMISTRY_BUDGET_FOOD, TEST } from "../../common/app-const";
 import SectionPaper from "../../components/Paper/SectionPaper";
 import { useStrings } from "../../texts";
 
-import { useProfile, useProfileDataList, useProfileIdList } from "../../reducers/profileReducer";
-import { AppDispatch, RootState } from "../../store";
+import { useProfileDataList, useProfileIdList } from "../../reducers/profileReducer";
+import { RootState } from "../../store";
 import { useChemistry, useSortedCityList } from "../../reducers/chemistryReducer";
 import useValueToProfileIdList from "../../hooks/useValueToProfileIdList";
 import ChemistrySlider from "../../components/Slider/ChemistrySlider";
 import CityChemistryContent from "./CityChemistryContent";
 import ProfileAvatar from "../../components/Avatar/ProfileAvatar";
-import TestResultBox from "../../components/Card/TestResultBox";
+import TestResultBox from "../../components/TestResultBox";
 import ProfileImage from "../../components/ProfileImage";
 import NavigationButton from "../../components/Button/NavigationButton";
 import AvatarGroup from "../../components/Avatar/AvatarGroup";
 import ToggleButton from "../../components/Button/ToggleButton";
-import { useUserId } from "../../reducers/authReducer";
 
 interface ChemistryResultContentProps {
 
@@ -37,13 +35,10 @@ function ChemistryResultContent({ }: ChemistryResultContentProps) {
     const strings = useStrings().public.contents.chemistry;
 
     /* States */
-    const characterCarouselSwiperRef = useRef<SwiperRef>(null);
-    const [characterSectionActiveUserIndex, setCharacterSectionActiveUserIndex] = useState<number>(0);
+    const [ characterSectionActiveUserIndex, setCharacterSectionActiveUserIndex ] = useState<number>(0);
 
     /* Store */
-    const userId = useUserId();
     const idList = useProfileIdList();
-    const profile = useProfile();
 
     const chemistry = useChemistry();
 
@@ -55,6 +50,7 @@ function ChemistryResultContent({ }: ChemistryResultContentProps) {
     );
 
     const leaderDataList = useProfileDataList( chemistry.data?.leaderList, "nickname" );
+    const follwerDataList = useProfileDataList( idList.filter( id => !chemistry.data?.leaderList.includes(id)), "nickname" );
 
     const sortedCityList = useSortedCityList();
 
@@ -94,7 +90,7 @@ function ChemistryResultContent({ }: ChemistryResultContentProps) {
                         }
                     </div>
                     <h3 className="typography-label">
-                        {`${characterSectionCharacter.prefix} ${characterSectionCharacter.name}`}
+                        {characterSectionCharacter.name}
                     </h3>
                     <p key={characterSectionActiveUserIndex}>
                         {characterSectionCharacter.body}
@@ -113,13 +109,35 @@ function ChemistryResultContent({ }: ChemistryResultContentProps) {
                     </Stack>
                     <p>
                         { chemistry.data && chemistry.data.leaderList && strings.sections.leadership.body.map((string: string | undefined) => (
-                            string === "/idList" ? chemistry.data && leaderDataList.map(( nickname ) => <><b>{`${nickname}`}</b> ${strings.sections.leadership.idPostfix}`</>).join(', ') : string
+                            string === "/idList" 
+                            ? chemistry.data && leaderDataList.map(( nickname, index ) =>
+                                <>
+                                    { index > 0 && ", "}
+                                    <b>{` ${nickname} `}</b> 
+                                    {strings.sections.leadership.idPostfix}
+                                </>
+                            )
+                            : <>{string}</>
+                        ))}
+                    </p>
+                    <p>
+                        { chemistry.data && chemistry.data.leaderList && strings.sections.leadership.detail.map((string: string | undefined) => (
+                            string === "/idList" 
+                            ? chemistry.data && follwerDataList.map(( nickname, index ) =>
+                                <>
+                                    { index > 0 && ", "}
+                                    <b>{` ${nickname} `}</b> 
+                                    {strings.sections.leadership.idPostfix}
+                                </>
+                            )
+                            : <>{string}</>
                         ))}
                     </p>
                 </div>
             </SectionPaper>
             <SectionPaper>
-                <motion.h5 className="typography-heading">{strings.sections.schedule.title}</motion.h5>
+                <motion.h5 className="typography-heading">{strings.sections.schedule.title}</motion.h5>                
+                <div className="block__body">
                 <List>
                     {
                         (Object.values(teststrings.test.schedule.answers) as { icon: string, label: string, value: number }[]).map(({ icon, label, value }) => (
@@ -139,13 +157,44 @@ function ChemistryResultContent({ }: ChemistryResultContentProps) {
                         )).reverse()
                     }
                 </List>
-                <div className="text"><p> 설명 </p></div>
+                    {
+                        chemistry.data?.scheduleChemistryText?.map(( body ) =>{
+                            const list = body.split(/(%\S*%)/)
+                            return ( 
+                                <p>
+                                    { 
+                                        list.map(( t ) =>
+                                            t[0] === "%"
+                                            ? <b>{ t.replaceAll('%', '') }</b>
+                                            : <>{t}</>    
+                                        )                                     
+                                    }
+                                </p>
+                            )
+                        })
+                    }
+                </div>
             </SectionPaper>
             <SectionPaper>
                 <motion.h5 className="typography-heading">{strings.sections.budget.title}</motion.h5>
                 <div className="block__body">
                     <ChemistrySlider {...SLIDERPROPS_CHEMISTRY_BUDGET_FOOD} />
-                    <p> 설명 </p>
+                    {
+                        chemistry.data?.budgetChemistryText?.map(( body ) =>{
+                            const list = body.split(/(%\S*%)/)
+                            return ( 
+                                <p>
+                                    { 
+                                        list.map(( t ) =>
+                                            t[0] === "%"
+                                            ? <b>{ t.replaceAll('%', '') }</b>
+                                            : <>{t}</>    
+                                        )                                     
+                                    }
+                                </p>
+                            )
+                        })
+                    }
                 </div>
             </SectionPaper>
             <SectionPaper>

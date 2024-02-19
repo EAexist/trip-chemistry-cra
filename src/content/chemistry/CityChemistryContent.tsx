@@ -8,7 +8,7 @@ import { useCityChemistry } from "../../reducers/chemistryReducer";
 import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
 import ImageCard from "../../components/Card/ImageCard";
 import AvatarGroup from "../../components/Avatar/AvatarGroup";
-import { Star, StarBorder } from "@mui/icons-material";
+import { StarBorder, ThumbUp } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 interface CityChemistryContentProps {
@@ -20,7 +20,7 @@ function CityChemistryContent({ cityClass }: CityChemistryContentProps) {
     const navigate = useNavigate();
 
     const testStrings = useStrings().public.contents.test;
-    const valueToProfileList = useValueToProfileIdList( cityClass );
+    const valueToProfileList = useValueToProfileIdList(cityClass);
 
     const score = useCityChemistry(cityClass);
 
@@ -38,10 +38,16 @@ function CityChemistryContent({ cityClass }: CityChemistryContentProps) {
                 <ImageCard src={getImgSrc("/city", TEST.city.subTests[cityClass].examples[0], FORMATWEBP)} title={cityClass} sx={{ width: "100%" }} gradient="linear-gradient(to bottom, rgba(255,255,255,0), rgba(0,0,0,0.2) 64%, rgba(0,0,0,0.9))">
                     <CardContent className="image-card__card-content">
                         <Stack justifyContent={"space-between"} className="typography-white">
-                            <h2 className="typography-label">{testStrings.subTest[cityClass as keyof typeof testStrings.subTest].title}</h2>
+                            <Stack>
+                                <h2 className="typography-label">{testStrings.subTest[cityClass as keyof typeof testStrings.subTest].title}</h2>
+                            </Stack>
                             <Stack>
                                 <Rating value={score} readOnly precision={0.5} size={"small"} emptyIcon={<StarBorder fontSize="inherit" sx={{ color: "white" }} />} />
-                                <p>{score}</p>
+                                <p>{Math.round(score * 10) / 10}</p>
+                                {
+                                    (score > 3.4) &&
+                                    <ThumbUp fontSize="inherit" sx={{ color: "white" }} />
+                                }
                             </Stack>
                         </Stack>
                     </CardContent>
@@ -49,7 +55,7 @@ function CityChemistryContent({ cityClass }: CityChemistryContentProps) {
             </ButtonBase>
             <Stack flexWrap={"wrap"} spacing={2}>
                 {
-                    Object.entries(valueToProfileList).reverse().map(([ value, idList ], index) => (
+                    Object.entries(valueToProfileList).reverse().map(([value, idList], index) => (
                         <Stack sx={{ flexWrap: "wrap" }}>
                             <p>{testStrings.test.city.answers[Number(value) as keyof typeof testStrings.test.city.answers].label}</p>
                             <AvatarGroup className="avatar-group">

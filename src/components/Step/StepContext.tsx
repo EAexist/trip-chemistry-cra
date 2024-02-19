@@ -1,12 +1,10 @@
-import { ComponentType, PropsWithChildren, createContext, useCallback, useContext, useRef, useState } from "react";
+import { ComponentType, PropsWithChildren, createContext, useContext, useState } from "react";
 
 type DynamicStep = [ step: number, isIncrementing: boolean ];
 
 interface StepContextProps{
     step: number;
     setStep: React.Dispatch<React.SetStateAction<number>>;
-    // step: DynamicStep;
-    // setStep: React.Dispatch<React.SetStateAction<DynamicStep>>;
 } 
 
 const StepContext = createContext<StepContextProps>({} as StepContextProps);
@@ -36,18 +34,6 @@ const withStepContext = <T extends {}>( WrappedComponent: ComponentType<T> ) => 
 const useStep = () => useContext(StepContext).step;
 const useSetStep = () => useContext(StepContext).setStep;
 const useStepContext = () => useContext(StepContext);
-
-// const useSetStep = () => {
-//     const { step, setStep } = useStepContext();
-
-//     return(
-//         useCallback(( newStep: number ) => {        
-//             if( activeStep !== newStep ){
-//                 setStep([ newStep, activeStep < newStep ]);
-//             }
-//         }, [ step, setStep ])
-//     )
-// }
 
 export default StepContext;
 

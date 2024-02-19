@@ -1,5 +1,5 @@
 import { Card, CardProps } from "@mui/material";
-import { CSSProperties, useEffect } from "react";
+import { useEffect } from "react";
 
 interface ImageCardProps extends CardProps {
     src?: string

@@ -1,8 +1,9 @@
+import { ITripTag } from "../reducers/testAnswerReducer";
 import { ITripCharacter, defaultTripCharacter } from "./ITripCharacter";
 
 export interface ITestResult{
     // id?: string;
-    tripTagList: string[];
+    tripTagList: ITripTag[];
     tripCharacter: ITripCharacter;
     // placeGroup: string[];
 }

@@ -1,29 +1,16 @@
 /*** React ***/
+import { useCallback } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 /*** Trip Chemistry ***/
 /* Component */
 import { AppDispatch, RootState } from "../store";
 import { IWithLoadStatus, LoadStatus, IProfileId } from ".";
-import axios from "axios";
 import { HEADERS_AXIOS } from "../common/app-const";
-import { useCallback, useEffect } from "react";
 import { IProfile, IProfileDTO, profileDTOtoProfile, setProfile } from "./profileReducer";
-
-/* Types */
-// interface IProfileSearchResult {
-//     id: IProfileId
-//     discriminator: string
-//     nickname: string
-//     testResult : {
-//         data: {
-//             tripCharacter:
-//         }
-//         loadStatus : LoadStatus.REST
-//     }
-// }
-// interface IProfileprofileSearchState extends IWithLoadStatus<IProfileSearchResult[]> {};
 
 type IProfileprofileSearchState = IWithLoadStatus<{
     searchedProfileList: IProfile[],
@@ -136,9 +123,6 @@ const useFlaggedProfileList = () => {
     );
 }
 
-// const useUserSearchStatus = () => {
-//     return (useSelector((state: RootState) => state.profileSearch.loadStatus));
-// }
 
 const useProfileSearchStatus = () => {
     const dispatch = useDispatch(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */

@@ -119,7 +119,7 @@ function AddFriendContent({ handleSucess }: AddFriendContentProps) {
                         <FlaggedProfileAvatarGroup />
                         <Stack spacing={4}>
                             <Button onClick={handleAddFriendAndClose} startIcon={<Done />}>
-                                <p>친구로 추가하기</p>
+                                친구로 추가하기
                             </Button>
                             <Button onClick={handleClose} startIcon={<Close />}>
                                 그냥 닫기
@@ -139,11 +139,9 @@ function AddFriendContent({ handleSucess }: AddFriendContentProps) {
                                 className=""
                                 startIcon={<Done />}
                             >
-                                <p>
-                                    {
-                                        `확인${flaggedProfileListLength > 0 ? ` (${flaggedProfileListLength}명 일행으로 추가하기)` : ''}`
-                                    }
-                                </p>
+                                {
+                                    `확인${flaggedProfileListLength > 0 ? ` (${flaggedProfileListLength}명 일행으로 추가하기)` : ''}`
+                                }
                             </Button>
                         </Toolbar>
                         <div className='block--with-margin flex-grow block__body flex'>
@@ -178,7 +176,7 @@ function AddFriendContent({ handleSucess }: AddFriendContentProps) {
                                     (input !== "") && (profileSearchResultList.length === 0) ?
                                         <div className='flex-grow body--centered'>
                                             <QuestionMark />
-                                            <p>사용자를 찾을 수 없어요. <br /> 아이디를 다시 확인해볼까요?</p>
+                                            <p>사용자를 찾을 수 없어요. <br /> 친구의 아이디를 다시 확인해주세요.</p>
                                         </div>
                                         :
                                         <>

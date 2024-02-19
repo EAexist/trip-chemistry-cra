@@ -11,7 +11,7 @@ import qs from "qs";
 import { AppDispatch, RootState } from "../store";
 import { IWithLoadStatus, LoadStatus, IProfileId } from ".";
 import { useProfileIdList } from "./profileReducer";
-import { HEADERS_AXIOS, TEST } from "../common/app-const";
+import { HEADERS_AXIOS } from "../common/app-const";
 
 interface ICityChemistry{
     [ key : string ] : number
@@ -20,8 +20,8 @@ interface ICityChemistry{
 interface IChemistry {
     leaderList: IProfileId[];
     cityChemistry: ICityChemistry;
-    scheduleChemistryText?: string;
-    budgetChemistryText?: string;
+    scheduleChemistryText?: string[];
+    budgetChemistryText?: string[];
 };
 
 type IChemistryState = IWithLoadStatus<IChemistry | undefined>;
@@ -46,7 +46,7 @@ const asyncGetChemistry = createAsyncThunk("chemistry",
                         return qs.stringify( params, { arrayFormat: 'comma' });
                     }
                 });
-            return { idList: idList, chemistry: response.data };
+            return { chemistry: response.data };
         }
         catch (e: any) {
             console.log(`[asyncGetChemistry] error: ${e}`);
@@ -67,8 +67,8 @@ const chemistrySlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(asyncGetChemistry.fulfilled, (state, action: PayloadAction<{ idList: IProfileId[], chemistry: IChemistry }>) => {
-            console.log(`asyncGetChemistry.fulfilled: users=${action.payload.idList} action.payload=${JSON.stringify(action.payload)}`);
+        builder.addCase(asyncGetChemistry.fulfilled, (state, action: PayloadAction<{ chemistry: IChemistry }>) => {
+            console.log(`asyncGetChemistry.fulfilled: action.payload=${JSON.stringify(action.payload)}`);
             state.data = action.payload.chemistry; 
             state.loadStatus = LoadStatus.SUCCESS; 
         });
@@ -93,13 +93,12 @@ const useIsChemistryUpdated = () => {
 };
 
 const useCityChemistry = ( cityClass : string ) => {
-    return ( useSelector((state: RootState) => state.chemistry.data ? state.chemistry.data.cityChemistry[ cityClass ] : undefined ));
+    return ( useSelector((state: RootState) => state.chemistry.data ? state.chemistry.data.cityChemistry[ cityClass ] : -1 ));
 };
 
 const useSortedCityList = () => {
     return ( useSelector((state: RootState) => state.chemistry.data ? Object.entries(state.chemistry.data.cityChemistry).sort(( a, b ) => ( b[1] - a[1] )).map(([ cityClass, score ]) => cityClass )  : undefined ) );
 };
-
 
 const useGetChemistry = () => {
     const dispatch = useDispatch<AppDispatch>(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
@@ -109,8 +108,8 @@ const useGetChemistry = () => {
         console.log("[chemistryReducer] useGetChemistry");
         dispatch(chemistrySlice.actions.setChemistryLoadStatus(LoadStatus.PENDING));
         dispatch(asyncGetChemistry(idList));
-    }
-        , [idList]);
+    }, [ idList, dispatch ]
+    );
 }
 
 const useChemistryLoadStatus = () => {
@@ -120,7 +119,7 @@ const useChemistryLoadStatus = () => {
         useSelector((state: RootState) => state.chemistry.loadStatus),
         useCallback((status: LoadStatus) =>
             dispatch(chemistrySlice.actions.setChemistryLoadStatus(status))
-            , [dispatch]),
+            , [ dispatch ]),
     ] as const);
 }
 

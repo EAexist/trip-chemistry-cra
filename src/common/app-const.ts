@@ -1,6 +1,6 @@
 import { SliderProps } from "@mui/material";
 import { ChemistrySliderProps } from "../components/Slider/ChemistrySlider";
-import { SetTestName } from "../reducers/testAnswerReducer";
+import { SetTestName, TripTag } from "../reducers/testAnswerReducer";
 
 export const CONTENTS = {
     home: {},
@@ -14,10 +14,19 @@ export const HEADERS_AXIOS = {
     'Content-Type': 'application/json',
 };
 
-export const USERS_EXAMPLE = [
-    "udon1234",
-    "우동1234",
-]
+export const TRIPTAG = {
+    [ TripTag.PHOTO ] : "photo_camera",
+    [ TripTag.EAT ] : "ramen_dining",
+    [ TripTag.FRIENDSHIP ] : "favorite",
+    [ TripTag.PHYSICAL ] : "surfing",
+    [ TripTag.REST ] : "forest",
+    [ TripTag.INFLUENCER ] : "share",
+    [ TripTag.COFFEE ] : "local_cafe",
+    [ TripTag.CULTURE ] : "palette",
+    [ TripTag.ADVENTURE ] : "travel_explore",
+    [ TripTag.PASSION ] : "local_fire_department",
+    [ TripTag.REFRESH ] : "battery_charging_full"
+}
 
 export const TEST_TYPE = {
     "leadership": {

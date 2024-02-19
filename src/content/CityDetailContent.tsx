@@ -1,5 +1,5 @@
-import { ArrowBackIos, ArrowBackIosNew, ArrowForwardIos, ArrowRight, Close, ExpandMore, StarBorder } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionSummary, AppBar, Button, CardMedia, Icon, IconButton, Rating, Stack, Toolbar } from "@mui/material";
+import { ArrowRight, Close, ExpandMore, ThumbUp } from "@mui/icons-material";
+import { Accordion, AccordionDetails, AccordionSummary, AppBar, Button, Icon, IconButton, Rating, Stack, Toolbar } from "@mui/material";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -10,7 +10,7 @@ import getImgSrc, { FORMATWEBP } from "../utils/getImgSrc";
 import { SWIPERPROPS_CITYDETAILCONTENT } from "../common/swiperProps";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useStrings } from "../texts";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCityChemistry, useIsChemistryUpdated } from "../reducers/chemistryReducer";
 import { RootState } from "../store";
 import { useSelector } from "react-redux";
@@ -36,7 +36,7 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
 
     /* Event Handlers */
     const handleClose = () => {
-        navigate('/test');
+        navigate(-1);
     };
 
     const handleChange = (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -93,11 +93,18 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                                 <Stack>
                                     <Rating value={score} readOnly precision={0.5} size={"small"} />
                                     <p>{score}</p>
+                                    {
+                                        (score > 3.4) &&
+                                        <ThumbUp fontSize="inherit" />
+                                    }
                                 </Stack>
-                                {
-                                    !expanded &&
-                                    <p className="typography-note">친구들의 답변 보기</p>
-                                }
+                                <p className="typography-note">
+                                    {
+                                        expanded 
+                                        ? "답변 접기"
+                                        : "친구들의 답변 보기"
+                                    }
+                                </p>
                             </Stack>
                         </AccordionSummary>
                         <AccordionDetails sx={{ padding: 0 }}>
@@ -137,7 +144,7 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                                         <a href={CITY[cityId as keyof typeof CITY].link} target="_blank" rel="noopener noreferrer">
                                             <Stack>
                                                 {/* <Logo id={ commonStrings.city.linkType} className='h-5'/> */}
-                                                <p className="whitespace-nowrap">
+                                                {/* <p className="whitespace-nowrap"> */}
                                                     {
                                                         commonStrings.linkTextList.map((text) => (
                                                             text === "/link" ? commonStrings.linkType[CITY[cityId as keyof typeof CITY].linkType as keyof typeof commonStrings.linkType].name
@@ -146,7 +153,7 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                                                                 )
                                                         ))
                                                     }
-                                                </p>
+                                                {/* </p> */}
                                                 <ArrowRight />
                                             </Stack>
                                         </a>

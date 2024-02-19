@@ -2,7 +2,6 @@ import { Avatar, AvatarProps } from "@mui/material";
 import Profile, { ProfileProps } from "./Profile";
 import { IProfile } from "../../reducers/profileReducer";
 import withProfile from "../../hocs/withProfile";
-import withUser from "../../hocs/withUser";
 import getImgSrc, { FORMATPNG } from "../../utils/getImgSrc";
 
 interface ProfileAvatarProps extends AvatarProps, ProfileProps, Partial<IProfile> {

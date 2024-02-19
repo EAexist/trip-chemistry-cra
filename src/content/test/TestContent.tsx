@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 /* React Packages */
 
 import { useNavigate } from "react-router-dom";
-import { AppBar, Backdrop, Button, ButtonBase, Card, CardContent, CardMedia, Chip, Paper, Stack, Tooltip } from "@mui/material";
-import { useSelector } from "react-redux";
+import { Button, ButtonBase, Card, CardContent, CardMedia, Stack, Tooltip } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 
 /* Swiper */
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
@@ -17,34 +17,32 @@ import '../../styles/index.css';
 // import '../styles/Test.css';
 // import '../styles/TopNav.css';
 
-import { RootState } from "../../store";
+import { AppDispatch, RootState } from "../../store";
 import { CITY, NATION, SLIDERPROPS_TEST_BUDGET_FOOD, TEST, TEST_SECTIONS } from "../../common/app-const";
 import { useStrings } from "../../texts";
 
-import AnswerButtonGroup from "../../components/AnswerButtonGroup";
+import AnswerButtonGroup from "../../components/ButtonGroup/AnswerButtonGroup";
 import { priceText } from "../../utils/priceText";
 import AnswerSlider from "../../components/Slider/AnswerSlider";
 import getImgSrc, { FORMATPNG, FORMATWEBP } from "../../utils/getImgSrc";
 import PngIcon from "../../components/PngIcon";
 import SectionButton from "../../components/Button/SectionButton";
-import { SWIPERPROPS_STEPPER, SWIPERPROPS_CAROUSEL, SWIPERPROPS_FOODCARDCAROUSEL } from "../../common/swiperProps";
+import { SWIPERPROPS_CAROUSEL, SWIPERPROPS_FOODCARDCAROUSEL } from "../../common/swiperProps";
 import ImageCard from "../../components/Card/ImageCard";
 import GoogleMap from "../../components/GoogleMap/ui/GoogleMap";
 import { OPTIONS_TEST_SCHEDULE } from "../../components/GoogleMap/common/options";
 import GoogleMapMarker from "../../components/GoogleMap/ui/GoogleMapMarker";
 import OptionCard from "../../components/Card/OptionCard";
 import GoogleMapContext from "../../components/GoogleMap/common/GoogleMapContext";
-import SectionButtonGroup from "../../components/Button/SectionButtonGroup";
 import { NumericTestName, SetTestName, TestName, useSubmitAnswer, useTestAnswerStatus } from "../../reducers/testAnswerReducer";
 import ScrollPageItem from "../../components/ScrollPage/ScrollPageItem";
 import { StepCheckpointContextProvider } from "../../components/Step/StepCheckpointContext";
-import StepContext, { StepContextProvider } from "../../components/Step/StepContext";
+import StepContext from "../../components/Step/StepContext";
 import LoadContent from "../LoadContent";
 import TestAnswerBadge from "../../components/Button/TestAnswerBadge";
 import TestSection from "../../components/TestSection";
 import ScrollPageContainer from "../../components/ScrollPage/ScrollPageContainer";
 import TagSetTestAnswerChip from "../../components/Chip/TagSetTestAnswerChip";
-import { Warning } from "@mui/icons-material";
 import TestInstruction from "../../components/TestInstruction";
 import Stepper from "../../components/Step/Stepper";
 import { asyncGetProfile, useProfileLoadStatus } from "../../reducers/profileReducer";
@@ -55,16 +53,14 @@ interface TestContentProps {
 
 };
 
-const userId = "디클1234";
-
 function TestContent({ }: TestContentProps) {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>();
 
     /* contentstrings */
     const contentstrings = useStrings().public.contents.test;
     const commonStrings = useStrings().public.common;
-    const strings = useStrings().public;
 
     /* Store */
     const isAllTestAnswered = Object.values(useSelector((state: RootState) => state.testAnswer.data)).every(v => v !== undefined);
@@ -76,7 +72,7 @@ function TestContent({ }: TestContentProps) {
     const userId = useUserId();
     const submitAnswer = useSubmitAnswer();
     const [submitStatus, setSubmitStatus] = useTestAnswerStatus();
-    const [loadStatus, setLoadStatus] = useProfileLoadStatus( userId );
+    const [loadStatus, setLoadStatus] = useProfileLoadStatus(userId);
 
     /* States */
     const foodCarouselSwiperRef = useRef<SwiperRef>(null);
@@ -86,13 +82,14 @@ function TestContent({ }: TestContentProps) {
 
     /* Event Handlers */
     const handleSubmitSuccess = () => {
-        asyncGetProfile({ id: userId });
+        console.log(`[TestContent] handleSubmitSuccess`);
+        dispatch(asyncGetProfile({ id: userId }));
+        setSubmitStatus(LoadStatus.REST);
     }
 
     const handleLoadSuccess = () => {
         navigate('/result');
-        setSubmitStatus( LoadStatus.REST );
-        setLoadStatus( LoadStatus.REST );        
+        setLoadStatus(LoadStatus.REST);
     }
     const handleFail = () => {
         navigate('/test');
@@ -141,6 +138,7 @@ function TestContent({ }: TestContentProps) {
             setStatus: setSubmitStatus,
             handleSuccess: handleSubmitSuccess,
             handleFail,
+            pendingText: "SUBMIT"
         }}>
             <LoadContent {...{
                 status: loadStatus,
@@ -378,7 +376,7 @@ function TestContent({ }: TestContentProps) {
                                         disabled={!isAllTestAnswered}
                                         variant="contained"
                                     >
-                                        <p>{contentstrings.main.confirmButton}</p>
+                                        {contentstrings.main.confirmButton}
                                     </Button>
                                 </span>
                             </Tooltip>

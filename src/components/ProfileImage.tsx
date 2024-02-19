@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
+
 import LazyImage from "./LazyImage";
 import { RootState } from "../store";
-import getImgSrc, { FORMATJPG, FORMATPNG } from "../utils/getImgSrc";
-import { Height } from "@mui/icons-material";
+import getImgSrc, { FORMATPNG } from "../utils/getImgSrc";
 import { IProfileId } from "../reducers";
 import { useProfile } from "../reducers/profileReducer";
 
@@ -33,7 +33,7 @@ function ProfileImage({ id, renderLabel, showCharacterLabel = true }: ProfileIma
                         {
                             showCharacterLabel 
                             && <p className="typography-note">
-                                {`${ tripCharacter.prefix } ${ tripCharacter.name }`}
+                                {tripCharacter.name}
                             </p>
                         }
                     </div>

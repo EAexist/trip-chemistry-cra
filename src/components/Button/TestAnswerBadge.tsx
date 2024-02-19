@@ -1,8 +1,8 @@
-import { Badge } from "@mui/material";
 import { PropsWithChildren } from "react";
-import { useSelector } from "react-redux";
-import { TestName } from "../../reducers/testAnswerReducer";
-import { RootState } from "../../store";
+
+import { Badge } from "@mui/material";
+
+import { TestName, useIsTestAnswered } from "../../reducers/testAnswerReducer";
 
 interface TestAnswerBadgeProps {
     testName: TestName;
@@ -10,7 +10,7 @@ interface TestAnswerBadgeProps {
 
 function TestAnswerBadge({ testName, children }: PropsWithChildren<TestAnswerBadgeProps>) {
 
-    const isAnswered = useSelector(( state: RootState )=>(state.testAnswer.data[testName]) !== undefined )
+    const isAnswered = useIsTestAnswered( testName );
 
     return (
         <Badge invisible={isAnswered} >

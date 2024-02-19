@@ -1,21 +1,15 @@
 /* React */
-
 /* React Packages */
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion"
-
-
-import SectionPaper from "../../components/Paper/SectionPaper";
-import { RESULT } from "../../common/app-const";
-import { useStrings } from "../../texts";
-import TestResultBox from "../../components/Card/TestResultBox";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store";
+import { useSelector } from "react-redux";
 import { Button, Toolbar } from "@mui/material";
-import { asyncGetTestResult, useProfileLoadStatus, useProfileStatus, useUser } from "../../reducers/profileReducer";
-import { useEffect, useState } from "react";
+
+import {RootState } from "../../store";
+import SectionPaper from "../../components/Paper/SectionPaper";
+import { useStrings } from "../../texts";
+import TestResultBox from "../../components/TestResultBox";
 import { useUserId } from "../../reducers/authReducer";
-import { IProfileId } from "../../reducers";
 
 interface ResultContentProps {
 
@@ -23,13 +17,9 @@ interface ResultContentProps {
 
 function ResultContent({ }: ResultContentProps) {
 
-    // const sectionIdToIndex = Object.fromEntries(RESULT.sections.map((value, index) => [value, index]));
     const strings = useStrings().public.contents.result;
 
-    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
-
-    const [isWaiting, setIsWaiting] = useState(true);
 
     /* Store */
     const userId = useUserId();
@@ -42,25 +32,16 @@ function ResultContent({ }: ResultContentProps) {
     const handleChemistryButtonClick = () => {
         navigate('/chemistry');
     }
-
-    const handleFail = () => {
-        navigate('/test');
-    }
-
-    const handleMiss = () => {
-        navigate('/test');
-    }
-
     return (
         <div className="page">
             <Toolbar />
-            <div className="block__body content__body content__body--gray">
+            <div className="block__body content__body--gray">
                 <SectionPaper className="body__head">
                     <motion.h5 className="typography-heading">{strings.sections.tripCharacter.title}</motion.h5>
                     <div className="block__body">
                         <TestResultBox id={userId} />
                         <h3 className="typography-label">
-                            {`${character.prefix} ${character.name}`}
+                            {character.name}
                         </h3>
                         <p>
                             {character.body}
@@ -82,10 +63,10 @@ function ResultContent({ }: ResultContentProps) {
                         onClick={handleChemistryButtonClick}
                         variant="contained"
                     >
-                        <p>{strings.navigateToChemistryButton}</p>
+                        {strings.navigateToChemistryButton}
                     </Button>
                 </div>
-                <div />
+                <div className="block__body"><div/></div>
             </div>
         </div>
     );

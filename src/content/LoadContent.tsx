@@ -1,15 +1,13 @@
 /* React */
-import { PropsWithChildren, useEffect, useRef, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 
 /* React Packages */
-import { Button, Toolbar, useScrollTrigger } from "@mui/material";
+import { Button, Toolbar } from "@mui/material";
 
 import { useStrings } from "../texts";
-import { LoadStatus, IProfileId } from "../reducers";
-import LoadStatusContext from "./LoadStatusContext";
+import { LoadStatus } from "../reducers";
 import getImgSrc, { FORMATPNG } from "../utils/getImgSrc";
 import LazyImage from "../components/LazyImage";
-import { Visibility } from "@mui/icons-material";
 
 interface LoadContentProps {
     status?: LoadStatus;
@@ -26,7 +24,7 @@ interface LoadContentProps {
 };
 
 function LoadContent({
-    status = LoadStatus.FAIL,
+    status = LoadStatus.REST,
     setStatus,
     children,
     successText = "",
@@ -40,13 +38,10 @@ function LoadContent({
     handleMiss,
 }: PropsWithChildren<LoadContentProps>) {
 
-    const strings = useStrings().public.contents.test;
-
     /* States */
     const [delayedStatus, setDelayedStatus] = useState<LoadStatus>(status);
     const [isPending, setIsPending] = useState<boolean>(false);
     const minimumPendingTime = 1500;
-
 
     /* Store */
     useEffect(() => {
@@ -82,7 +77,7 @@ function LoadContent({
             default:
                 break;
         }
-    }, [ status, isPending, setStatus, handleSuccess ])
+    }, [ status, isPending, handleSuccess, setStatus ])
 
     return (
         (delayedStatus === LoadStatus.REST)
@@ -141,16 +136,14 @@ function LoadContent({
                                         : "hidden"
                                 }}
                             >
-                                <p>
-                                    {
-                                        delayedStatus === LoadStatus.FAIL ?
-                                            handleFailButtonText
-                                            :
-                                            delayedStatus === LoadStatus.MISS ?
-                                                handleMissButtonText
-                                                : undefined
-                                    }
-                                </p>
+                                {
+                                    delayedStatus === LoadStatus.FAIL ?
+                                        handleFailButtonText
+                                        :
+                                        delayedStatus === LoadStatus.MISS ?
+                                            handleMissButtonText
+                                            : undefined
+                                }
                             </Button>
                         </div>
                     }

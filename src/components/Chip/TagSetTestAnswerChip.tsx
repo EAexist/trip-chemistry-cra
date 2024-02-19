@@ -17,10 +17,10 @@ const TagSetTestAnswerChip = ({ testName, selected = true }: TagSetTestAnswerChi
 
     const tagSet = useTagSetAnswer( testName, selected );
 
-    const handleClick = ( tag : string ) => {
+    const handleClick = ( tag : number ) => {
         dispatch( addTagAnswer({ testName, tag }) )
     }
-    const handleDelete = ( tag : string ) => {
+    const handleDelete = ( tag : number ) => {
         dispatch( deleteTagAnswer({ testName, tag }) )
     }
 

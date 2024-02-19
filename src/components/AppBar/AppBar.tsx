@@ -89,7 +89,7 @@ function AppBar({ }: AppBarProps) {
                     <Toolbar />
                     <List>
                         <ListItem key={ "profile" }>
-                            <ListItemButton onClick={isAuthorized ? undefined : () => handleDrawerItemClick( 'profile' )} disableGutters className="block--with-padding-x">
+                            <ListItemButton onClick={isAuthorized ? undefined : () => handleDrawerItemClick( 'login' )} disableGutters className="block--with-padding-x">
                                 <ListItemAvatar>
                                     <UserAvatar showLabel={false}/>
                                 </ListItemAvatar>
