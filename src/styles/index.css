@@ -322,7 +322,7 @@
 }
 
 .image-card__card-content {
-    height: 128px;
+    height: 100%;
     background-color: transparent;
     display: flex;
     flex-direction: column;
@@ -512,16 +512,22 @@ body {
 }
 
 .typography-white {
-
     & p,
     & h2,
     & h3,
     & h4,
     & h5,
-    & h6 {
+    & h6,
+    & * {
         color: rgba(250, 250, 250);
     }
 }
+
+.typography-white--light {
+    & * {
+        color: rgba(253,253,255,0.75);
+    }
+} 
 
 .typography-heading-large {
     max-width: 90%;

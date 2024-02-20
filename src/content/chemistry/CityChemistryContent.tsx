@@ -35,8 +35,8 @@ function CityChemistryContent({ cityClass }: CityChemistryContentProps) {
     return (
         <div className="block__body">
             <ButtonBase onClick={handleClick} style={{ width: "100%" }}>
-                <ImageCard src={getImgSrc("/city", TEST.city.subTests[cityClass].examples[0], FORMATWEBP)} title={cityClass} sx={{ width: "100%" }} gradient="linear-gradient(to bottom, rgba(255,255,255,0), rgba(0,0,0,0.2) 64%, rgba(0,0,0,0.9))">
-                    <CardContent className="image-card__card-content">
+                <ImageCard src={getImgSrc("/city", TEST.city.subTests[cityClass].examples[0], FORMATWEBP)} title={cityClass} sx={{ width: "100%" }} gradient="bottom">
+                    <CardContent className="image-card__card-content" sx={{ height: "164px" }}>
                         <Stack justifyContent={"space-between"} className="typography-white">
                             <Stack>
                                 <h2 className="typography-label">{testStrings.subTest[cityClass as keyof typeof testStrings.subTest].title}</h2>

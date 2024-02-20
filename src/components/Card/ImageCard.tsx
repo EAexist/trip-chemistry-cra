@@ -4,11 +4,11 @@ import { useEffect } from "react";
 interface ImageCardProps extends CardProps {
     src?: string
     title? : string
-    gradient? : string
+    gradient? : "bottom"
 };
 const ImageCard = ({ sx, title, src, gradient, children, ...props }: ImageCardProps) => {
     
-    const backgrounSx = ( src === undefined ) ? {} : { background: `url("${ src }")${gradient ? `, ${gradient}` : ""}`, backgroundSize: 'cover', backgroundBlendMode: 'multiply' };
+    const backgrounSx = ( src === undefined ) ? {} : { background: `url("${ src }")${gradient === "bottom" ? `, linear-gradient(to bottom, rgba(255,255,255,0), rgba(0,0,0,0.2) 64%, rgba(0,0,0,0.9))` : ""}`, backgroundSize: 'cover', backgroundBlendMode: 'multiply' };
 
     useEffect(()=>{
         console.log(`background= ${backgrounSx.background}`)

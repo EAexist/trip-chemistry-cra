@@ -1,5 +1,5 @@
 import { ArrowRight, Close, ExpandMore, ThumbUp } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionSummary, AppBar, Button, Icon, IconButton, Rating, Stack, Toolbar } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, AppBar, Button, ButtonBase, CardContent, Icon, IconButton, Rating, Stack, Toolbar } from "@mui/material";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -100,9 +100,9 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                                 </Stack>
                                 <p className="typography-note">
                                     {
-                                        expanded 
-                                        ? "답변 접기"
-                                        : "친구들의 답변 보기"
+                                        expanded
+                                            ? "답변 접기"
+                                            : "친구들의 답변 보기"
                                     }
                                 </p>
                             </Stack>
@@ -129,31 +129,32 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                     TEST.city.subTests[cityClass].examples.map((cityId) => (
                         <SwiperSlide key={cityId} className="">
                             <div className="block--with-margin-x--lg block__body">
-                                <ImageCard src={getImgSrc("/city", cityId, FORMATWEBP)} title={cityId} sx={{ height: "256px", borderRadius: "24px" }} className="body__head" />
-                                <Stack>
-                                    <h3 className="typography-label">{commonStrings.city[cityId as keyof typeof commonStrings.city].name}</h3>
-                                    <h3 className="typography-label">{cityId}</h3>
-                                    {
-                                        NATION[CITY[cityId as keyof typeof CITY].nation as keyof typeof NATION].flag
-                                        && <span className={`fi fi-${CITY[cityId as keyof typeof CITY].nation}`}></span>
-                                    }
-                                </Stack>
-                                <p className="card__content__body">{commonStrings.city[cityId as keyof typeof commonStrings.city].intro}</p>
+                                <ImageCard src={getImgSrc("/city", cityId, FORMATWEBP)} title={cityId} className="body__head" gradient="bottom" >
+                                    <CardContent className="image-card__card-content" sx={{ height: "320px" }}>
+                                        <Stack className="typography-white">
+                                            <h2 className="typography-heading">{commonStrings.city[cityId as keyof typeof commonStrings.city].name}</h2>
+                                            <h3 className="typography-heading">{cityId}</h3>
+                                            {
+                                                NATION[CITY[cityId as keyof typeof CITY].nation as keyof typeof NATION].flag
+                                                && <span className={`fi fi-${CITY[cityId as keyof typeof CITY].nation}`}></span>
+                                            }
+                                        </Stack>
+                                    </CardContent>
+                                </ImageCard>
+                                <h5 className="typography-label" style={{ marginTop: "1rem" }}>{commonStrings.city[cityId as keyof typeof commonStrings.city].intro}</h5>
+                                <p>{commonStrings.city[cityId as keyof typeof commonStrings.city].body}</p>
                                 <div className="flex">
-                                    <Button variant={"contained"}>
+                                    <Button variant={"outlined"}>
                                         <a href={CITY[cityId as keyof typeof CITY].link} target="_blank" rel="noopener noreferrer">
                                             <Stack>
-                                                {/* <Logo id={ commonStrings.city.linkType} className='h-5'/> */}
-                                                {/* <p className="whitespace-nowrap"> */}
-                                                    {
-                                                        commonStrings.linkTextList.map((text) => (
-                                                            text === "/link" ? commonStrings.linkType[CITY[cityId as keyof typeof CITY].linkType as keyof typeof commonStrings.linkType].name
-                                                                : (text === "/city" ? commonStrings.city[cityId as keyof typeof commonStrings.city].name
-                                                                    : text
-                                                                )
-                                                        ))
-                                                    }
-                                                {/* </p> */}
+                                                {
+                                                    commonStrings.linkTextList.map((text) => (
+                                                        text === "/link" ? commonStrings.linkType[CITY[cityId as keyof typeof CITY].linkType as keyof typeof commonStrings.linkType].name
+                                                            : (text === "/city" ? commonStrings.city[cityId as keyof typeof commonStrings.city].name
+                                                                : text
+                                                            )
+                                                    ))
+                                                }
                                                 <ArrowRight />
                                             </Stack>
                                         </a>

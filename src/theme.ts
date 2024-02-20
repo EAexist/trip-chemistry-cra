@@ -17,7 +17,7 @@ export const theme = createTheme({
     palette: {
         primary: {
             main: '#FF7949',
-            light: '#FFF2ED',
+            light: '#FFDDCF',
             contrastText: '#fff',
         },
         secondary: {
@@ -54,7 +54,13 @@ export const theme = createTheme({
                 spacing: 1,
             }
         },
-
+        MuiAvatar: {
+            defaultProps: {
+                sx: {
+                    backgroundColor: (theme) => theme.palette.primary.light
+                }
+            }
+        },
         MuiList: {
             defaultProps: {
                 // disablePadding: true,
