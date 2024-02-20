@@ -681,8 +681,8 @@ body {
 .MuiButton-contained, .MuiButton-outlined {
 
     &.MuiButtonBase-root {
-        border-radius: 16px;
-        padding: 16px;
+        border-radius: 12px;
+        padding: 12px;
     }
 
     & p {
