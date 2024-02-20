@@ -490,6 +490,7 @@ const stringTable_kr = {
                     [ ExpectationTag.DIGITAL_DETOX ]: "디지털 디톡스",
                     [ ExpectationTag.REST ]: "휴식",
                     [ ExpectationTag.VIEW ]: "풍경",
+                    [ ExpectationTag.FRIENDSHIP ]: "우정",
                 }
             },
         },

@@ -98,7 +98,7 @@ function AppBar({ }: AppBarProps) {
                                         isAuthorized
                                         ?
                                         user.nickname
-                                        : "로그인 해주세요"
+                                        : "로그인"
                                     }
                                     secondary={
                                         isAuthorized && `${user.nickname}#${user.discriminator}`
