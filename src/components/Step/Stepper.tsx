@@ -7,10 +7,10 @@ import { SWIPERPROPS_STEPPER } from "../../common/swiperProps";
 import { useStep } from "./StepContext";
 
 interface StepperProps{
-
+    className: string;
 };
 
-function Stepper({ children } : PropsWithChildren<StepperProps> ){
+function Stepper({ className, children } : PropsWithChildren<StepperProps> ){
 
     /* States */
     const topNavSwiperRef = useRef<SwiperRef>(null);
@@ -23,7 +23,7 @@ function Stepper({ children } : PropsWithChildren<StepperProps> ){
     }, [ step ])
 
     return(
-        <Swiper {...SWIPERPROPS_STEPPER} ref={topNavSwiperRef} className="top-nav__swiper">
+        <Swiper {...SWIPERPROPS_STEPPER} ref={topNavSwiperRef} className={className}>
             { children }
         </Swiper>
     );

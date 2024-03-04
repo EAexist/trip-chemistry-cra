@@ -1,4 +1,6 @@
-import { ActivityTag, ExpectationTag, TripTag } from "../reducers/testAnswerReducer";
+import { ActivityTag } from "../interfaces/enums/ActivityTag";
+import { ExpectationTag } from "../interfaces/enums/ExpectationTag";
+import { TripTag } from "../interfaces/enums/TripTag";
 
 const stringTable_kr = {
     "_lang": "ko-kr",
@@ -12,10 +14,10 @@ const stringTable_kr = {
                     title: "테스트"
                 },
                 result: {
-                    title: "내 여행 타입"
+                    title: "테스트 결과 보기"
                 },
                 chemistry: {
-                    title: "내 여행 케미"
+                    title: "내 여행"
                 },
             },
             contact: {
@@ -29,7 +31,7 @@ const stringTable_kr = {
                 // contact: ['오류가 계속되면 ', '/name', '에게 알려주세요.'],
                 // connect: '지금 서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.',
             },
-            title: "여행 케미스트리", 
+            title: "여행 케미스트리",
             reference: "제공: ",
             linkText: "에서 보기",
             linkTextList: [
@@ -66,153 +68,93 @@ const stringTable_kr = {
             linkType: {
                 "travel-japan": {
                     name: "Travel Japan",
+                    body:""
                 },
                 "tabelog": {
                     name: "타베로그",
+                    body: "신뢰도 높은 일본 전국의 미식, 레스토랑 가이드"
                 },
                 "tripadvisor": {
                     name: "Tripadvisor",
+                    body: "7억개가 넘는 리뷰를 보유한 세계 최대 여행 플랫폼"
                 },
                 "website": {
                     name: "웹사이트",
+                    body:""
                 },
                 "discovering-hongkong": {
                     name: "홍콩관광청",
+                    body:""
                 },
             },
             food: {
                 "kyudong":
                 {
                     "name": "규동",
-                    "city": "jp",
-                    "restaurant": "yoshinoya",
                     "restaurantName": "요시노야",
-                    "nation": "jp",
-                    "linkType": "website",
-                    "link": "https://www.yoshinoya.com/",
                 },
                 "wantang":
                 {
                     "name": "완탕면",
-                    "city": "hongkong",
-                    "restaurant": "tsim-chai-kee",
                     "restaurantName": "침차이키",
-                    "nation": "hk",
-                    "linkType": "tripadvisor",
-                    "link": "https://www.tripadvisor.co.kr/Restaurant_Review-g294217-d1094369-Reviews-Tsim_Chai_Kee_Noodle_Shop-Hong_Kong.html",
                 },
                 "churos":
                 {
                     "name": "츄러스",
-                    "city": "hongkong",
-                    "restaurant": "twist&buckle",
                     "restaurantName": "Twist & Buckle",
-                    "nation": "hk",
-                    "linkType": "website",
-                    "link": "https://www.twistandbuckle.com/",
                 },
                 "ramen":
                 {
                     "name": "라멘",
-                    "city": "osaka",
-                    "restaurant": "iida-shouten-ramen",
                     "restaurantName": "라멘 이이다쇼텐",
-                    "nation": "jp",
-                    "linkType": "tabelog",
-                    "link": "https://tabelog.com/en/kanagawa/A1410/A141002/14038776/",
                 },
                 "udon":
                 {
                     "name": "우동",
-                    "city": "tokyo",
-                    "restaurant": "udon-maruka",
                     "restaurantName": "우동 마루카",
-                    "nation": "jp",
-                    "linkType": "tabelog",
-                    "link": "https://tabelog.com/kr/osaka/A2707/A270704/27011240/",
                 },
                 "dumpling":
                 {
                     "name": "딤섬",
-                    "city": "hongkong",
-                    "restaurant": "timhowan",
                     "restaurantName": "팀호완",
-                    "nation": "hk",
-                    "linkType": "website",
-                    "link": "https://www.timhowan.com/",
                 },
 
                 "sushi":
                 {
                     "name": "초밥",
-                    "city": "sapporo",
-                    "restaurant": "nemuro-hanamaru",
                     "restaurantName": "네무로 하나마루",
-                    "nation": "jp",
-                    "linkType": "tabelog",
-                    "link": "https://tabelog.com/kr/hokkaido/A0101/A010101/1001102/",
                 },
-                "afternoon-tea":
+                "afternoonTea":
                 {
                     "name": "애프터눈 티",
-                    "city": "hongkong",
-                    "restaurant": "peninsula-hk",
                     "restaurantName": "페닌슐라 호텔 홍콩",
-                    "nation": "hk",
-                    "linkType": "website",
-                    "link": "https://www.peninsula.com/en/hong-kong/hotel-fine-dining/the-lobby-afternoon-tea",
                 },
 
                 "hitsumabushi":
                 {
                     "name": "장어덮밥",
-                    "city": "tokyo",
-                    "restaurant": "tomoei",
                     "restaurantName": "토모에이",
-                    "nation": "jp",
-                    "linkType": "tabelog",
-                    "link": "https://tabelog.com/en/kanagawa/A1410/A141001/14001626/",
                 },
                 "yakitori":
                 {
                     "name": "야키토리",
-                    "city": "tokyo",
-                    "restaurant": "torishiki",
                     "restaurantName": "토리시키",
-                    "nation": "jp",
-                    "linkType": "tabelog",
-                    "link": "https://tabelog.com/kr/tokyo/A1316/A131601/13041029/",
                 },
-                "chili-crab":
+                "chiliCrab":
                 {
                     "name": "칠리크랩",
-                    "city": "hongkong",
-                    "restaurant": "underbridge-spicy-crab",
                     "restaurantName": "언더브릿지 스파이시 크랩",
-                    "nation": "hk",
-                    "linkType": "tripadvisor",
-                    "link": "https://www.tripadvisor.com/Restaurant_Review-g294217-d1089734-Reviews-Under_the_Bridge_Spicy_Crab-Hong_Kong.html",
                 },
-                "mandarin-grill":
+                "mandarinGrill":
                 {
                     "name": "퓨전 파인다이닝",
-                    "city": "hongkong",
-                    "restaurant": "mandarin-grill",
                     "restaurantName": "만다린 그릴",
-                    "price": 100000,
-                    "nation": "jp",
-                    "linkType": "website",
                     "link": "https://www.mandarinoriental.com/en/hong-kong/victoria-harbour/dine/mandarin-grill-and-bar",
                 },
                 "more":
                 {
                     "name": "그 이상",
-                    "city": "",
-                    "restaurant": "",
                     "restaurantName": "",
-                    "price": 100000,
-                    "nation": "",
-                    "linkType": "",
                     "link": "",
                 },
             },
@@ -423,55 +365,55 @@ const stringTable_kr = {
             "chemistry": "케미 보기",
         },
         tripTag: {
-            [ TripTag.PHOTO ] : "사진사",
-            [ TripTag.EAT ] : "미식가",
-            [ TripTag.FRIENDSHIP ] : "우정의 수호자",
-            [ TripTag.PHYSICAL ] : "액티비티",
-            [ TripTag.REST ] : "휴식이 필요해",
-            [ TripTag.INFLUENCER ] : "인플루언서",
-            [ TripTag.COFFEE ] : "카페 탐방",
-            [ TripTag.CULTURE ] : "문화 생활",
-            [ TripTag.ADVENTURE ] : "모험가",
-            [ TripTag.PASSION ] : "열정적",
-            [ TripTag.REFRESH ] : "재충전",
+            [TripTag.PHOTO]: "사진사",
+            [TripTag.EAT]: "미식가",
+            [TripTag.FRIENDSHIP]: "우정의 수호자",
+            [TripTag.PHYSICAL]: "액티비티",
+            [TripTag.REST]: "휴식이 필요해",
+            [TripTag.INFLUENCER]: "인플루언서",
+            [TripTag.COFFEE]: "카페 탐방",
+            [TripTag.CULTURE]: "문화 생활",
+            [TripTag.ADVENTURE]: "모험가",
+            [TripTag.PASSION]: "열정적",
+            [TripTag.REFRESH]: "재충전",
         },
         "test": {
             activity: {
                 title: "액티비티",
                 tagSet: {
-                    [ ActivityTag.PHOTO ]: "사진",
-                    [ ActivityTag.INSTA ]: "인스타그램",
-                    [ ActivityTag.NETWORK ]: "여행지에서 친구 사귀기",
-                    [ ActivityTag.EXTREME ]: "익스트림 액티비티",
-                    [ ActivityTag.SWIM ]: "물놀이",
-                    [ ActivityTag.DRIVE ]: "드라이브",
-                    [ ActivityTag.WALK ]: "산책",
-                    [ ActivityTag.THEMEPARK ]: "테마파크",
-                    [ ActivityTag.MARKET ]: "시장 구경",
-                    [ ActivityTag.HOTEL ]: "호캉스",
-                    [ ActivityTag.VLOG ]: "브이로그",
-                    [ ActivityTag.WAITING ]: "맛집 웨이팅",
-                    [ ActivityTag.BAR ]: "근사한 바에서 술",
-                    [ ActivityTag.CAFE ]: "카페 탐방",
-                    [ ActivityTag.SHOPPING ]: "쇼핑",
-                    [ ActivityTag.SHOW ]: "공연",
+                    [ActivityTag.PHOTO]: "사진",
+                    [ActivityTag.INSTA]: "인스타그램",
+                    [ActivityTag.NETWORK]: "여행지에서 친구 사귀기",
+                    [ActivityTag.EXTREME]: "익스트림 액티비티",
+                    [ActivityTag.SWIM]: "물놀이",
+                    [ActivityTag.DRIVE]: "드라이브",
+                    [ActivityTag.WALK]: "산책",
+                    [ActivityTag.THEMEPARK]: "테마파크",
+                    [ActivityTag.MARKET]: "시장 구경",
+                    [ActivityTag.HOTEL]: "호캉스",
+                    [ActivityTag.VLOG]: "브이로그",
+                    [ActivityTag.WAITING]: "맛집 웨이팅",
+                    [ActivityTag.BAR]: "근사한 바에서 술",
+                    [ActivityTag.CAFE]: "카페 탐방",
+                    [ActivityTag.SHOPPING]: "쇼핑",
+                    [ActivityTag.SHOW]: "공연",
                 }
             },
             expectation: {
                 title: "제네럴",
                 tagSet: {
-                    [ ExpectationTag.HEAL ]: "치유되는",
-                    [ ExpectationTag.COMPACT ]: "알찬",
-                    [ ExpectationTag.FULLFILL ]: "보람있는",
-                    [ ExpectationTag.MEMORY ]: "추억",
-                    [ ExpectationTag.RELAX ]: "여유로운",
-                    [ ExpectationTag.COMFORT ]: "편안한",
-                    [ ExpectationTag.ADVENTURE ]: "모험",
-                    [ ExpectationTag.NEW ]: "새로운 경험",
-                    [ ExpectationTag.DIGITAL_DETOX ]: "디지털 디톡스",
-                    [ ExpectationTag.REST ]: "휴식",
-                    [ ExpectationTag.VIEW ]: "풍경",
-                    [ ExpectationTag.FRIENDSHIP ]: "우정",
+                    [ExpectationTag.HEAL]: "치유되는",
+                    [ExpectationTag.COMPACT]: "알찬",
+                    [ExpectationTag.FULLFILL]: "보람있는",
+                    [ExpectationTag.MEMORY]: "추억",
+                    [ExpectationTag.RELAX]: "여유로운",
+                    [ExpectationTag.COMFORT]: "편안한",
+                    [ExpectationTag.ADVENTURE]: "모험",
+                    [ExpectationTag.NEW]: "새로운 경험",
+                    [ExpectationTag.DIGITAL_DETOX]: "디지털 디톡스",
+                    [ExpectationTag.REST]: "휴식",
+                    [ExpectationTag.VIEW]: "풍경",
+                    [ExpectationTag.FRIENDSHIP]: "우정",
                 }
             },
         },
@@ -498,8 +440,8 @@ const stringTable_kr = {
                     },
                     {
                         "id": "asthetic",
-                        title: "귀여운 여행 타입 캐릭터들",
-                        "body": "나는 어떤 여행 타입일까? 귀여운 캐릭터들이 하나씩 알려줄거야!"
+                        title: "내 여행 타입은?",
+                        "body": "귀여운 캐릭터와 함께 내 여행 스타일을 알아보자"
                     },
                 ],
             },
@@ -691,9 +633,9 @@ const stringTable_kr = {
                             },
                         },
                     },
-                    "tagSet" : {
+                    "tagSet": {
                         instruction: "태그를 두 개 이상 선택해주세요.",
-                        selectWarningStringList : [
+                        selectWarningStringList: [
                             "",
                             "개 이상 선택해주세요.",
                         ]
@@ -744,12 +686,12 @@ const stringTable_kr = {
                 "subTest": {
                     "expectation": {
                         label: "여행 기대하기",
-                        title: "나는 이런 여행을 하고 싶어",                        
+                        title: "나는 이런 여행을 하고 싶어",
                         particle: "",
                     },
                     "activity": {
                         label: "액티비티",
-                        title: "여행지에서는 이런 걸 해보고 싶어",                        
+                        title: "여행지에서는 이런 걸 해보고 싶어",
                         particle: "",
                     },
                     "leadership": {
@@ -887,7 +829,7 @@ const stringTable_kr = {
                     "food": {
                         label: "한 끼 예산",
                         icon: "restaurant",
-                        title: "여행지에서 한끼 식사에는\n 평균적으로 얼마나 쓰면 좋을까?",
+                        title: "한끼 식사에는 평균적으로 얼마나 쓸까?",
                         particle: "",
                         note: "(평균 예산)",
                         subtitle: "예산 - 식사",
@@ -1013,12 +955,12 @@ const stringTable_kr = {
                 // }
             },
             "result": {
-                "label": "내 여행 타입",
-                "navigateToChemistryButton" : "여행 케미 확인하기",
+                "label": "테스트 결과 보기",
+                "navigateToChemistryButton": "여행 케미 확인하기",
                 "sections": {
                     "tripCharacter":
                     {
-                        title: "내 여행 타입",
+                        title: "테스트 결과 보기",
                         icon: "pets",
                         typeIntro: "내 여행 MBTI는",
                     },
@@ -1043,13 +985,13 @@ const stringTable_kr = {
                 },
             },
             "chemistry": {
-                "label": "내 여행 케미",
+                "label": "내 여행",
                 "addFriend": {
                     label: "친구 추가",
                     icon: "group_add",
                     me: "Me",
                     // addByName: "친구 추가",
-                    searchFormPlaceholder: "닉네임을 입력해주세요 (ex. 꿀벌#12)",
+                    searchFormPlaceholder: "찾으려는 닉네임과 태그를 입력해주세요 (ex. 꿀벌#12)",
                     giveMyName: "내 닉네임",
                     userApiMissMessage: "친구를 찾지 못했어요.\nID를 다시 확인해주세요.",
                     userApiFailMessage: "현재 서버에 접속할 수 없어요.\n잠시 후 다시 시도해주세요.",

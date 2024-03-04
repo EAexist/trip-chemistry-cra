@@ -2,25 +2,30 @@
 import { useEffect, useRef, useState } from "react";
 
 /* React Packages */
+import { useMotionValueEvent, useScroll } from "framer-motion";
 import { useDispatch } from "react-redux";
-import { useMotionValueEvent, useScroll } from "framer-motion"
 
-import { Button, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Toolbar } from "@mui/material";
-import { Add, Close, KeyboardArrowDown } from "@mui/icons-material";
+import { Add, AirplaneTicket, Close, ContentCopyOutlined, Error, GroupAdd, PersonSearch, Share } from "@mui/icons-material";
+import { Alert, Avatar, Button, ButtonBase, Grid, Icon, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Modal, Stack, Toolbar } from "@mui/material";
 
 /* Trip Chemistry */
 import { useStrings } from "../../texts";
 
-import { asyncGetProfile, asyncGetTestAnswer, asyncGetTestResult, deleteUser, setAllREST, setStatus, useProfileIdList, useProfileList } from "../../reducers/profileReducer";
-import { AppDispatch } from "../../store";
-import { LoadStatus, IProfileId } from "../../reducers";
-import { clearChemistry, useChemistryLoadStatus, useGetChemistry, useIsChemistryUpdated } from "../../reducers/chemistryReducer";
-import ProfileAvatar from "../../components/Avatar/ProfileAvatar";
-import { Outlet, useNavigate } from "react-router-dom";
-import Tooltip from "../../components/Tooltip";
-import LoadContent from "../LoadContent";
-import { useUserId } from "../../reducers/authReducer";
+import { useNavigate, useParams } from "react-router-dom";
+import AvatarProfile from "../../components/Avatar/AvatarProfile";
 import SectionPaper from "../../components/Paper/SectionPaper";
+import { IProfileId, LoadStatus } from "../../reducers";
+import { asyncGetProfile, useGetProfile, useHasAnsweredTest, useIsAuthorized, useUserId } from "../../reducers/authReducer";
+// import { clearChemistry, useChemistryLoadStatus, useIsChemistryUpdated } from "../../reducers/chemistryReducer";
+// import { deleteUser, setAllREST, useProfileIdList, useProfileList } from "../../reducers/profileReducer";
+import { asyncGetChemistry, asyncJoinChemistry, useChemistry, useChemistryLoadStatus, useIsChemistryEnabled } from "../../reducers/tripReducer";
+import { AppDispatch } from "../../store";
+import LoadContent from "../LoadContent";
+import ChemistryDetailContent from "./ChemistryDetailContent";
+import ToggleProfileButton from "../../components/Button/ToggleProfileButton";
+import LazyImage from "../../components/LazyImage";
+import getImgSrc, { FORMATPNG } from "../../utils/getImgSrc";
+import { FriendProfileAvatar } from "../../components/Avatar/ProfileAvatar";
 
 interface ChemistryContentProps {
 
@@ -30,48 +35,57 @@ interface ChemistryContentProps {
 function ChemistryContent({ }: ChemistryContentProps) {
 
     const strings = useStrings().public.contents.chemistry;
+
+
+
+    /* Hooks */
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
+    const params = useParams();
+    const chemistryId = params.chemistryId ? params.chemistryId : "";
 
-    /* Store */
+    /* Induced */
+    const link = `http://localhost:3000/chemistry/${chemistryId}`;
+
+    /* Reducers */
+    const { title, profileList } = useChemistry();
+    const isChemistryEnabled = useIsChemistryEnabled();
     const userId = useUserId();
-    const profileList = useProfileList();
-    const idList = useProfileIdList();
-    const isChemistryEnabled = idList.length > 1;
+    const isAuthorized = useIsAuthorized();
+    const hasAnsweredTest = useHasAnsweredTest();
+    const getProfile = useGetProfile();
+
+    /* Induced */
+    const isMember = Object.keys(profileList).includes(userId);
 
     const [chemistryLoadStatus, setChemistryLoadStatus] = useChemistryLoadStatus();
-    const isChemistryUpdated = useIsChemistryUpdated();
-
-    const getChemistry = useGetChemistry();
 
     /* States */
-    const [isStartTooltipOpen, setIsStartTooltipOpen] = useState(false);
+    const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+    const [isLinkCopiedAlertOpen, setIsLinkCopiedAlertOpen] = useState(false);
+    const [isInviteOptionsOpen, setIsInviteOptionsOpen] = useState(false);
 
     // const [characterSectionActiveIProfileId, setCharacterSectionActiveIProfileId] = useState<IProfileId | undefined>(userId);
 
     const resultContentTopRef = useRef<HTMLDivElement>(null);
 
     const [showFloatingButton, setShowFloatingButton] = useState<boolean>(true);
-    
+
     /* Event Handlers */
-    const handleDelete = (id: IProfileId) => {
-        navigate('');
-        dispatch( clearChemistry() );
-        dispatch( deleteUser(id) );
-    }
+    // const handleDelete = (id: IProfileId) => {
+    //     navigate('');
+    //     dispatch( clearChemistry() );
+    //     // dispatch( deleteUser(id) );
+    // }
 
-    const handleAddFriendButtonClick = () => {
-        navigate('addFriend');
-    }
-
-    const handleStartButtonClick = () => {
-        console.log(`[ChemistryContent] handleStartButtonClick`);
-        idList.forEach((id) => {
-            dispatch(setStatus({ loadStatus: LoadStatus.PENDING, id }));
-            dispatch(asyncGetProfile({id}));
-        });
-        getChemistry();
-    };
+    // const handleStartButtonClick = () => {
+    //     console.log(`[ChemistryContent] handleStartButtonClick`);
+    //     idList.forEach((id) => {
+    //         dispatch(setStatus({ loadStatus: LoadStatus.PENDING, id }));
+    //         dispatch(asyncGetProfile({id}));
+    //     });
+    //     getChemistry();
+    // };
 
     const handleScrollDown = () => {
         // window.scrollTo({ top: resultContentTopRef.current?.offsetTop, behavior: "smooth" });
@@ -81,28 +95,88 @@ function ChemistryContent({ }: ChemistryContentProps) {
         setChemistryLoadStatus(LoadStatus.REST);
     };
 
-    const handleStartTooltipOpen = () => {
-        if (!isChemistryEnabled) {
-            setIsStartTooltipOpen(true);
-        }
+    const handleChemistrySuccess = () => {
+        getProfile();
+    }
+
+    const handleStartTest = () => {
+        navigate('../test');
+    }
+
+    const handleStartShare = () => {
+        setIsShareModalOpen(true);
+    }
+
+    const handleStartSearch = () => {
+        navigate('searchAndInviteFriend');
+    }
+
+    const handleCloseShareModal = () => {
+        setIsShareModalOpen(false);
     };
 
-    /* Side Effects  */
+    const handleCloseLinkCopiedAlert = () => {
+        setIsLinkCopiedAlertOpen(false);
+    };
+
+    const handleCopyLink = async () => {
+        /* https://sisiblog.tistory.com/301 */
+        try {
+            await navigator.clipboard.writeText(link);
+            console.log('Content copied to clipboard');
+            /* Resolved - 클립보드에 복사 성공 */
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+            /* Rejected - 클립보드에 복사 실패 */
+        }
+        setIsShareModalOpen(false);
+        setIsLinkCopiedAlertOpen(true);
+
+    }
+
+    const handleJoinChemistry = isAuthorized
+        ?
+        () => {
+            dispatch(asyncJoinChemistry({ userId, chemistryId }));
+        }
+        :
+        () => {
+            navigate('../login', { state: { loginRedirectPath: `chemistry/${chemistryId}` } });
+        }
+
+
+    /* Side Effects */
+
+    /* 케미스트리 데이터 불러오기 */
+
+    useEffect(() => {
+        if (isLinkCopiedAlertOpen) {
+            let timer = setTimeout(() => { setIsLinkCopiedAlertOpen(false) }, 2000);
+        }
+    }, [isLinkCopiedAlertOpen])
+
+    useEffect(() => {
+        console.log(`[ChemistryContent] chemistryId=${chemistryId}`);
+        if (chemistryId) {
+            dispatch(asyncGetChemistry(chemistryId));
+        }
+    }, [chemistryId, dispatch])
 
     useEffect(() => {
         if (chemistryLoadStatus === LoadStatus.SUCCESS) {
-            dispatch( setAllREST() );
+            // dispatch( setAllREST() );
             /* @TODO Animate */
             setChemistryLoadStatus(LoadStatus.REST);
         }
         console.log(`[ChemistryContent] chemistryLoadStatus=${chemistryLoadStatus}`);
-    }, [ chemistryLoadStatus, dispatch, setChemistryLoadStatus ]);
+    }, [chemistryLoadStatus, dispatch, setChemistryLoadStatus]);
 
-    useEffect(()=>{
-        if( isChemistryUpdated ){
-            navigate('result');
+
+    useEffect(() => {
+        if (isShareModalOpen === false) {
+            setIsInviteOptionsOpen(false);
         }
-    }, [ isChemistryUpdated, navigate ])
+    }, [isShareModalOpen])
 
     /* Motion */
     const { scrollY } = useScroll();
@@ -120,80 +194,222 @@ function ChemistryContent({ }: ChemistryContentProps) {
         <LoadContent
             status={chemistryLoadStatus}
             setStatus={setChemistryLoadStatus}
+            handleSuccess={handleChemistrySuccess}
             handleFail={handleChemistryFail}
         >
-            <div className="page content__body--gray min-fullscreen" >
-                <Toolbar />
-                <SectionPaper>
-                    <List>
+            <Toolbar />
+            <div className="page content__body--gray min-fullscreen block__body">
+                <SectionPaper className="block__body body__head">
+                    <h2 className="typography-heading body__head">{title}</h2>
+                    <div>
+                        <h4 className="typography-note">
+                            함께하는 친구들
+                        </h4>
+                        <List>
+                            {
+                                Object.values(profileList).map(({ id, nickname, testAnswer }) =>
+                                    <ListItem
+                                        key={id}
+                                        className={`${(testAnswer === null) && 'disabled'}`}
+                                        secondaryAction={
+                                            (testAnswer === null) &&
+                                            <Stack>
+                                                <Error />
+                                                <p className='typography-note'>테스트 기다리는 중</p>
+                                            </Stack>
+                                        }
+                                    >
+                                        <ListItemAvatar>
+                                            <FriendProfileAvatar id={id} showLabel={false} />
+                                        </ListItemAvatar>
+                                        <ListItemText primary={nickname} />
+                                    </ListItem>
+                                )
+                            }
+                        </List>
+                    </div>
+                    <div>
                         {
-                            profileList.map(({ id, nickname }) =>
-                                <ListItem
-                                    key={id}
-                                    secondaryAction={
-                                        (id !== userId) &&
-                                        <IconButton aria-label="delete" onClick={() => handleDelete(id)}>
-                                            <Close />
-                                        </IconButton>
-                                    }
+                            isMember
+                                ?
+                                (
+                                    isInviteOptionsOpen
+                                        ?
+                                        <Grid container columnSpacing={2}>
+                                            {
+                                                [
+                                                    {
+                                                        onClick: handleStartShare,
+                                                        icon: 'share',
+                                                        label: '링크 공유'
+                                                    },
+                                                    {
+                                                        onClick: handleStartSearch,
+                                                        icon: 'person_search',
+                                                        label: '소셜 로그인 회원 검색'
+                                                    },
+                                                ].map(({ onClick, icon, label }) => (
+                                                    <Grid item xs={6} display={"flex"} alignItems={"stretch"} >
+                                                        <Button
+                                                            onClick={onClick}
+                                                            startIcon={<Icon>{icon}</Icon>}
+                                                            variant="outlined"
+                                                            className="button--full"
+                                                        >
+                                                            {label}
+                                                        </Button>
+                                                    </Grid>
+
+                                                ))
+                                            }
+                                        </Grid>
+                                        :
+                                        <Button
+                                            onClick={() => setIsInviteOptionsOpen(true)}
+                                            startIcon={<GroupAdd />}
+                                            variant="outlined"
+                                            className="button--full"
+                                        >
+                                            친구 초대하기
+                                        </Button>
+                                )
+                                :
+                                <Button
+                                    onClick={handleJoinChemistry}
+                                    startIcon={<AirplaneTicket />}
+                                    variant="outlined"
+                                    className="button--full"
                                 >
-                                    <ListItemAvatar>
-                                        <ProfileAvatar id={id} showLabel={false} />
-                                    </ListItemAvatar>
-                                    <ListItemText primary={nickname} />
-                                </ListItem>
-                            )
+                                    여행에 참여하기
+                                </Button>
                         }
-                        <ListItem >
-                            <ListItemButton onClick={handleAddFriendButtonClick} disableGutters>
-                                <ListItemAvatar>
-                                    <Add />
-                                </ListItemAvatar>
-                                <ListItemText primary={strings.sections.addFriend.addFriendButton} />
-                            </ListItemButton>
-                        </ListItem>
-                    </List>
+                    </div>
                 </SectionPaper>
                 {
-                    !isChemistryUpdated &&
-                    <div className="floating-placeholder--bottom" >
-                        <Button>
-                            placeholder
-                        </Button>
-                    </div>
+                    isChemistryEnabled
+                        ?
+                        <ChemistryDetailContent />
+                        :
+                        /* 참여자를 한 명도 추가하지 않음. */
+                        <SectionPaper className="block__body body--centered">
+                            {
+                                Object.keys(profileList).length < 2
+                                    ?
+                                    <>
+                                        <LazyImage
+                                            alt={"MISS"}
+                                            src={getImgSrc('/info', "MISS", FORMATPNG)}
+                                            containerClassName="load-content-item__image"
+                                            containerSx={{ height: "256px", width: "256px" }}
+                                        />
+                                        <p>{"여행을 함께할 친구를 초대하고\n케미스트리를 확인해보세요."}</p>
+                                    </>
+                                    :
+                                    /* 테스트를 완료한 참여자가 두명 미만임. */
+                                    <>
+                                        <LazyImage
+                                            alt={"MISS"}
+                                            src={getImgSrc('/info', "MISS", FORMATPNG)}
+                                            containerClassName="load-content-item__image"
+                                            containerSx={{ height: "256px", width: "256px" }}
+                                        />
+                                        <p>{"두 명 이상이 테스트를 완료하면 결과를 확인할 수 있어요."}</p>
+                                    </>
+                            }
+                        </SectionPaper>
                 }
-                <div ref={resultContentTopRef} className="scroll-target">
-                    <Outlet />
-                </div>
+
                 {
-                    (showFloatingButton) &&
-                    <div className="floating--bottom" >
-                        <Tooltip
-                            open={isStartTooltipOpen}
-                            onClose={() => setIsStartTooltipOpen(false)}
-                            onOpen={handleStartTooltipOpen}
-                            title={strings.sections.addFriend.tooltips.addAtLeastOneFriend}
-                        >
-                            <span className="block--with-margin-x flex">
-                                <Button
-                                    disabled={!isChemistryEnabled}
-                                    onClick={isChemistryUpdated ? handleScrollDown : handleStartButtonClick}
-                                    variant="contained"
-                                    className="flex-row"
-                                >
-                                        {
-                                            isChemistryUpdated
-                                                ? strings.sections.addFriend.scrollDownButton
-                                                : strings.sections.addFriend.startChemistryButton
-                                        }
-                                    {
-                                        isChemistryUpdated && <KeyboardArrowDown />
-                                    }
-                                </Button>
-                            </span>
-                        </Tooltip>
+                    isMember && !hasAnsweredTest &&
+                    <div className="floating--bottom">
+                        <div className="block--with-margin">
+                            <Button
+                                onClick={handleStartTest}
+                                variant="contained"
+                                className="button--full"
+                            >
+                                테스트 하러가기
+                            </Button>
+                        </div>
                     </div>
+
                 }
+
+                {/* 링크 공유 모달 */}
+                <Modal
+                    open={isShareModalOpen}
+                    onClose={handleCloseShareModal}
+                >
+                    <div className="floating--bottom">
+                        <SectionPaper
+                            square={false}
+                            sx={{ borderRadius: "16px" }}
+                            className="block__body block--with-margin--sm"
+                        >
+                            <Grid container className="body__head">
+                                {
+                                    [
+                                        {
+                                            onClick: handleCopyLink,
+                                            icon: 'content_copy',
+                                            label: '링크 복사'
+                                        },
+                                        {
+                                            onClick: handleCopyLink,
+                                            icon: 'more_horiz',
+                                            label: '더보기'
+                                        },
+                                    ].map(({ onClick, icon, label }) => (
+                                        <Grid item xs={3} display={"flex"} flexDirection={"column"} alignItems={"center"} >
+                                            <ButtonBase onClick={onClick}>
+                                                <Stack direction={"column"}>
+                                                    <Avatar>
+                                                        <Icon>{icon}</Icon>
+                                                    </Avatar>
+                                                    <p className="typography-note">{label}</p>
+                                                </Stack>
+                                            </ButtonBase>
+                                        </Grid>
+
+                                    ))
+                                }
+                            </Grid>
+                            <Button
+                                onClick={handleCloseShareModal}
+                                variant="contained"
+                                className="button--full"
+                            >
+                                닫기
+                            </Button>
+                        </SectionPaper>
+                    </div>
+                </Modal>
+                <Modal
+                    open={isLinkCopiedAlertOpen}
+                    onClose={handleCloseLinkCopiedAlert}
+                    hideBackdrop={true}
+                >
+                    <div className="floating--bottom">
+                        <Alert
+                            action={
+                                <IconButton
+                                    aria-label="close"
+                                    color="inherit"
+                                    size="small"
+                                    onClick={() => {
+                                        setIsLinkCopiedAlertOpen(false);
+                                    }}
+                                >
+                                    <Close fontSize="inherit" />
+                                </IconButton>
+                            }
+                            severity="success"
+                            className="block--with-margin--sm"
+                        >
+                            링크를 복사했어요.
+                        </Alert>
+                    </div>
+                </Modal>
             </div>
         </LoadContent>
     );

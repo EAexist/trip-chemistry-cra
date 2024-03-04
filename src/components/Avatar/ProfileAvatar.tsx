@@ -1,31 +1,49 @@
-import { Avatar, AvatarProps } from "@mui/material";
-import Profile, { ProfileProps } from "./Profile";
-import { IProfile } from "../../reducers/profileReducer";
-import withProfile from "../../hocs/withProfile";
+import { Avatar, AvatarProps, Stack } from "@mui/material";
 import getImgSrc, { FORMATPNG } from "../../utils/getImgSrc";
+import { ProfileProps } from "./Profile";
+import { IProfile } from "../../interfaces/IProfile";
+import withFriendProfile from "../../hocs/withFriendProfile";
+import withUserProfile from "../../hocs/withUserProfile";
 
-interface ProfileAvatarProps extends AvatarProps, ProfileProps, Partial<IProfile> {
+interface ProfileAvatarProps extends AvatarProps, Pick<ProfileProps, "labelSize">, Pick<Partial<IProfile>, 'testResult' | 'nickname'> {
+    characterId?: string
     showLabel?: boolean
-    tripCharacter_id? : string
 };
 
-function ProfileAvatar({ nickname, tripCharacter_id, testResult, showLabel = true, labelSize, ...props }: ProfileAvatarProps) {
+function ProfileAvatar({ characterId, showLabel = true, labelSize, nickname, testResult, className, ...props }: ProfileAvatarProps) {
 
-    const imageId = testResult ? testResult.data.tripCharacter.id : tripCharacter_id ? tripCharacter_id : undefined
+    const imageId = characterId ? characterId : testResult ? testResult.tripCharacter.id :  ""
 
     return (
-        <Profile
-            labelSize={labelSize}
-            label={showLabel ? nickname : undefined}
+        <Stack
+            spacing={0}
+            direction={"column"}
+            display={"flex"}
+            flexDirection={"column"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            width={"fit-content"}
         >
+        {/* {
+            showLabel &&
+            <p className={`profile__label typography--profile-label`}/>
+        } */}
             <Avatar
                 alt={nickname}
-                src={ imageId ? getImgSrc('/character', imageId, FORMATPNG) : undefined }
-                className={`profile__avatar`}
+                src={getImgSrc('/character', imageId, FORMATPNG)}
+                className={`profile__avatar ${className}`}
+                {...props as AvatarProps}
             />
-        </Profile>
+            {
+                showLabel &&
+                <p className={`profile__label profile__label-${labelSize} typography--profile-label`}>
+                    { nickname }
+                </p>
+            }
+        </Stack>
     );
 }
-export default withProfile( ProfileAvatar );
-export { ProfileAvatar };
-export type { ProfileAvatarProps };
+export default ProfileAvatar;
+const FriendProfileAvatar = withFriendProfile(ProfileAvatar);
+const UserProfileAvatar = withUserProfile(ProfileAvatar);
+export { FriendProfileAvatar, UserProfileAvatar };

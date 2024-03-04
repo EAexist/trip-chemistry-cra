@@ -1,23 +1,22 @@
-import { AvatarProps } from "@mui/material";
-import { ProfileProps } from "./Profile";
-import { useUserId } from "../../reducers/authReducer";
-import ProfileAvatar, { ProfileAvatarProps } from "./ProfileAvatar";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
-interface UserAvatarProps extends ProfileAvatarProps {
-};
+// import { useUserId } from "../../reducers/authReducer";
+// import AvatarProfile, { AvatarProfileProps } from "./AvatarProfile";
 
-function UserAvatar({ ...props }: UserAvatarProps) {
+// interface UserAvatarProps extends Omit<AvatarProfileProps, "id"> {
+// };
 
-    const id = useUserId();
+// function UserAvatar({ ...props }: UserAvatarProps) {
 
-    useEffect(()=>{
-        console.log(`[UserAvatar] id=${id}`);
-    }, [ id ])
+//     const userId = useUserId();
 
-    return (
-        <ProfileAvatar id={ id } {...props}/>
-    );
-}
-export default UserAvatar;
-export type { UserAvatarProps };
+//     useEffect(()=>{
+//         console.log(`[UserAvatar] id=${userId}`);
+//     }, [ userId ])
+
+//     return (
+//         <AvatarProfile id={ userId } {...props}/>
+//     );
+// }
+// export default UserAvatar;
+// export type { UserAvatarProps };

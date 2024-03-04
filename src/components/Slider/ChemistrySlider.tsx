@@ -2,9 +2,10 @@ import { Slider, SliderOwnProps, Stack } from "@mui/material";
 
 import useValueToProfileIdList from "../../hooks/useValueToProfileIdList";
 import useProfileIdListByAnswer from "../../hooks/useProfileIdListByAnswer";
-import ProfileAvatar from "../Avatar/ProfileAvatar";
+import AvatarProfile from "../Avatar/AvatarProfile";
 import AvatarGroup from "../Avatar/AvatarGroup";
 import { TestName } from "../../reducers/testAnswerReducer";
+import { FriendProfileAvatar } from "../Avatar/ProfileAvatar";
 
 interface ChemistrySliderProps extends SliderOwnProps {
     testName: TestName
@@ -21,13 +22,13 @@ const SliderValueLabel = ({ testName, value }: { testName: TestName, value: numb
         userList.length > 0
             ? <Stack className="slider__value" >
                 <h2 className="typography-label">{value}</h2>
-                <AvatarGroup>
+                <Stack spacing={-0.25}>
                     {
                         userList.map((id) => (
-                            <ProfileAvatar id={id} />
+                            <FriendProfileAvatar id={id} />
                         ))
                     }
-                </AvatarGroup>
+                </Stack>
             </Stack>
             : <div className="slider__value" />
     );
@@ -45,7 +46,7 @@ function ChemistrySlider({ testName, ...sliderOwnProps }: ChemistrySliderProps) 
     return (
         <Stack alignItems={'stretch'}>
             <Stack alignItems={'stretch'} className="slider">
-                <div className="flex" >
+                {/* <div className="flex" >
                     {
                         marks.slice(0, marks.length-1).map((value) => (
                             <h6 className="typography-marks body--centered" 
@@ -61,7 +62,7 @@ function ChemistrySlider({ testName, ...sliderOwnProps }: ChemistrySliderProps) 
                                 {(value)}
                             </h6>))
                     }
-                </div>
+                </div> */}
                 <Slider
                     sx={{
                         '& input[type="range"]': {
@@ -106,13 +107,13 @@ export type { ChemistrySliderProps };
 //         <Tooltip open={true} placement={isEven ? "left" : "right"} className="slider__value-label" title={
 //             <Stack flexDirection={isEven ? "row-reverse" : "row"}>
 //                 <h2 className="typography-label">{value}</h2>
-//                 <AvatarGroup>
+//                 <Stack>
 //                     {
 //                         userList.map((id) => (
-//                             <ProfileAvatar id={id} />
+//                             <AvatarProfile id={id} />
 //                         ))
 //                     }
-//                 </AvatarGroup>
+//                 </Stack>
 //             </Stack>
 //         }
 //         >

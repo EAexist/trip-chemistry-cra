@@ -10,7 +10,7 @@ import axios from "axios";
 import { AppDispatch, RootState } from "../store";
 import { IWithLoadStatus, LoadStatus, IProfileId } from ".";
 import { HEADERS_AXIOS } from "../common/app-const";
-import { IProfile, IProfileDTO, profileDTOtoProfile, setProfile } from "./profileReducer";
+import { IProfile } from "../interfaces/IProfile";
 
 type IProfileprofileSearchState = IWithLoadStatus<{
     searchedProfileList: IProfile[],
@@ -77,9 +77,10 @@ const profileSearchSlice = createSlice({
     extraReducers: (builder) => {
 
         /* asyncSearchProfile */
-        builder.addCase(asyncSearchProfile.fulfilled, (state, action: PayloadAction<IProfileDTO[]>) => {
+        builder.addCase(asyncSearchProfile.fulfilled, (state, action: PayloadAction<IProfile[]>) => {
             console.log(`[asyncSearchProfile] fulfilled\n\tpayload=${action.payload}`);
-            state.data.searchedProfileList = action.payload.map( profileDTO => profileDTOtoProfile(profileDTO) );
+            // state.data.searchedProfileList = action.payload.map( profileDTO => profileDTOtoProfile(profileDTO) );
+            state.data.searchedProfileList = action.payload;
             state.loadStatus = LoadStatus.SUCCESS;
         });
         builder.addCase(asyncSearchProfile.pending, (state, action) => {
@@ -102,9 +103,9 @@ export const useAddProfiles = () => {
             console.log(`[useAddProfiles] Callback`);
             Object.values(flaggedProfileList).forEach( profile => {
                 console.log(`[useAddProfiles] profile=${JSON.stringify(profile)}`);
-                dispatch(
-                    setProfile( profile )
-                );
+                // dispatch(
+                //     setProfile( profile )
+                // );
             });
             dispatch(profileSearchSlice.actions.resetFlag());
         }, [ flaggedProfileList, dispatch ])

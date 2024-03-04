@@ -4,25 +4,25 @@ import LazyImage from "./LazyImage";
 import { RootState } from "../store";
 import getImgSrc, { FORMATPNG } from "../utils/getImgSrc";
 import { IProfileId } from "../reducers";
-import { useProfile } from "../reducers/profileReducer";
+import { IProfile } from "../interfaces/IProfile";
+import withFriendProfile from "../hocs/withFriendProfile";
+import withUserProfile from "../hocs/withUserProfile";
 
-interface ProfileImageProps {
-    id: IProfileId;
+interface ProfileImageProps extends Pick<IProfile, 'id' | 'testResult' | 'nickname'> {
     showCharacterLabel?: boolean;
     renderLabel?: (id: IProfileId) => React.ReactNode;
 };
 
-function ProfileImage({ id, renderLabel, showCharacterLabel = true }: ProfileImageProps) {
+function ProfileImage({ renderLabel, showCharacterLabel = true, id, nickname, testResult }: ProfileImageProps) {
 
-    const tripCharacter = useSelector((state: RootState) => state.profile.data[id].data.testResult.data.tripCharacter);
-    const { nickname } = useProfile( id );
+    const tripCharacter = testResult.tripCharacter;
 
     return (
         <div className="block--centered">
             <LazyImage
                 alt={nickname}
                 src={getImgSrc('/character', tripCharacter.id, FORMATPNG)}
-                containerClassName="user-image__container"
+                containerClassName="profile-image__container"
                 containerSx={{ height: "192px" }}
             />
             {
@@ -42,4 +42,6 @@ function ProfileImage({ id, renderLabel, showCharacterLabel = true }: ProfileIma
         </div>
     );
 }
-export default ProfileImage;
+export default withFriendProfile(ProfileImage);
+const UserProfileImage = withUserProfile(ProfileImage);
+export { UserProfileImage };

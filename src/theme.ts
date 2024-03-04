@@ -11,9 +11,7 @@ declare module '@mui/material/ToggleButton' {
         contained: true;
     }
 }
-const defaultTheme = createTheme();
-
-export const theme = createTheme({
+const defaultTheme = createTheme({
     palette: {
         primary: {
             main: '#FF7949',
@@ -24,7 +22,11 @@ export const theme = createTheme({
             main: '#fff'
         },        
 
-    },
+    }},
+);
+
+export const theme = createTheme({
+    ...defaultTheme,
     typography: {
       fontFamily: [
         'Apple SD Gothic Neo', 
@@ -39,11 +41,22 @@ export const theme = createTheme({
                 // color: "transparent",
             }
         },
+        MuiCard: {
+            defaultProps: {
+                elevation: 6,
+            }
+        },
+        MuiCardContent: {
+            defaultProps: {
+                // sx: {
+                //     padding: '12px',
+                // }
+            }
+        },
         MuiDrawer: {
             defaultProps: {
                 sx: {
                     zIndex: (theme) => theme.zIndex.appBar - 1,
-                    // flexShrink: 0,
                 }
             }
         },
@@ -56,8 +69,15 @@ export const theme = createTheme({
         },
         MuiAvatar: {
             defaultProps: {
-                sx: {
-                    backgroundColor: (theme) => theme.palette.primary.light
+                style: {
+                    backgroundColor: defaultTheme.palette.primary.light
+                }
+            }
+        },
+        MuiAvatarGroup: {
+            defaultProps: {
+                style: {                 
+                    // backgroundColor: defaultTheme.palette.primary.light
                 }
             }
         },
@@ -98,6 +118,12 @@ export const theme = createTheme({
                 elevation: 0
                 // disablePadding: true,
             }
+        },
+        MuiIconButton: {
+            defaultProps: {
+                size: "large"
+            }
+
         },
         // MuiToggleButton: {            
         //     // variants: [

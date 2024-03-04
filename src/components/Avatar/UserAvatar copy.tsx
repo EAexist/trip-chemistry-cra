@@ -1,24 +1,24 @@
-import { ButtonBase } from "@mui/material";
-import ProfileAvatar, { ProfileAvatarProps } from "./ProfileAvatar";
+// import { ButtonBase } from "@mui/material";
+// import AvatarProfile, { AvatarProfileProps } from "./AvatarProfile";
 
-interface ProfileAvatarToggleButtonProps extends ProfileAvatarProps{
-    selected: boolean;
-    onClick?: React.MouseEventHandler<HTMLDivElement>;
-};
+// interface AvatarProfileToggleButtonProps extends AvatarProfileProps{
+//     selected: boolean;
+//     onClick?: React.MouseEventHandler<HTMLDivElement>;
+// };
 
-function ProfileAvatarToggleButton({ id, selected, onClick } : ProfileAvatarToggleButtonProps ){
+// function AvatarProfileToggleButton({ id, selected, onClick } : AvatarProfileToggleButtonProps ){
 
-    return(
-        <span>
-        <ProfileAvatar
-            onClick={onClick}
-            id={ id }
-            sx={{
-                opacity: selected? 1 : 0.4
-            }}
-        />
-        </span>
-    );
-}
+//     return(
+//         <span>
+//         <AvatarProfile
+//             onClick={onClick}
+//             id={ id }
+//             sx={{
+//                 opacity: selected? 1 : 0.4
+//             }}
+//         />
+//         </span>
+//     );
+// }
 
-export default ProfileAvatarToggleButton;
+// export default AvatarProfileToggleButton;

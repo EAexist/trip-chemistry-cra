@@ -16,8 +16,8 @@ const ImageCard = ({ sx, title, src, gradient, children, ...props }: ImageCardPr
 
     return(
         <Card
-            elevation={ 6 }
             sx={{
+                borderRadius: "16px",
                 title: title,
                 ...sx,
                 ...backgrounSx

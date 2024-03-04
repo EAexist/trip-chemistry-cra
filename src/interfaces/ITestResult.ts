@@ -1,5 +1,5 @@
-import { ITripTag } from "../reducers/testAnswerReducer";
 import { ITripCharacter, defaultTripCharacter } from "./ITripCharacter";
+import { ITripTag } from "./enums/TripTag";
 
 export interface ITestResult{
     // id?: string;

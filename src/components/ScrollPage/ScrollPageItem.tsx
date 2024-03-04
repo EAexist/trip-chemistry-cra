@@ -1,10 +1,13 @@
-import { ForwardedRef, PropsWithChildren, forwardRef, useEffect, useRef } from "react";
-import { usePage } from "./PageContext";
+import { PropsWithChildren, useEffect, useRef } from "react";
 import { Fade } from "@mui/material";
 
 import { motion } from 'framer-motion';
+
+import { usePage } from "./PageContext";
+
 /* ScrollPageItem
-    Wrapper that renderes wrapped element when sticky container is scrolled to corresponding page(prop) */
+    Wrapper that renderes wrapped element when sticky container is scrolled to corresponding page(prop) 
+*/
 
 interface ScrollPageItemProps {
     page: number
@@ -24,7 +27,7 @@ const ScrollPageItem = ({ page, children, className }: PropsWithChildren<ScrollP
         <motion.div
             ref={pageRef}
             animate={(activePage === page) ? { opacity: 1, visibility: 'visible', zIndex: 0 } : { opacity: 0, visibility: 'hidden', zIndex: -2 }}
-            className="scroll-page__item fullscreen"
+            className={`scroll-page__item fullscreen ${className}`}
         >
             {children}
         </motion.div>
@@ -32,6 +35,3 @@ const ScrollPageItem = ({ page, children, className }: PropsWithChildren<ScrollP
 };
 
 export default ScrollPageItem;
-
-// const ScrollPageItemWithStep = withStepCheckpoint(ScrollPageItem);
-// export { ScrollPageItemWithStep };

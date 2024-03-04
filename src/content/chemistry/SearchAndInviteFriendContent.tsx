@@ -7,26 +7,29 @@ import { Close, Done, QuestionMark, Search, Warning } from '@mui/icons-material'
 
 import { AppDispatch } from '../../store';
 import { LoadStatus } from '../../reducers';
-import { IProfile, useProfileIdList } from '../../reducers/profileReducer';
 
 import { useStrings } from '../../texts';
 import { addFlagged, asyncSearchProfile, deleteFlagged, resetSearch, useAddProfiles, useFlaggedProfileList, useSearchedProfileList, useProfileSearchStatus } from '../../reducers/profileSearchReducer';
 import AppBarContext from '../../contexts/AppBarContext';
 import { useNavigate } from 'react-router-dom';
 import { useUserId } from '../../reducers/authReducer';
-import { ProfileAvatar } from '../../components/Avatar/ProfileAvatar';
+import AvatarProfile from '../../components/Avatar/AvatarProfile';
 import { clearChemistry } from '../../reducers/chemistryReducer';
+import { IProfile } from '../../interfaces/IProfile';
+import { useProfileIdList } from '../../reducers/tripReducer';
 
 
-interface AddFriendContentProps {
+interface SearchAndInviteFriendContentProps {
     handleSucess?: () => void,
 };
 
-function AddFriendContent({ handleSucess }: AddFriendContentProps) {
+function SearchAndInviteFriendContent({ handleSucess }: SearchAndInviteFriendContentProps) {
 
+    /* Constants */
     const strings = useStrings().public.contents.chemistry.addFriend;
     const commonStrings = useStrings().public.common;
 
+    /* Hooks */
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
 
@@ -50,17 +53,17 @@ function AddFriendContent({ handleSucess }: AddFriendContentProps) {
             setIsConfirmModalOpen(true);
         }
         else {
-            navigate('/chemistry');
+            navigate('../');
         }
     }
 
     const handleAddFriendAndClose = () => {
         dispatch( clearChemistry() );
         addusers();
-        navigate('/chemistry');
+        navigate('../');
     }
     const handleClose = () => {
-        navigate('/chemistry');
+        navigate('../');
     }
 
     const handleToggle = (profile: IProfile) => {
@@ -97,14 +100,14 @@ function AddFriendContent({ handleSucess }: AddFriendContentProps) {
     }, [input, dispatch]);
 
     useEffect(() => {
-        console.log(`[AddFriendContent] profileSearchtatus=${profileSearchtatus}`)
+        console.log(`[SearchAndInviteFriendContent] profileSearchtatus=${profileSearchtatus}`)
     }, [profileSearchtatus])
 
-    const FlaggedProfileAvatarGroup = () =>
+    const FlaggedAvatarProfileGroup = () =>
         <Stack>
             {
                 Object.values(flaggedProfileList).map((profile) => (
-                    <ProfileAvatar key={profile.nickname} {...profile} labelSize="lg" />
+                    <AvatarProfile key={profile.nickname} {...profile} labelSize="lg" />
                 ))
             }
         </Stack>
@@ -113,10 +116,11 @@ function AddFriendContent({ handleSucess }: AddFriendContentProps) {
         (!showAppBar) &&
         <div className="page fullscreen flex">
             {
-                isConfirmModalOpen ?
+                isConfirmModalOpen 
+                    ?
                     <div className='block--with-margin block__body body--centered flex-grow'>
                         <h3 className='typography-label'>{`${flaggedProfileListLength}명을 친구로 추가할까요?`}</h3>
-                        <FlaggedProfileAvatarGroup />
+                        <FlaggedAvatarProfileGroup />
                         <Stack spacing={4}>
                             <Button onClick={handleAddFriendAndClose} startIcon={<Done />}>
                                 친구로 추가하기
@@ -129,7 +133,10 @@ function AddFriendContent({ handleSucess }: AddFriendContentProps) {
                     :
                     <>
                         <Toolbar>
-                            <IconButton onClick={handleCloseButtonClick}>
+                            <IconButton 
+                                edge="start"
+                                onClick={handleCloseButtonClick}
+                            >
                                 <Close />
                             </IconButton>
                             <Button
@@ -159,11 +166,11 @@ function AddFriendContent({ handleSucess }: AddFriendContentProps) {
                                 }}
                                 sx={{ width: "100%" }}
                             />
-                            <FlaggedProfileAvatarGroup />
+                            <FlaggedAvatarProfileGroup />
                             {
                                 profileSearchtatus === LoadStatus.FAIL
                                     ?
-                                    <div className='flex-grow body--centered'>
+                                    <div className='flex-grow body--centered block__body'>
                                         <Warning />
                                         <h4>{commonStrings.error.connect}</h4>
                                         <p>{commonStrings.error.contact}</p>
@@ -176,7 +183,7 @@ function AddFriendContent({ handleSucess }: AddFriendContentProps) {
                                     (input !== "") && (profileSearchResultList.length === 0) ?
                                         <div className='flex-grow body--centered'>
                                             <QuestionMark />
-                                            <p>사용자를 찾을 수 없어요. <br /> 친구의 아이디를 다시 확인해주세요.</p>
+                                            <p>사용자를 찾을 수 없어요. <br /> 친구의 닉네임과 태그를 다시 확인해주세요.</p>
                                         </div>
                                         :
                                         <>
@@ -192,11 +199,11 @@ function AddFriendContent({ handleSucess }: AddFriendContentProps) {
                                                                         {
                                                                             (profile.id === userId)
                                                                                 ?
-                                                                                <p className='disabled'>나</p>
+                                                                                <p className='typography-note disabled'>나</p>
                                                                                 :
                                                                                 idList.includes(profile.id)
                                                                                     ?
-                                                                                    <p className='disabled'>이미 추가되었어요</p>
+                                                                                    <p className='typography-note disabled'>이미 추가되었어요</p>
                                                                                     : <Checkbox
                                                                                         edge="end"
                                                                                         checked={Object.keys(flaggedProfileList).includes(profile.id)}
@@ -207,9 +214,9 @@ function AddFriendContent({ handleSucess }: AddFriendContentProps) {
                                                             >
                                                                 <ListItemButton disableGutters onClick={() => handleToggle(profile)} disabled={idList.includes(profile.id)} style={{ zIndex: 2 }}>
                                                                     <ListItemAvatar>
-                                                                        <ProfileAvatar {...profile} showLabel={false} />
+                                                                        <AvatarProfile {...profile} showLabel={false} />
                                                                     </ListItemAvatar>
-                                                                    <ListItemText primary={profile.nickname} secondary={profile.nickname} />
+                                                                    <ListItemText primary={profile.nickname} />
                                                                 </ListItemButton>
                                                             </ListItem>
                                                         ))
@@ -225,4 +232,4 @@ function AddFriendContent({ handleSucess }: AddFriendContentProps) {
     );
 }
 
-export default AddFriendContent;
+export default SearchAndInviteFriendContent;

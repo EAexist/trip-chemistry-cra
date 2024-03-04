@@ -3,143 +3,28 @@ import { useCallback } from "react";
 
 /* React Packages */
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "react-redux";
-import { StatusCodes } from "http-status-codes";
 import axios from "axios";
+import { StatusCodes } from "http-status-codes";
+import { useDispatch, useSelector } from "react-redux";
 
 /* App */
-import { AppDispatch, RootState } from "../store";
 import { IWithLoadStatus, LoadStatus } from ".";
 import { HEADERS_AXIOS, TEST_TYPE } from "../common/app-const";
+import { ITestAnswer, ITestAnswerDTO, testAnswerToDTO } from "../interfaces/ITestAnswer";
+import { AppDispatch, RootState } from "../store";
 import { useUserId } from "./authReducer";
+import { ExpectationTag } from "../interfaces/enums/ExpectationTag";
+import { ActivityTag } from "../interfaces/enums/ActivityTag";
 
-const enumFromList = ( list : string[] ) => (
-    Object.fromEntries(
-        list.map(( key, index )=> [ key, index] )
-    )
-); 
-
-const TripTagList = [
-    "PHOTO",
-    "EAT",
-    "FRIENDSHIP",
-    "PHYSICAL",
-    "REST",
-    "INFLUENCER",
-    "COFFEE",
-    "CULTURE",
-    "ADVENTURE",
-    "PASSION",
-    "REFRESH"
-];
-export const TripTag = enumFromList(TripTagList);
-export type ITripTag = typeof TripTag[keyof typeof TripTag]; 
-
-const ActivityTagList = [
-    "PHOTO",
-    "INSTA",
-    "NETWORK",
-    "EXTREME",
-    "SWIM",
-    "DRIVE",
-    "WALK",
-    "THEMEPARK",
-    "MARKET",
-    "HOTEL",
-    "VLOG",
-    "WAITING",
-    "BAR",
-    "CAFE",
-    "SHOPPING",
-    "SHOW",
-]
-export const ActivityTag = enumFromList(ActivityTagList);
-export type IActivityTag = typeof ActivityTag[keyof typeof ActivityTag]; 
-
-const ExpectationTagList = [
-    "HEAL",
-    "COMPACT",
-    "FULLFILL",
-    "MEMORY",
-    "RELAX",
-    "COMFORT",
-    "ADVENTURE",
-    "NEW",
-    "DIGITAL_DETOX",
-    "REST",
-    "VIEW",  
-    "FRIENDSHIP",  
-];
-export const ExpectationTag = enumFromList(ExpectationTagList);
-export type IExpectationTag = typeof ExpectationTag[keyof typeof ExpectationTag]; 
-
-interface ITestAnswer {
-    expectation: {
-        selected: IExpectationTag[],
-        unSelected: IExpectationTag[]
-    },
-    activity: {
-        selected: IActivityTag[],
-        unSelected: IActivityTag[]
-    },
-    leadership: undefined | number,
-    schedule: undefined | number,
-    food: undefined | number, /* 식사 평균 */
-    // foodSpecial: undefined | number, /* 특별한 식사 */
-    // accomodate: undefined | number, /* 숙소 평균 */
-    // accomodateSpecial: undefined | number, /* 특별한 숙소 */
-
-    metropolis: undefined | number,
-    history: undefined | number,
-    nature: undefined | number,
-};
-
-interface ITestAnswerDTO {
-    expectation: IExpectationTag[],
-    activity: IActivityTag[],
-    leadership: number,
-    schedule: number,
-    food: number, 
-    metropolis: number,
-    history: number,
-    nature: number,
-};
-
-const testAnswerToDTO: (testAnswer: ITestAnswer) => ITestAnswerDTO = ( testAnswer ) => (
-    {
-        ...testAnswer,
-        expectation: testAnswer.expectation.selected,
-        activity: testAnswer.activity.selected,
-    } as ITestAnswerDTO
-);
 
 
 type TestName = keyof ITestAnswer;
 export type NumericTestName = keyof Omit<ITestAnswer, "activity" | "expectation">;
 export type SetTestName = keyof Pick<ITestAnswer, "activity" | "expectation">;
 
-export const defaultTestAnswer : ITestAnswer = {
-    expectation: {
-        selected: [],
-        unSelected: Object.values(ExpectationTag)
-    },
-    activity: {
-        selected: [],
-        unSelected: Object.values(ActivityTag)
-    },
-    leadership: undefined,
-    schedule: undefined,
-    food: undefined, /* 식사 평균 */
-    // foodSpecial: undefined, /* 특별한 식사 */
-    // accomodate: undefined, /* 숙소 평균 */
-    // accomodateSpecial: undefined, /* 특별한 숙소 */
-
-    metropolis: undefined,
-    history: undefined,
-    nature: undefined,
-};
-
 /* Debug */
+
+
 export const sampleTestAnswer : ITestAnswer = {
     expectation: {
         selected: [],
@@ -271,14 +156,26 @@ export const useIsTestAnswered = ( testName: TestName ) => {
     );    
 }
 
+export const useIsAllTestAnswered = ( ) => {
+    return(
+        useSelector(( state:RootState )=>(
+            Object.values( state.testAnswer.data  ).map(( answer ) => 
+                ( typeof answer !== "object" )
+                ? answer !== undefined  
+                : answer.selected.length >= TEST_TYPE.tagSet.selectedMinLength 
+            ).every(v => v)
+        ))
+    );    
+}
+
 const useTestAnswerStatus = () => {
     const dispatch = useDispatch(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
     const status = useSelector(( state:RootState )=>state.testAnswer.loadStatus);
     return ([
         status,
-        useCallback((status: LoadStatus) =>
-            dispatch(testAnswerSlice.actions.setStatus(status))
-        , [dispatch])
+        useCallback((status: LoadStatus) =>{
+            dispatch(testAnswerSlice.actions.setStatus(status));
+        }, [dispatch])
     ] as const);
 }
 
@@ -287,13 +184,6 @@ const useSubmitAnswer = () => {
     const { data } = useSelector(( state:RootState ) => state.testAnswer );
 
     const id = useUserId();
-    const [ status, setStatus ] = useTestAnswerStatus();
-
-    // useEffect(()=>{
-    //     if( status === LoadStatus.SUCCESS ){
-
-    //     }
-    // }, [ status ])
 
     return useCallback(() => {        
         console.log(`[useSubmitAnswer] id=${id} answer=${JSON.stringify(testAnswerToDTO(data))}`);
@@ -303,6 +193,6 @@ const useSubmitAnswer = () => {
 }
 
 export default testAnswerSlice.reducer;
-export { useTestAnswerStatus, useSubmitAnswer };
+export { useSubmitAnswer, useTestAnswerStatus };
 export const { addTagAnswer, deleteTagAnswer } = testAnswerSlice.actions;
 export type { ITestAnswer, TestName };

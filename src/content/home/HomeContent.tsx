@@ -105,6 +105,7 @@ function HomeContent({ }: HomeContentProps) {
                         <Button
                             onClick={handleTestStart}
                             variant="contained"
+                            className="button--full"
                         >
                             {strings.startButton}
                         </Button>

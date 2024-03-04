@@ -59,6 +59,11 @@ h1, h2, h3, h4, h5, h6, p, button {
   /* color: #1d1d1f; */
   color: #4e5968;
 }
+p:after {
+  content:"";
+  display:inline-block;
+  width:0px;
+}
 
 a {
   text-decoration: none;

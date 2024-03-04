@@ -1,11 +1,12 @@
 import { Paper, PaperProps } from "@mui/material";
 import { ForwardedRef, forwardRef } from "react";
 
-const SectionPaper = forwardRef(({ className, children }: PaperProps, ref: ForwardedRef<HTMLDivElement>) =>
+const SectionPaper = forwardRef(({ className, square = true, children, ...props }: PaperProps, ref: ForwardedRef<HTMLDivElement>) =>
     <Paper
-        square={true}
+        square={square}
         elevation={0}
         className={`block--with-padding ${className}`}
+        {...props}
     >
         {children}
     </Paper>

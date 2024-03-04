@@ -1,0 +1,88 @@
+/* React */
+import { useState } from "react";
+
+/* React Packages */
+import { Close, Done } from "@mui/icons-material";
+import { Button, Stack } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+
+/* Trip Chemistry */
+import { useLocation, useNavigate } from "react-router-dom";
+import { authorize, setIsInitialized } from "../../reducers/authReducer";
+import { AppDispatch, RootState } from "../../store";
+import { AuthLoadContent } from "../LoadContent";
+import SetNicknamePage from "./SetNicknamePage";
+
+interface InitializeNicknameContentProps {
+};
+
+function InitializeNicknameContent({ }: InitializeNicknameContentProps) {
+
+    /* Hooks */
+    const { state } = useLocation();
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
+
+    /* Reducers */
+    const doRequireInitialization = useSelector((state: RootState) => state.auth.data.doRequireInitialization);
+
+    /* States */
+    const [isConfirmCancelModalOpen, setIsConfirmCancelModalOpen] = useState(false);
+
+    /* Event Handlers */
+    const handleClose = () => {
+        setIsConfirmCancelModalOpen(true);
+    }
+
+    const handleCancelLogin = () => {
+        navigate(`/${((state !== null) && state.cancelRedirectPath) ? state.cancelRedirectPath : "" }`);
+    }
+
+    const handleCloseConfirmCancelModal = () => {
+        setIsConfirmCancelModalOpen(false);
+    }
+    
+    const handleSuccess = () => {
+        // dispatch(asyncGetSampleProfiles());
+        dispatch(setIsInitialized());
+        dispatch(authorize());
+    }
+
+    return (
+        <AuthLoadContent
+            // handleFail={handleFail}
+            handleSuccess={handleSuccess}
+        >
+            {
+                doRequireInitialization ?
+                    <>
+                        {
+                            isConfirmCancelModalOpen
+                            &&
+                            <div className="page fullscreen flex">
+                                <div className='block--with-margin block__body body--centered flex-grow'>
+                                    <h3 className='typography-label'>
+                                        {`닉네임을 설정 중이에요.\n취소하고 처음으로 돌아갈까요?`}
+                                    </h3>
+                                    <Stack spacing={4}>
+                                        <Button onClick={handleCloseConfirmCancelModal} startIcon={<Close />}>
+                                            로그인 계속하기
+                                        </Button>
+                                        <Button onClick={handleCancelLogin} startIcon={<Done />}>
+                                            확인
+                                        </Button>
+                                    </Stack>
+                                </div>
+                            </div>
+                        }
+                        <SetNicknamePage
+                            handleClose={handleClose}
+                            doRequireInitialization={ true }
+                        />
+                    </>
+                    : <></>
+            }
+        </AuthLoadContent>
+    );
+}
+export default InitializeNicknameContent;

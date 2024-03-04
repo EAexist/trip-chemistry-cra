@@ -10,7 +10,6 @@ import qs from "qs";
 /*** Trip Chemistry ***/
 import { AppDispatch, RootState } from "../store";
 import { IWithLoadStatus, LoadStatus, IProfileId } from ".";
-import { useProfileIdList } from "./profileReducer";
 import { HEADERS_AXIOS } from "../common/app-const";
 
 interface ICityChemistry{
@@ -100,17 +99,17 @@ const useSortedCityList = () => {
     return ( useSelector((state: RootState) => state.chemistry.data ? Object.entries(state.chemistry.data.cityChemistry).sort(( a, b ) => ( b[1] - a[1] )).map(([ cityClass, score ]) => cityClass )  : undefined ) );
 };
 
-const useGetChemistry = () => {
-    const dispatch = useDispatch<AppDispatch>(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
-    const idList = useProfileIdList();
+// const useGetChemistry = () => {
+//     const dispatch = useDispatch<AppDispatch>(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
+//     const idList = useProfileIdList();
 
-    return useCallback(() => {
-        console.log("[chemistryReducer] useGetChemistry");
-        dispatch(chemistrySlice.actions.setChemistryLoadStatus(LoadStatus.PENDING));
-        dispatch(asyncGetChemistry(idList));
-    }, [ idList, dispatch ]
-    );
-}
+//     return useCallback(() => {
+//         console.log("[chemistryReducer] useGetChemistry");
+//         dispatch(chemistrySlice.actions.setChemistryLoadStatus(LoadStatus.PENDING));
+//         dispatch(asyncGetChemistry(idList));
+//     }, [ idList, dispatch ]
+//     );
+// }
 
 const useChemistryLoadStatus = () => {
     const dispatch = useDispatch(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
@@ -125,7 +124,7 @@ const useChemistryLoadStatus = () => {
 
 export default chemistrySlice.reducer;
 export const { clearChemistry } = chemistrySlice.actions;
-export { useChemistry, useGetChemistry, useChemistryLoadStatus, useCityChemistry, useSortedCityList, useIsChemistryUpdated };
+export { useChemistry, useChemistryLoadStatus, useCityChemistry, useSortedCityList, useIsChemistryUpdated };
 
 /* Deprecated */
 /* 데이터 Fetch, 로드 상태 관리, 로드 전 초기 렌더 방지. */

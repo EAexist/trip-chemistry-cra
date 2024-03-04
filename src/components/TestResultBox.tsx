@@ -1,29 +1,30 @@
-import { useSelector } from "react-redux";
 import { Chip, Icon, Stack } from "@mui/material";
 
-import { IProfileId } from "../reducers";
-import { RootState } from "../store";
-import { ITestResult } from "../interfaces/ITestResult";
-import ProfileImage from "./ProfileImage";
+import ProfileImage, { UserProfileImage } from "./ProfileImage";
 import { useStrings } from "../texts";
 import { TRIPTAG } from "../common/app-const";
+import withUserProfile, { WithProfileProps } from "../hocs/withUserProfile";
+import withFriendProfile from "../hocs/withFriendProfile";
+import { useUserId } from "../reducers/authReducer";
 
-interface TestResultBoxProps {
-    id: IProfileId;
-};
+interface TestResultBoxProps extends WithProfileProps {};
 
-
-function TestResultBox({ id }: TestResultBoxProps) {
+function TestResultBox({ id, testResult }: TestResultBoxProps) {
 
     const tripTagToLabel = useStrings().public.tripTag; 
-
-    const testResult: ITestResult = useSelector((state: RootState) => state.profile.data[id].data.testResult.data);
+    const userId = useUserId();
 
     return (
         // status === LoadStatus.REST &&
         <div className="block__body">
-            <ProfileImage id={ id } />
-            <Stack sx={{ justifyContent: "center", flexWrap: "wrap" }} className="">
+            {
+                ( id === userId ) 
+                ?
+                <UserProfileImage/>
+                :
+                <ProfileImage id={ id } />
+            }
+            <Stack justifyContent={"center"} flexWrap={"wrap"} rowGap={1} >
                 {
                 testResult.tripTagList?.map(( tag ) =>
                     <Chip key={ tag } icon={<Icon>{ TRIPTAG[tag] }</Icon>} label={ tripTagToLabel[tag] } />
@@ -34,4 +35,6 @@ function TestResultBox({ id }: TestResultBoxProps) {
     );
 }
 
-export default TestResultBox;
+export default withFriendProfile(TestResultBox);
+const UserTestResultBox = withUserProfile(TestResultBox);
+export { UserTestResultBox };

@@ -5,10 +5,10 @@ import { motion } from "framer-motion"
 import { useSelector } from "react-redux";
 import { Button, Toolbar } from "@mui/material";
 
-import {RootState } from "../../store";
+import { RootState } from "../../store";
 import SectionPaper from "../../components/Paper/SectionPaper";
 import { useStrings } from "../../texts";
-import TestResultBox from "../../components/TestResultBox";
+import TestResultBox, { UserTestResultBox } from "../../components/TestResultBox";
 import { useUserId } from "../../reducers/authReducer";
 
 interface ResultContentProps {
@@ -22,32 +22,29 @@ function ResultContent({ }: ResultContentProps) {
     const navigate = useNavigate();
 
     /* Store */
-    const userId = useUserId();
-
     const character = useSelector((state: RootState) =>
-        state.profile.data[userId].data.testResult.data.tripCharacter
+        state.auth.data.profile.testResult.tripCharacter
     );
 
     /* Event Handlers */
     const handleChemistryButtonClick = () => {
-        navigate('/chemistry');
+        navigate('../myChemistry');
     }
     return (
         <div className="page">
             <Toolbar />
-            <div className="block__body content__body--gray">
-                <SectionPaper className="body__head">
-                    <motion.h5 className="typography-heading">{strings.sections.tripCharacter.title}</motion.h5>
-                    <div className="block__body">
-                        <TestResultBox id={userId} />
-                        <h3 className="typography-label">
-                            {character.name}
-                        </h3>
-                        <p>
-                            {character.body}
-                        </p>
-                    </div>
-                </SectionPaper>
+            <div className="block__body block--with-padding-x">
+                {/* <SectionPaper className="body__head"> */}
+                <motion.h5 className="typography-heading">{strings.sections.tripCharacter.title}</motion.h5>
+                <div className="block__body">
+                    <UserTestResultBox />
+                    {
+                        character.body.split("\n").map((text) =>
+                            <p key={text}>{text}</p>
+                        )
+                    }
+                </div>
+                {/* </SectionPaper> */}
                 {/* <SectionPaper>
                 <motion.h5 className="typography-heading">{strings.sections.city.title}</motion.h5>
                 {
@@ -58,15 +55,16 @@ function ResultContent({ }: ResultContentProps) {
                     ))
                 }
             </SectionPaper> */}
-                <div className="block--with-margin-x flex">
+                <div>
                     <Button
                         onClick={handleChemistryButtonClick}
                         variant="contained"
+                        className="button--full"
                     >
                         {strings.navigateToChemistryButton}
                     </Button>
                 </div>
-                <div className="block__body"><div/></div>
+                <div />
             </div>
         </div>
     );

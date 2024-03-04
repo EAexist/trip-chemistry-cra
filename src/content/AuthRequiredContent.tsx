@@ -2,8 +2,8 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 /* React Packages */
-import { useIsAuthorized } from "../reducers/authReducer";
 import { useEffect } from "react";
+import { useIsAuthorized } from "../reducers/authReducer";
 
 interface AuthRequiredContentProps {
 
@@ -11,6 +11,7 @@ interface AuthRequiredContentProps {
 
 function AuthRequiredContent({ }: AuthRequiredContentProps) {
 
+    /* Hooks */
     const { pathname }  = useLocation();
 
     const isAuthorized = useIsAuthorized();
@@ -20,7 +21,7 @@ function AuthRequiredContent({ }: AuthRequiredContentProps) {
     }, [ pathname ])
 
     return (
-        isAuthorized 
+        isAuthorized
         ?
         <Outlet />
         : 

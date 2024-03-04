@@ -1,15 +1,21 @@
-import { ButtonBase, CardContent, Rating, Stack } from "@mui/material";
+/* React */
+import { useEffect } from "react";
+
+/* React Packages */
+import { useNavigate } from "react-router-dom";
+import { ButtonBase, CardActionArea, CardContent, Divider, Rating, Stack } from "@mui/material";
+import { StarBorder, ThumbUp } from "@mui/icons-material";
+
+/* Trip Chemistry */
 import { TEST } from "../../common/app-const";
 import { useStrings } from "../../texts";
 import useValueToProfileIdList from "../../hooks/useValueToProfileIdList";
-import { useEffect } from "react";
-import ProfileAvatar from "../../components/Avatar/ProfileAvatar";
-import { useCityChemistry } from "../../reducers/chemistryReducer";
+import AvatarProfile from "../../components/Avatar/AvatarProfile";
 import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
 import ImageCard from "../../components/Card/ImageCard";
 import AvatarGroup from "../../components/Avatar/AvatarGroup";
-import { StarBorder, ThumbUp } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useCityChemistry } from "../../reducers/tripReducer";
+import { FriendProfileAvatar } from "../../components/Avatar/ProfileAvatar";
 
 interface CityChemistryContentProps {
     cityClass: keyof typeof TEST.city.subTests;
@@ -25,7 +31,7 @@ function CityChemistryContent({ cityClass }: CityChemistryContentProps) {
     const score = useCityChemistry(cityClass);
 
     const handleClick = () => {
-        navigate(`/city/${cityClass}`);
+        navigate(`../city/${cityClass}`);
     }
 
     useEffect(() => {
@@ -34,9 +40,14 @@ function CityChemistryContent({ cityClass }: CityChemistryContentProps) {
 
     return (
         <div className="block__body">
-            <ButtonBase onClick={handleClick} style={{ width: "100%" }}>
-                <ImageCard src={getImgSrc("/city", TEST.city.subTests[cityClass].examples[0], FORMATWEBP)} title={cityClass} sx={{ width: "100%" }} gradient="bottom">
-                    <CardContent className="image-card__card-content" sx={{ height: "164px" }}>
+                <ImageCard
+                    src={getImgSrc("/city", TEST.city.subTests[cityClass].examples[0], FORMATWEBP)}
+                    title={cityClass}
+                    gradient="bottom"
+                    className="block--xlarge"
+                >
+                    <CardActionArea onClick={handleClick} className="flex-end">
+                    <CardContent>
                         <Stack justifyContent={"space-between"} className="typography-white">
                             <Stack>
                                 <h2 className="typography-label">{testStrings.subTest[cityClass as keyof typeof testStrings.subTest].title}</h2>
@@ -51,20 +62,20 @@ function CityChemistryContent({ cityClass }: CityChemistryContentProps) {
                             </Stack>
                         </Stack>
                     </CardContent>
+                    </CardActionArea>
                 </ImageCard>
-            </ButtonBase>
-            <Stack flexWrap={"wrap"} spacing={2}>
+            <Stack flexWrap={"wrap"} spacing={2} divider={<Divider variant="middle" orientation="vertical" flexItem />}>
                 {
                     Object.entries(valueToProfileList).reverse().map(([value, idList], index) => (
                         <Stack sx={{ flexWrap: "wrap" }}>
-                            <p>{testStrings.test.city.answers[Number(value) as keyof typeof testStrings.test.city.answers].label}</p>
-                            <AvatarGroup className="avatar-group">
+                            <p className="typography-note">{testStrings.test.city.answers[Number(value) as keyof typeof testStrings.test.city.answers].label}</p>
+                            <Stack spacing={-0.25}>
                                 {
                                     idList.map((id) => (
-                                        <ProfileAvatar id={id} />
+                                        <FriendProfileAvatar id={id} />
                                     ))
                                 }
-                            </AvatarGroup>
+                            </Stack>
                         </Stack>
                     ))
                 }

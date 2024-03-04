@@ -8,9 +8,11 @@ interface ToggleProfileButtonProps extends ToggleButtonProps, WithIsTestAnswered
     label?: string;
     contained?: boolean;
     sx? : SxProps<Theme>;
+    paperSx? : SxProps<Theme>;
+    elevation? : number;
 };
 
-const ToggleProfileButton = ({ label, children, onChange, size ="medium", value, selected, contained = false, sx }: PropsWithChildren<ToggleProfileButtonProps>) => {
+const ToggleProfileButton = ({ label, children, onChange, size ="medium", value, selected, contained = false, sx, paperSx, elevation = 0, className }: PropsWithChildren<ToggleProfileButtonProps>) => {
     
     const [ elevated, setElevated ] = useState(false);
 
@@ -31,6 +33,8 @@ const ToggleProfileButton = ({ label, children, onChange, size ="medium", value,
         }}
         onMouseEnter={ selected ? undefined : ()=>setElevated(true)}
         onMouseLeave={ selected ? undefined : ()=>setElevated(false)}
+        className={className}
+        sx={sx}
     >
         <Profile
             label={label}
@@ -38,7 +42,7 @@ const ToggleProfileButton = ({ label, children, onChange, size ="medium", value,
             isActive={selected}
         >
             <Paper                
-                elevation={ elevated ? 5 : 0 }
+                elevation={ elevated ? 5 : elevation }
                 sx={{
                     ...(
                     ( selected ) ?
@@ -48,10 +52,8 @@ const ToggleProfileButton = ({ label, children, onChange, size ="medium", value,
                     }
                     :
                     {
-                        border: `4px ${theme.palette.primary.main}`,
-                        ...sx
-                    }
-                    )
+                        ...paperSx
+                    })
                 }}
                 className={`toggle-profile-button__paper toggle-profile-button__paper--${size}`}
             >             

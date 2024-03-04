@@ -1,19 +1,19 @@
 import { PropsWithChildren } from "react";
 
-import { Badge } from "@mui/material";
+import { Badge, BadgeProps } from "@mui/material";
 
 import { TestName, useIsTestAnswered } from "../../reducers/testAnswerReducer";
 
-interface TestAnswerBadgeProps {
+interface TestAnswerBadgeProps extends BadgeProps{
     testName: TestName;
 };
 
-function TestAnswerBadge({ testName, children }: PropsWithChildren<TestAnswerBadgeProps>) {
+function TestAnswerBadge({ testName, children, ...props }: PropsWithChildren<TestAnswerBadgeProps>) {
 
     const isAnswered = useIsTestAnswered( testName );
 
     return (
-        <Badge invisible={isAnswered} >
+        <Badge invisible={isAnswered} {...props} >
             { children }
         </Badge>
     );

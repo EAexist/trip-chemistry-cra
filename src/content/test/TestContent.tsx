@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 /* React Packages */
 
 import { useNavigate } from "react-router-dom";
-import { Button, ButtonBase, Card, CardContent, CardMedia, Stack, Tooltip } from "@mui/material";
+import { Button, ButtonBase, Card, CardContent, CardMedia, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Stack, Tooltip } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 
 /* Swiper */
@@ -18,7 +18,7 @@ import '../../styles/index.css';
 // import '../styles/TopNav.css';
 
 import { AppDispatch, RootState } from "../../store";
-import { CITY, NATION, SLIDERPROPS_TEST_BUDGET_FOOD, TEST, TEST_SECTIONS } from "../../common/app-const";
+import { CITY, FOOD, LINK, NATION, SLIDERPROPS_TEST_BUDGET_FOOD, TEST, TEST_SECTIONS } from "../../common/app-const";
 import { useStrings } from "../../texts";
 
 import AnswerButtonGroup from "../../components/ButtonGroup/AnswerButtonGroup";
@@ -34,20 +34,21 @@ import { OPTIONS_TEST_SCHEDULE } from "../../components/GoogleMap/common/options
 import GoogleMapMarker from "../../components/GoogleMap/ui/GoogleMapMarker";
 import OptionCard from "../../components/Card/OptionCard";
 import GoogleMapContext from "../../components/GoogleMap/common/GoogleMapContext";
-import { NumericTestName, SetTestName, TestName, useSubmitAnswer, useTestAnswerStatus } from "../../reducers/testAnswerReducer";
+import { NumericTestName, SetTestName, TestName, useIsAllTestAnswered, useSubmitAnswer, useTestAnswerStatus } from "../../reducers/testAnswerReducer";
 import ScrollPageItem from "../../components/ScrollPage/ScrollPageItem";
 import { StepCheckpointContextProvider } from "../../components/Step/StepCheckpointContext";
 import StepContext from "../../components/Step/StepContext";
-import LoadContent from "../LoadContent";
+import LoadContent, { AuthLoadContent } from "../LoadContent";
 import TestAnswerBadge from "../../components/Button/TestAnswerBadge";
 import TestSection from "../../components/TestSection";
 import ScrollPageContainer from "../../components/ScrollPage/ScrollPageContainer";
 import TagSetTestAnswerChip from "../../components/Chip/TagSetTestAnswerChip";
 import TestInstruction from "../../components/TestInstruction";
 import Stepper from "../../components/Step/Stepper";
-import { asyncGetProfile, useProfileLoadStatus } from "../../reducers/profileReducer";
-import { useUserId } from "../../reducers/authReducer";
+import { useGetProfile, useUserId } from "../../reducers/authReducer";
 import { LoadStatus } from "../../reducers";
+import FoodCard from "../../components/Card/FoodCard";
+import Logo from "../../components/Logo";
 
 interface TestContentProps {
 
@@ -63,39 +64,24 @@ function TestContent({ }: TestContentProps) {
     const commonStrings = useStrings().public.common;
 
     /* Store */
-    const isAllTestAnswered = Object.values(useSelector((state: RootState) => state.testAnswer.data)).every(v => v !== undefined);
-
+    const isAllTestAnswered = useIsAllTestAnswered();
     const leadershipAnswer = useSelector((state: RootState) => state.testAnswer.data.leadership);
     const scheduleAnswer = useSelector((state: RootState) => state.testAnswer.data.schedule) as number;
     const foodAnswer = useSelector((state: RootState) => state.testAnswer.data.food) as number;
 
-    const userId = useUserId();
+    const getProfile = useGetProfile();
     const submitAnswer = useSubmitAnswer();
     const [submitStatus, setSubmitStatus] = useTestAnswerStatus();
-    const [loadStatus, setLoadStatus] = useProfileLoadStatus(userId);
 
     /* States */
     const foodCarouselSwiperRef = useRef<SwiperRef>(null);
     const [scheduleExampleMap, setScheduleExampleMap] = useState<google.maps.Map | null>();
     const [isConfirmTooltipOpen, setIsConfirmTooltipOpen] = useState(false);
     const [step, setStep] = useState(0);
+    const [ showScrollDownIcon, setShowScrollDownIcon ] = useState(true);
 
     /* Event Handlers */
-    const handleSubmitSuccess = () => {
-        console.log(`[TestContent] handleSubmitSuccess`);
-        dispatch(asyncGetProfile({ id: userId }));
-        setSubmitStatus(LoadStatus.REST);
-    }
-
-    const handleLoadSuccess = () => {
-        navigate('/result');
-        setLoadStatus(LoadStatus.REST);
-    }
-    const handleFail = () => {
-        navigate('/test');
-    }
-
-    const handleFoodCardClick = (foodId: string) => {
+    const handleFoodCardClick = (id: string) => {
 
     };
 
@@ -113,12 +99,20 @@ function TestContent({ }: TestContentProps) {
         submitAnswer();
     }
 
+    const handleSubmitSuccess = getProfile;
+    const handleLoadSuccess = () => {
+        navigate('../result');
+    }
+    // const handleFail = () => {
+    //     navigate('test');
+    // }
+
     /* Side Effects */
 
     /* Test Answer Side Effects */
     useEffect(() => {
         if (foodAnswer !== undefined) {
-            foodCarouselSwiperRef.current?.swiper.slideTo(Object.keys(TEST.budget.subTests.food.examples).indexOf(String(foodAnswer)));
+            foodCarouselSwiperRef.current?.swiper.slideTo(Object.keys(TEST.food.examples).indexOf(String(foodAnswer)));
         }
     }, [foodAnswer])
 
@@ -137,30 +131,30 @@ function TestContent({ }: TestContentProps) {
             status: submitStatus,
             setStatus: setSubmitStatus,
             handleSuccess: handleSubmitSuccess,
-            handleFail,
-            pendingText: "SUBMIT"
+            // handleFail,
         }}>
-            <LoadContent {...{
-                status: loadStatus,
-                setStatus: setLoadStatus,
+            <AuthLoadContent {...{
                 handleSuccess: handleLoadSuccess,
-                handleFail,
+                // handleFail,
             }}>
                 <div className="page">
                     <StepContext.Provider value={{ step, setStep }}>
                         <StepCheckpointContextProvider>
                             <div className="top-nav">
-                                <Stepper>
+                                <Stepper className="block--with-margin-x top-nav__swiper">
                                     {
                                         Object.entries(TEST_SECTIONS).map(([testName, { icon }], index) =>
                                             <SwiperSlide key={testName} className="top-nav__swiper">
-                                                <TestAnswerBadge testName={testName as TestName}>
+                                                <TestAnswerBadge testName={testName as TestName} sx={{ height: "100%" }}>
                                                     <SectionButton
                                                         size={"small"}
                                                         value={index}
                                                         index={index}
                                                         label={contentstrings.subTest[testName as keyof typeof contentstrings.subTest].label}
-                                                        sx={{ opacity: 0.4 }}
+                                                        sx={{ height: "100%", display: 'flex', alignItems: 'start', paddingTop: '8px' }}
+                                                        paperSx={{ opacity: 0.4 }}
+                                                        elevation={1}
+                                                        // className="button-group__item"
                                                     >
                                                         <PngIcon name={testName} />
                                                     </SectionButton>
@@ -170,17 +164,17 @@ function TestContent({ }: TestContentProps) {
                                     }
                                 </Stepper>
                             </div>
-                            <ScrollPageContainer onPageChange={(page) => setStep(page)}>
+                            <ScrollPageContainer onPageChange={(page) => setStep(page)} pages={Object.keys(TEST_SECTIONS).length}>
                                 {
                                     (["expectation", "activity"] as SetTestName[]).map((testName, index) => {
                                         return (
-                                            <ScrollPageItem page={index} className="flex">
+                                            <ScrollPageItem key={testName} page={index} className="flex">
                                                 <TestSection>
                                                     {/* https://codesandbox.io/p/sandbox/6gw7p4?file=/src/App.jsx */}
                                                     <div className="flex-grow body--centered">
                                                         <div className="block--with-margin-x block__body">
                                                             <TestInstruction testName={testName as TestName} />
-                                                            <Stack flexWrap={"wrap"} justifyContent={"center"}>
+                                                            <Stack flexWrap={"wrap"} justifyContent={"center"} rowGap={1}>
                                                                 <TagSetTestAnswerChip testName={testName} />
                                                                 <TagSetTestAnswerChip testName={testName} selected={false} />
                                                             </Stack>
@@ -234,14 +228,10 @@ function TestContent({ }: TestContentProps) {
                                         </div>
                                     </TestSection>
                                 </ScrollPageItem>
-                                {/* <}
-                    {/* <SectionPaperWithStep index={0} className="content__block"> */}
                                 <ScrollPageItem page={3} className="flex">
                                     <TestSection >
                                         <div className="flex-grow body--centered">
                                             <Card className="test__google-map-container modal__container">
-                                                {/* <TestInstructionModal testName="schedule" /> */}
-                                                {/* <CardMedia> */}
                                                 <GoogleMapContext.Provider value={{ map: scheduleExampleMap as google.maps.Map, setMap: setScheduleExampleMap }}>
                                                     <GoogleMap opts={OPTIONS_TEST_SCHEDULE}>
                                                         <GoogleMapMarker {...TEST.schedule.subTests.schedule.airportPlace} />
@@ -255,7 +245,6 @@ function TestContent({ }: TestContentProps) {
                                                         }
                                                     </GoogleMap>
                                                 </GoogleMapContext.Provider>
-                                                {/* </CardMedia> */}
                                             </Card>
                                         </div>
                                         <div className="block block__body">
@@ -267,29 +256,52 @@ function TestContent({ }: TestContentProps) {
                                         </div>
                                     </TestSection>
                                 </ScrollPageItem>
-                                {/* </SectionPaperWithStep> */}
-                                {/* <SectionPaperWithStep index={0} sx={{ overflow: "hidden" }} className="content__block"> */}
                                 <ScrollPageItem page={4} className="flex">
                                     <TestSection >
                                         {/* https://codesandbox.io/p/sandbox/6gw7p4?file=/src/App.jsx */}
                                         <div className="flex-grow body--centered">
                                             <Swiper {...SWIPERPROPS_FOODCARDCAROUSEL} className="carousel__swiper carousel__swiper__food modal__container" ref={foodCarouselSwiperRef}>
-                                                {/* <TestInstructionModal testName="food" /> */}
-                                                {/* <div className="modal modal--withBackdrop body--centered"> */}
                                                 <TestInstruction testName="food" showBackdrop={true} className="body--centered" />
-                                                {/* </div> */}
                                                 {
-                                                    Object.values(TEST.budget.subTests.food.examples).map((foodId, index) => (
-                                                        <SwiperSlide key={foodId} className="carousel__swiper carousel__swiper__food">
+                                                    Object.values(TEST.food.examples).map((id, index) => (
+                                                        <SwiperSlide key={id} className="carousel__swiper carousel__swiper__food">
                                                             {({ isActive }) => (
-                                                                <ButtonBase onClick={() => handleFoodCardClick(foodId)} disabled={!isActive} >
-                                                                    <div>
-                                                                        <ImageCard src={getImgSrc("/food", foodId, FORMATWEBP)} title={foodId} sx={{ width: "180px", height: "196px", borderRadius: "4px" }} className="food-carousel__coverflow" />
-                                                                        <div className="carousel__escape-coverflow__container">
-                                                                            <h3 className="typography-name card__title__text carousel__escape-coverflow"> {commonStrings.food[foodId as keyof typeof commonStrings.food].name}</h3>
-                                                                        </div>
-                                                                    </div>
-                                                                </ButtonBase>
+                                                                id === "more"
+                                                                    ? (
+                                                                        isActive
+                                                                            ? <div style={{ width: "280px", height: "240px" }} className="body--centered">
+                                                                                <div className="block-with-margin-x">
+                                                                                    <p>더 많은 식당 찾아보기</p>
+                                                                                    <List>
+                                                                                        {
+                                                                                            TEST.food.more.map(( source ) => (
+                                                                                                <ListItem>
+                                                                                                    <a href={LINK[ source  as keyof typeof LINK ].link} target="_blank" rel="noopener noreferrer">
+                                                                                                    <ListItemButton disableGutters>
+                                                                                                        <ListItemAvatar>
+                                                                                                            <Logo id={source} className="logo--md" />
+                                                                                                        </ListItemAvatar>
+                                                                                                        <ListItemText
+                                                                                                            primary={
+                                                                                                                <p>{commonStrings.linkType[source as keyof typeof commonStrings.linkType].name}</p>
+                                                                                                            }
+                                                                                                            secondary={
+                                                                                                                commonStrings.linkType[source as keyof typeof commonStrings.linkType].body
+                                                                                                            }
+                                                                                                        />
+                                                                                                    </ListItemButton>
+                                                                                                    </a>
+                                                                                                </ListItem>
+                                                                                            ))
+                                                                                        }
+                                                                                    </List>
+                                                                                </div>
+                                                                            </div>
+                                                                            : <div style={{ width: "200px", height: "240px" }} className="body--centered">
+                                                                                <p>더 많은 식당 찾아보기</p>
+                                                                            </div>
+                                                                    )
+                                                                    : <FoodCard id={id} isActive={isActive} />
                                                             )}
                                                         </SwiperSlide>
                                                     ))
@@ -308,7 +320,7 @@ function TestContent({ }: TestContentProps) {
                                                     // : <h4 className='test__answer'>? 원</h4>
                                                     : <></>
                                             }
-                                            <div className="container--center">
+                                            <div className="container--center" style={{ marginTop: 0 }}>
                                                 <AnswerSlider testName="food" {...SLIDERPROPS_TEST_BUDGET_FOOD} />
                                             </div>
                                             <div />
@@ -329,7 +341,7 @@ function TestContent({ }: TestContentProps) {
                                                                 <SwiperSlide key={cityId} className="carousel__swiper">
                                                                     <ButtonBase onClick={() => handleCityCardClick(key, index)}>
                                                                         <div className="body--full">
-                                                                            <ImageCard src={getImgSrc("/city", cityId, FORMATWEBP)} title={cityId} sx={{ width: "196px", height: "196px", borderRadius: "4px" }} />
+                                                                            <ImageCard src={getImgSrc("/city", cityId, FORMATWEBP)} title={cityId} sx={{ width: "196px", height: "196px", borderRadius: "12px" }} />
                                                                             <Stack>
                                                                                 <h3 className="typography-name">{commonStrings.city[cityId as keyof typeof commonStrings.city].name}</h3>
                                                                                 {
@@ -375,6 +387,7 @@ function TestContent({ }: TestContentProps) {
                                         onClick={handleConfirmButtonClick}
                                         disabled={!isAllTestAnswered}
                                         variant="contained"
+                                        className="button--full"
                                     >
                                         {contentstrings.main.confirmButton}
                                     </Button>
@@ -385,8 +398,15 @@ function TestContent({ }: TestContentProps) {
                             </div>
                         </StepCheckpointContextProvider>
                     </StepContext.Provider>
+                    {
+                        showScrollDownIcon
+                        &&
+                        <div className="floating--bottom">
+                            HEYEY
+                        </div>
+                    }
                 </div >
-            </LoadContent>
+            </AuthLoadContent>
         </LoadContent>
     );
 }

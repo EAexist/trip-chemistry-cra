@@ -6,6 +6,12 @@ import 'swiper/css/pagination';
 
 export const AUTOPLAY_DELAY = 4000;
 
+export const SWIPERPROPS_PAGE : SwiperOptions | { className: string } = {
+    speed: 800,
+    slidesPerView: 1,
+    allowTouchMove: false,
+}
+
 export const SWIPERPROPS_CITYDETAILCONTENT : SwiperOptions | { className: string } = {
     modules: [ Pagination, Navigation ],
     loop: true,
@@ -13,7 +19,7 @@ export const SWIPERPROPS_CITYDETAILCONTENT : SwiperOptions | { className: string
     speed: 800,
     slidesPerView: 1,
     pagination: {
-        // clickable: true,
+        clickable: true,
         el: '.pageSwiper-pagination', 
     },
     navigation: {
@@ -21,7 +27,6 @@ export const SWIPERPROPS_CITYDETAILCONTENT : SwiperOptions | { className: string
         nextEl: `.pageSwiper-nextEl`,
     },
     autoHeight: true,
-    // className: "carousel__swiper",
 }
 
 export const SWIPERPROPS_HOMECONTENT : SwiperOptions | { className: string } = {
@@ -69,7 +74,7 @@ export const SWIPERPROPS_FOODCARDCAROUSEL : SwiperOptions | { className: string 
     effect: 'coverflow',
     coverflowEffect:{
         rotate: 0,
-        // scale: 0.9,
+        scale: 0.9,
         depth: 350,
         stretch: -16,
     },

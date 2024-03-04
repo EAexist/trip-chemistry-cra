@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { IProfileId } from "../reducers";
 import { TestName } from "../reducers/testAnswerReducer";
-import { useTestAnswerObject } from "../reducers/profileReducer";
+import { useTestAnswerObject } from "../reducers/tripReducer";
 
 const useProfileIdListByAnswer = ( testName: TestName, answer: number ) => {
 
