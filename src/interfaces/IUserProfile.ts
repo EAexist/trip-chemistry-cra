@@ -2,6 +2,7 @@ import { IProfile, defaultProfile } from "./IProfile";
 
 export interface IUserProfile extends IProfile {
     authProvider: string,
+    kakaoAccessToken: string,
     authProviderNickname?: string,
     chemistryIdList: string[],
     tripList?: {
@@ -18,7 +19,8 @@ export interface IUserProfile extends IProfile {
 
 export const defaultUserProfile : IUserProfile = {
     ...defaultProfile,
-    // authProviderNickname: "",
     authProvider: "",
+    kakaoAccessToken: "",
+    // authProviderNickname: "",
     chemistryIdList: [],
 };

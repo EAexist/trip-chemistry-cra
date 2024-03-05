@@ -2,10 +2,8 @@ import { Slider, SliderOwnProps, Stack } from "@mui/material";
 
 import useValueToProfileIdList from "../../hooks/useValueToProfileIdList";
 import useProfileIdListByAnswer from "../../hooks/useProfileIdListByAnswer";
-import AvatarProfile from "../Avatar/AvatarProfile";
-import AvatarGroup from "../Avatar/AvatarGroup";
 import { TestName } from "../../reducers/testAnswerReducer";
-import { FriendProfileAvatar } from "../Avatar/ProfileAvatar";
+import FriendAvatar from "../Avatar/FriendAvatar";
 
 interface ChemistrySliderProps extends SliderOwnProps {
     testName: TestName
@@ -25,7 +23,7 @@ const SliderValueLabel = ({ testName, value }: { testName: TestName, value: numb
                 <Stack spacing={-0.25}>
                     {
                         userList.map((id) => (
-                            <FriendProfileAvatar id={id} />
+                            <FriendAvatar id={id} />
                         ))
                     }
                 </Stack>

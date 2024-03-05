@@ -5,27 +5,25 @@ import { useEffect, useRef, useState } from "react";
 import { useMotionValueEvent, useScroll } from "framer-motion";
 import { useDispatch } from "react-redux";
 
-import { Add, AirplaneTicket, Close, ContentCopyOutlined, Error, GroupAdd, PersonSearch, Share } from "@mui/icons-material";
-import { Alert, Avatar, Button, ButtonBase, Grid, Icon, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Modal, Stack, Toolbar } from "@mui/material";
+import { AirplaneTicket, Close, Error, GroupAdd } from "@mui/icons-material";
+import { Alert, Avatar, Button, ButtonBase, Grid, Icon, IconButton, List, ListItem, ListItemAvatar, ListItemText, Modal, Stack, Toolbar } from "@mui/material";
 
 /* Trip Chemistry */
 import { useStrings } from "../../texts";
 
 import { useNavigate, useParams } from "react-router-dom";
-import AvatarProfile from "../../components/Avatar/AvatarProfile";
 import SectionPaper from "../../components/Paper/SectionPaper";
-import { IProfileId, LoadStatus } from "../../reducers";
-import { asyncGetProfile, useGetProfile, useHasAnsweredTest, useIsAuthorized, useUserId } from "../../reducers/authReducer";
+import { LoadStatus } from "../../reducers";
+import { useGetProfile, useHasAnsweredTest, useIsAuthorized, useUserId } from "../../reducers/authReducer";
 // import { clearChemistry, useChemistryLoadStatus, useIsChemistryUpdated } from "../../reducers/chemistryReducer";
 // import { deleteUser, setAllREST, useProfileIdList, useProfileList } from "../../reducers/profileReducer";
+import LazyImage from "../../components/LazyImage";
 import { asyncGetChemistry, asyncJoinChemistry, useChemistry, useChemistryLoadStatus, useIsChemistryEnabled } from "../../reducers/tripReducer";
 import { AppDispatch } from "../../store";
+import getImgSrc, { FORMATPNG } from "../../utils/getImgSrc";
 import LoadContent from "../LoadContent";
 import ChemistryDetailContent from "./ChemistryDetailContent";
-import ToggleProfileButton from "../../components/Button/ToggleProfileButton";
-import LazyImage from "../../components/LazyImage";
-import getImgSrc, { FORMATPNG } from "../../utils/getImgSrc";
-import { FriendProfileAvatar } from "../../components/Avatar/ProfileAvatar";
+import FriendAvatar from "../../components/Avatar/FriendAvatar";
 
 interface ChemistryContentProps {
 
@@ -220,7 +218,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                                         }
                                     >
                                         <ListItemAvatar>
-                                            <FriendProfileAvatar id={id} showLabel={false} />
+                                            <FriendAvatar id={id} showLabel={false} />
                                         </ListItemAvatar>
                                         <ListItemText primary={nickname} />
                                     </ListItem>

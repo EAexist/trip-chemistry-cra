@@ -45,13 +45,18 @@ const ToggleProfileButton = ({ label, children, onChange, size ="medium", value,
                 elevation={ elevated ? 5 : elevation }
                 sx={{
                     ...(
-                    ( selected ) ?
-                    contained && {
+                    ( selected ) 
+                    ?
+                    contained 
+                    ? {
                         backgroundColor: theme.palette.primary.main,
                         color: theme.palette.primary.contrastText
                     }
+                    :{
+                    }
                     :
                     {
+                        // backgroundColor: theme.palette.secondary.dark,
                         ...paperSx
                     })
                 }}

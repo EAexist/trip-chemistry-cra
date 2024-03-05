@@ -15,6 +15,7 @@ import LazyImage from "../../components/LazyImage";
 import getImgSrc, { FORMATPNG } from "../../utils/getImgSrc";
 import { LoadStatus } from "../../reducers";
 import KakaoLoginButton from "../../components/KakaoLoginButton";
+import { Help } from "@mui/icons-material";
 
 interface LoginContentProps {
 
@@ -121,27 +122,42 @@ function LoginContent({ }: LoginContentProps) {
         }}>
             <div className="page fullscreen flex">
                 <Toolbar />
-                <div className="flex-grow body--centered">
+                <div className="flex-grow body--centered-row block__body">
                     {/* <LazyImage
                         alt={"login"}
                         src={getImgSrc('/info', "login", FORMATPNG)}
                         containerClassName="load-content-item__image"
                         containerSx={{ height: "256px", width: "256px" }}
                     /> */}
-                    <div className="block__body">
-                        <div>
-                            <Stack direction={"column"} spacing={4} alignItems={"stretch"}>
+                    {/* <h2 className="typography-heading">
+                        여행 케미스트리
+                    </h2> */}
+                    <div style={{ marginTop: "128px" }} />
+                    <h2 className="typography-heading">
+                        {
+                            "로그인 방식을 선택해주세요."
+                        }
+                    </h2>
+                    <div>
+                        <Stack direction={"column"} spacing={2} alignItems={"stretch"}>
                             <KakaoLoginButton />
-                                <Button
-                                    onClick={handleGuestSignIn}
-                                    variant="outlined"
-                                    sx={{ height: "48px" }}
-                                >
-                                    로그인 없이 시작하기
-                                </Button>
-                            </Stack>
-                        </div>
-
+                            <Button
+                                onClick={handleGuestSignIn}
+                                variant="outlined"
+                                sx={{ height: "48px" }}
+                            >
+                                로그인 없이 바로 시작하기
+                            </Button>
+                        </Stack>
+                    </div>
+                    <div style={{ marginTop: "128px" }} />
+                    <div>
+                    <p className="typography-note">
+                        <Help fontSize="inherit" />
+                        {
+                            "카카오 로그인을 이용하면\n링크를 잃어버려도 내 테스트 결과를 안전하게 불러올 수 있어요."
+                        }
+                    </p>
                     </div>
                 </div>
             </div>

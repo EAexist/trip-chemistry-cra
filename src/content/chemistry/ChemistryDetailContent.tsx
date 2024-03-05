@@ -13,7 +13,6 @@ import SectionPaper from "../../components/Paper/SectionPaper";
 import { useStrings } from "../../texts";
 
 import AvatarGroup from "../../components/Avatar/AvatarGroup";
-import AvatarProfile from "../../components/Avatar/AvatarProfile";
 import NavigationButton from "../../components/Button/NavigationButton";
 import ToggleButton from "../../components/Button/ToggleButton";
 import ProfileImage from "../../components/ProfileImage";
@@ -23,7 +22,7 @@ import useValueToProfileIdList from "../../hooks/useValueToProfileIdList";
 import { useChemistry, useProfileAll, useProfileIdList, useSortedCityList } from "../../reducers/tripReducer";
 import { RootState } from "../../store";
 import CityChemistryContent from "./CityChemistryContent";
-import { FriendProfileAvatar } from "../../components/Avatar/ProfileAvatar";
+import FriendAvatar from "../../components/Avatar/FriendAvatar";
 
 interface ChemistryDetailContentProps {
 
@@ -75,7 +74,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                                     selected={characterSectionActiveUserIndex === index}
                                     className="toggle-button--button-base"
                                 >
-                                    <AvatarProfile key={id} id={id} labelSize="lg" />
+                                    <FriendAvatar key={id} id={id} labelSize="lg" />
                                 </ToggleButton>
                             ))
                         }
@@ -149,7 +148,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                                     <Stack spacing={-0.25}>
                                         {
                                             (Object.keys(scheduleAnswerToProfiles).includes(String(value)) ? scheduleAnswerToProfiles[value] : []).map((id) => (
-                                                <FriendProfileAvatar id={id} />
+                                                <FriendAvatar id={id} />
                                             ))
                                         }
                                     </Stack>

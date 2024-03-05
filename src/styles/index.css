@@ -15,11 +15,11 @@
 
     --height__food-card__coverflow-escape: 32px;
     --appbar-height: 52px;
-    --topnav-height: 80px;
+    --topnav-height: 84px;
 
     --width__profile: 40px;
     --width__profile--lg: 64px;
-    --width__profile__content--small: 36px;
+    --width__profile__content--small: 40px;
     --width__profile__content--medium: 48px;
 
     --min-height__fullscreen: 640px;
@@ -168,7 +168,7 @@
     height: var(--topnav-height);
     width: 100%;
     overflow: hidden;
-    background-color: rgb(242, 244, 246);
+    background-color: #F2F4F6;
 }
 
 .top-nav__placeholder {
@@ -225,6 +225,11 @@
     margin: var(--margin-x);
 }
 
+.block--with-margin-lg,
+.block--with-margin-lg.MuiButton-root {
+    margin: var(--margin-x--lg);
+}
+
 .block--with-margin--sm {
     margin: var(--margin-x--sm);
 }
@@ -274,6 +279,13 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
+}
+
+.body--centered-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
 }
 
@@ -841,13 +853,13 @@ body {
     justify-content: center;
 
     &.toggle-profile-button__paper--small {
-        border-radius: 14px;
+        border-radius: 4px;
         width: var(--width__profile__content--small);
         height: var(--width__profile__content--small);
     }
 
     &.toggle-profile-button__paper--medium {
-        border-radius: 18px;
+        border-radius: 8px;
         width: var(--width__profile__content--medium);
         height: var(--width__profile__content--medium);
     }

@@ -2,8 +2,7 @@ import { Avatar, AvatarProps, Stack } from "@mui/material";
 import getImgSrc, { FORMATPNG } from "../../utils/getImgSrc";
 import { ProfileProps } from "./Profile";
 import { IProfile } from "../../interfaces/IProfile";
-import withFriendProfile from "../../hocs/withFriendProfile";
-import withUserProfile from "../../hocs/withUserProfile";
+import { useEffect } from "react";
 
 interface ProfileAvatarProps extends AvatarProps, Pick<ProfileProps, "labelSize">, Pick<Partial<IProfile>, 'testResult' | 'nickname'> {
     characterId?: string
@@ -12,7 +11,11 @@ interface ProfileAvatarProps extends AvatarProps, Pick<ProfileProps, "labelSize"
 
 function ProfileAvatar({ characterId, showLabel = true, labelSize, nickname, testResult, className, ...props }: ProfileAvatarProps) {
 
-    const imageId = characterId ? characterId : testResult ? testResult.tripCharacter.id :  ""
+    const imageId = characterId ? characterId : testResult ? testResult.tripCharacter.id : ""
+
+    useEffect(()=>{
+        console.log(`[ProfileAvatar] imageId=${imageId}`)
+    }, [])
 
     return (
         <Stack
@@ -29,6 +32,7 @@ function ProfileAvatar({ characterId, showLabel = true, labelSize, nickname, tes
             <p className={`profile__label typography--profile-label`}/>
         } */}
             <Avatar
+                variant={'primary'}
                 alt={nickname}
                 src={getImgSrc('/character', imageId, FORMATPNG)}
                 className={`profile__avatar ${className}`}
@@ -44,6 +48,7 @@ function ProfileAvatar({ characterId, showLabel = true, labelSize, nickname, tes
     );
 }
 export default ProfileAvatar;
-const FriendProfileAvatar = withFriendProfile(ProfileAvatar);
-const UserProfileAvatar = withUserProfile(ProfileAvatar);
-export { FriendProfileAvatar, UserProfileAvatar };
+export type { ProfileAvatarProps };
+// const FriendAvatar = withFriendProfile(ProfileAvatar);
+// const UserAvatar = withUserProfile(ProfileAvatar);
+// export { FriendAvatar, UserAvatar };

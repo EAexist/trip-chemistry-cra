@@ -1,22 +1,22 @@
-// import { useEffect } from "react";
+import { useEffect } from "react";
+import { ITestResult } from "../../interfaces/ITestResult";
+import { useUserProfile } from "../../reducers/authReducer";
+import ProfileAvatar, { ProfileAvatarProps } from "./ProfileAvatar";
 
-// import { useUserId } from "../../reducers/authReducer";
-// import AvatarProfile, { AvatarProfileProps } from "./AvatarProfile";
+interface UserAvatarProps extends ProfileAvatarProps {
+};
 
-// interface UserAvatarProps extends Omit<AvatarProfileProps, "id"> {
-// };
+function UserAvatar({ ...props }: UserAvatarProps) {
 
-// function UserAvatar({ ...props }: UserAvatarProps) {
+    const testResult =  useUserProfile( "testResult" ) as ITestResult;
+    const characterId = ( testResult && testResult.tripCharacter.id ) ? testResult.tripCharacter.id : "user"
 
-//     const userId = useUserId();
+    useEffect(()=>{
+        console.log(`[UserAvatar] characterId=${characterId}`)
+    }, [])
 
-//     useEffect(()=>{
-//         console.log(`[UserAvatar] id=${userId}`);
-//     }, [ userId ])
-
-//     return (
-//         <AvatarProfile id={ userId } {...props}/>
-//     );
-// }
-// export default UserAvatar;
-// export type { UserAvatarProps };
+    return (
+        <ProfileAvatar characterId={characterId} {...props}/>
+    );
+}
+export default UserAvatar;

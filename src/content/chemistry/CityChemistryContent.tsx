@@ -2,20 +2,18 @@
 import { useEffect } from "react";
 
 /* React Packages */
-import { useNavigate } from "react-router-dom";
-import { ButtonBase, CardActionArea, CardContent, Divider, Rating, Stack } from "@mui/material";
 import { StarBorder, ThumbUp } from "@mui/icons-material";
+import { CardActionArea, CardContent, Divider, Rating, Stack } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 /* Trip Chemistry */
 import { TEST } from "../../common/app-const";
-import { useStrings } from "../../texts";
-import useValueToProfileIdList from "../../hooks/useValueToProfileIdList";
-import AvatarProfile from "../../components/Avatar/AvatarProfile";
-import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
 import ImageCard from "../../components/Card/ImageCard";
-import AvatarGroup from "../../components/Avatar/AvatarGroup";
+import useValueToProfileIdList from "../../hooks/useValueToProfileIdList";
 import { useCityChemistry } from "../../reducers/tripReducer";
-import { FriendProfileAvatar } from "../../components/Avatar/ProfileAvatar";
+import { useStrings } from "../../texts";
+import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
+import FriendAvatar from "../../components/Avatar/FriendAvatar";
 
 interface CityChemistryContentProps {
     cityClass: keyof typeof TEST.city.subTests;
@@ -72,7 +70,7 @@ function CityChemistryContent({ cityClass }: CityChemistryContentProps) {
                             <Stack spacing={-0.25}>
                                 {
                                     idList.map((id) => (
-                                        <FriendProfileAvatar id={id} />
+                                        <FriendAvatar id={id} />
                                     ))
                                 }
                             </Stack>

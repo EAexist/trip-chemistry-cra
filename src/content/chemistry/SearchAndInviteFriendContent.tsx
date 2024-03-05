@@ -1,22 +1,22 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 
-import { useDispatch } from 'react-redux';
-import { Button, Checkbox, Icon, IconButton, InputAdornment, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Stack, TextField, Toolbar } from '@mui/material';
 import { Close, Done, QuestionMark, Search, Warning } from '@mui/icons-material';
+import { Button, Checkbox, Icon, IconButton, InputAdornment, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Stack, TextField, Toolbar } from '@mui/material';
+import { useDispatch } from 'react-redux';
 
 
-import { AppDispatch } from '../../store';
 import { LoadStatus } from '../../reducers';
+import { AppDispatch } from '../../store';
 
-import { useStrings } from '../../texts';
-import { addFlagged, asyncSearchProfile, deleteFlagged, resetSearch, useAddProfiles, useFlaggedProfileList, useSearchedProfileList, useProfileSearchStatus } from '../../reducers/profileSearchReducer';
-import AppBarContext from '../../contexts/AppBarContext';
 import { useNavigate } from 'react-router-dom';
-import { useUserId } from '../../reducers/authReducer';
-import AvatarProfile from '../../components/Avatar/AvatarProfile';
-import { clearChemistry } from '../../reducers/chemistryReducer';
+import AppBarContext from '../../contexts/AppBarContext';
 import { IProfile } from '../../interfaces/IProfile';
+import { useUserId } from '../../reducers/authReducer';
+import { clearChemistry } from '../../reducers/chemistryReducer';
+import { addFlagged, asyncSearchProfile, deleteFlagged, resetSearch, useAddProfiles, useFlaggedProfileList, useProfileSearchStatus, useSearchedProfileList } from '../../reducers/profileSearchReducer';
 import { useProfileIdList } from '../../reducers/tripReducer';
+import { useStrings } from '../../texts';
+import ProfileAvatar from '../../components/Avatar/ProfileAvatar';
 
 
 interface SearchAndInviteFriendContentProps {
@@ -107,7 +107,7 @@ function SearchAndInviteFriendContent({ handleSucess }: SearchAndInviteFriendCon
         <Stack>
             {
                 Object.values(flaggedProfileList).map((profile) => (
-                    <AvatarProfile key={profile.nickname} {...profile} labelSize="lg" />
+                    <ProfileAvatar key={profile.nickname} {...profile} labelSize="lg" />
                 ))
             }
         </Stack>
@@ -214,7 +214,7 @@ function SearchAndInviteFriendContent({ handleSucess }: SearchAndInviteFriendCon
                                                             >
                                                                 <ListItemButton disableGutters onClick={() => handleToggle(profile)} disabled={idList.includes(profile.id)} style={{ zIndex: 2 }}>
                                                                     <ListItemAvatar>
-                                                                        <AvatarProfile {...profile} showLabel={false} />
+                                                                        <ProfileAvatar characterId={profile.testResult? profile.testResult.tripCharacter.id : undefined} showLabel={false} />
                                                                     </ListItemAvatar>
                                                                     <ListItemText primary={profile.nickname} />
                                                                 </ListItemButton>

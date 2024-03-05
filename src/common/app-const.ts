@@ -8,13 +8,16 @@ export const USER = {
 }
 export const CONTENTS = {
     test: {
-        path: 'test'
+        path: 'test',
+        icon: 'letter'
     },
     result: {
-        path: 'result'
+        path: 'result',
+        icon: 'paw'
     },
     chemistry: {
-        path: 'myChemistry'
+        path: 'myChemistry',
+        icon: 'suitcase'
     },
 }
 

@@ -34,7 +34,7 @@ function App() {
 
     const sessionRoute =
         <Route element={<>
-            <AppBar />
+            {/* <AppBar /> */}
             <Outlet /></>}>
             {/* <Route key={'index'} index element={<Navigate to={'login'} />} /> */}
             <Route key={'index'} index element={<Navigate to={'home'} />} />

@@ -955,7 +955,7 @@ const stringTable_kr = {
                 // }
             },
             "result": {
-                "label": "테스트 결과 보기",
+                "label": "내 여행 타입",
                 "navigateToChemistryButton": "여행 케미 확인하기",
                 "sections": {
                     "tripCharacter":
@@ -985,7 +985,7 @@ const stringTable_kr = {
                 },
             },
             "chemistry": {
-                "label": "내 여행",
+                "label": "내 여행 케미스트리",
                 "addFriend": {
                     label: "친구 추가",
                     icon: "group_add",

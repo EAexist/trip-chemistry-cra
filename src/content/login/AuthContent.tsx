@@ -2,10 +2,8 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 /* React Packages */
-import { useIsAuthorized, useUserId } from "../../reducers/authReducer";
-import useKakaoLogin from "../../hooks/useKakaoLogin";
-import { useEffect, useState } from "react";
-import { log } from "console";
+import { IUserProfile } from "../../interfaces/IUserProfile";
+import { useIsAuthorized, useUserProfile } from "../../reducers/authReducer";
 
 interface AuthContentProps {
 
@@ -18,19 +16,12 @@ function AuthContent({ }: AuthContentProps) {
     const isAuthorized = useIsAuthorized();
 
     /* Reducers */
-    const userId = useUserId();
-    
-    useKakaoLogin();
-
-    useEffect(() => {
-        console.log(`[AuthContent]\tstate=${state}`)
-
-    }, [ state ]);
+    const { id: userId, authProvider } = useUserProfile() as IUserProfile;
 
     return (
         isAuthorized 
         ?
-        <Navigate to={ `/guest/${userId}${((state !== null) && state.loginRedirectPath) ? state.loginRedirectPath : "" }` } />
+        <Navigate to={ `${ authProvider === 'GUEST' ? `/guest/${userId}` : ''}${((state !== null) && state.loginRedirectPath) ? state.loginRedirectPath : "/home" }` } />
         : 
         <Outlet />
     );

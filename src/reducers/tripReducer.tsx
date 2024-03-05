@@ -11,7 +11,7 @@ import qs from "qs";
 /*** Chemistry Chemistry ***/
 import { IWithLoadStatus, LoadStatus, IProfileId } from ".";
 import { HEADERS_AXIOS } from "../common/app-const";
-import { IProfile } from "../interfaces/IProfile";
+import { IProfile, defaultProfile } from "../interfaces/IProfile";
 import { TestName } from "./testAnswerReducer";
 import { IChemistry, defaultChemistry } from "../interfaces/IChemistry";
 
@@ -206,9 +206,13 @@ const useTestAnswerObject = (testName: TestName) => {
     );
 };
 
-const useProfile = ( id: string ) => {
+const useProfile = ( id: string, key?: keyof IProfile ) => {
     return (
-        useSelector((state: RootState) => Object.keys(state.trip.data.profileList).includes(id) ? state.trip.data.profileList[id] : undefined )
+        useSelector((state: RootState) => Object.keys(state.trip.data.profileList).includes(id) 
+        ? key 
+        ? state.trip.data.profileList[id][key] 
+        : state.trip.data.profileList[id]  
+        : defaultProfile )
     );
 } 
 

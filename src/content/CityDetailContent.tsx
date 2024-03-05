@@ -11,7 +11,6 @@ import { useSelector } from "react-redux";
 /* Trip Chemistry */
 import { CITY, NATION, TEST } from "../common/app-const";
 import { SWIPERPROPS_CITYDETAILCONTENT } from "../common/swiperProps";
-import AvatarProfile from "../components/Avatar/AvatarProfile";
 import ImageCard from "../components/Card/ImageCard";
 import Logo from "../components/Logo";
 import PaginationDiv from "../components/PaginationDiv";
@@ -19,6 +18,7 @@ import { RootState } from "../store";
 import { useStrings } from "../texts";
 import getImgSrc, { FORMATWEBP } from "../utils/getImgSrc";
 import { useCityChemistry, useIsChemistryEnabled } from "../reducers/tripReducer";
+import FriendAvatar from "../components/Avatar/FriendAvatar";
 
 interface CityDetailContentProps {
     cityClass: keyof typeof TEST.city.subTests;
@@ -117,7 +117,7 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                             {
                                 answerList.map(({ id, answer }) => (
                                     <Stack>
-                                        <AvatarProfile id={id} />
+                                        <FriendAvatar id={id} />
                                         <Rating value={Number(answer)} readOnly precision={0.5} size={"small"} />
                                         <p className="typography-note">{strings.test.city.answers[answer as keyof typeof strings.test.city.answers].label}</p>
                                     </Stack>

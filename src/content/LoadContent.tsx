@@ -11,8 +11,6 @@ import LazyImage from "../components/LazyImage";
 import withAuthLoadStatus, { WithLoadStatusProps } from "../hocs/withAuthLoadStatus";
 
 interface LoadContentProps extends WithLoadStatusProps {
-    // status?: LoadStatus;
-    // setStatus: (loadStatus: LoadStatus) => void;
     handleSuccess?: () => void;
     handleFail?: () => void;
     handleMiss?: () => void;
@@ -22,7 +20,9 @@ interface LoadContentProps extends WithLoadStatusProps {
     missText?: string;
     handleFailButtonText?: string
     handleMissButtonText?: string
+    showHandleFailButton?: boolean
     isEnabled?: boolean
+    doWait?: boolean
 };
 
 function LoadContent({
@@ -35,10 +35,11 @@ function LoadContent({
     missText = "정보를 찾을 수 없어요. 잠시 후 다시 시도해주세요.",
     handleFailButtonText = "확인",
     handleMissButtonText = "확인",
-    handleSuccess = () => { },
-    handleFail = () => setStatus(LoadStatus.REST),
-    handleMiss = () => setStatus(LoadStatus.REST),
-    isEnabled,
+    handleSuccess = () => {},
+    handleFail = () => {},
+    handleMiss = () => {},
+    showHandleFailButton = true, /* false 일 경우 버튼 없이 FAIL을 즉시 처리. */
+    isEnabled = true,
 }: PropsWithChildren<LoadContentProps>) {
 
     /* States */
@@ -48,38 +49,48 @@ function LoadContent({
 
     /* Store */
     useEffect(() => {
-        switch (status) {
-            case LoadStatus.REST:
-                setDelayedStatus(LoadStatus.REST);
-                break;
-            case LoadStatus.SUCCESS:
-                if (!isPending) {
-                    setDelayedStatus(LoadStatus.SUCCESS);
-                    handleSuccess();
-                    setStatus(LoadStatus.REST);
-                }
-                break;
-            case LoadStatus.PENDING:
-                setDelayedStatus(LoadStatus.PENDING);
-                setIsPending(true);
-                setTimeout(() => {
-                    setIsPending(false);
-                }, minimumPendingTime);
-                break;
-            case LoadStatus.FAIL:
-                if (!isPending) {
-                    setDelayedStatus(LoadStatus.FAIL);
-                }
-                break;
-            case LoadStatus.MISS:
-                if (!isPending) {
-                    setDelayedStatus(LoadStatus.MISS);
-                }
-                break;
-            default:
-                break;
+        if( isEnabled ){
+            switch (status) {
+                case LoadStatus.REST:
+                    setDelayedStatus(LoadStatus.REST);
+                    break;
+                case LoadStatus.SUCCESS:
+                    if (!isPending) {
+                        setDelayedStatus(LoadStatus.SUCCESS);
+                        handleSuccess();
+                        setStatus(LoadStatus.REST);
+                    }
+                    break;
+                case LoadStatus.PENDING:
+                    // if (isWaiting){
+                    //     setIsWaiting(false);
+                    // }
+                    setDelayedStatus(LoadStatus.PENDING);
+                    setIsPending(true);
+                    setTimeout(() => {
+                        setIsPending(false);
+                    }, minimumPendingTime);
+                    break;
+                case LoadStatus.FAIL:
+                    if (!isPending) {
+                        setDelayedStatus(LoadStatus.FAIL);
+                        /* 버튼 없이 FAIL을 바로 처리할 경우 */
+                        if ( ! showHandleFailButton ){
+                            handleFail();
+                            setStatus(LoadStatus.REST);
+                        }
+                    }
+                    break;
+                case LoadStatus.MISS:
+                    if (!isPending) {
+                        setDelayedStatus(LoadStatus.MISS);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
-    }, [status, isPending, handleSuccess, setStatus])
+    }, [ status, isPending, handleSuccess, setStatus, isEnabled, handleFail, showHandleFailButton ])
 
     return (
         isEnabled ?
@@ -88,15 +99,15 @@ function LoadContent({
                 :
                 <div className="page fullscreen flex">
                     <Toolbar />
-                    {
-
-                        (delayedStatus === LoadStatus.PENDING)
-                            ? <div className='body--centered'>
-                                <CircularProgress />
-                            </div>
-                            :
-                            <>
-                                <div className='flex-grow body--centered'>
+                    <div className='flex-grow body--centered'>
+                        {
+                            ((delayedStatus === LoadStatus.PENDING)) 
+                                ?
+                                <div className='body--centered'>
+                                    <CircularProgress />
+                                </div>
+                                :
+                                <>
                                     <LazyImage
                                         alt={delayedStatus}
                                         src={getImgSrc('/info', delayedStatus, FORMATPNG)}
@@ -127,39 +138,44 @@ function LoadContent({
                                             }
                                         })()
                                     }
-                                </div>
-                                <div className="block__body">
-                                    <div className="block--with-margin-x flex">
+                                </>
+                        }
+                    </div>
+                    {
+                        (( (delayedStatus === LoadStatus.FAIL) && showHandleFailButton ) || (delayedStatus === LoadStatus.MISS))
+                        &&
+                        <div className="block__body">
+                            <div className="block--with-margin-x flex">
+                                {
+                                    (delayedStatus === LoadStatus.FAIL)
+                                        ?
                                         <Button
-                                            onClick={
-                                                (delayedStatus === LoadStatus.FAIL)
-                                                    ? handleFail
-                                                    : (delayedStatus === LoadStatus.MISS)
-                                                        ? handleMiss
-                                                        : () => setStatus(LoadStatus.REST)
-                                            }
-                                            // disabled={( delayedStatus !== LoadStatus.FAIL )}
-                                            variant="contained"
-                                            style={{
-                                                visibility: ((delayedStatus === LoadStatus.FAIL)) || ((delayedStatus === LoadStatus.MISS))
-                                                    ? "visible"
-                                                    : "hidden"
+                                            onClick={() => {
+                                                handleFail();
+                                                setStatus(LoadStatus.REST);
                                             }}
+                                            variant="contained"
                                             className="button--full"
                                         >
-                                            {
-                                                delayedStatus === LoadStatus.FAIL ?
-                                                    handleFailButtonText
-                                                    :
-                                                    delayedStatus === LoadStatus.MISS ?
-                                                        handleMissButtonText
-                                                        : undefined
-                                            }
+                                            {handleFailButtonText}
                                         </Button>
-                                    </div>
-                                    <div />
-                                </div>
-                            </>
+                                        :
+                                        (delayedStatus === LoadStatus.MISS)
+                                        &&
+                                        <Button
+                                            onClick={() => {
+                                                handleMiss();
+                                                setStatus(LoadStatus.REST);
+                                            }}
+                                            variant="contained"
+                                            className="button--full"
+                                        >
+                                            {handleMissButtonText}
+                                        </Button>
+                                }
+                            </div>
+                            <div />
+                        </div>
                     }
                 </div>
             : children

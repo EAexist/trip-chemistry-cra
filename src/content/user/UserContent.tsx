@@ -1,17 +1,19 @@
 /* React */
 
 /* React Packages */
+import { Edit, Help } from "@mui/icons-material";
+import { Button, ButtonBase, Icon, IconButton, Stack, Toolbar } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Button, ButtonBase, Icon, IconButton, Stack, Toolbar } from "@mui/material";
-import { Edit } from "@mui/icons-material";
 
 /* Trip Chemistry */
-import { AppDispatch } from "../../store";
-import { asyncKakaoLogout, useHasAnsweredTest, useUserProfile } from "../../reducers/authReducer";
-import { UserAvatarProfile } from "../../components/Avatar/AvatarProfile";
-import { AuthProvider } from "../../interfaces/enums/AuthProvider";
+import UserAvatar from "../../components/Avatar/UserAvatar";
 import KakaoLoginButton from "../../components/KakaoLoginButton";
+import { IUserProfile } from "../../interfaces/IUserProfile";
+import { AuthProvider } from "../../interfaces/enums/AuthProvider";
+import { asyncKakaoLogout, useHasAnsweredTest, useUserProfile } from "../../reducers/authReducer";
+import { AppDispatch } from "../../store";
+import { AuthLoadContent } from "../LoadContent";
 
 interface UserContentProps {
 
@@ -25,29 +27,38 @@ function UserContent({ }: UserContentProps) {
     const hasAnsweredTest = useHasAnsweredTest();
 
     /* Reducers */
-    const { id, authProvider, nickname } = useUserProfile();
+    const { id, authProvider, nickname } = useUserProfile() as IUserProfile;
 
     /* Event Handlers */
     const handleClickAvatar = () => {
-        if( !hasAnsweredTest ){
+        if (!hasAnsweredTest) {
             navigate('avatarGallery');
-        } 
+        }
     };
 
     const handleLogout = () => {
         dispatch(asyncKakaoLogout(id));
     }
 
+    const handleLogoutSuccess = () => {
+        window.localStorage.setItem("kakaoAccessToken", "" );
+    }
+
     const handleEdit = () => {
         navigate('setNickname');
     }
 
+
     return (
+        <AuthLoadContent
+            handleSuccess={handleLogoutSuccess}
+        >
         <div className="page fullscreen flex" >
             <Toolbar />
             <div className='flex-grow body--centered block__body'>
+                <div>
                 <ButtonBase onClick={handleClickAvatar}>
-                    <UserAvatarProfile sx={{ height: "128px", width: "128px" }} showLabel={false} />
+                    <UserAvatar sx={{ height: "128px", width: "128px" }} showLabel={false} />
                 </ButtonBase>
                 <Toolbar>
                     <IconButton
@@ -66,6 +77,7 @@ function UserContent({ }: UserContentProps) {
                         <Edit />
                     </IconButton>
                 </Toolbar>
+                </div>
                 {/* <p className="typography-light">{ getNameTag(user) }</p> */}
                 <div>
                     <Stack direction={'column'}>
@@ -82,8 +94,22 @@ function UserContent({ }: UserContentProps) {
                         }
                     </Stack>
                 </div>
+                        {
+                            (AuthProvider[authProvider] === AuthProvider.GUEST)
+                            &&
+                            <div>
+                                {/* <div style={{ marginTop: "128px" }} /> */}
+                                <p className="typography-note">
+                                    <Help fontSize="inherit" />
+                                    {
+                                        "카카오 로그인을 이용하면\n링크를 잃어버려도 내 테스트 결과를 안전하게 불러올 수 있어요."
+                                    }
+                                </p>
+                            </div>
+                        }
             </div>
         </div>
+        </AuthLoadContent>
     );
 }
 export default UserContent;

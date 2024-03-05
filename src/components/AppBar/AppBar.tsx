@@ -1,5 +1,5 @@
 import { Close, Menu } from "@mui/icons-material";
-import { IconButton, Toolbar, AppBar as MuiAppBar, Drawer, List, ListItem, ListItemButton, ListItemText, Button, ListItemAvatar, Divider } from "@mui/material";
+import { IconButton, Toolbar, AppBar as MuiAppBar, Drawer, List, ListItem, ListItemButton, ListItemText, Button, ListItemAvatar, Divider, ListSubheader, Avatar, Icon } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAppBar } from "../../contexts/AppBarContext";
 import { useStrings } from "../../texts";
@@ -7,7 +7,8 @@ import { CONTENTS } from "../../common/app-const";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useIsAuthorized, useUserInfo } from "../../reducers/authReducer";
 import Logo from "../Logo";
-import { UserAvatarProfile } from "../Avatar/AvatarProfile";
+import PngIcon from "../PngIcon";
+import UserAvatar from "../Avatar/UserAvatar";
 
 interface AppBarProps {
 };
@@ -39,13 +40,16 @@ function AppBar({ }: AppBarProps) {
         setShowDrawer(false);
     }
     const handleDrawerItemClick = (content: string) => {
+        // if( content === 'login' ){
+        //     navigate()
+        // }
         navigate(`${content}`);
         handleDrawerClose();
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log(`[AppBar]\n\tpathname=${pathname}`);
-    }, [ pathname ])
+    }, [pathname])
 
     // useEffect(()=>{
     //     console.log(`[AppBar]\n\tuser=${JSON.stringify(user)}`);
@@ -55,7 +59,7 @@ function AppBar({ }: AppBarProps) {
         showAppBar &&
         <MuiAppBar>
             <Toolbar className="">
-                <Button onClick={handleTitleButtonClick} className='app-title' startIcon={<Logo id={"app"} className="logo--lg"/>}>
+                <Button onClick={handleTitleButtonClick} className='app-title' startIcon={<Logo id={"app"} className="logo--lg" />}>
                     {strings.public.common.title}
                     {/* <h2 className='app-title'>{strings.public.common.title}</h2> */}
                 </Button>
@@ -86,10 +90,15 @@ function AppBar({ }: AppBarProps) {
             >
                 <Toolbar />
                 <List>
+                    <ListSubheader disableGutters className="block--with-margin-x">{`내 정보`}</ListSubheader>
                     <ListItem key={"profile"}>
                         <ListItemButton onClick={() => handleDrawerItemClick(isAuthorized ? 'user' : 'login')} disableGutters className="block--with-padding-x">
-                            <ListItemAvatar>
-                                <UserAvatarProfile showLabel={false} />
+                            <ListItemAvatar>{
+                                isAuthorized
+                                    ?
+                                    <UserAvatar showLabel={false} />
+                                    : <Avatar />
+                            }
                             </ListItemAvatar>
                             <ListItemText
                                 primary={
@@ -98,22 +107,28 @@ function AppBar({ }: AppBarProps) {
                                         user.nickname
                                         : "로그인하기"
                                 }
-                                // secondary={
-                                //     isAuthorized ? getNameTag(user) : undefined
-                                // }
+                            // secondary={
+                            //     isAuthorized ? getNameTag(user) : undefined
+                            // }
                             />
                         </ListItemButton>
                     </ListItem>
                     <Divider />
+                    <ListSubheader disableGutters className="block--with-margin-x">{`서비스`}</ListSubheader>
                     {
-                        Object.entries(CONTENTS).map(([ content, { path }]) =>
+                        Object.entries(CONTENTS).map(([content, { path, icon }]) =>
                             <ListItem key={content}>
-                                <ListItemButton onClick={() => handleDrawerItemClick(path)} disableGutters selected={pathname === `/${path}`}>
+                                <ListItemButton onClick={() => handleDrawerItemClick(path)} disableGutters selected={pathname === `/${path}`}
+                                    className="block--with-padding-x">
+                                    <ListItemAvatar>
+                                        <Avatar variant="rounded">
+                                            <PngIcon name={icon} />
+                                        </Avatar>
+                                    </ListItemAvatar>
                                     <ListItemText
                                         primary={
                                             strings.public.contents[content as keyof typeof strings.public.contents].label
                                         }
-                                        className="block--with-margin-x"
                                     />
                                 </ListItemButton>
                             </ListItem>

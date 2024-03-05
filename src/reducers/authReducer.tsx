@@ -19,6 +19,7 @@ import { IProfile } from "../interfaces/IProfile";
 interface IAuthState extends IWithLoadStatus<{
     isAuthorized: boolean,
     doRequireInitialization?: boolean,
+    isAutoLoginEnabled: boolean,
     profile: IUserProfile,
     // redirectPath: string,
 }> {
@@ -73,21 +74,43 @@ const asyncGuestLogin = createAsyncThunk("authSlice/asyncGuestLogin",
 );
 
 const asyncKakaoLogin = createAsyncThunk("authSlice/asyncKakaoLogin",
-    async (code: string, thunkAPI) => {
-        console.log(`[asyncKakaoLogin] PUT /auth/kakao/login code=${code}`);
+    async ({ code, id } : { code: string, id?: string }, thunkAPI) => {
+        console.log(`[asyncKakaoLogin] POST /auth/kakao/login code=${code} id=${id}`);
         try {
-            const response = await axios.put(`/auth/kakao/login`,
+            const response = await axios.post(`/auth/kakao/login`,
                 {
-                    code: code
+                    code: code,
+                    id: id
                 },
                 {
-                    method: "PUT",
+                    method: "POST",
                     headers: HEADERS_AXIOS,
                 });
             return response.data;
         }
         catch (e: any) {
             console.log(`[asyncKakaoLogin] error: ${e}`);
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+const asyncKakaoLoginByAccessToken = createAsyncThunk("authSlice/asyncKakaoLoginByAccessToken",
+    async ({ accessToken } : { accessToken: string, id?: string }, thunkAPI) => {
+        console.log(`[asyncKakaoLoginByAccessToken] POST /auth/kakao/login accessToken=${accessToken}`);
+        try {
+            const response = await axios.post(`/auth/kakao/login/ByAccessToken`,
+                {
+                    accessToken: accessToken,
+                },
+                {
+                    method: "POST",
+                    headers: HEADERS_AXIOS,
+                });
+            return response.data;
+        }
+        catch (e: any) {
+            console.log(`[asyncKakaoLoginByAccessToken] error: ${e}`);
             return thunkAPI.rejectWithValue(e);
         }
     }
@@ -163,6 +186,7 @@ export const asyncGetProfile = createAsyncThunk("authSlice/asyncGetProfile",
 const defaultState = {
     isAuthorized: false,
     doRequireInitialization: undefined,
+    isAutoLoginEnabled: true,
     profile: defaultUserProfile,
 };
 
@@ -180,6 +204,9 @@ const authSlice = createSlice({
     reducers: {
         setLoadStatus: (state, action: PayloadAction<LoadStatus>) => {
             state.loadStatus = action.payload;
+        },
+        disableAutoLogin: (state) => {
+            state.data.isAutoLoginEnabled = false;
         },
         authorize: (state) => {
             state.data.isAuthorized = true;
@@ -267,11 +294,31 @@ const authSlice = createSlice({
             state.loadStatus = LoadStatus.FAIL;
         });
 
+        /* asyncKakaoLoginByAccessToken */
+        builder.addCase(asyncKakaoLoginByAccessToken.fulfilled, (state, action: PayloadAction<IUserProfile>) => {
+            console.log(`[asyncKakaoLoginByAccessToken] fulfilled\n\tpayload=${JSON.stringify(action.payload)}`);
+            state.data.doRequireInitialization = false;
+            state.data.profile = action.payload;
+            state.loadStatus = LoadStatus.SUCCESS;
+        });
+        builder.addCase(asyncKakaoLoginByAccessToken.pending, (state, action) => {
+            console.log(`[asyncKakaoLoginByAccessToken] pending`);
+            /* https://github.com/reduxjs/redux-toolkit/issues/776 */
+            state.loadStatus = LoadStatus.PENDING;
+        });
+        builder.addCase(asyncKakaoLoginByAccessToken.rejected, (state, action) => {
+            console.log(`[asyncKakaoLoginByAccessToken] rejected`);
+            state.loadStatus = LoadStatus.FAIL;
+        });
+
         /* asyncKaKaoLogout */
         builder.addCase(asyncKakaoLogout.fulfilled, (state, action: PayloadAction<IProfileId>) => {
             console.log(`[asyncKakaoLogout] fulfilled\n\taction.payload=${action.payload}`);
             state.loadStatus = LoadStatus.REST;
-            state.data = defaultState;
+            state.data = {
+                ...defaultState,
+                isAutoLoginEnabled: state.data.isAutoLoginEnabled
+            };
         });
         builder.addCase(asyncKakaoLogout.pending, (state, action) => {
             console.log(`[asyncKakaoLogout] pending`);
@@ -321,6 +368,12 @@ const authSlice = createSlice({
     },
 })
 
+const useIsAutoLoginEnabled = () => {
+    return (
+        useSelector((state: RootState) => state.auth.data.isAutoLoginEnabled)
+    );
+}
+
 const useIsAuthorized = () => {
     return (
         useSelector((state: RootState) => state.auth.data.isAuthorized)
@@ -335,7 +388,7 @@ const useIsInitialized = () => {
 
 const useUserId: () => IProfileId = () => {
     return (
-        useSelector((state: RootState) => state.auth.data.profile.id ? state.auth.data.profile.id : "not found")
+        useSelector((state: RootState) => state.auth.data.profile.id ? state.auth.data.profile.id : "")
     );
 }
 
@@ -345,9 +398,9 @@ const useUserInfo: () => IUserProfile = () => {
     );
 }
 
-const useUserProfile: () => IUserProfile = () => {
+const useUserProfile = ( key? : keyof IUserProfile ) => {
     return (
-        useSelector((state: RootState) => state.auth.data.profile)
+        useSelector((state: RootState) => key ? state.auth.data.profile[key] : state.auth.data.profile )
     );
 }
 
@@ -408,11 +461,11 @@ const useGuestLogin = () => {
 }
 
 export default authSlice.reducer;
-export const { authorize, setLoadStatus, setIsInitialized } = authSlice.actions;
-export { asyncKakaoLogin, asyncKakaoLogout, asyncGuestSignIn };
+export const { authorize, setLoadStatus, setIsInitialized, disableAutoLogin } = authSlice.actions;
+export { asyncKakaoLogin, asyncKakaoLogout, asyncKakaoLoginByAccessToken, asyncGuestSignIn };
 
 /* Selector Hooks */
-export { useIsAuthorized, useIsInitialized, useUserId, useUserInfo, useUserProfile, useHasAnsweredTest, useChemistryIdList };
+export { useIsAutoLoginEnabled, useIsAuthorized, useIsInitialized, useUserId, useUserInfo, useUserProfile, useHasAnsweredTest, useChemistryIdList };
 
 /* Selector & Dispatch Hooks */
 export { useAuthLoadStatus, useGetProfile, useGuestLogin, useAuthorize };

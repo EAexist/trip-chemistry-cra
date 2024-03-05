@@ -1,6 +1,7 @@
 import { enumFromList } from "../../utils/utils";
 
 const AuthProviderList = [
+    "NONE",
     "GUEST",
     "KAKAO",
 ];

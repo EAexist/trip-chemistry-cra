@@ -11,6 +11,13 @@ declare module '@mui/material/ToggleButton' {
         contained: true;
     }
 }
+
+declare module '@mui/material/Avatar' {
+    interface AvatarPropsVariantOverrides {
+        primary: true;
+    }
+}
+
 const defaultTheme = createTheme({
     palette: {
         primary: {
@@ -19,7 +26,10 @@ const defaultTheme = createTheme({
             contrastText: '#fff',
         },
         secondary: {
-            main: '#fff'
+            main: '#fff',
+            light: '#fff',
+            dark: '#F2F4F6',
+            // dark: '#E7E9ED',
         },        
 
     }},
@@ -68,9 +78,17 @@ export const theme = createTheme({
             }
         },
         MuiAvatar: {
+            variants: [
+                {
+                    props: { variant: 'primary' },
+                    style: {
+                        backgroundColor: defaultTheme.palette.primary.light
+                    }
+                },
+            ],
             defaultProps: {
-                style: {
-                    backgroundColor: defaultTheme.palette.primary.light
+                style: {                 
+                    backgroundColor: defaultTheme.palette.secondary.dark
                 }
             }
         },
