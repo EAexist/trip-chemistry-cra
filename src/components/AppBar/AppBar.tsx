@@ -32,6 +32,7 @@ function AppBar({ }: AppBarProps) {
     /* Event handlers  */
     const handleTitleButtonClick = () => {
         navigate('home');
+        handleDrawerClose();
     }
     const handleMenuButtonClick = () => {
         setShowDrawer(true);
