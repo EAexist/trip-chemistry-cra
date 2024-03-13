@@ -4,6 +4,7 @@ import { useMotionValueEvent, useScroll } from "framer-motion";
 
 import PageContext from "./PageContext";
 import Step from "../Step/Step";
+import { useLocation, useNavigate } from "react-router-dom";
 
 /* ScrollPageContainer
     Sticky Container, which displays paged items according to the amount of scroll in the container.*/
@@ -15,7 +16,9 @@ interface ScrollPageContainerProps {
 
 const ScrollPageContainer = ({ onPageChange, pages, children }: PropsWithChildren<ScrollPageContainerProps>) => {
 
-    const [page, setPage] = useState<number>(0);
+    const [page, setPage] = useState<number>();
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
     // const [ pages, setPages ] = useState<number>(0);
 
     const ref = useRef<HTMLDivElement>(null);
@@ -29,24 +32,29 @@ const ScrollPageContainer = ({ onPageChange, pages, children }: PropsWithChildre
         setPage(Math.min(Math.floor((scrollY.get() - (ref.current?.offsetTop as number)) / (pageRef?.current?.offsetHeight as number)), pages - 1));
     });
 
+    /* Side Effect */
     useEffect(() => {
         console.log(`[ScrollPageContainer] useEffect\n\tscrollY.get()=${scrollY.get()}\n\tpageRef?.current?.offsetHeight=${pageRef?.current?.offsetHeight}`);
         setPage(Math.floor((scrollY.get() - (ref.current?.offsetTop as number)) / (pageRef?.current?.offsetHeight as number)));
     }, [])
 
+    /* Side Effect OnPageChange */
     useEffect(() => {
-        console.log(`[ScrollPageContainer]\n\tpage=${page}`)
-        onPageChange && onPageChange(page);
-    }, [page, onPageChange])
+        console.log(`[ScrollPageContainer]\n\tpage=${page}`);
+        /* onPageChange Event Handlers from props */
+        if (page) {
+            onPageChange && onPageChange(page);
+        }
+    }, [page, onPageChange, pathname, navigate])
 
     return (
         <div ref={ref} className="scroll-page__container">
             {
                 Array.from({ length: pages }, (value, index) => (
-                    <Step key={index} index={index} className="fullscreen" style={{ visibility: "hidden" }} id={index.toString()} />
+                    <Step key={index} index={index} className="fullscreen" style={{ visibility: "hidden" }}/>
                 ))
             }
-            <div className="fullscreen"/>
+            <div className="fullscreen" />
             <div className="scroll-page__viewport-container">
                 <div ref={pageRef} className="scroll-page__viewport fullscreen">
                     <PageContext.Provider value={{ activePage: page }}>

@@ -48,8 +48,10 @@ export const useScrollToCheckpoint = () => {
     )    
 };
 
-const useSetStepCheckpoint = ( index: number, handleEntry : ([ entry ] : IntersectionObserverEntry[])=>void  = (() =>{}) ) => {
-
+const useSetStepCheckpoint = ( 
+        index: number, 
+        // handleEntry : ([ entry ] : IntersectionObserverEntry[])=>void  = (() =>{}) 
+    ) => {
     const { stepCheckpointList } = useStepCheckpoint();
 
     return({
@@ -57,10 +59,8 @@ const useSetStepCheckpoint = ( index: number, handleEntry : ([ entry ] : Interse
             if (element){
                 console.log(`[useSetStepCheckpoint] setCheckpoint. index=${index}`);
                 stepCheckpointList.current[ index ] = element;
-                // let observer = new IntersectionObserver( handleEntry, { threshold: 1 });
-                // observer.observe( element );
             }
-        }, [ stepCheckpointList, index, handleEntry ]),
+        }, [ stepCheckpointList, index ]),
 
         removeCheckpoint: useCallback(() => {
             console.log(`[useSetStepCheckpoint] removeCheckpoint. index=${index}`);

@@ -49,8 +49,6 @@ export const SWIPERPROPS_HOMECONTENT : SwiperOptions | { className: string } = {
 
 export const SWIPERPROPS_STEPPER : SwiperOptions | { className: string } = {
     modules: [ Navigation ],
-    // loop: true,
-    speed: 500,
     slidesPerView: 'auto',
     spaceBetween: 16,
 }

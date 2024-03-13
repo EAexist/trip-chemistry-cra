@@ -1,6 +1,7 @@
 import { PropsWithChildren, useCallback, useEffect } from "react";
 import { useSetStepCheckpoint } from "./StepCheckpointContext";
 import { useStepContext } from "./StepContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface scrollCheckpointProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>{
     index: number;
@@ -8,20 +9,21 @@ interface scrollCheckpointProps extends React.DetailedHTMLProps<React.HTMLAttrib
 
 function Step({ index, children, ...props } : PropsWithChildren<scrollCheckpointProps>){
 
+    const navigate = useNavigate();
+    const location = useLocation();
     const { setStep } = useStepContext();
-    const { setCheckpoint } = useSetStepCheckpoint( index, useCallback(([ entry ] : IntersectionObserverEntry[])=>{
-        if ( entry.isIntersecting ){
-            console.log(`[Step] isIntersecting index=${index}`);
-            setStep(index)
-        }
-    }, [ index, setStep ]) );
-
-    useEffect(()=>{
-        console.log(`[Step] Mmounting. id=${index}`)
-        return() => {
-            console.log(`[Step] Unmounting. id=${index}`)
-        }
-    }, [])
+    const { setCheckpoint } = useSetStepCheckpoint( 
+        index, 
+        // useCallback(([ entry ] : IntersectionObserverEntry[])=>{
+        //     if ( entry.isIntersecting ){
+        //         console.log(`[Step] isIntersecting index=${index}`);
+        //         setStep(index);
+        //         if( props.id ){
+        //             navigate( location+props.id, { replace: true });
+        //         }
+        //     }
+        // }, [ index, setStep, location, navigate, props.id ]) 
+    );
 
     return(
         <div ref={setCheckpoint} {...props}>

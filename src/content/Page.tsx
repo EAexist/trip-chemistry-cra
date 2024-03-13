@@ -63,9 +63,9 @@ function Page({ }: PageProps) {
             {/* https://reactrouter.com/en/main/components/scroll-restoration */}
             <ScrollRestoration
                 getKey={(location, matches) => {
-                    const paths = ["/test"];
+                    const paths = ["/chemistry"];
                     console.log(`[ScrollRestoration] ${location.pathname}`)
-                    return location.pathname;
+                    // return location.pathname;
                     return paths.includes(location.pathname)
                         ? // restore by pathname
                         location.pathname

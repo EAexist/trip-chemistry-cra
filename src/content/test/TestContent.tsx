@@ -50,6 +50,7 @@ import { NumericTestName, SetTestName, TestName, useIsAllTestAnswered, useSubmit
 import getImgSrc, { FORMATPNG, FORMATWEBP } from "../../utils/getImgSrc";
 import { priceText } from "../../utils/priceText";
 import LoadContent, { AuthLoadContent } from "../LoadContent";
+import { FADEIN } from "../../motion/props";
 
 interface TestContentProps {
 
@@ -81,6 +82,9 @@ function TestContent({ }: TestContentProps) {
     const [isConfirmTooltipOpen, setIsConfirmTooltipOpen] = useState(false);
     const [step, setStep] = useState(0);
     const [showScrollDownIcon, setShowScrollDownIcon] = useState(true);
+
+    /* 첫 렌더 후 Scroll Resotration 중에 Top Nav 가 슬라이드 되는 모션을 방지함. */
+    // const [ preventInitialSwipe, setPreventInitialSwipe ] = useState(true);
 
     /* Event Handlers */
     const handleFoodImageCardClick = (id: string) => {
@@ -142,9 +146,12 @@ function TestContent({ }: TestContentProps) {
         }
     })
 
-    useEffect(()=>{
-        console.log(`[TestContent] scrollY=${scrollY.get()}`);
-    }, [])
+    /* 첫 렌더 후 100ms 동안 Top Nav의 애니메이션 비활성화 */
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         setPreventInitialSwipe(false);
+    //     }, 100);
+    //   }, []);
 
     return (
         <LoadContent {...{
@@ -159,9 +166,10 @@ function TestContent({ }: TestContentProps) {
                     <StepContext.Provider value={{ step, setStep }}>
                         <StepCheckpointContextProvider>
                             <div className="top-nav" style={{ backgroundColor: theme.palette.gray.light }}>
-                                <Stepper className="block--with-margin-x top-nav__swiper">
+                            <motion.div {...FADEIN}  custom={0.5} >
+                                <Stepper className="block--with-margin-x top-nav__swiper" >
                                     {
-                                        Object.entries(TEST_SECTIONS).map(([testName, { icon }], index) =>
+                                        Object.entries( TEST_SECTIONS ).map(([testName, { icon }], index) =>
                                             <SwiperSlide key={testName} className="top-nav__swiper">
                                                 <TestAnswerBadge testName={testName as TestName} sx={{ height: "100%" }}>
                                                     <SectionButton
@@ -181,6 +189,7 @@ function TestContent({ }: TestContentProps) {
                                         )
                                     }
                                 </Stepper>
+                            </motion.div>
                             </div>
                             <ScrollPageContainer onPageChange={(page) => setStep(page)} pages={Object.keys(TEST_SECTIONS).length}>
                                 {

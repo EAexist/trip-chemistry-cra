@@ -5,12 +5,13 @@ import { Swiper, SwiperRef } from 'swiper/react';
 
 import { SWIPERPROPS_STEPPER } from "../../common/swiperProps";
 import { useStep } from "./StepContext";
+import { SwiperOptions } from "swiper/types";
 
-interface StepperProps{
+interface StepperProps extends SwiperOptions{
     className: string;
 };
 
-function Stepper({ className, children } : PropsWithChildren<StepperProps> ){
+function Stepper({ className, children, ...props } : PropsWithChildren<StepperProps> ){
 
     /* States */
     const topNavSwiperRef = useRef<SwiperRef>(null);
@@ -23,7 +24,7 @@ function Stepper({ className, children } : PropsWithChildren<StepperProps> ){
     }, [ step ])
 
     return(
-        <Swiper {...SWIPERPROPS_STEPPER} ref={topNavSwiperRef} className={className}>
+        <Swiper {...SWIPERPROPS_STEPPER} ref={topNavSwiperRef} className={className} {...props}>
             { children }
         </Swiper>
     );
