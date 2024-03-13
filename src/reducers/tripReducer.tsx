@@ -225,10 +225,11 @@ const useProfileIdList = ( answeredProfileOnly : boolean = true ) => {
     );
 }
 
-function useProfileAll<T extends (keyof IProfile) | IProfile>(idList?: IProfileId[], key?: keyof IProfile): T[] {
+function useProfileAll<T extends (keyof IProfile) | IProfile>(idList?: IProfileId[], key?: keyof IProfile, answeredProfileOnly : boolean = true): T[] {
     return (useSelector((state: RootState) =>
-        Object.entries(state.trip.data.profileList).filter(([k, v]) => idList ? idList.includes(k) : true)
-            .map(([k, profile]) =>
+        Object.values(state.trip.data.profileList).filter(({ id }) => idList ? idList.includes(id) : true)
+            .filter(({ testAnswer }) => answeredProfileOnly ? (testAnswer !== null) : true )
+            .map(( profile ) =>
                 key
                     ? profile[key]
                     : profile

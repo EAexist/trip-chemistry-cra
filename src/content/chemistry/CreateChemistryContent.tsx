@@ -94,7 +94,7 @@ function CreateChemistryContent({
             >
                 {
                     isAppBarHidden &&
-                    <motion.div {...SLIDEINLEFT} className="page fullscreen">
+                    <motion.div {...SLIDEINLEFT} className="page fill-window">
                         {
                             // swiperRef.current && swiperRef.current.swiper &&
                             <Toolbar>

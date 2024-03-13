@@ -54,7 +54,7 @@ function UserContent({ }: UserContentProps) {
         <AuthLoadContent
             handleSuccess={handleLogoutSuccess}
         >
-        <RoutedMotionPage className="flex">
+        <RoutedMotionPage className="flex fill-window">
             <Toolbar />
             <div className='flex-grow body--centered block__body'>
                 <div>
@@ -97,7 +97,7 @@ function UserContent({ }: UserContentProps) {
                             &&
                             <div>
                                 <p className="typography-note">
-                                    <Help fontSize="inherit" />
+                                    <Help fontSize="inherit"/>
                                     {
                                         "카카오 로그인을 이용하면\n링크를 잃어버려도 내 테스트 결과를 안전하게 불러올 수 있어요."
                                     }

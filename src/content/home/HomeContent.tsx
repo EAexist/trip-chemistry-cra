@@ -65,7 +65,7 @@ function HomeContent({ }: HomeContentProps) {
                 onSwiper={(swiper) => {
                     setSwiper(swiper);
                 }}
-                className="page__swiper flex fullscreen"
+                className="page__swiper flex fill-window"
             >
                 {(strings.sections as { title: string, body: string }[]).map(({ title, body }, index) => (
                     <SwiperSlide key={title} className="flex" style={{ overflowY: 'visible' }}>
@@ -74,7 +74,7 @@ function HomeContent({ }: HomeContentProps) {
                             <h3 className="typography-heading">{title}</h3>
                             <p className="">{body}</p>
                         </div>
-                        <div style={{ position: "absolute", width: "100%", }} className="fullscreen">
+                        <div style={{ position: "absolute", width: "100%", }} className="fill-window">
                             {/* Background Image */}
                         </div>
                     </SwiperSlide>

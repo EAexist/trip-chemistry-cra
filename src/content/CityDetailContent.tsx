@@ -3,8 +3,7 @@ import { useState } from "react";
 
 /* React Packages */
 import { ArrowRight, ExpandMore, NavigateBefore, ThumbUp } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionSummary, AppBar, Button, CardContent, Divider, Icon, IconButton, Rating, Stack, Toolbar } from "@mui/material";
-import { useSelector } from "react-redux";
+import { Accordion, AccordionDetails, AccordionSummary, AppBar, Button, CardContent, Divider, Icon, IconButton, List, ListItem, ListItemAvatar, ListItemText, Rating, Stack, Toolbar } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -17,8 +16,8 @@ import Logo from "../components/Logo";
 import RoutedMotionPage from "../components/Motion/RoutedMotionPage";
 import PaginationDiv from "../components/PaginationDiv";
 import { useHideAppbar } from "../contexts/AppBarContext";
-import { useCityChemistry, useIsChemistryEnabled } from "../reducers/tripReducer";
-import { RootState } from "../store";
+import { IProfile } from "../interfaces/IProfile";
+import { useCityChemistry, useIsChemistryEnabled, useProfileAll } from "../reducers/tripReducer";
 import { useStrings } from "../texts";
 import getImgSrc, { FORMATWEBP } from "../utils/getImgSrc";
 
@@ -52,14 +51,17 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
     /* Reducers */
     const isChemistryEnabled = useIsChemistryEnabled();
     const score = useCityChemistry(cityClass);
-    const answerList = useSelector((state: RootState) =>
-        isChemistryEnabled
-            ? Object.entries(state.trip.data.profileList).map(([id, { testAnswer }]) => (
-                { id: id, answer: testAnswer[cityClass] }
-            ))
-                .sort((a, b) => (b.answer as number) - (a.answer as number))
-            : []
-    )
+    const answerList = (useProfileAll() as IProfile[]).map(({ id, testAnswer }) =>
+        ({ id: id, answer: testAnswer[cityClass] })
+    ).sort((a, b) => (b.answer as number) - (a.answer as number));
+
+    // useSelector((state: RootState) =>
+    //     isChemistryEnabled
+    //         ? Object.entries(state.trip.data.profileList).map(([id, { testAnswer }]) => (
+    //             { id: id, answer: testAnswer[cityClass] }
+    //         )).sort((a, b) => (b.answer as number) - (a.answer as number))
+    //         : []
+    // )
 
     return (
         isAppBarHidden &&
@@ -119,15 +121,23 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                             </Stack>
                         </AccordionSummary>
                         <AccordionDetails sx={{ padding: 0 }}>
+                            <List>
                             {
                                 answerList.map(({ id, answer }) => (
-                                    <Stack>
-                                        <FriendAvatar id={id} />
-                                        <Rating value={Number(answer)} readOnly precision={0.5} size={"small"} />
-                                        <p className="typography-note">{strings.test.city.answers[answer as keyof typeof strings.test.city.answers].label}</p>
-                                    </Stack>
+                                    <ListItem>
+                                        <ListItemAvatar>
+                                            <FriendAvatar id={id} />
+                                        </ListItemAvatar>
+                                        <ListItemText primary={
+                                            <Stack>
+                                                <Rating value={Number(answer)} readOnly precision={0.5} size={"small"} />
+                                                <p className="typography-note">{strings.test.city.answers[answer as keyof typeof strings.test.city.answers].label}</p>
+                                            </Stack>
+                                        } />
+                                    </ListItem>
                                 ))
                             }
+                            </List>
                         </AccordionDetails>
                     </Accordion>
                 </div>
@@ -163,18 +173,18 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                                 <p>{commonStrings.city[cityId as keyof typeof commonStrings.city].body}</p>
                                 <div>
                                     <a href={CITY[cityId as keyof typeof CITY].link} target="_blank" rel="noopener noreferrer" className="flex">
-                                        <Button variant={"contained"} className="button--full">
-                                            <Stack>
-                                                {
-                                                    commonStrings.linkTextList.map((text) => (
-                                                        text === "/link" ? commonStrings.linkType[CITY[cityId as keyof typeof CITY].linkType as keyof typeof commonStrings.linkType].name
-                                                            : (text === "/city" ? commonStrings.city[cityId as keyof typeof commonStrings.city].name
-                                                                : text
-                                                            )
-                                                    ))
-                                                }
-                                                <ArrowRight />
-                                            </Stack>
+                                        <Button variant={"contained"} color="gray" className="button--full" endIcon={<ArrowRight />}>
+                                            {/* <Stack> */}
+                                            {
+                                                commonStrings.linkTextList.map((text) => (
+                                                    text === "/link" ? commonStrings.linkType[CITY[cityId as keyof typeof CITY].linkType as keyof typeof commonStrings.linkType].name
+                                                        : (text === "/city" ? commonStrings.city[cityId as keyof typeof commonStrings.city].name
+                                                            : text
+                                                        )
+                                                ))
+                                            }
+
+                                            {/* </Stack> */}
                                         </Button>
                                     </a>
                                 </div>

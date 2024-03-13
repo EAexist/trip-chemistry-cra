@@ -28,8 +28,8 @@ function ChemistryListContent({ }: ChemistryListContentProps) {
     }
 
     return (
-        <RoutedMotionPage className="page fullscreen flex content__body--gray">
-        {/* <div className="page  min-fullscreen"> */}
+        <RoutedMotionPage className="page fill-window flex content__body--gray">
+        {/* <div className="page  min-fill-window"> */}
             <Toolbar/>
             <div className="block--with-margin-x block__body">
                 <motion.h2 {...FADEIN_VIEWPORT} className="typography-heading">

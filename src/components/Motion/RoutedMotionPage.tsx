@@ -31,7 +31,7 @@ const RoutedMotionPage = ({ className, children }: PropsWithChildren<RoutedMotio
         : undefined
 
     return (
-        <motion.div {...motionprops} className={`page fullscreen ${className}`}>
+        <motion.div {...motionprops} className={`page ${className}`}>
             {children}
         </motion.div>
     )

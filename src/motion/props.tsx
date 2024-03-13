@@ -21,9 +21,9 @@ export const VARIANTS_FADEIN: Variants = {
     hidden: {
         opacity: 0,
         transition: {
-            // stiffness: 1000,
+            stiffness: 1000,
             ease: "easeInOut",
-            duration: 0.5
+            duration: 0.25,
         }
     },
     visible: (delay = 0) => ({

@@ -709,7 +709,7 @@ const stringTable_kr = {
                     },
                     "leadership": {
                         icon: "groups",
-                        label: "여행 준비",
+                        label: "리더",
                         title: "리더",
                         particle: "",
                         options: {

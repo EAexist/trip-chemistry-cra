@@ -17,7 +17,7 @@ import NavigationButton from "../../components/Button/NavigationButton";
 import ToggleButton from "../../components/Button/ToggleButton";
 import ProfileImage from "../../components/ProfileImage";
 import ChemistrySlider from "../../components/Slider/ChemistrySlider";
-import TestResultBox from "../../components/TestResultBox";
+import TestResultBox, { MotionTestResultBox } from "../../components/TestResultBox";
 import useValueToProfileIdList from "../../hooks/useValueToProfileIdList";
 import { useChemistry, useProfileAll, useProfileIdList, useSortedCityList } from "../../reducers/tripReducer";
 import { RootState } from "../../store";
@@ -80,9 +80,9 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                             ))
                         }
                     </Stack>
-                    <AnimatePresence mode="wait">
-                        <motion.div key={characterSectionActiveUserIndex} {...{...FADEIN}} className="navigation-button__container">
-                            <TestResultBox id={answeredProfileIdList[characterSectionActiveUserIndex]} />
+                    <AnimatePresence mode={"wait"} initial={false}>
+                        <motion.div key={characterSectionActiveUserIndex} {...{...FADEIN, exit: "hidden" }} className="navigation-button__container">
+                            <TestResultBox key={characterSectionActiveUserIndex}id={answeredProfileIdList[characterSectionActiveUserIndex]} />
                             {
                                 (characterSectionActiveUserIndex > 0) &&
                                 <NavigationButton navigateTo="prev" onClick={() => setCharacterSectionActiveUserIndex((prev) => prev > 0 ? prev - 1 : prev)} />
@@ -92,7 +92,9 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                                 <NavigationButton navigateTo="next" onClick={() => setCharacterSectionActiveUserIndex((prev) => prev < answeredProfileIdList.length - 1 ? prev + 1 : prev)} />
                             }
                         </motion.div>
-                        <motion.p key={characterSectionActiveUserIndex} {...FADEIN} custom={0.5}>
+                    </AnimatePresence>
+                    <AnimatePresence mode={"wait"} initial={false}>
+                        <motion.p key={characterSectionActiveUserIndex} {...{...FADEIN, exit: "hidden" }} custom={0.5}>
                             {characterSectionCharacter?.body}
                         </motion.p>
                     </AnimatePresence>
@@ -142,13 +144,13 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
             <SectionPaper>
                 <motion.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.schedule.title}</motion.h5>                
                 <motion.div {...FADEIN_VIEWPORT} className="block__body">
-                <List>
+                <List disablePadding>
                     {
                         (Object.values(teststrings.test.schedule.answers) as { icon: string, label: string, value: number }[]).map(({ icon, label, value }) => (
-                            <ListItem disabled={!Object.keys(scheduleAnswerToProfiles).includes(String(value))}>
+                            <ListItem disabled={!Object.keys(scheduleAnswerToProfiles).includes(String(value))} disableGutters>
                                 <Stack spacing={4}>
                                     <div className={Object.keys(scheduleAnswerToProfiles).includes(String(value)) ? "typography-label" : ""}><p>{label}</p></div>
-                                    <Stack spacing={-0.25}>
+                                    <Stack spacing={0.5}>
                                         {
                                             (Object.keys(scheduleAnswerToProfiles).includes(String(value)) ? scheduleAnswerToProfiles[value] : []).map((id) => (
                                                 <FriendAvatar id={id} />
@@ -218,7 +220,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
             {/* <SectionPaper>
                 <motion.h5 className="typography-heading">{" 친구에게 결과 공유하기 "}</motion.h5>
             </SectionPaper> */}
-            <div />
+            {/* <div /> */}
         </>
     );
 }

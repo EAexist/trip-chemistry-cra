@@ -61,7 +61,7 @@ function InitializeNicknameContent({ }: InitializeNicknameContentProps) {
                         {
                             isConfirmCancelModalOpen
                             &&
-                            <motion.div {...SLIDEINUPINVIEW} className="page fullscreen flex">
+                            <motion.div {...SLIDEINUPINVIEW} className="page fill-window flex">
                                 <div className='block--with-margin-lg block__body body--centered flex-grow'>
                                     <h3 className='typography-label'>
                                         {`닉네임을 설정 중이에요.\n취소하고 처음으로 돌아갈까요?`}

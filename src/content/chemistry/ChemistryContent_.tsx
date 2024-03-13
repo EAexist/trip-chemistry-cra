@@ -117,7 +117,7 @@
 //             setStatus={setChemistryLoadStatus}
 //             handleFail={handleChemistryFail}
 //         >
-//             <div className="page content__body--gray min-fullscreen" >
+//             <div className="page content__body--gray min-fill-window" >
 //                 <Toolbar />
 //                 <SectionPaper>
 //                     <h2 className="typography-heading">함께 여행할 친구들</h2>

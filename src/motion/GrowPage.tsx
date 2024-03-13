@@ -14,7 +14,7 @@ const GrowPage = ({ children } : PropsWithChildren) => {
   return (
     // <Grow in={true} style={{ transformOrigin: state.transformOrigin }}
     // timeout={4000}>
-      <motion.div className="fullscreen" layoutId="cityDetail">
+      <motion.div className="fill-window" layoutId="cityDetail">
         { children }
       </motion.div>
     // </Grow>

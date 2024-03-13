@@ -66,8 +66,11 @@ function CityChemistryContent({ cityClass }: CityChemistryContentProps) {
                 {
                     Object.entries(valueToProfileList).reverse().map(([value, idList], index) => (
                         <Stack sx={{ flexWrap: "wrap" }}>
-                            <p className="typography-note">{testStrings.test.city.answers[Number(value) as keyof typeof testStrings.test.city.answers].label}</p>
-                            <Stack spacing={-0.25}>
+                            <div className="body--centered">
+                                <Rating value={Number(value)} readOnly max={Number(value)} sx={{ fontSize: "14px" }}/>
+                                <p className="typography-note">{testStrings.test.city.answers[Number(value) as keyof typeof testStrings.test.city.answers].label}</p>
+                            </div>
+                            <Stack spacing={0.5}>
                                 {
                                     idList.map((id) => (
                                         <FriendAvatar id={id} />

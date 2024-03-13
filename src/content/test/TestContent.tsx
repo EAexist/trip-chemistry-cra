@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 /* React Packages */
 
 import { Button, ButtonBase, Card, CardContent, CardMedia, Icon, List, ListItem, ListItemButton, ListItemText, Stack, Tooltip, useTheme } from "@mui/material";
-import { ExpandMore } from "@mui/icons-material";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
+import { ArrowRight, ExpandMore, NavigateNext } from "@mui/icons-material";
+import { AnimatePresence, LayoutGroup, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -101,6 +101,10 @@ function TestContent({ }: TestContentProps) {
         }
     };
 
+    const handleConfirmTooltipClick = () => {
+        // submitAnswer();
+    }
+
     const handleConfirmButtonClick = () => {
         submitAnswer();
     }
@@ -171,7 +175,6 @@ function TestContent({ }: TestContentProps) {
                                     {
                                         Object.entries( TEST_SECTIONS ).map(([testName, { icon }], index) =>
                                             <SwiperSlide key={testName} className="top-nav__swiper">
-                                                <TestAnswerBadge testName={testName as TestName} sx={{ height: "100%" }}>
                                                     <SectionButton
                                                         size={"small"}
                                                         value={index}
@@ -182,9 +185,10 @@ function TestContent({ }: TestContentProps) {
                                                         elevation={1}
                                                     // className="button-group__item"
                                                     >
-                                                        <PngIcon name={testName} />
+                                                    <TestAnswerBadge testName={testName as TestName} sx={{ height: 'fit-content', padding: "4px" }}>
+                                                        <PngIcon name={testName} size={"large"} />
+                                                    </TestAnswerBadge>
                                                     </SectionButton>
-                                                </TestAnswerBadge>
                                             </SwiperSlide>
                                         )
                                     }
@@ -295,8 +299,10 @@ function TestContent({ }: TestContentProps) {
                                                             {({ isActive }) => (
                                                                 id === "more"
                                                                     ? (
+                                                                        <AnimatePresence mode={"wait"} initial={false}>
+                                                                        {
                                                                         isActive
-                                                                            ? <div style={{ width: "260px", height: "240px" }} className="body--centered block--with-padding">
+                                                                            ? <motion.div key={"summary"} {...{...FADEIN, exit: "hidden" }} style={{ width: "260px", height: "240px" }} className="body--centered block--with-padding">
                                                                                 <div className="block-with-margin-x">
                                                                                     <p>더 많은 식당 찾아보기</p>
                                                                                     <List>
@@ -308,7 +314,7 @@ function TestContent({ }: TestContentProps) {
                                                                                                             <ListItemText
                                                                                                                 primary={
                                                                                                                     <Stack>
-                                                                                                                        <Logo id={source} />
+                                                                                                                        <Logo id={source} className="logo--sm"/>
                                                                                                                         <p>{commonStrings.linkType[source as keyof typeof commonStrings.linkType].name}</p>
                                                                                                                     </Stack>
                                                                                                                 }
@@ -323,12 +329,14 @@ function TestContent({ }: TestContentProps) {
                                                                                         }
                                                                                     </List>
                                                                                 </div>
-                                                                            </div>
-                                                                            : <div style={{ width: "200px", height: "240px", position: "absolute", opacity: 0.5 }} className="body--centered">
+                                                                            </motion.div>
+                                                                            : <motion.div key={"detail"} {...{...FADEIN, exit: "hidden" }} style={{ width: "200px", height: "240px", position: "absolute", opacity: 0.5 }} className="body--centered">
                                                                                 <p>
                                                                                     {`더 많은 식당\n찾아보기`}
                                                                                 </p>
-                                                                            </div>
+                                                                            </motion.div>
+                                                                            }
+                                                                            </AnimatePresence>
                                                                     )
                                                                     : <FoodImageCard id={id} isActive={isActive} />
                                                             )}
@@ -413,7 +421,12 @@ function TestContent({ }: TestContentProps) {
                                 open={isConfirmTooltipOpen}
                                 onClose={() => setIsConfirmTooltipOpen(false)}
                                 onOpen={handleConfirmTooltipOpen}
-                                title={contentstrings.main.tooltip_completeTest}
+                                title={
+                                    <Button onClick={handleConfirmTooltipClick} endIcon={<NavigateNext />}>
+                                        { contentstrings.main.tooltip_completeTest }
+                                    </Button>
+                                }
+
                             >
                                 <span className="block--with-margin flex">
                                     <Button

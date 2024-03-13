@@ -45,7 +45,7 @@ const ScrollPageItem = ({ className, children }: PropsWithChildren<ScrollPageIte
     return (
         <div ref={ref} className="scroll-page__container" style={{ marginBottom: pageRef.current?.offsetHeight ? (-1) * pageRef.current?.offsetHeight : undefined }}>
             {
-                <div ref={pageRef} className="fullscreen sticky" style={{ visibility: show ? "visible" : "hidden" }}>
+                <div ref={pageRef} className="fill-window sticky" style={{ visibility: show ? "visible" : "hidden" }}>
                     { children }
                 </div>
             }

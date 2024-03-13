@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
 
 import { Badge, BadgeProps } from "@mui/material";
 
@@ -12,8 +12,12 @@ function TestAnswerBadge({ testName, children, ...props }: PropsWithChildren<Tes
 
     const isAnswered = useIsTestAnswered( testName );
 
+    useEffect(()=>{
+        console.log(`[TestAnswerBadge] testName=${testName} isAnswered=${isAnswered}`);
+    }, []);
+
     return (
-        <Badge invisible={isAnswered} {...props} >
+        <Badge invisible={isAnswered} {...props} variant="dot" color="primary">
             { children }
         </Badge>
     );

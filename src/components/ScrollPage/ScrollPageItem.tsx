@@ -24,7 +24,7 @@ const ScrollPageItem = ({ page, children, className }: PropsWithChildren<ScrollP
         <motion.div
             ref={pageRef}
             {...FADEIN}
-            className={`scroll-page__item fullscreen ${className}`}
+            className={`scroll-page__item fill-window ${className}`}
         >
             {children}
         </motion.div>

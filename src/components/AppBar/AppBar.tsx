@@ -123,7 +123,7 @@ function AppBar({ }: AppBarProps) {
                     className="drawer"
                 >
                     <div
-                        className="fullscreen"
+                        className="page fill-window"
                     >
                         <Toolbar />
                         <MotionList

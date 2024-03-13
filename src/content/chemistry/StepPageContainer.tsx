@@ -39,7 +39,7 @@
 
 //     return (
 //         isAppBarHidden &&
-//         <div className="page fullscreen">
+//         <div className="page fill-window">
 //             <Toolbar>
 //                 {
 //                     swiperRef.current?.swiper.isBeginning

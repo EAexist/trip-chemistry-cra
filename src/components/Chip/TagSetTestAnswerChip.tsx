@@ -1,8 +1,11 @@
-import { Chip } from "@mui/material";
+
+import { useEffect } from "react";
+
 import { useDispatch } from "react-redux";
+import { Chip } from "@mui/material";
+
 import { SetTestName, addTagAnswer, deleteTagAnswer, useTagSetAnswer } from "../../reducers/testAnswerReducer";
 import { useStrings } from "../../texts";
-import { useEffect } from "react";
 
 interface TagSetTestAnswerChipProps {
     testName : SetTestName;
@@ -31,7 +34,7 @@ const TagSetTestAnswerChip = ({ testName, selected = true }: TagSetTestAnswerChi
     return(
         <>
             {
-                tagSet.map(( tag ) => (        
+                tagSet.map(( tag ) => (    
                     <Chip 
                         key={tag}
                         label={ tagToLabel[ tag as keyof typeof tagToLabel ] }

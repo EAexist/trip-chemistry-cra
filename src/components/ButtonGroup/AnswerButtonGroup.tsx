@@ -22,7 +22,15 @@ function AnswerButtonGroup( { testName, answer, setAnswer } : AnswerButtonGroupP
         <Stack direction={"row"} spacing={2} justifyContent="space-around" alignItems="stretch" className="button-group--in-body"> 
         {
             ( Object.values(strings.answers) as { icon: string, display: string, label: string, value: number }[]).map(({ icon, display, label, value }) =>(
-                <ToggleProfileButton contained key={ value } value={ value } selected={ value === answer } onChange={ (_, value) => handleAnswerChange( value ) } label={label} paperSx={{ border: `1px solid ${theme.palette.primary.main}` }}>
+                <ToggleProfileButton 
+                    contained
+                     key={ value } 
+                     value={ value } 
+                     selected={ value === answer } 
+                     onChange={ (_, value) => handleAnswerChange( value ) } 
+                     label={label} 
+                     paperSx={{ }}
+                >
                     {
                         <p className="typography-label" style={{ color: "inherit" }}>{ icon }</p>
                     }

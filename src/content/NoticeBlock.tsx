@@ -32,7 +32,7 @@ function NoticeBlock({
 }: PropsWithChildren<NoticeBlockProps>) {
 
     return (
-            <div className={`page flex ${isFullscreen ? 'fullscreen' : ''}`}>
+            <div className={`page flex ${isFullscreen ? 'fill-window' : ''}`}>
                 {
                     isFullscreen &&
                     <Toolbar />

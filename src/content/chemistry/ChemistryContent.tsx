@@ -184,7 +184,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
             handleFail={handleChemistryFail}
         >
             <Toolbar />
-            <RoutedMotionPage className="page fullscreen flex content__body--gray block__body">
+            <RoutedMotionPage className="page min-fill-window flex content__body--gray block__body">
                 <SectionPaper className="block__body body__head">
                     <div className="body__head typography-note">
                         {
@@ -307,7 +307,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                 }
                 {
                     isMember && !hasAnsweredTest &&
-                    <div className="placeholder" >
+                    <div className="placeholder" style={{ marginTop: 0 }}>
                         <div className="placeholder--button--full block--with-margin" />
                     </div>
                 }
