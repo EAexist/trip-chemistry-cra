@@ -1,11 +1,9 @@
-import { AvatarGroup, Button, ButtonBase, CardActionArea, CardContent, Stack } from "@mui/material";
+import { Card, CardActionArea, CardContent, Stack } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { HEADERS_AXIOS } from "../common/app-const";
 import { useNavigate } from "react-router-dom";
+import { HEADERS_AXIOS } from "../common/app-const";
 import { IChemistry, defaultChemistry } from "../interfaces/IChemistry";
-import ImageCard from "./Card/ImageCard";
-import getImgSrc, { FORMATWEBP } from "../utils/getImgSrc";
 import ProfileAvatar from "./Avatar/ProfileAvatar";
 
 interface ChemistrySummaryButtonProps {
@@ -22,11 +20,13 @@ function ChemistrySummaryButton({ id }: ChemistrySummaryButtonProps) {
 
     /* Event Handler */
     const handleClick = () => {
-        navigate(`../chemistry/${id}`);
+        navigate(`../chemistry/${id}`, { state: { navigateDirection: 'next' } });
     }
 
     /* Side Effect */
     useEffect(() => {
+
+        /* API 요청 */
         axios.get(`/chemistry`,
             {
                 method: "GET",
@@ -47,27 +47,20 @@ function ChemistrySummaryButton({ id }: ChemistrySummaryButtonProps) {
 
 
     return (
-        <ImageCard
-            src={getImgSrc("/city", chemistry.titleCity, FORMATWEBP)}
-            title={chemistry.title}
-            gradient="bottom"
-            className="block--xlarge"
-        >
+        <Card className="block--xlarge">
             <CardActionArea onClick={handleClick} className="flex-end">
-                <CardContent>
-                    <Stack className="typography-white">
-                        <h2 className="typography-label">{chemistry.title}</h2>
-                        <Stack spacing={-0.25}>
-                            {
-                                Object.values(chemistry.profileList).map(({ testResult, nickname }) => (
-                                    <ProfileAvatar key={nickname} {...{ nickname, characterId: testResult && testResult.tripCharacter ? testResult.tripCharacter.id : "" }} />
-                                ))
-                            }
-                        </Stack>
+                <CardContent className="block__body body--centered">
+                    <h2 className="typography-body">{chemistry.title}</h2>
+                    <Stack spacing={-0.25}>
+                        {
+                            Object.values(chemistry.profileList).map(({ testResult, nickname }) => (
+                                <ProfileAvatar key={nickname} {...{ nickname, characterId: testResult && testResult.tripCharacter ? testResult.tripCharacter.id : "user" }} />
+                            ))
+                        }
                     </Stack>
                 </CardContent>
             </CardActionArea>
-        </ImageCard>
+        </Card>
     );
 }
 export default ChemistrySummaryButton;

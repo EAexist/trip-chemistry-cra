@@ -18,6 +18,35 @@ declare module '@mui/material/Avatar' {
     }
 }
 
+declare module '@mui/material/IconButton' {
+    interface IconButtonPropsColorOverrides {
+        gray: true;
+    }
+}
+
+declare module '@mui/material/Icon' {
+    interface IconPropsColorOverrides {
+        gray: true;
+    }
+}
+
+declare module '@mui/material/Button' {
+    interface ButtonPropsColorOverrides {
+        gray: true;
+    }
+}
+
+declare module '@mui/material/styles' {
+    interface Palette {
+        gray: Palette['primary'];
+    }
+
+    interface PaletteOptions {
+        gray?: PaletteOptions['primary'];
+    }
+}
+
+
 const defaultTheme = createTheme({
     palette: {
         primary: {
@@ -30,18 +59,31 @@ const defaultTheme = createTheme({
             light: '#fff',
             dark: '#F2F4F6',
             // dark: '#E7E9ED',
-        },        
+        },
+        gray: {
+            main: '#E7E9ED',
+            light: '#F2F4F6',
+            dark: '#D2D4D8',
+            contrastText: '#505967',
+        },
+    }
 
-    }},
+},
 );
 
 export const theme = createTheme({
     ...defaultTheme,
     typography: {
-      fontFamily: [
-        'Apple SD Gothic Neo', 
-        'sans-serif'
-      ].join(','),
+        fontFamily: [
+            'Apple SD Gothic Neo',
+            'sans-serif'
+        ].join(','),
+    },
+    transitions: {
+        duration: {
+            enteringScreen: 500,
+            leavingScreen: 500,
+        }
     },
     components: {
         MuiAppBar: {
@@ -78,23 +120,16 @@ export const theme = createTheme({
             }
         },
         MuiAvatar: {
-            variants: [
-                {
-                    props: { variant: 'primary' },
-                    style: {
-                        backgroundColor: defaultTheme.palette.primary.light
-                    }
-                },
-            ],
             defaultProps: {
-                style: {                 
-                    backgroundColor: defaultTheme.palette.secondary.dark
+                style: {
+                    backgroundColor: defaultTheme.palette.gray.light,
+                    color: defaultTheme.palette.gray.contrastText
                 }
             }
         },
         MuiAvatarGroup: {
             defaultProps: {
-                style: {                 
+                style: {
                     // backgroundColor: defaultTheme.palette.primary.light
                 }
             }
@@ -120,6 +155,25 @@ export const theme = createTheme({
                         height: 'fit-content',
                     },
                 },
+                {
+                    props: { color: 'gray' },
+                    style: {
+                        backgroundColor: defaultTheme.palette.gray.light
+                    },
+                },
+            ],
+            defaultProps: {
+                disableElevation: true
+            }
+        },
+        MuiIcon: {
+            variants: [
+                {
+                    props: { color: 'gray' },
+                    style: {
+                        color: defaultTheme.palette.gray.main
+                    },
+                },
             ],
         },
         MuiToolbar: {
@@ -139,7 +193,8 @@ export const theme = createTheme({
         },
         MuiIconButton: {
             defaultProps: {
-                size: "large"
+                size: "large",
+                // color: "gray"
             }
 
         },

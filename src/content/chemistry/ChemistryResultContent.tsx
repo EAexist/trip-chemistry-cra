@@ -37,7 +37,7 @@
 //     /* States */
 //     const [ characterSectionActiveUserIndex, setCharacterSectionActiveUserIndex ] = useState<number>(0);
 
-//     /* Store */
+//     /* Reducers */
 //     const idList = useProfileIdList();
 
 //     const chemistry = useChemistry();

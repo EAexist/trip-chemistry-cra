@@ -31,7 +31,7 @@ const stringTable_kr = {
                 // contact: ['오류가 계속되면 ', '/name', '에게 알려주세요.'],
                 // connect: '지금 서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.',
             },
-            title: "여행 케미스트리",
+            title: "여행 케미 테스트",
             reference: "제공: ",
             linkText: "에서 보기",
             linkTextList: [
@@ -512,18 +512,21 @@ const stringTable_kr = {
                             1:
                             {
                                 value: 1,
+                                display: "icon",
                                 icon: "1",
                                 label: "잘 따르는 팀원",
                             },
                             2:
                             {
                                 value: 2,
+                                display: "icon",
                                 icon: "2",
                                 label: "꽤 적극적인 팀원",
                             },
                             3:
                             {
                                 value: 3,
+                                display: "icon",
                                 icon: "3",
                                 label: "적극적인 리더",
                             },
@@ -541,6 +544,7 @@ const stringTable_kr = {
                             1:
                             {
                                 value: 1,
+                                display: "icon",
                                 icon: "1",
                                 label: "아주 널널하게",
                                 "prefix": "아주 널널한게 좋은"
@@ -548,6 +552,7 @@ const stringTable_kr = {
                             2:
                             {
                                 value: 2,
+                                display: "icon",
                                 icon: "2",
                                 label: "널널하게",
                                 "prefix": "널널한게 좋은"
@@ -555,6 +560,7 @@ const stringTable_kr = {
                             3:
                             {
                                 value: 3,
+                                display: "icon",
                                 icon: "3",
                                 label: "아무래도 상관없어",
                                 "prefix": "아무래도 상관 없는"
@@ -562,6 +568,7 @@ const stringTable_kr = {
                             4:
                             {
                                 value: 4,
+                                display: "icon",
                                 icon: "4",
                                 label: "알차게",
                                 "prefix": "알찬게 좋은"
@@ -569,6 +576,7 @@ const stringTable_kr = {
                             5:
                             {
                                 value: 5,
+                                display: "icon",
                                 icon: "5",
                                 label: "매우 알차게",
                                 "prefix": "매우 알찬게 좋은"
@@ -599,6 +607,7 @@ const stringTable_kr = {
                             1:
                             {
                                 value: 1,
+                                display: "icon",
                                 icon: "😡",
                                 label: "싫어!",
                                 "emoji": "😡",
@@ -606,6 +615,7 @@ const stringTable_kr = {
                             2:
                             {
                                 value: 2,
+                                display: "icon",
                                 icon: "😤",
                                 label: "별로야..",
                                 "emoji": "😤",
@@ -613,6 +623,7 @@ const stringTable_kr = {
                             3:
                             {
                                 value: 3,
+                                display: "icon",
                                 icon: "🤔",
                                 label: "상관없어",
                                 "emoji": "🤔",
@@ -620,6 +631,7 @@ const stringTable_kr = {
                             4:
                             {
                                 value: 4,
+                                display: "icon",
                                 icon: "😃",
                                 label: "좋아",
                                 "emoji": "😃",
@@ -627,6 +639,7 @@ const stringTable_kr = {
                             5:
                             {
                                 value: 5,
+                                display: "icon",
                                 icon: "😍",
                                 label: "완전 내 취향!",
                                 "emoji": "😍",
@@ -685,7 +698,7 @@ const stringTable_kr = {
                 },
                 "subTest": {
                     "expectation": {
-                        label: "여행 기대하기",
+                        label: "이런 여행을 하고싶어",
                         title: "나는 이런 여행을 하고 싶어",
                         particle: "",
                     },

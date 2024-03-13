@@ -34,7 +34,7 @@
 //     const navigate = useNavigate();
 //     const dispatch = useDispatch<AppDispatch>();
 
-//     /* Store */
+//     /* Reducers */
 //     const userId = useUserId();
 //     const profileList = useProfileList();
 //     const idList = useProfileIdList();

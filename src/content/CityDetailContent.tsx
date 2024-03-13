@@ -2,23 +2,25 @@
 import { useState } from "react";
 
 /* React Packages */
-import { useLocation, useNavigate } from "react-router-dom";
+import { ArrowRight, ExpandMore, NavigateBefore, ThumbUp } from "@mui/icons-material";
 import { Accordion, AccordionDetails, AccordionSummary, AppBar, Button, CardContent, Divider, Icon, IconButton, Rating, Stack, Toolbar } from "@mui/material";
-import { ArrowRight, Close, ExpandMore, ThumbUp } from "@mui/icons-material";
-import { Swiper, SwiperSlide } from 'swiper/react';
 import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 /* Trip Chemistry */
 import { CITY, NATION, TEST } from "../common/app-const";
 import { SWIPERPROPS_CITYDETAILCONTENT } from "../common/swiperProps";
+import FriendAvatar from "../components/Avatar/FriendAvatar";
 import ImageCard from "../components/Card/ImageCard";
 import Logo from "../components/Logo";
+import RoutedMotionPage from "../components/Motion/RoutedMotionPage";
 import PaginationDiv from "../components/PaginationDiv";
+import { useHideAppbar } from "../contexts/AppBarContext";
+import { useCityChemistry, useIsChemistryEnabled } from "../reducers/tripReducer";
 import { RootState } from "../store";
 import { useStrings } from "../texts";
 import getImgSrc, { FORMATWEBP } from "../utils/getImgSrc";
-import { useCityChemistry, useIsChemistryEnabled } from "../reducers/tripReducer";
-import FriendAvatar from "../components/Avatar/FriendAvatar";
 
 interface CityDetailContentProps {
     cityClass: keyof typeof TEST.city.subTests;
@@ -26,14 +28,15 @@ interface CityDetailContentProps {
 
 function CityDetailContent({ cityClass }: CityDetailContentProps) {
 
+    /* Hooks */
     const navigate = useNavigate();
     const { state } = useLocation();
+    const isAppBarHidden = useHideAppbar();
 
+    /* States */
     const [expanded, setExpanded] = useState<boolean>(false);
 
-    const isChemistryEnabled = useIsChemistryEnabled();
-
-    /* Strings */
+    /* Constants */
     const strings = useStrings().public.contents.test;
     const commonStrings = useStrings().public.common;
 
@@ -46,7 +49,8 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
         setExpanded(isExpanded);
     };
 
-    /* Store */
+    /* Reducers */
+    const isChemistryEnabled = useIsChemistryEnabled();
     const score = useCityChemistry(cityClass);
     const answerList = useSelector((state: RootState) =>
         isChemistryEnabled
@@ -58,7 +62,8 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
     )
 
     return (
-        <div className="page">
+        isAppBarHidden &&
+        <RoutedMotionPage>
             <AppBar>
                 <Toolbar className="margin-x">
                     <IconButton
@@ -66,7 +71,7 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                         aria-label="close"
                         onClick={handleClose}
                     >
-                        <Close />
+                        <NavigateBefore />
                     </IconButton>
                     <Stack>
                         <h5 className="typography-note">{strings.test.city.title}</h5>
@@ -127,7 +132,7 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                     </Accordion>
                 </div>
             }
-            <Divider variant="middle"/>
+            <Divider variant="middle" />
             <Swiper {...SWIPERPROPS_CITYDETAILCONTENT} initialSlide={state && state.initialIndex ? state.initialIndex : 0} className="page__swiper">
                 <div slot="container-start" >
                     <PaginationDiv className='pageSwiper-pagination' sx={{ justifyContent: 'center' }} />
@@ -136,8 +141,14 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                     TEST.city.subTests[cityClass].examples.map((cityId) => (
                         <SwiperSlide key={cityId} className="">
                             <div className="block--with-margin-x block__body">
-                                <ImageCard src={getImgSrc("/city", cityId, FORMATWEBP)} title={cityId} className="body__head" gradient="bottom" >
-                                    <CardContent className="image-card__card-content" sx={{ height: "320px" }}>
+                                <ImageCard
+                                    src={getImgSrc("/city", cityId, FORMATWEBP)}
+                                    title={cityId}
+                                    className="body__head flex-end"
+                                    gradient="bottom"
+                                    sx={{ height: "320px" }}
+                                >
+                                    <CardContent>
                                         <Stack className="typography-white">
                                             <h2 className="typography-heading">{commonStrings.city[cityId as keyof typeof commonStrings.city].name}</h2>
                                             <h3 className="typography-heading">{cityId}</h3>
@@ -148,11 +159,11 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                                         </Stack>
                                     </CardContent>
                                 </ImageCard>
-                                <h5 className="typography-label" style={{ marginTop: "1rem" }}>{commonStrings.city[cityId as keyof typeof commonStrings.city].intro}</h5>
+                                <h5 className="typography-label" style={{ marginTop: "1rem", width: "90%" }}>{commonStrings.city[cityId as keyof typeof commonStrings.city].intro}</h5>
                                 <p>{commonStrings.city[cityId as keyof typeof commonStrings.city].body}</p>
                                 <div>
                                     <a href={CITY[cityId as keyof typeof CITY].link} target="_blank" rel="noopener noreferrer" className="flex">
-                                        <Button variant={"outlined"} className="button--full">
+                                        <Button variant={"contained"} className="button--full">
                                             <Stack>
                                                 {
                                                     commonStrings.linkTextList.map((text) => (
@@ -167,19 +178,21 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                                         </Button>
                                     </a>
                                 </div>
-                                <Stack>
-                                    <p className="typography-note">{commonStrings.reference}{commonStrings.linkType[CITY[cityId as keyof typeof CITY].linkType as keyof typeof commonStrings.linkType].name}</p>
-                                    <Logo id={CITY[cityId as keyof typeof CITY].linkType} className="logo--md"/>
-                                </Stack>
+                                <div>
+                                    <Stack>
+                                        <p className="typography-note">{commonStrings.reference}{commonStrings.linkType[CITY[cityId as keyof typeof CITY].linkType as keyof typeof commonStrings.linkType].name}</p>
+                                        <Logo id={CITY[cityId as keyof typeof CITY].linkType} className="logo--md" />
+                                    </Stack>
+                                </div>
                                 <div />
                             </div>
                         </SwiperSlide>
                     ))
                 }
                 {/* <NavigationButton navigateTo="prev" position="fixed" className="pageSwiper-prevEl" />
-                <NavigationButton navigateTo="next" position="fixed" className="pageSwiper-nextEl" /> */}
+                    <NavigationButton navigateTo="next" position="fixed" className="pageSwiper-nextEl" /> */}
             </Swiper>
-        </div>
+        </RoutedMotionPage>
     );
 }
 export default CityDetailContent;

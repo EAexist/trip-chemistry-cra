@@ -14,6 +14,7 @@ import { AuthProvider } from "../../interfaces/enums/AuthProvider";
 import { asyncKakaoLogout, useHasAnsweredTest, useUserProfile } from "../../reducers/authReducer";
 import { AppDispatch } from "../../store";
 import { AuthLoadContent } from "../LoadContent";
+import RoutedMotionPage from "../../components/Motion/RoutedMotionPage";
 
 interface UserContentProps {
 
@@ -31,9 +32,9 @@ function UserContent({ }: UserContentProps) {
 
     /* Event Handlers */
     const handleClickAvatar = () => {
-        if (!hasAnsweredTest) {
-            navigate('avatarGallery');
-        }
+        // if (!hasAnsweredTest) {
+        //     navigate('avatarGallery');
+        // }
     };
 
     const handleLogout = () => {
@@ -45,7 +46,7 @@ function UserContent({ }: UserContentProps) {
     }
 
     const handleEdit = () => {
-        navigate('setNickname');
+        navigate('setNickname', { state: { navigateDirection: 'next' }});
     }
 
 
@@ -53,7 +54,7 @@ function UserContent({ }: UserContentProps) {
         <AuthLoadContent
             handleSuccess={handleLogoutSuccess}
         >
-        <div className="page fullscreen flex" >
+        <RoutedMotionPage className="flex">
             <Toolbar />
             <div className='flex-grow body--centered block__body'>
                 <div>
@@ -78,7 +79,6 @@ function UserContent({ }: UserContentProps) {
                     </IconButton>
                 </Toolbar>
                 </div>
-                {/* <p className="typography-light">{ getNameTag(user) }</p> */}
                 <div>
                     <Stack direction={'column'}>
                         {
@@ -89,8 +89,6 @@ function UserContent({ }: UserContentProps) {
                                 <Button onClick={handleLogout} variant="outlined">
                                     로그아웃
                                 </Button>
-
-
                         }
                     </Stack>
                 </div>
@@ -98,7 +96,6 @@ function UserContent({ }: UserContentProps) {
                             (AuthProvider[authProvider] === AuthProvider.GUEST)
                             &&
                             <div>
-                                {/* <div style={{ marginTop: "128px" }} /> */}
                                 <p className="typography-note">
                                     <Help fontSize="inherit" />
                                     {
@@ -108,7 +105,7 @@ function UserContent({ }: UserContentProps) {
                             </div>
                         }
             </div>
-        </div>
+        </RoutedMotionPage>
         </AuthLoadContent>
     );
 }

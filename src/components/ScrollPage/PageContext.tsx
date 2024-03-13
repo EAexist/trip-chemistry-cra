@@ -2,7 +2,6 @@ import { PropsWithChildren, createContext, useContext } from "react";
 
 interface PageContextProps {
     activePage: number; 
-    addPage: () => void;
 };
 
 const PageContext = createContext<PageContextProps>( {} as PageContextProps );

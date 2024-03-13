@@ -9,14 +9,13 @@ interface LazyImageProps{
     src: string;
     alt: string;
     sx?: React.CSSProperties;
-    containerSx?: React.CSSProperties;
     className?: string;
     placeholderSrc?: string;
     placeholderClassName?: string;
     ref? : any;
     containerClassName?: string;
 } 
-function LazyImage ({ src, alt, ref, sx = { objectFit: 'contain', width: '100%', height: '100%' },  containerSx={ width: '100%', height: '100%' }, containerClassName, className, children }: PropsWithChildren<LazyImageProps>) {
+function LazyImage ({ src, alt, ref, sx = { objectFit: 'contain', width: '100%', height: '100%' }, containerClassName, className, children }: PropsWithChildren<LazyImageProps>) {
 
   /* States */
   const [ isLoaded, setIsLoaded ] = useState(false);
@@ -46,7 +45,7 @@ function LazyImage ({ src, alt, ref, sx = { objectFit: 'contain', width: '100%',
   };
 
   return (
-    <div style={ containerSx } className={ containerClassName } ref={placeholderRef}>
+    <div className={ containerClassName } ref={placeholderRef}>
       {!isLoaded && <Skeleton variant="rectangular" width={"100%"} height={"100%"}/>}
       <img
         // ref={ref}

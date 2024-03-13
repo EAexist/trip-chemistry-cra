@@ -10,8 +10,10 @@ interface ProfileProps {
 function Profile({ label, labelSize = 'md', children, isActive = false }: PropsWithChildren<ProfileProps>) {
 
     return (
-        <div className={"profile"}>
+        <div className={"profile block__body"}>
+            <div className="body__head">
             { children }
+            </div>
             {
                 ( label !== undefined )
                 && <p className={`profile__label-${ labelSize } typography--profile-label ${ isActive ? "typography--profile-label--active" : "" }`}>

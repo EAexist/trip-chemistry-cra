@@ -43,13 +43,13 @@ const ScrollPageContainer = ({ onPageChange, pages, children }: PropsWithChildre
         <div ref={ref} className="scroll-page__container">
             {
                 Array.from({ length: pages }, (value, index) => (
-                    <Step key={index} index={index} className="fullscreen" style={{ visibility: "hidden" }} />
+                    <Step key={index} index={index} className="fullscreen" style={{ visibility: "hidden" }} id={index.toString()} />
                 ))
             }
             <div className="fullscreen"/>
             <div className="scroll-page__viewport-container">
                 <div ref={pageRef} className="scroll-page__viewport fullscreen">
-                    <PageContext.Provider value={{ activePage: page, addPage: () => { } }}>
+                    <PageContext.Provider value={{ activePage: page }}>
                         {children}
                     </PageContext.Provider>
                 </div>

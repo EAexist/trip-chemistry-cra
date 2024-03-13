@@ -1,23 +1,23 @@
 /* React */
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 /* React Packages */
-import { Outlet, useNavigate } from "react-router-dom";
-import { useMotionValueEvent, useScroll } from "framer-motion"
+import { useMotionValueEvent, useScroll } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 import { Button, Stack, Toolbar, useTheme } from "@mui/material";
 
 
 /* Swiper */
-import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperType from "swiper";
 import 'swiper/css';
 import 'swiper/css/pagination';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { useStrings } from "../../texts";
 import { SWIPERPROPS_HOMECONTENT } from "../../common/swiperProps";
-import SwiperAutoplayProgress from "../../components/SwiperAutoplayProgress";
 import PaginationDiv from "../../components/PaginationDiv";
+import SwiperAutoplayProgress from "../../components/SwiperAutoplayProgress";
+import { useStrings } from "../../texts";
 
 interface HomeContentProps {
 
@@ -25,16 +25,18 @@ interface HomeContentProps {
 
 function HomeContent({ }: HomeContentProps) {
 
+    /* Constants */
     const strings = useStrings().public.contents.home;
-    const navigate = useNavigate();
 
+    /* Hookes */
+    const navigate = useNavigate();
     const theme = useTheme();
+
     /* States */
     const [showFloatingButton, setShowFloatingButton] = useState<boolean>(true);
-
     const [swiper, setSwiper] = useState<SwiperType>();
 
-    /* Store */
+    /* Reducers */
 
     /* Event Handlers */
     const handleTestStart = () => {
@@ -64,7 +66,6 @@ function HomeContent({ }: HomeContentProps) {
                     setSwiper(swiper);
                 }}
                 className="page__swiper flex fullscreen"
-            // style={{ overflow: 'visible' }}
             >
                 {(strings.sections as { title: string, body: string }[]).map(({ title, body }, index) => (
                     <SwiperSlide key={title} className="flex" style={{ overflowY: 'visible' }}>
@@ -74,6 +75,7 @@ function HomeContent({ }: HomeContentProps) {
                             <p className="">{body}</p>
                         </div>
                         <div style={{ position: "absolute", width: "100%", }} className="fullscreen">
+                            {/* Background Image */}
                         </div>
                     </SwiperSlide>
                 ))}
@@ -84,7 +86,7 @@ function HomeContent({ }: HomeContentProps) {
                                 swiper &&
                                 <SwiperAutoplayProgress swiper={swiper} />
                             }
-                            <PaginationDiv className='pageSwiper-pagination pagination__bullets'/>
+                            <PaginationDiv className='pageSwiper-pagination pagination__bullets' />
                             <div>
                             </div>
                         </Stack>
@@ -100,16 +102,14 @@ function HomeContent({ }: HomeContentProps) {
             </Swiper>
             {
                 (showFloatingButton) &&
-                <div className="floating--bottom">
-                    <div className="block--with-margin-x flex">
-                        <Button
-                            onClick={handleTestStart}
-                            variant="contained"
-                            className="button--full"
-                        >
-                            {strings.startButton}
-                        </Button>
-                    </div>
+                <div className="floating--bottom flex">
+                    <Button
+                        onClick={handleTestStart}
+                        variant="contained"
+                        className="button--full block--with-margin"
+                    >
+                        {strings.startButton}
+                    </Button>
                 </div>
             }
         </div>

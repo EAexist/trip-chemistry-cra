@@ -1,76 +1,73 @@
 /* React */
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 
 /* React Packages */
-import { Done } from "@mui/icons-material";
-import { Button, Toolbar } from "@mui/material";
+import { Done, NavigateBefore } from "@mui/icons-material";
+import { Button, IconButton, Toolbar } from "@mui/material";
 
 /* Trip Chemistry */
 import { useSelector } from "react-redux";
 import { USER } from "../../common/app-const";
-import AppBarContext from "../../contexts/AppBarContext";
+import RoutedMotionPage from "../../components/Motion/RoutedMotionPage";
+import AppBarContext, { useHideAppbar } from "../../contexts/AppBarContext";
 import useSetNickname from "../../hooks/useSetNickname";
+import { useUserInfo } from "../../reducers/authReducer";
 import { RootState } from "../../store";
 import TextFieldBlock from "./TextFieldBlock";
-import { useUserInfo } from "../../reducers/authReducer";
 
 interface SetNicknamePageProps {
     handleClose: () => void;
     doRequireInitialization?: boolean;
 };
 
-function SetNicknamePage({ 
+function SetNicknamePage({
     handleClose,
     doRequireInitialization
- }: SetNicknamePageProps) {
+}: SetNicknamePageProps) {
 
     /* Hooks */
     const setNickname = useSetNickname();
+    const isAppBarHidden = useHideAppbar();
 
     /* Reducers */
-    const { nickname : currentNickname } = useUserInfo();
+    const { nickname: currentNickname } = useUserInfo();
     const authProviderNickname = useSelector((state: RootState) => state.auth.data.profile.authProviderNickname)
 
     /* States */
-    const [ value, setValue ] = useState( currentNickname ? currentNickname : ( authProviderNickname ? authProviderNickname : "" ) );
+    const [value, setValue] = useState(currentNickname ? currentNickname : (authProviderNickname ? authProviderNickname : ""));
     const { setShow: setShowAppBar } = useContext(AppBarContext);
     const isInputAllowed = value.length > 0
 
     /* Event Handlers */
-    const handleConfirm = ( value: string) => {
+    const handleConfirm = (value: string) => {
         setNickname(value);
     }
-    const getIsConfirmAllowed = useCallback (( value: string ) => (
-        !doRequireInitialization && ( value === currentNickname )
-    ), [ doRequireInitialization, currentNickname ]);
+    const getIsConfirmAllowed = useCallback((value: string) => (
+        !doRequireInitialization && (value === currentNickname)
+    ), [doRequireInitialization, currentNickname]);
 
-    const getIsValueAllowed = useCallback (( value: string ) => (
+    const getIsValueAllowed = useCallback((value: string) => (
         value.length <= USER.maxNicknameLength
-    ), [ USER.maxNicknameLength ]);
+    ), [USER.maxNicknameLength]);
 
-    const helperText = useCallback (( value: string ) => (
+    const helperText = useCallback((value: string) => (
         `${value.length}/${USER.maxNicknameLength}`
-    ), [ USER.maxNicknameLength ]);
-
-    /* Side Effects */
-    useEffect(() => {
-        setShowAppBar(false);
-        return (() => {
-            setShowAppBar(true);
-        })
-    }, []);
+    ), [USER.maxNicknameLength]);
 
     return (
-        <div className="page fullscreen flex">
+        isAppBarHidden &&
+        <RoutedMotionPage>
             <Toolbar>
-                <Button
+                <IconButton
+                    aria-label="cancel"
                     onClick={handleClose}
+                    edge="start"
                 >
-                    취소
-                </Button>
+                    <NavigateBefore />
+                </IconButton>
                 <Button
-                    disabled={ !isInputAllowed || getIsConfirmAllowed(value) }
-                    onClick={ ()=>handleConfirm(value) }
+                    disabled={!isInputAllowed || getIsConfirmAllowed(value)}
+                    onClick={() => handleConfirm(value)}
                     variant='text'
                     className=""
                     startIcon={<Done />}
@@ -78,15 +75,15 @@ function SetNicknamePage({
                     확인
                 </Button>
             </Toolbar>
-        <TextFieldBlock
-            value={ value }
-            setValue={ setValue }
-            getIsValueAllowed={ getIsValueAllowed }
-            helperText={ helperText }
-            title={ "사용할 이름을 입력해주세요." }
-            className="block--with-margin-x"
-        />
-        </div>
+            <TextFieldBlock
+                value={value}
+                setValue={setValue}
+                getIsValueAllowed={getIsValueAllowed}
+                helperText={helperText}
+                title={"사용할 이름을 입력해주세요."}
+                className="block--with-margin-x"
+            />
+        </RoutedMotionPage>
     );
 }
 export default SetNicknamePage;

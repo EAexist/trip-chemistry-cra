@@ -1,4 +1,4 @@
-import { Avatar, AvatarProps, Stack } from "@mui/material";
+import { Avatar, AvatarProps, Stack, useTheme } from "@mui/material";
 import getImgSrc, { FORMATPNG } from "../../utils/getImgSrc";
 import { ProfileProps } from "./Profile";
 import { IProfile } from "../../interfaces/IProfile";
@@ -12,6 +12,7 @@ interface ProfileAvatarProps extends AvatarProps, Pick<ProfileProps, "labelSize"
 function ProfileAvatar({ characterId, showLabel = true, labelSize, nickname, testResult, className, ...props }: ProfileAvatarProps) {
 
     const imageId = characterId ? characterId : testResult ? testResult.tripCharacter.id : ""
+    const theme = useTheme();
 
     useEffect(()=>{
         console.log(`[ProfileAvatar] imageId=${imageId}`)
@@ -32,10 +33,10 @@ function ProfileAvatar({ characterId, showLabel = true, labelSize, nickname, tes
             <p className={`profile__label typography--profile-label`}/>
         } */}
             <Avatar
-                variant={'primary'}
                 alt={nickname}
                 src={getImgSrc('/character', imageId, FORMATPNG)}
                 className={`profile__avatar ${className}`}
+                style={{ backgroundColor: theme.palette.primary.light }}
                 {...props as AvatarProps}
             />
             {

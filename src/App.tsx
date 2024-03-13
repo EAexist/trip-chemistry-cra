@@ -6,35 +6,38 @@ import { Navigate, Outlet, Route, RouterProvider, createBrowserRouter, createRou
 
 /* App */
 import { TEST } from './common/app-const';
-import CityDetailContent from './content/CityDetailContent';
+import AppBar from './components/AppBar/AppBar';
 import Page from './content/Page';
+import AuthRequiredContent from './content/AuthRequiredContent';
+import CityDetailContent from './content/CityDetailContent';
 import TestRequiredContent from './content/TestRequiredContent';
+import ChemistryContent from './content/chemistry/ChemistryContent';
 import ChemistryListContent from './content/chemistry/ChemistryListContent';
 import CreateChemistryContent from './content/chemistry/CreateChemistryContent';
-import ChemistryContent from './content/chemistry/ChemistryContent';
+import SearchAndInviteFriendContent from './content/chemistry/SearchAndInviteFriendContent';
 import HomeContent from './content/home/HomeContent';
 import AuthContent from './content/login/AuthContent';
 import EditNicknameContent from './content/login/EditNicknameContent';
 import InitializeNicknameContent from './content/login/InitializeNicknameContent';
+import KakaoAuthRedirectPage from './content/login/KakaoAuthRedirectPage';
 import LoginContent from './content/login/LoginContent';
 import ResultContent from './content/result/ResultContent';
 import SessionContent from './content/session/SessionContent';
 import TestContent from './content/test/TestContent';
 import UserContent from './content/user/UserContent';
 import { AppBarContextProvider } from './contexts/AppBarContext';
-import './index.css';
+import AnimatedOutlet from './motion/AnimatedOutlet';
 import { store } from './store';
 import { theme } from './theme';
-import SearchAndInviteFriendContent from './content/chemistry/SearchAndInviteFriendContent';
-import AppBar from './components/AppBar/AppBar';
-import AuthRequiredContent from './content/AuthRequiredContent';
-import KakaoAuthRedirectPage from './content/login/KakaoAuthRedirectPage';
+
+import './index.css';
+
 
 function App() {
 
     const sessionRoute =
         <Route element={<>
-            {/* <AppBar /> */}
+            <AppBar />
             <Outlet /></>}>
             {/* <Route key={'index'} index element={<Navigate to={'login'} />} /> */}
             <Route key={'index'} index element={<Navigate to={'home'} />} />
@@ -64,7 +67,7 @@ function App() {
                 <Route key={'testRequired'} element={<TestRequiredContent />}>
                     <Route key={'result'} path={'result'} element={<ResultContent />} />
                 </Route>
-                <Route key={'myChemistry'} path={'myChemistry'} element={<Outlet />} >
+                <Route key={'myChemistry'} path={'myChemistry'} element={<AnimatedOutlet />} >
                     <Route key={'myChemistry'} index element={<ChemistryListContent />} />
                     <Route key={'new'} path={'new'} element={<CreateChemistryContent />} />
                 </Route>
@@ -85,6 +88,8 @@ function App() {
             </>
         )
     );
+
+
 
     return (
         <Provider store={store}>

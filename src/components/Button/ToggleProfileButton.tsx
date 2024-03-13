@@ -12,7 +12,7 @@ interface ToggleProfileButtonProps extends ToggleButtonProps, WithIsTestAnswered
     elevation? : number;
 };
 
-const ToggleProfileButton = ({ label, children, onChange, size ="medium", value, selected, contained = false, sx, paperSx, elevation = 0, className }: PropsWithChildren<ToggleProfileButtonProps>) => {
+const ToggleProfileButton = ({ label, children, onChange, size ="small", value, selected, contained = false, sx, paperSx, elevation = 0, className }: PropsWithChildren<ToggleProfileButtonProps>) => {
     
     const [ elevated, setElevated ] = useState(false);
 

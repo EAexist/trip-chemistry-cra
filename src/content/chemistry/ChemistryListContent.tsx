@@ -1,8 +1,14 @@
+/* React Packages */
 import { Add } from "@mui/icons-material";
 import { Button, Toolbar } from "@mui/material";
+import { motion } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
-import { useChemistryIdList } from "../../reducers/authReducer";
+
+/* Trip Chemistry */
 import ChemistrySummaryButton from "../../components/ChemistrySummaryButton";
+import { FADEIN_VIEWPORT, STAGGER_CHILDREN, VARIANTS_SLIDE_UP } from "../../motion/props";
+import { useChemistryIdList } from "../../reducers/authReducer";
+import RoutedMotionPage from "../../components/Motion/RoutedMotionPage";
 
 interface ChemistryListContentProps {
 
@@ -22,56 +28,36 @@ function ChemistryListContent({ }: ChemistryListContentProps) {
     }
 
     return (
-        <div className="page content__body--gray min-fullscreen" >
-            <Toolbar />
-            <div className="block--with-margin-x block__body body--narrow">
-                <div>
-                    <h2 className="typography-label">
-                        내 여행
-                    </h2>
-                </div>
-                {
-                    Object.values(chemistryIdList).map(( id ) => (
-                        // <Button onClick={ () => handleClickChemistryCard(id) }>{ id }</Button>
-                        <ChemistrySummaryButton id={ id } />
-                        // <ImageCard
-                        //     src={getImgSrc("/city", titleCity, FORMATWEBP)}
-                        //     title={titleCity}
-                        //     sx={{ width: "100%" }}
-                        //     gradient="bottom"
-                        // >
-                        //     <CardActionArea onClick={() => handleClickTripCard(id)}>
-                        //         <CardContent className="ImageCard__CardContent block--large">
-                        //             <Stack className="typography-white">
-                        //                 <Stack>
-                        //                     <h2 className="typography-label">{title}</h2>
-                        //                     <Stack spacing={-0.5}>
-                        //                         {
-                        //                             profileList.map(({ avatarId, nickname }) => (
-                        //                                 <ProfileAvatar key={nickname} {...{ nickname, characterId: avatarId }} />
-                        //                             ))
-                        //                         }
-                        //                     </Stack>
-                        //                 </Stack>
-                        //             </Stack>
-                        //         </CardContent>
-                        //     </CardActionArea>
-                        // </ImageCard>
-                    ))
-                }
-                <div>
-                    <Button
-                        variant="outlined"
-                        className="block--large flex-row"
-                        sx={{ borderRadius: "16px" }}
-                        onClick={handleAddChemistry}
-                    >
-                        <Add/>
-                        <p>새 여행 만들기</p>
-                    </Button>
-                </div>
+        <RoutedMotionPage className="page fullscreen flex content__body--gray">
+        {/* <div className="page  min-fullscreen"> */}
+            <Toolbar/>
+            <div className="block--with-margin-x block__body">
+                <motion.h2 {...FADEIN_VIEWPORT} className="typography-heading">
+                    내 여행
+                </motion.h2>
+                <motion.ul {...STAGGER_CHILDREN} custom={0.5} className="block__body">
+                    {
+                        Object.values(chemistryIdList).map((id) => (
+                            <motion.li variants={VARIANTS_SLIDE_UP}>
+                                <ChemistrySummaryButton id={id} />
+                            </motion.li>
+                        ))
+                    }
+                    <motion.li variants={VARIANTS_SLIDE_UP}>
+                        <Button
+                            variant="outlined"
+                            className="block--large flex-row"
+                            sx={{ borderRadius: "16px" }}
+                            onClick={handleAddChemistry}
+                        >
+                            <Add />
+                            <p>새 여행 만들기</p>
+                        </Button>
+                    </motion.li>
+                </motion.ul>
             </div>
-        </div>
+        {/* </div> */}
+        </RoutedMotionPage>
     );
 }
 export default ChemistryListContent;

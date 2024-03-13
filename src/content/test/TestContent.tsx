@@ -3,52 +3,53 @@ import { useEffect, useRef, useState } from "react";
 
 /* React Packages */
 
-import { useNavigate } from "react-router-dom";
-import { Button, ButtonBase, Card, CardContent, CardMedia, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Stack, Tooltip } from "@mui/material";
+import { Button, ButtonBase, Card, CardContent, CardMedia, Icon, List, ListItem, ListItemButton, ListItemText, Stack, Tooltip, useTheme } from "@mui/material";
+import { ExpandMore } from "@mui/icons-material";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 /* Swiper */
-import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 /* App */
 import '../../styles/index.css';
 // import '../styles/Test.css';
 // import '../styles/TopNav.css';
 
+import { CITY, LINK, NATION, SLIDERPROPS_TEST_BUDGET_FOOD, TEST, TEST_SECTIONS } from "../../common/app-const";
 import { AppDispatch, RootState } from "../../store";
-import { CITY, FOOD, LINK, NATION, SLIDERPROPS_TEST_BUDGET_FOOD, TEST, TEST_SECTIONS } from "../../common/app-const";
 import { useStrings } from "../../texts";
 
-import AnswerButtonGroup from "../../components/ButtonGroup/AnswerButtonGroup";
-import { priceText } from "../../utils/priceText";
-import AnswerSlider from "../../components/Slider/AnswerSlider";
-import getImgSrc, { FORMATPNG, FORMATWEBP } from "../../utils/getImgSrc";
-import PngIcon from "../../components/PngIcon";
-import SectionButton from "../../components/Button/SectionButton";
 import { SWIPERPROPS_CAROUSEL, SWIPERPROPS_FOODCARDCAROUSEL } from "../../common/swiperProps";
+import SectionButton from "../../components/Button/SectionButton";
+import TestAnswerBadge from "../../components/Button/TestAnswerBadge";
+import AnswerButtonGroup from "../../components/ButtonGroup/AnswerButtonGroup";
+import FoodImageCard from "../../components/Card/FoodImageCard";
 import ImageCard from "../../components/Card/ImageCard";
-import GoogleMap from "../../components/GoogleMap/ui/GoogleMap";
-import { OPTIONS_TEST_SCHEDULE } from "../../components/GoogleMap/common/options";
-import GoogleMapMarker from "../../components/GoogleMap/ui/GoogleMapMarker";
 import OptionCard from "../../components/Card/OptionCard";
+import TagSetTestAnswerChip from "../../components/Chip/TagSetTestAnswerChip";
 import GoogleMapContext from "../../components/GoogleMap/common/GoogleMapContext";
-import { NumericTestName, SetTestName, TestName, useIsAllTestAnswered, useSubmitAnswer, useTestAnswerStatus } from "../../reducers/testAnswerReducer";
+import { OPTIONS_TEST_SCHEDULE } from "../../components/GoogleMap/common/options";
+import GoogleMap from "../../components/GoogleMap/ui/GoogleMap";
+import GoogleMapMarker from "../../components/GoogleMap/ui/GoogleMapMarker";
+import Logo from "../../components/Logo";
+import PngIcon from "../../components/PngIcon";
+import ScrollPageContainer from "../../components/ScrollPage/ScrollPageContainer";
 import ScrollPageItem from "../../components/ScrollPage/ScrollPageItem";
+import AnswerSlider from "../../components/Slider/AnswerSlider";
 import { StepCheckpointContextProvider } from "../../components/Step/StepCheckpointContext";
 import StepContext from "../../components/Step/StepContext";
-import LoadContent, { AuthLoadContent } from "../LoadContent";
-import TestAnswerBadge from "../../components/Button/TestAnswerBadge";
-import TestSection from "../../components/TestSection";
-import ScrollPageContainer from "../../components/ScrollPage/ScrollPageContainer";
-import TagSetTestAnswerChip from "../../components/Chip/TagSetTestAnswerChip";
-import TestInstruction from "../../components/TestInstruction";
 import Stepper from "../../components/Step/Stepper";
-import { useGetProfile, useUserId } from "../../reducers/authReducer";
-import { LoadStatus } from "../../reducers";
-import FoodCard from "../../components/Card/FoodCard";
-import Logo from "../../components/Logo";
+import TestInstruction from "../../components/TestInstruction";
+import TestSection from "../../components/TestSection";
+import { useGetProfile } from "../../reducers/authReducer";
+import { NumericTestName, SetTestName, TestName, useIsAllTestAnswered, useSubmitAnswer, useTestAnswerStatus } from "../../reducers/testAnswerReducer";
+import getImgSrc, { FORMATPNG, FORMATWEBP } from "../../utils/getImgSrc";
+import { priceText } from "../../utils/priceText";
+import LoadContent, { AuthLoadContent } from "../LoadContent";
 
 interface TestContentProps {
 
@@ -57,13 +58,14 @@ interface TestContentProps {
 function TestContent({ }: TestContentProps) {
 
     const navigate = useNavigate();
+    const theme = useTheme();
     const dispatch = useDispatch<AppDispatch>();
 
     /* contentstrings */
     const contentstrings = useStrings().public.contents.test;
     const commonStrings = useStrings().public.common;
 
-    /* Store */
+    /* Reducers */
     const isAllTestAnswered = useIsAllTestAnswered();
     const leadershipAnswer = useSelector((state: RootState) => state.testAnswer.data.leadership);
     const scheduleAnswer = useSelector((state: RootState) => state.testAnswer.data.schedule) as number;
@@ -78,15 +80,15 @@ function TestContent({ }: TestContentProps) {
     const [scheduleExampleMap, setScheduleExampleMap] = useState<google.maps.Map | null>();
     const [isConfirmTooltipOpen, setIsConfirmTooltipOpen] = useState(false);
     const [step, setStep] = useState(0);
-    const [ showScrollDownIcon, setShowScrollDownIcon ] = useState(true);
+    const [showScrollDownIcon, setShowScrollDownIcon] = useState(true);
 
     /* Event Handlers */
-    const handleFoodCardClick = (id: string) => {
+    const handleFoodImageCardClick = (id: string) => {
 
     };
 
     const handleCityCardClick = (key: string, cityIndex: number) => {
-        navigate(`/city/${key}`, { state: { initialIndex: cityIndex } });
+        navigate(`../city/${key}`, { state: { initialIndex: cityIndex } });
     };
 
     const handleConfirmTooltipOpen = () => {
@@ -126,21 +128,37 @@ function TestContent({ }: TestContentProps) {
         }
     }, [scheduleAnswer, scheduleExampleMap]);
 
+
+    /* Motion */
+    const { scrollY } = useScroll();
+
+    useMotionValueEvent(scrollY, "change", (latest) => {
+        console.log(`[TestContent] ScrollY Change`);
+        if (scrollY.get() > window.innerHeight) {
+            setShowScrollDownIcon(false);
+        }
+        else {
+            setShowScrollDownIcon(true);
+        }
+    })
+
+    useEffect(()=>{
+        console.log(`[TestContent] scrollY=${scrollY.get()}`);
+    }, [])
+
     return (
         <LoadContent {...{
             status: submitStatus,
             setStatus: setSubmitStatus,
             handleSuccess: handleSubmitSuccess,
-            // handleFail,
         }}>
             <AuthLoadContent {...{
                 handleSuccess: handleLoadSuccess,
-                // handleFail,
             }}>
                 <div className="page">
                     <StepContext.Provider value={{ step, setStep }}>
                         <StepCheckpointContextProvider>
-                            <div className="top-nav">
+                            <div className="top-nav" style={{ backgroundColor: theme.palette.gray.light }}>
                                 <Stepper className="block--with-margin-x top-nav__swiper">
                                     {
                                         Object.entries(TEST_SECTIONS).map(([testName, { icon }], index) =>
@@ -154,7 +172,7 @@ function TestContent({ }: TestContentProps) {
                                                         sx={{ height: "100%", display: 'flex', alignItems: 'start', paddingTop: '8px' }}
                                                         paperSx={{ opacity: 0.4 }}
                                                         elevation={1}
-                                                        // className="button-group__item"
+                                                    // className="button-group__item"
                                                     >
                                                         <PngIcon name={testName} />
                                                     </SectionButton>
@@ -269,27 +287,27 @@ function TestContent({ }: TestContentProps) {
                                                                 id === "more"
                                                                     ? (
                                                                         isActive
-                                                                            ? <div style={{ width: "280px", height: "240px" }} className="body--centered">
+                                                                            ? <div style={{ width: "260px", height: "240px" }} className="body--centered block--with-padding">
                                                                                 <div className="block-with-margin-x">
                                                                                     <p>더 많은 식당 찾아보기</p>
                                                                                     <List>
                                                                                         {
-                                                                                            TEST.food.more.map(( source ) => (
-                                                                                                <ListItem>
-                                                                                                    <a href={LINK[ source  as keyof typeof LINK ].link} target="_blank" rel="noopener noreferrer">
-                                                                                                    <ListItemButton disableGutters>
-                                                                                                        <ListItemAvatar>
-                                                                                                            <Logo id={source} className="logo--md" />
-                                                                                                        </ListItemAvatar>
-                                                                                                        <ListItemText
-                                                                                                            primary={
-                                                                                                                <p>{commonStrings.linkType[source as keyof typeof commonStrings.linkType].name}</p>
-                                                                                                            }
-                                                                                                            secondary={
-                                                                                                                commonStrings.linkType[source as keyof typeof commonStrings.linkType].body
-                                                                                                            }
-                                                                                                        />
-                                                                                                    </ListItemButton>
+                                                                                            TEST.food.more.map((source) => (
+                                                                                                <ListItem key={source}>
+                                                                                                    <a href={LINK[source as keyof typeof LINK].link} target="_blank" rel="noopener noreferrer">
+                                                                                                        <ListItemButton >
+                                                                                                            <ListItemText
+                                                                                                                primary={
+                                                                                                                    <Stack>
+                                                                                                                        <Logo id={source} />
+                                                                                                                        <p>{commonStrings.linkType[source as keyof typeof commonStrings.linkType].name}</p>
+                                                                                                                    </Stack>
+                                                                                                                }
+                                                                                                                secondary={
+                                                                                                                    commonStrings.linkType[source as keyof typeof commonStrings.linkType].body
+                                                                                                                }
+                                                                                                            />
+                                                                                                        </ListItemButton>
                                                                                                     </a>
                                                                                                 </ListItem>
                                                                                             ))
@@ -297,11 +315,13 @@ function TestContent({ }: TestContentProps) {
                                                                                     </List>
                                                                                 </div>
                                                                             </div>
-                                                                            : <div style={{ width: "200px", height: "240px" }} className="body--centered">
-                                                                                <p>더 많은 식당 찾아보기</p>
+                                                                            : <div style={{ width: "200px", height: "240px", position: "absolute", opacity: 0.5 }} className="body--centered">
+                                                                                <p>
+                                                                                    {`더 많은 식당\n찾아보기`}
+                                                                                </p>
                                                                             </div>
                                                                     )
-                                                                    : <FoodCard id={id} isActive={isActive} />
+                                                                    : <FoodImageCard id={id} isActive={isActive} />
                                                             )}
                                                         </SwiperSlide>
                                                     ))
@@ -339,17 +359,20 @@ function TestContent({ }: TestContentProps) {
                                                         {
                                                             examples.map((cityId, index) => (
                                                                 <SwiperSlide key={cityId} className="carousel__swiper">
-                                                                    <ButtonBase onClick={() => handleCityCardClick(key, index)}>
-                                                                        <div className="body--full">
-                                                                            <ImageCard src={getImgSrc("/city", cityId, FORMATWEBP)} title={cityId} sx={{ width: "196px", height: "196px", borderRadius: "12px" }} />
-                                                                            <Stack>
-                                                                                <h3 className="typography-name">{commonStrings.city[cityId as keyof typeof commonStrings.city].name}</h3>
-                                                                                {
-                                                                                    NATION[CITY[cityId as keyof typeof CITY].nation as keyof typeof NATION].flag
-                                                                                    && <span className={`fi fi-${CITY[cityId as keyof typeof CITY].nation}`}></span>
-                                                                                }
-                                                                            </Stack>
-                                                                        </div>
+                                                                    <ButtonBase onClick={() => handleCityCardClick(key, index)} className="body--full block__body">
+                                                                        <ImageCard
+                                                                            src={getImgSrc("/city", cityId, FORMATWEBP)}
+                                                                            title={cityId}
+                                                                            sx={{ width: "196px", height: "196px", borderRadius: "12px" }}
+                                                                            className="body__head"
+                                                                        />
+                                                                        <Stack>
+                                                                            <h3 className="typography-name">{commonStrings.city[cityId as keyof typeof commonStrings.city].name}</h3>
+                                                                            {
+                                                                                NATION[CITY[cityId as keyof typeof CITY].nation as keyof typeof NATION].flag
+                                                                                && <span className={`fi fi-${CITY[cityId as keyof typeof CITY].nation}`}></span>
+                                                                            }
+                                                                        </Stack>
                                                                     </ButtonBase>
                                                                 </SwiperSlide>
                                                             ))
@@ -376,13 +399,14 @@ function TestContent({ }: TestContentProps) {
                                     ))
                                 }
                             </ScrollPageContainer>
+                            <div>
                             <Tooltip
                                 open={isConfirmTooltipOpen}
                                 onClose={() => setIsConfirmTooltipOpen(false)}
                                 onOpen={handleConfirmTooltipOpen}
                                 title={contentstrings.main.tooltip_completeTest}
                             >
-                                <span className="block--with-margin-x flex">
+                                <span className="block--with-margin flex">
                                     <Button
                                         onClick={handleConfirmButtonClick}
                                         disabled={!isAllTestAnswered}
@@ -393,17 +417,24 @@ function TestContent({ }: TestContentProps) {
                                     </Button>
                                 </span>
                             </Tooltip>
-                            <div className="block__body">
-                                <div />
                             </div>
                         </StepCheckpointContextProvider>
                     </StepContext.Provider>
                     {
                         showScrollDownIcon
                         &&
-                        <div className="floating--bottom">
-                            HEYEY
-                        </div>
+                        <motion.div
+                            animate={{ opacity: [1, 0.5, 1] }}
+                            transition={{
+                                duration: 4,
+                                times:[0, 0.5, 1],
+                                ease: "easeInOut",
+                                repeat: Infinity,
+                            }}
+                            className="floating--bottom body--centered block--with-padding--sm"
+                        >
+                            <ExpandMore className="typography-gray" sx={{ fontSize: "40px" }} />
+                        </motion.div>
                     }
                 </div >
             </AuthLoadContent>

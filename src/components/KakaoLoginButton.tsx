@@ -20,11 +20,11 @@ function KakaoLoginButton({ }: KakaoLoginButtonProps) {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const { state, pathname } = useLocation();
-    const [ url, setUrl ] = useState<string>(KAKAO_AUTH_URL_BASE);
+    const [url, setUrl] = useState<string>(KAKAO_AUTH_URL_BASE);
 
     /* Reducers */
     useEffect(() => {
-        
+
         const urlObject = new URL(url);
 
         if ((state !== null) && state.loginRedirectPath) {
@@ -36,7 +36,7 @@ function KakaoLoginButton({ }: KakaoLoginButtonProps) {
             urlObject.searchParams.set('state', pathname);
         }
         setUrl(urlObject.toString());
-    }, [ state, pathname, url ]);
+    }, [state, pathname, url]);
 
     useEffect(() => {
         const urlObject = new URL(url);
@@ -51,11 +51,11 @@ function KakaoLoginButton({ }: KakaoLoginButtonProps) {
     }, [url])
 
     return (
-        <ButtonBase>
-            <a href={url}>
+        <a href={url}>
+            <ButtonBase>
                 <img height={'48px'} src={getImgSrc("kakao", "kakao_login_large_narrow", FORMATPNG)} alt={"kakao_login"} />
-            </a>
-        </ButtonBase>
+            </ButtonBase>
+        </a>
     );
 }
 export default KakaoLoginButton;

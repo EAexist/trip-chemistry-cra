@@ -1,4 +1,4 @@
-import { PropsWithChildren, createContext, useContext, useState } from "react";
+import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 
 interface AppBarContextProps {
     show: boolean;
@@ -19,7 +19,20 @@ const AppBarContextProvider = ({ children }: PropsWithChildren ) => {
 }
 
 const useAppBar = () => useContext(AppBarContext).show;
-const useSetAppBar = () => useContext(AppBarContext).setShow;
+const useShowAppBar = () => useContext(AppBarContext).setShow;
+
+const useHideAppbar = () => {
+    const { show, setShow } = useContext(AppBarContext);
+    
+    useEffect(() => {
+        setShow(false);
+        return (() => {
+            setShow(true);
+        })
+    }, [ setShow ]);
+
+    return !show;
+}
 
 export default AppBarContext;
-export { useAppBar, useSetAppBar, AppBarContextProvider };
+export { useAppBar, useShowAppBar, useHideAppbar, AppBarContextProvider };

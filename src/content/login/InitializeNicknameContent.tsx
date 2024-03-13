@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Close, Done } from "@mui/icons-material";
 import { Button, Grid, Stack } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+import { motion } from 'framer-motion';
 
 /* Trip Chemistry */
 import { useLocation, useNavigate } from "react-router-dom";
@@ -12,6 +13,7 @@ import { authorize, setIsInitialized } from "../../reducers/authReducer";
 import { AppDispatch, RootState } from "../../store";
 import { AuthLoadContent } from "../LoadContent";
 import SetNicknamePage from "./SetNicknamePage";
+import { SLIDEINLEFT, SLIDEINUPINVIEW } from "../../motion/props";
 
 interface InitializeNicknameContentProps {
 };
@@ -35,7 +37,7 @@ function InitializeNicknameContent({ }: InitializeNicknameContentProps) {
     }
 
     const handleCancelLogin = () => {
-        navigate(`/${((state !== null) && state.cancelRedirectPath) ? state.cancelRedirectPath : ""}`);
+        navigate(`/${((state !== null) && state.cancelRedirectPath) ? state.cancelRedirectPath : ""}`, { state: { navigateDirection: 'prev' }});
     }
 
     const handleCloseConfirmCancelModal = () => {
@@ -54,12 +56,12 @@ function InitializeNicknameContent({ }: InitializeNicknameContentProps) {
             handleSuccess={handleSuccess}
         >
             {
-                doRequireInitialization ?
+                // doRequireInitialization ?
                     <>
                         {
                             isConfirmCancelModalOpen
                             &&
-                            <div className="page fullscreen flex">
+                            <motion.div {...SLIDEINUPINVIEW} className="page fullscreen flex">
                                 <div className='block--with-margin-lg block__body body--centered flex-grow'>
                                     <h3 className='typography-label'>
                                         {`닉네임을 설정 중이에요.\n취소하고 처음으로 돌아갈까요?`}
@@ -77,14 +79,14 @@ function InitializeNicknameContent({ }: InitializeNicknameContentProps) {
                                             </Grid>
                                         </Grid>
                                     </div>
-                            </div>
+                            </motion.div>
                         }
                         <SetNicknamePage
                             handleClose={handleClose}
                             doRequireInitialization={true}
                         />
                     </>
-                    : <></>
+                    // : <></>
             }
         </AuthLoadContent>
     );

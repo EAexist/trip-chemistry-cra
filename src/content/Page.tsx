@@ -58,10 +58,7 @@ function Page({ }: PageProps) {
             {
                 !isAutoLoginEnabaled
                 &&
-                <>
-                    <AppBar />
-                    <Outlet />
-                </>
+                <Outlet />
             }
             {/* https://reactrouter.com/en/main/components/scroll-restoration */}
             <ScrollRestoration

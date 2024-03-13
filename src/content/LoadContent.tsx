@@ -2,13 +2,14 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 
 /* React Packages */
-import { Button, CircularProgress, Toolbar } from "@mui/material";
+import { CircularProgress, Modal } from "@mui/material";
 
-import { useStrings } from "../texts";
+/* Trip Chemistry */
+import withAuthLoadStatus, { WithLoadStatusProps } from "../hocs/withAuthLoadStatus";
 import { LoadStatus } from "../reducers";
 import getImgSrc, { FORMATPNG } from "../utils/getImgSrc";
-import LazyImage from "../components/LazyImage";
-import withAuthLoadStatus, { WithLoadStatusProps } from "../hocs/withAuthLoadStatus";
+import NoticeBlock from "./NoticeBlock";
+import { useShowAppBar } from "../contexts/AppBarContext";
 
 interface LoadContentProps extends WithLoadStatusProps {
     handleSuccess?: () => void;
@@ -31,25 +32,51 @@ function LoadContent({
     children,
     successText = "",
     pendingText = "잠시만 기다려주세요.",
-    failText = "지금 서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.",
+    failText = "서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.",
     missText = "정보를 찾을 수 없어요. 잠시 후 다시 시도해주세요.",
     handleFailButtonText = "확인",
     handleMissButtonText = "확인",
-    handleSuccess = () => {},
-    handleFail = () => {},
-    handleMiss = () => {},
+    handleSuccess = () => { },
+    handleFail = () => { },
+    handleMiss = () => { },
     showHandleFailButton = true, /* false 일 경우 버튼 없이 FAIL을 즉시 처리. */
     isEnabled = true,
 }: PropsWithChildren<LoadContentProps>) {
+
+    // const showAppBar = useShowAppBar();
 
     /* States */
     const [delayedStatus, setDelayedStatus] = useState<LoadStatus>(status);
     const [isPending, setIsPending] = useState<boolean>(false);
     const minimumPendingTime = 500;
 
-    /* Store */
+    const noticeBlockProps = {
+        [LoadStatus.SUCCESS]: {
+            body: pendingText
+        },
+        [LoadStatus.FAIL]: {
+            body: failText,
+            buttonText: handleFailButtonText,
+            handleClick: 
+            () => {
+                handleFail();
+                setStatus(LoadStatus.REST);
+            }
+        },
+        [LoadStatus.MISS]: {
+            body: missText,
+            buttonText: handleMissButtonText,
+            handleClick: 
+            () => {
+                handleMiss();
+                setStatus(LoadStatus.REST);
+            }
+        },
+    }
+
+    /* Side Effect*/
     useEffect(() => {
-        if( isEnabled ){
+        if (isEnabled) {
             switch (status) {
                 case LoadStatus.REST:
                     setDelayedStatus(LoadStatus.REST);
@@ -62,9 +89,6 @@ function LoadContent({
                     }
                     break;
                 case LoadStatus.PENDING:
-                    // if (isWaiting){
-                    //     setIsWaiting(false);
-                    // }
                     setDelayedStatus(LoadStatus.PENDING);
                     setIsPending(true);
                     setTimeout(() => {
@@ -75,7 +99,7 @@ function LoadContent({
                     if (!isPending) {
                         setDelayedStatus(LoadStatus.FAIL);
                         /* 버튼 없이 FAIL을 바로 처리할 경우 */
-                        if ( ! showHandleFailButton ){
+                        if (!showHandleFailButton) {
                             handleFail();
                             setStatus(LoadStatus.REST);
                         }
@@ -94,90 +118,22 @@ function LoadContent({
 
     return (
         isEnabled ?
-            (delayedStatus === LoadStatus.REST)
-                ? children
+            // (delayedStatus === LoadStatus.REST)
+            ((delayedStatus === LoadStatus.REST) || (delayedStatus === LoadStatus.PENDING))
+                ? <>
+                    {children}
+
+                    <Modal open={delayedStatus === LoadStatus.PENDING} className='body--centered'>
+                        <CircularProgress />
+                    </Modal>
+                </>
                 :
-                <div className="page fullscreen flex">
-                    <Toolbar />
-                    <div className='flex-grow body--centered'>
-                        {
-                            ((delayedStatus === LoadStatus.PENDING)) 
-                                ?
-                                <div className='body--centered'>
-                                    <CircularProgress />
-                                </div>
-                                :
-                                <>
-                                    <LazyImage
-                                        alt={delayedStatus}
-                                        src={getImgSrc('/info', delayedStatus, FORMATPNG)}
-                                        containerClassName="load-content-item__image"
-                                        containerSx={{ height: "256px", width: "256px" }}
-                                    />
-                                    {
-                                        (() => {
-                                            switch (delayedStatus) {
-                                                case LoadStatus.SUCCESS:
-                                                    return (
-                                                        <p>{pendingText}</p>
-                                                    );
-                                                // case LoadStatus.PENDING:
-                                                //     return (
-                                                //         <p>{pendingText}</p>
-                                                //     );
-                                                case LoadStatus.FAIL:
-                                                    return (
-                                                        <p>{failText}</p>
-                                                    );
-                                                case LoadStatus.MISS:
-                                                    return (
-                                                        <p>{missText}</p>
-                                                    );
-                                                default:
-                                                    break;
-                                            }
-                                        })()
-                                    }
-                                </>
-                        }
-                    </div>
-                    {
-                        (( (delayedStatus === LoadStatus.FAIL) && showHandleFailButton ) || (delayedStatus === LoadStatus.MISS))
-                        &&
-                        <div className="block__body">
-                            <div className="block--with-margin-x flex">
-                                {
-                                    (delayedStatus === LoadStatus.FAIL)
-                                        ?
-                                        <Button
-                                            onClick={() => {
-                                                handleFail();
-                                                setStatus(LoadStatus.REST);
-                                            }}
-                                            variant="contained"
-                                            className="button--full"
-                                        >
-                                            {handleFailButtonText}
-                                        </Button>
-                                        :
-                                        (delayedStatus === LoadStatus.MISS)
-                                        &&
-                                        <Button
-                                            onClick={() => {
-                                                handleMiss();
-                                                setStatus(LoadStatus.REST);
-                                            }}
-                                            variant="contained"
-                                            className="button--full"
-                                        >
-                                            {handleMissButtonText}
-                                        </Button>
-                                }
-                            </div>
-                            <div />
-                        </div>
-                    }
-                </div>
+                <NoticeBlock
+                    title={"여행 케미 테스트"}
+                    alt={delayedStatus}
+                    src={getImgSrc('/info', delayedStatus, FORMATPNG)}
+                    {...noticeBlockProps[delayedStatus]}
+                />
             : children
     );
 }

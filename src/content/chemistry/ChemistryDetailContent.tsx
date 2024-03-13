@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 /* React Packages */
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useSelector } from "react-redux";
 
 import { List, ListItem, Stack } from "@mui/material";
@@ -23,6 +23,7 @@ import { useChemistry, useProfileAll, useProfileIdList, useSortedCityList } from
 import { RootState } from "../../store";
 import CityChemistryContent from "./CityChemistryContent";
 import FriendAvatar from "../../components/Avatar/FriendAvatar";
+import { FADEIN, FADEIN_VIEWPORT } from "../../motion/props";
 
 interface ChemistryDetailContentProps {
 
@@ -37,7 +38,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
     /* States */
     const [ characterSectionActiveUserIndex, setCharacterSectionActiveUserIndex ] = useState<number>(0);
 
-    /* Store */
+    /* Reducers */
     const idList = useProfileIdList( false );
     const answeredProfileIdList = useProfileIdList();
 
@@ -62,8 +63,8 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
     return (
         <>
             <SectionPaper>
-                <motion.h5 className="typography-heading">{strings.sections.tripCharacter.title}</motion.h5>
-                <div className="block__body">
+                <motion.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.tripCharacter.title}</motion.h5>
+                <motion.div {...FADEIN_VIEWPORT} className="block__body">
                     <Stack justifyContent={'center'} alignItems={'start'}>
                         {
                             answeredProfileIdList.map((id, index) => (
@@ -79,25 +80,27 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                             ))
                         }
                     </Stack>
-                    <div className="navigation-button__container">
-                        <TestResultBox id={answeredProfileIdList[characterSectionActiveUserIndex]} />
-                        {
-                            (characterSectionActiveUserIndex > 0) &&
-                            <NavigationButton navigateTo="prev" onClick={() => setCharacterSectionActiveUserIndex((prev) => prev > 0 ? prev - 1 : prev)} />
-                        }
-                        {
-                            (characterSectionActiveUserIndex < answeredProfileIdList.length - 1) &&
-                            <NavigationButton navigateTo="next" onClick={() => setCharacterSectionActiveUserIndex((prev) => prev < answeredProfileIdList.length - 1 ? prev + 1 : prev)} />
-                        }
-                    </div>
-                    <p key={characterSectionActiveUserIndex}>
-                        {characterSectionCharacter?.body}
-                    </p>
-                </div>
+                    <AnimatePresence mode="wait">
+                        <motion.div key={characterSectionActiveUserIndex} {...{...FADEIN}} className="navigation-button__container">
+                            <TestResultBox id={answeredProfileIdList[characterSectionActiveUserIndex]} />
+                            {
+                                (characterSectionActiveUserIndex > 0) &&
+                                <NavigationButton navigateTo="prev" onClick={() => setCharacterSectionActiveUserIndex((prev) => prev > 0 ? prev - 1 : prev)} />
+                            }
+                            {
+                                (characterSectionActiveUserIndex < answeredProfileIdList.length - 1) &&
+                                <NavigationButton navigateTo="next" onClick={() => setCharacterSectionActiveUserIndex((prev) => prev < answeredProfileIdList.length - 1 ? prev + 1 : prev)} />
+                            }
+                        </motion.div>
+                        <motion.p key={characterSectionActiveUserIndex} {...FADEIN} custom={0.5}>
+                            {characterSectionCharacter?.body}
+                        </motion.p>
+                    </AnimatePresence>
+                </motion.div>
             </SectionPaper>
             <SectionPaper>
-                <motion.h5 className="typography-heading">{strings.sections.leadership.title}</motion.h5>
-                <div className="block__body">
+                <motion.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.leadership.title}</motion.h5>
+                <motion.div {...FADEIN_VIEWPORT} className="block__body">
                     <Stack sx={{ justifyContent: 'center' }}>
                         {
                             chemistry && chemistry.leaderList.map((id) =>
@@ -134,11 +137,11 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                             ))}
                         </p>
                     }
-                </div>
+                </motion.div>
             </SectionPaper>
             <SectionPaper>
-                <motion.h5 className="typography-heading">{strings.sections.schedule.title}</motion.h5>                
-                <div className="block__body">
+                <motion.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.schedule.title}</motion.h5>                
+                <motion.div {...FADEIN_VIEWPORT} className="block__body">
                 <List>
                     {
                         (Object.values(teststrings.test.schedule.answers) as { icon: string, label: string, value: number }[]).map(({ icon, label, value }) => (
@@ -174,12 +177,14 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                             )
                         })
                     }
-                </div>
+                </motion.div>
             </SectionPaper>
             <SectionPaper>
-                <motion.h5 className="typography-heading">{strings.sections.budget.title}</motion.h5>
-                <div className="block__body">
-                    <ChemistrySlider {...SLIDERPROPS_CHEMISTRY_BUDGET_FOOD} />
+                <motion.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.budget.title}</motion.h5>
+                <motion.div  {...FADEIN_VIEWPORT} className="block__body">
+                    <div className="body--centered">
+                        <ChemistrySlider {...SLIDERPROPS_CHEMISTRY_BUDGET_FOOD} />
+                    </div>
                     {
                         chemistry?.budgetChemistryText?.map(( body ) =>{
                             const list = body.split(/(%\S*%)/)
@@ -196,17 +201,19 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                             )
                         })
                     }
-                </div>
+                </motion.div>
             </SectionPaper>
             <SectionPaper>
-                <motion.h5 className="typography-heading">{strings.sections.city.title}</motion.h5>
+                <motion.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.city.title}</motion.h5>
+                <ul>
                 {
                     sortedCityList && sortedCityList.map((cityClass) => (
-                        <div className="sub-section">
+                        <motion.li {...FADEIN_VIEWPORT} className="sub-section">
                             <CityChemistryContent cityClass={cityClass as keyof typeof TEST.city.subTests} />
-                        </div>
+                        </motion.li>
                     ))
                 }
+                </ul>
             </SectionPaper>
             {/* <SectionPaper>
                 <motion.h5 className="typography-heading">{" 친구에게 결과 공유하기 "}</motion.h5>

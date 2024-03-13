@@ -19,7 +19,7 @@ function TestRequiredContent({ }: TestRequiredContentProps) {
 
     const navigate = useNavigate();
 
-    /* Store */
+    /* Reducers */
     const nickname = useSelector((state: RootState) => state.auth.data.profile.nickname )
     const hasAnsweredTest = useHasAnsweredTest();
 

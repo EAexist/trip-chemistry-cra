@@ -21,17 +21,17 @@ function EditNicknameContent({ }: EditNicknameContentProps) {
 
     /* Event Handlers */
     const handleClose = () => {
-        navigate('/user');
+        navigate('/user', { state: { navigateDirection: 'prev' }});
     }
 
-    const handleSuccess = () => {
-        navigate('/user');
-    }
+    // const handleSuccess = () => {
+    //     navigate('/user');
+    // }
 
     return (
         <AuthLoadContent
             // handleFail={handleFail}
-            handleSuccess={handleSuccess}
+            handleSuccess={handleClose}
         >
             <SetNicknamePage
                 handleClose={handleClose}

@@ -1,15 +1,17 @@
+/* React */
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 
-import { Close, Done, QuestionMark, Search, Warning } from '@mui/icons-material';
-import { Button, Checkbox, Icon, IconButton, InputAdornment, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Stack, TextField, Toolbar } from '@mui/material';
+/* React Packages */
+import { Button, Checkbox, Grid, Icon, IconButton, InputAdornment, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Stack, TextField, Toolbar } from '@mui/material';
+import { Close, Done, NavigateBefore, QuestionMark, Search, Warning } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
-
+/* Trip Chemistry */
 import { LoadStatus } from '../../reducers';
 import { AppDispatch } from '../../store';
-
-import { useNavigate } from 'react-router-dom';
-import AppBarContext from '../../contexts/AppBarContext';
+import AppBarContext, { useHideAppbar } from '../../contexts/AppBarContext';
 import { IProfile } from '../../interfaces/IProfile';
 import { useUserId } from '../../reducers/authReducer';
 import { clearChemistry } from '../../reducers/chemistryReducer';
@@ -17,6 +19,8 @@ import { addFlagged, asyncSearchProfile, deleteFlagged, resetSearch, useAddProfi
 import { useProfileIdList } from '../../reducers/tripReducer';
 import { useStrings } from '../../texts';
 import ProfileAvatar from '../../components/Avatar/ProfileAvatar';
+import { SLIDEINLEFT } from '../../motion/props';
+import RoutedMotionPage from '../../components/Motion/RoutedMotionPage';
 
 
 interface SearchAndInviteFriendContentProps {
@@ -32,17 +36,17 @@ function SearchAndInviteFriendContent({ handleSucess }: SearchAndInviteFriendCon
     /* Hooks */
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
+    const isAppBarHidden = useHideAppbar();
 
     /* States */
     const [input, setInput] = useState(""); /* AutoComplete에 사용자가 입력한 값 */
     const flaggedProfileList = useFlaggedProfileList();
     const flaggedProfileListLength = Object.keys(flaggedProfileList).length;
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-    const { show: showAppBar, setShow: setShowAppBar } = useContext(AppBarContext);
 
     /* Reducers */
     const profileSearchResultList = useSearchedProfileList();
-    const [ profileSearchtatus ] = useProfileSearchStatus();
+    const [profileSearchtatus] = useProfileSearchStatus();
     const idList = useProfileIdList();
     const addusers = useAddProfiles();
     const userId = useUserId();
@@ -53,17 +57,17 @@ function SearchAndInviteFriendContent({ handleSucess }: SearchAndInviteFriendCon
             setIsConfirmModalOpen(true);
         }
         else {
-            navigate('../');
+            handleClose();
         }
     }
 
     const handleAddFriendAndClose = () => {
-        dispatch( clearChemistry() );
+        dispatch(clearChemistry());
         addusers();
-        navigate('../');
+        handleClose();
     }
     const handleClose = () => {
-        navigate('../');
+        navigate('../', { state: { navigateDirection: 'prev' }});
     }
 
     const handleToggle = (profile: IProfile) => {
@@ -86,11 +90,7 @@ function SearchAndInviteFriendContent({ handleSucess }: SearchAndInviteFriendCon
 
     /* Side Effects */
     useEffect(() => {
-        setShowAppBar(false);
         dispatch(resetSearch());
-        return (() => {
-            setShowAppBar(true);
-        })
     }, []);
 
     useEffect(() => {
@@ -113,31 +113,37 @@ function SearchAndInviteFriendContent({ handleSucess }: SearchAndInviteFriendCon
         </Stack>
 
     return (
-        (!showAppBar) &&
-        <div className="page fullscreen flex">
+        isAppBarHidden &&
+        <RoutedMotionPage>
             {
-                isConfirmModalOpen 
+                isConfirmModalOpen
                     ?
                     <div className='block--with-margin block__body body--centered flex-grow'>
-                        <h3 className='typography-label'>{`${flaggedProfileListLength}명을 친구로 추가할까요?`}</h3>
+                        <h3 className='typography-label'>
+                            {`${flaggedProfileListLength}명을 친구로 추가할까요?`}
+                        </h3>
                         <FlaggedAvatarProfileGroup />
-                        <Stack spacing={4}>
-                            <Button onClick={handleAddFriendAndClose} startIcon={<Done />}>
-                                친구로 추가하기
-                            </Button>
-                            <Button onClick={handleClose} startIcon={<Close />}>
-                                그냥 닫기
-                            </Button>
-                        </Stack>
+                        <Grid container columnSpacing={4}>
+                            <Grid item xs={6}>
+                                <Button onClick={handleAddFriendAndClose} startIcon={<Done />}>
+                                    친구로 추가하기
+                                </Button>
+                            </Grid>
+                            <Grid item xs={6} display={"flex"} justifyContent={"center"} >
+                                <Button onClick={handleClose} startIcon={<Close />}>
+                                    그냥 닫기
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </div>
                     :
                     <>
                         <Toolbar>
-                            <IconButton 
+                            <IconButton
                                 edge="start"
                                 onClick={handleCloseButtonClick}
                             >
-                                <Close />
+                                <NavigateBefore />
                             </IconButton>
                             <Button
                                 disabled={flaggedProfileListLength === 0}
@@ -214,7 +220,7 @@ function SearchAndInviteFriendContent({ handleSucess }: SearchAndInviteFriendCon
                                                             >
                                                                 <ListItemButton disableGutters onClick={() => handleToggle(profile)} disabled={idList.includes(profile.id)} style={{ zIndex: 2 }}>
                                                                     <ListItemAvatar>
-                                                                        <ProfileAvatar characterId={profile.testResult? profile.testResult.tripCharacter.id : undefined} showLabel={false} />
+                                                                        <ProfileAvatar characterId={profile.testResult ? profile.testResult.tripCharacter.id : undefined} showLabel={false} />
                                                                     </ListItemAvatar>
                                                                     <ListItemText primary={profile.nickname} />
                                                                 </ListItemButton>
@@ -228,7 +234,7 @@ function SearchAndInviteFriendContent({ handleSucess }: SearchAndInviteFriendCon
                         </div>
                     </>
             }
-        </div>
+        </RoutedMotionPage>
     );
 }
 

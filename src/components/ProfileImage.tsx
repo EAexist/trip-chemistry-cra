@@ -1,12 +1,9 @@
-import { useSelector } from "react-redux";
 
-import LazyImage from "./LazyImage";
-import { RootState } from "../store";
-import getImgSrc, { FORMATPNG } from "../utils/getImgSrc";
-import { IProfileId } from "../reducers";
-import { IProfile } from "../interfaces/IProfile";
 import withFriendProfile from "../hocs/withFriendProfile";
 import withUserProfile from "../hocs/withUserProfile";
+import { IProfile } from "../interfaces/IProfile";
+import { IProfileId } from "../reducers";
+import getImgSrc, { FORMATPNG } from "../utils/getImgSrc";
 
 interface ProfileImageProps extends Pick<IProfile, 'id' | 'testResult' | 'nickname'> {
     showCharacterLabel?: boolean;
@@ -18,12 +15,11 @@ function ProfileImage({ renderLabel, showCharacterLabel = true, id, nickname, te
     const tripCharacter = testResult.tripCharacter;
 
     return (
-        <div className="block--centered">
-            <LazyImage
-                alt={nickname}
+        <div className="body--centered">
+            <img
                 src={getImgSrc('/character', tripCharacter.id, FORMATPNG)}
-                containerClassName="profile-image__container"
-                containerSx={{ height: "192px" }}
+                alt={nickname}
+                className="ProfileImage__image"
             />
             {
                 ( renderLabel === undefined )

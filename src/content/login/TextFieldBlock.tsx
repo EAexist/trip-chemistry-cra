@@ -59,7 +59,7 @@ function TextFieldBlock({
                             value.length > 0 &&
                             <InputAdornment position="end" sx={{ position: "absolute", right: 0 }}>
                                 <IconButton
-                                    aria-label="toggle password visibility"
+                                    aria-label="delete all input"
                                     onClick={handleClickDeleteAll}
                                     edge="end"
                                 >

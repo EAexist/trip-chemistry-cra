@@ -1,102 +1,97 @@
-/* React */
-import { PropsWithChildren, useContext, useEffect, useRef, useState } from "react";
+// /* React */
+// import { PropsWithChildren, useContext, useEffect, useRef, useState } from "react";
 
-/* React Packages */
+// /* React Packages */
 
-import { Swiper, SwiperRef } from 'swiper/react';
-/* Trip Chemistry */
-import { Done, NavigateBefore, NavigateNext } from "@mui/icons-material";
-import { Button, IconButton, Toolbar } from "@mui/material";
-import { SWIPERPROPS_PAGE } from "../../common/swiperProps";
-import AppBarContext from "../../contexts/AppBarContext";
+// import { Swiper, SwiperRef } from 'swiper/react';
+// /* Trip Chemistry */
+// import { Done, NavigateBefore, NavigateNext } from "@mui/icons-material";
+// import { Button, IconButton, Toolbar } from "@mui/material";
+// import { SWIPERPROPS_PAGE } from "../../common/swiperProps";
+// import AppBarContext, { useHideAppbar } from "../../contexts/AppBarContext";
 
-interface StepPageContainerProps {
-    handleClose: () => void;
-    handleConfirm: () => void;
-    doDisableNavigateNext: ( activeIndex : number ) => boolean;
-};
+// interface StepPageContainerProps {
+//     handleClose: () => void;
+//     handleConfirm: () => void;
+//     doDisableNavigateNext: ( activeIndex : number ) => boolean;
+// };
 
-function StepPageContainer({
-    handleClose,
-    handleConfirm,
-    children,
-    doDisableNavigateNext
-}: PropsWithChildren<StepPageContainerProps>) {
+// function StepPageContainer({
+//     handleClose,
+//     handleConfirm,
+//     children,
+//     doDisableNavigateNext
+// }: PropsWithChildren<StepPageContainerProps>) {
 
-    /* Reducers */
+//     /* Hooks */
+//     const isAppBarHidden = useHideAppbar();
 
-    /* States */
-    const { setShow: setShowAppBar } = useContext(AppBarContext);
-    const swiperRef = useRef<SwiperRef>(null);
-    const [ activeIndex, setActiveIndex ] = useState(0);
+//     /* States */
+//     const swiperRef = useRef<SwiperRef>(null);
+//     const [ activeIndex, setActiveIndex ] = useState(0);
 
-    /* Event Handlers */
-    /* Swiper Navigation */
-    const handleNavigatePrev = () => swiperRef.current?.swiper.slidePrev();
-    const handleNavigateNext = () => swiperRef.current?.swiper.slideNext();
+//     /* Event Handlers */
+//     /* Swiper Navigation */
+//     const handleNavigatePrev = () => swiperRef.current?.swiper.slidePrev();
+//     const handleNavigateNext = () => swiperRef.current?.swiper.slideNext();
 
-    /* Side Effects */
-    useEffect(() => {
-        setShowAppBar(false);
-        return (() => {
-            setShowAppBar(true);
-        })
-    }, []);
+//     /* Side Effects */
 
-    return (
-        <div className="page fullscreen">
-            <Toolbar>
-                {
-                    swiperRef.current?.swiper.isBeginning
-                        ? <Button
-                            onClick={handleClose}
-                        >
-                            취소
-                        </Button>
-                        :
-                        <IconButton
-                            onClick={handleNavigatePrev}
-                            edge="start"
-                            aria-label="menu"
-                        >
-                            <NavigateBefore />
-                        </IconButton>
+//     return (
+//         isAppBarHidden &&
+//         <div className="page fullscreen">
+//             <Toolbar>
+//                 {
+//                     swiperRef.current?.swiper.isBeginning
+//                         ? <Button
+//                             onClick={handleClose}
+//                         >
+//                             취소
+//                         </Button>
+//                         :
+//                         <IconButton
+//                             onClick={handleNavigatePrev}
+//                             edge="start"
+//                             aria-label="menu"
+//                         >
+//                             <NavigateBefore />
+//                         </IconButton>
 
-                }
-                {
-                    swiperRef.current?.swiper.isEnd
-                        ? <Button
-                            disabled={doDisableNavigateNext(activeIndex)}
-                            onClick={handleConfirm}
-                            variant='text'
-                            className=""
-                            startIcon={<Done />}
-                        >
-                            확인
-                        </Button>
-                        :
-                        <IconButton
-                            disabled={doDisableNavigateNext(activeIndex)}
-                            onClick={handleNavigateNext}
-                            edge="end"
-                            aria-label="menu"
-                        >
-                            <NavigateNext />
-                        </IconButton>
+//                 }
+//                 {
+//                     swiperRef.current?.swiper.isEnd
+//                         ? <Button
+//                             disabled={doDisableNavigateNext(activeIndex)}
+//                             onClick={handleConfirm}
+//                             variant='text'
+//                             className=""
+//                             startIcon={<Done />}
+//                         >
+//                             확인
+//                         </Button>
+//                         :
+//                         <IconButton
+//                             disabled={doDisableNavigateNext(activeIndex)}
+//                             onClick={handleNavigateNext}
+//                             edge="end"
+//                             aria-label="menu"
+//                         >
+//                             <NavigateNext />
+//                         </IconButton>
 
-                }
-            </Toolbar>
-            <Swiper
-                {...SWIPERPROPS_PAGE}
-                ref={swiperRef}
-                onActiveIndexChange={(swiper) => setActiveIndex(swiper.activeIndex)}
-                className="page__swiper"
-            >
-                {
-                    children
-                }
-            </Swiper>
-        </div>
-    );
-}
-export default StepPageContainer;
+//                 }
+//             </Toolbar>
+//             <Swiper
+//                 {...SWIPERPROPS_PAGE}
+//                 ref={swiperRef}
+//                 onActiveIndexChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+//                 className="page__swiper"
+//             >
+//                 {
+//                     children
+//                 }
+//             </Swiper>
+//         </div>
+//     );
+// }
+// export default StepPageContainer;

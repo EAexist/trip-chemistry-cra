@@ -2,28 +2,31 @@
 import { useEffect, useRef, useState } from "react";
 
 /* React Packages */
-import { useMotionValueEvent, useScroll } from "framer-motion";
+import { AirplaneTicket, Close, Error, GroupAdd, NavigateBefore } from "@mui/icons-material";
+import { Alert, Avatar, Button, ButtonBase, Grid, Icon, IconButton, List, ListItem, ListItemAvatar, ListItemText, Modal, Paper, Stack, Toolbar } from "@mui/material";
+import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { useDispatch } from "react-redux";
-
-import { AirplaneTicket, Close, Error, GroupAdd } from "@mui/icons-material";
-import { Alert, Avatar, Button, ButtonBase, Grid, Icon, IconButton, List, ListItem, ListItemAvatar, ListItemText, Modal, Stack, Toolbar } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
 
 /* Trip Chemistry */
 import { useStrings } from "../../texts";
 
-import { useNavigate, useParams } from "react-router-dom";
 import SectionPaper from "../../components/Paper/SectionPaper";
 import { LoadStatus } from "../../reducers";
 import { useGetProfile, useHasAnsweredTest, useIsAuthorized, useUserId } from "../../reducers/authReducer";
 // import { clearChemistry, useChemistryLoadStatus, useIsChemistryUpdated } from "../../reducers/chemistryReducer";
 // import { deleteUser, setAllREST, useProfileIdList, useProfileList } from "../../reducers/profileReducer";
-import LazyImage from "../../components/LazyImage";
+import FriendAvatar from "../../components/Avatar/FriendAvatar";
+import RoutedMotionPage from "../../components/Motion/RoutedMotionPage";
+import { FADEIN_VIEWPORT } from "../../motion/props";
 import { asyncGetChemistry, asyncJoinChemistry, useChemistry, useChemistryLoadStatus, useIsChemistryEnabled } from "../../reducers/tripReducer";
 import { AppDispatch } from "../../store";
 import getImgSrc, { FORMATPNG } from "../../utils/getImgSrc";
 import LoadContent from "../LoadContent";
+import NoticeBlock from "../NoticeBlock";
 import ChemistryDetailContent from "./ChemistryDetailContent";
-import FriendAvatar from "../../components/Avatar/FriendAvatar";
+import { MotionList } from "../../components/Motion/MotionList";
+import { MotionListItem } from "../../components/Motion/MotionListItem";
 
 interface ChemistryContentProps {
 
@@ -70,25 +73,10 @@ function ChemistryContent({ }: ChemistryContentProps) {
     const [showFloatingButton, setShowFloatingButton] = useState<boolean>(true);
 
     /* Event Handlers */
-    // const handleDelete = (id: IProfileId) => {
-    //     navigate('');
-    //     dispatch( clearChemistry() );
-    //     // dispatch( deleteUser(id) );
-    // }
-
-    // const handleStartButtonClick = () => {
-    //     console.log(`[ChemistryContent] handleStartButtonClick`);
-    //     idList.forEach((id) => {
-    //         dispatch(setStatus({ loadStatus: LoadStatus.PENDING, id }));
-    //         dispatch(asyncGetProfile({id}));
-    //     });
-    //     getChemistry();
-    // };
-
-    const handleScrollDown = () => {
-        // window.scrollTo({ top: resultContentTopRef.current?.offsetTop, behavior: "smooth" });
-        resultContentTopRef.current?.scrollIntoView({ behavior: "smooth" });
+    const handleClickNavigateBefore = () => {
+        navigate('../myChemistry', { state: { navigateDirection: 'prev' } })
     }
+
     const handleChemistryFail = () => {
         setChemistryLoadStatus(LoadStatus.REST);
     };
@@ -106,7 +94,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
     }
 
     const handleStartSearch = () => {
-        navigate('searchAndInviteFriend');
+        navigate('searchAndInviteFriend', { state: { navigateDirection: 'next' } });
     }
 
     const handleCloseShareModal = () => {
@@ -196,13 +184,18 @@ function ChemistryContent({ }: ChemistryContentProps) {
             handleFail={handleChemistryFail}
         >
             <Toolbar />
-            <div className="page content__body--gray min-fullscreen block__body">
+            <RoutedMotionPage className="page fullscreen flex content__body--gray block__body">
                 <SectionPaper className="block__body body__head">
-                    <h2 className="typography-heading body__head">{title}</h2>
+                    <div className="body__head typography-note">
+                        {
+                            isMember &&
+                            <Button onClick={handleClickNavigateBefore} sx={{ padding: 0 }} startIcon={<NavigateBefore />}>
+                                여행 목록
+                            </Button>
+                        }
+                    </div>
+                    <h2 className="typography-heading" style={{ marginTop: '0.5rem' }}>{title}</h2>
                     <div>
-                        <h4 className="typography-note">
-                            함께하는 친구들
-                        </h4>
                         <List>
                             {
                                 Object.values(profileList).map(({ id, nickname, testAnswer }) =>
@@ -231,45 +224,53 @@ function ChemistryContent({ }: ChemistryContentProps) {
                             isMember
                                 ?
                                 (
-                                    isInviteOptionsOpen
-                                        ?
-                                        <Grid container columnSpacing={2}>
-                                            {
-                                                [
-                                                    {
-                                                        onClick: handleStartShare,
-                                                        icon: 'share',
-                                                        label: '링크 공유'
-                                                    },
-                                                    {
-                                                        onClick: handleStartSearch,
-                                                        icon: 'person_search',
-                                                        label: '소셜 로그인 회원 검색'
-                                                    },
-                                                ].map(({ onClick, icon, label }) => (
-                                                    <Grid item xs={6} display={"flex"} alignItems={"stretch"} >
-                                                        <Button
-                                                            onClick={onClick}
-                                                            startIcon={<Icon>{icon}</Icon>}
-                                                            variant="outlined"
-                                                            className="button--full"
-                                                        >
-                                                            {label}
-                                                        </Button>
-                                                    </Grid>
+                                    <motion.div>
+                                        {
+                                            isInviteOptionsOpen
+                                                ?
+                                                <motion.div {...FADEIN_VIEWPORT} key={String(isInviteOptionsOpen)}>
+                                                    <Grid container columnSpacing={2}>
+                                                        {
+                                                            [
+                                                                {
+                                                                    onClick: handleStartShare,
+                                                                    icon: 'share',
+                                                                    label: '링크 공유'
+                                                                },
+                                                                {
+                                                                    onClick: handleStartSearch,
+                                                                    icon: 'person_search',
+                                                                    label: '소셜 로그인 회원 검색'
+                                                                },
+                                                            ].map(({ onClick, icon, label }) => (
+                                                                <Grid item xs={6} display={"flex"} flexDirection={'column'}>
+                                                                    <Button
+                                                                        onClick={onClick}
+                                                                        startIcon={<Icon>{icon}</Icon>}
+                                                                        variant="outlined"
+                                                                        className="button--full"
+                                                                    >
+                                                                        {label}
+                                                                    </Button>
+                                                                </Grid>
 
-                                                ))
-                                            }
-                                        </Grid>
-                                        :
-                                        <Button
-                                            onClick={() => setIsInviteOptionsOpen(true)}
-                                            startIcon={<GroupAdd />}
-                                            variant="outlined"
-                                            className="button--full"
-                                        >
-                                            친구 초대하기
-                                        </Button>
+                                                            ))
+                                                        }
+                                                    </Grid>
+                                                </motion.div>
+                                                :
+                                                <motion.div className="flex">
+                                                    <Button
+                                                        onClick={() => setIsInviteOptionsOpen(true)}
+                                                        startIcon={<GroupAdd />}
+                                                        variant="outlined"
+                                                        className="button--full"
+                                                    >
+                                                        친구 초대하기
+                                                    </Button>
+                                                </motion.div>
+                                        }
+                                    </motion.div>
                                 )
                                 :
                                 <Button
@@ -278,7 +279,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                                     variant="outlined"
                                     className="button--full"
                                 >
-                                    여행에 참여하기
+                                    참여하기
                                 </Button>
                         }
                     </div>
@@ -289,50 +290,27 @@ function ChemistryContent({ }: ChemistryContentProps) {
                         <ChemistryDetailContent />
                         :
                         /* 참여자를 한 명도 추가하지 않음. */
-                        <SectionPaper className="block__body body--centered">
-                            {
-                                Object.keys(profileList).length < 2
+                        <Paper elevation={0}>
+                            <NoticeBlock
+                                alt={"invite"}
+                                src={getImgSrc('/info', "invite", FORMATPNG)}
+                                {
+                                ...Object.keys(profileList).length < 2
                                     ?
-                                    <>
-                                        <LazyImage
-                                            alt={"MISS"}
-                                            src={getImgSrc('/info', "MISS", FORMATPNG)}
-                                            containerClassName="load-content-item__image"
-                                            containerSx={{ height: "256px", width: "256px" }}
-                                        />
-                                        <p>{"여행을 함께할 친구를 초대하고\n케미스트리를 확인해보세요."}</p>
-                                    </>
+                                    { body: "여행을 함께할 친구를 초대하고\n케미스트리를 확인해보세요." }
                                     :
-                                    /* 테스트를 완료한 참여자가 두명 미만임. */
-                                    <>
-                                        <LazyImage
-                                            alt={"MISS"}
-                                            src={getImgSrc('/info', "MISS", FORMATPNG)}
-                                            containerClassName="load-content-item__image"
-                                            containerSx={{ height: "256px", width: "256px" }}
-                                        />
-                                        <p>{"두 명 이상이 테스트를 완료하면 결과를 확인할 수 있어요."}</p>
-                                    </>
-                            }
-                        </SectionPaper>
+                                    { body: "두 명 이상이 테스트를 완료하면 결과를 확인할 수 있어요." }
+                                }
+                                isFullscreen={false}
+                            />
+                        </Paper>
                 }
-
                 {
                     isMember && !hasAnsweredTest &&
-                    <div className="floating--bottom">
-                        <div className="block--with-margin">
-                            <Button
-                                onClick={handleStartTest}
-                                variant="contained"
-                                className="button--full"
-                            >
-                                테스트 하러가기
-                            </Button>
-                        </div>
+                    <div className="placeholder" >
+                        <div className="placeholder--button--full block--with-margin" />
                     </div>
-
                 }
-
                 {/* 링크 공유 모달 */}
                 <Modal
                     open={isShareModalOpen}
@@ -342,7 +320,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                         <SectionPaper
                             square={false}
                             sx={{ borderRadius: "16px" }}
-                            className="block__body block--with-margin--sm"
+                            className="block__body block--with-margin--sm flex"
                         >
                             <Grid container className="body__head">
                                 {
@@ -375,6 +353,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                             <Button
                                 onClick={handleCloseShareModal}
                                 variant="contained"
+                                color="gray"
                                 className="button--full"
                             >
                                 닫기
@@ -408,7 +387,19 @@ function ChemistryContent({ }: ChemistryContentProps) {
                         </Alert>
                     </div>
                 </Modal>
-            </div>
+            </RoutedMotionPage>
+            {
+                isMember && !hasAnsweredTest &&
+                <div className="floating--bottom flex">
+                    <Button
+                        onClick={handleStartTest}
+                        variant="contained"
+                        className="button--full block--with-margin"
+                    >
+                        테스트 하러가기
+                    </Button>
+                </div>
+            }
         </LoadContent>
     );
 }
