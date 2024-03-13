@@ -84,7 +84,7 @@ function TestContent({ }: TestContentProps) {
     const [showScrollDownIcon, setShowScrollDownIcon] = useState(true);
 
     /* 첫 렌더 후 Scroll Resotration 중에 Top Nav 가 슬라이드 되는 모션을 방지함. */
-    // const [ preventInitialSwipe, setPreventInitialSwipe ] = useState(true);
+    const [ preventInitialSwipe, setPreventInitialSwipe ] = useState(true);
 
     /* Event Handlers */
     const handleFoodImageCardClick = (id: string) => {
@@ -147,11 +147,11 @@ function TestContent({ }: TestContentProps) {
     })
 
     /* 첫 렌더 후 100ms 동안 Top Nav의 애니메이션 비활성화 */
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         setPreventInitialSwipe(false);
-    //     }, 100);
-    //   }, []);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setPreventInitialSwipe(false);
+        }, 100);
+      }, []);
 
     return (
         <LoadContent {...{
@@ -166,8 +166,8 @@ function TestContent({ }: TestContentProps) {
                     <StepContext.Provider value={{ step, setStep }}>
                         <StepCheckpointContextProvider>
                             <div className="top-nav" style={{ backgroundColor: theme.palette.gray.light }}>
-                            <motion.div {...FADEIN}  custom={0.5} >
-                                <Stepper className="block--with-margin-x top-nav__swiper" >
+                            <motion.div {...FADEIN}  custom={0.2} >
+                                <Stepper className="block--with-margin-x top-nav__swiper" speed={preventInitialSwipe ? 0 : 500}>
                                     {
                                         Object.entries( TEST_SECTIONS ).map(([testName, { icon }], index) =>
                                             <SwiperSlide key={testName} className="top-nav__swiper">
