@@ -4,6 +4,7 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 /* React Packages */
 import { IUserProfile } from "../../interfaces/IUserProfile";
 import { useIsAuthorized, useUserProfile } from "../../reducers/authReducer";
+import { useEffect } from "react";
 
 interface AuthContentProps {
 
@@ -18,14 +19,20 @@ function AuthContent({ }: AuthContentProps) {
     /* Reducers */
     const { id: userId, authProvider } = useUserProfile() as IUserProfile;
 
+    useEffect(() => {
+        if (state && state.loginRedirectPath)
+            console.log(`[AuthContent] ${state.loginRedirectPath}`);
+    }, [state])
+
     return (
         isAuthorized
             ?
-            <Navigate to={`${((state !== null) && state.loginRedirectPath)
-                    ? ((authProvider === 'GUEST') && !state.loginRedirectPath.includes('guest'))
-                        ? `/guest/${userId}${state.loginRedirectPath}`
-                        : state.loginRedirectPath
-                    : "/home"}`} />
+            <Navigate to={`${(authProvider === 'GUEST')
+                ? `/guest/${userId}`
+                : ''}${((state !== null) && state.loginRedirectPath)
+                    ? state.loginRedirectPath.split('/guest')[0]
+                    : '/home'}
+                    `} />
             :
             <Outlet />
         // <AnimatedOutlet />

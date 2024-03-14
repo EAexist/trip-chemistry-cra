@@ -70,7 +70,7 @@ function CityChemistryContent({ cityClass }: CityChemistryContentProps) {
                                 <Rating value={Number(value)} readOnly max={Number(value)} sx={{ fontSize: "14px" }}/>
                                 <p className="typography-note">{testStrings.test.city.answers[Number(value) as keyof typeof testStrings.test.city.answers].label}</p>
                             </div>
-                            <Stack spacing={0.5}>
+                            <Stack spacing={0.75}>
                                 {
                                     idList.map((id) => (
                                         <FriendAvatar id={id} />

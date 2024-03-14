@@ -43,8 +43,6 @@ function HomeContent({ }: HomeContentProps) {
         navigate('/test');
     };
 
-    /* Side Effects  */
-
     /* Motion */
     const { scrollY } = useScroll();
 

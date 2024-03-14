@@ -20,7 +20,7 @@ function ProfileAvatar({ characterId, showLabel = true, labelSize, nickname, tes
 
     return (
         <Stack
-            spacing={0.5}
+            spacing={0.75}
             direction={"column"}
             display={"flex"}
             flexDirection={"column"}

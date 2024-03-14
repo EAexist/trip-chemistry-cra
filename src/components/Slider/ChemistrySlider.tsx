@@ -20,7 +20,7 @@ const SliderValueLabel = ({ testName, value }: { testName: TestName, value: numb
         userList.length > 0
             ? <Stack className="slider__value" >
                 <h2 className="typography-label">{value}</h2>
-                <Stack spacing={0.5}>
+                <Stack spacing={0.75}>
                     {
                         userList.map((id) => (
                             <FriendAvatar id={id} />

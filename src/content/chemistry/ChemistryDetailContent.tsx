@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSelector } from "react-redux";
 
-import { List, ListItem, Stack } from "@mui/material";
+import { Divider, List, ListItem, Stack } from "@mui/material";
 
 /* Trip Chemistry */
 import { SLIDERPROPS_CHEMISTRY_BUDGET_FOOD, TEST } from "../../common/app-const";
@@ -31,9 +31,9 @@ interface ChemistryDetailContentProps {
 
 function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
 
-    const teststrings = useStrings().public.contents.test;
+    /* Constants */
+    const testStrings = useStrings().public.contents.test;
     const strings = useStrings().public.contents.chemistry;
-
 
     /* States */
     const [ characterSectionActiveUserIndex, setCharacterSectionActiveUserIndex ] = useState<number>(0);
@@ -53,6 +53,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
 
     const leaderDataList = useProfileAll( chemistry?.leaderList, "nickname" );
     const follwerDataList = useProfileAll( answeredProfileIdList.filter( id => !chemistry?.leaderList.includes(id)), "nickname" );
+    const leadershipAnswerToProfileList = useValueToProfileIdList("leadership");
 
     const sortedCityList = useSortedCityList();
 
@@ -105,9 +106,27 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                 <motion.div {...FADEIN_VIEWPORT} className="block__body">
                     <Stack sx={{ justifyContent: 'center' }}>
                         {
-                            chemistry && chemistry.leaderList.map((id) =>
+                            Object.keys(Object.values(leadershipAnswerToProfileList)).length > 0 &&
+                            Object.values(leadershipAnswerToProfileList).reverse()[0].map((id) =>
                                 <ProfileImage id={id} showCharacterLabel={false} />
                             )
+                        }
+                    </Stack>
+                    <Stack flexWrap={"wrap"} spacing={4} justifyContent={"center"}>
+                        {
+                            Object.keys(Object.values(leadershipAnswerToProfileList)).length > 1 &&
+                            Object.entries(leadershipAnswerToProfileList).reverse().slice(1).map(([value, idList], index) => (
+                                <Stack sx={{ flexWrap: "wrap" }}>
+                                    <p className="typography-note">{testStrings.test.leadership.answers[Number(value) as keyof typeof testStrings.test.leadership.answers].label}</p>
+                                    <Stack spacing={0.75}>
+                                        {
+                                            idList.map((id) => (
+                                                <FriendAvatar id={id} />
+                                            ))
+                                        }
+                                    </Stack>
+                                </Stack>
+                            ))
                         }
                     </Stack>
                     <p>
@@ -146,11 +165,11 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                 <motion.div {...FADEIN_VIEWPORT} className="block__body">
                 <List disablePadding>
                     {
-                        (Object.values(teststrings.test.schedule.answers) as { icon: string, label: string, value: number }[]).map(({ icon, label, value }) => (
+                        (Object.values(testStrings.test.schedule.answers) as { icon: string, label: string, value: number }[]).map(({ icon, label, value }) => (
                             <ListItem disabled={!Object.keys(scheduleAnswerToProfiles).includes(String(value))} disableGutters>
                                 <Stack spacing={4}>
                                     <div className={Object.keys(scheduleAnswerToProfiles).includes(String(value)) ? "typography-label" : ""}><p>{label}</p></div>
-                                    <Stack spacing={0.5}>
+                                    <Stack spacing={0.75}>
                                         {
                                             (Object.keys(scheduleAnswerToProfiles).includes(String(value)) ? scheduleAnswerToProfiles[value] : []).map((id) => (
                                                 <FriendAvatar id={id} />

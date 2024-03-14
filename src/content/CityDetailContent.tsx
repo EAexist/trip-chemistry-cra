@@ -20,6 +20,10 @@ import { IProfile } from "../interfaces/IProfile";
 import { useCityChemistry, useIsChemistryEnabled, useProfileAll } from "../reducers/tripReducer";
 import { useStrings } from "../texts";
 import getImgSrc, { FORMATWEBP } from "../utils/getImgSrc";
+import { MotionList } from "../components/Motion/MotionList";
+import { MotionListItem } from "../components/Motion/MotionListItem";
+import { VARIANTS_STAGGER_CHILDREN } from "../motion/props";
+import { AnimatePresence } from "framer-motion";
 
 interface CityDetailContentProps {
     cityClass: keyof typeof TEST.city.subTests;
@@ -121,10 +125,12 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                             </Stack>
                         </AccordionSummary>
                         <AccordionDetails sx={{ padding: 0 }}>
-                            <List>
+                            {
+                                expanded &&
+                            <MotionList initial={"closed"} animate={"open"} variants={VARIANTS_STAGGER_CHILDREN}>
                             {
                                 answerList.map(({ id, answer }) => (
-                                    <ListItem>
+                                    <MotionListItem>
                                         <ListItemAvatar>
                                             <FriendAvatar id={id} />
                                         </ListItemAvatar>
@@ -134,10 +140,11 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                                                 <p className="typography-note">{strings.test.city.answers[answer as keyof typeof strings.test.city.answers].label}</p>
                                             </Stack>
                                         } />
-                                    </ListItem>
+                                    </MotionListItem>
                                 ))
                             }
-                            </List>
+                            </MotionList>
+                            }
                         </AccordionDetails>
                     </Accordion>
                 </div>
