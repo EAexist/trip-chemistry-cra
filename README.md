@@ -1,10 +1,11 @@
-# 여행 케미 테스트 Trip Chemistry Test
+# 여행 케미 테스트( Trip Chemistry Test )
 This repo contains the source code and documentation powering 여행 케미 테스트 (Trip Chemistry Test).
+
 여행 케미 테스트는 여행을 소재로 한 MBTI 유형 테스트입니다. 사용자가 어떤 유형의 여행지인지, 그리고 함께 여행하는 친구들과의 케미스트리는 어떤지를 재미있게 알려줍니다. 심심풀이 뿐만 아니라 실제 단체 여행을 준비하는 목적으로도 사용할 수 있습니다.  
 
 # Dependency
 
-## Front-end
+### Front-end
 TypeScript-based
 
 - [React](https://react.dev/)
@@ -14,7 +15,7 @@ TypeScript-based
     - [Framer Motion](https://www.framer.com/motion/) 10.18.0
 - [Typescript](https://www.typescriptlang.org/) 5.3.3
 
-## Back-end
+### Back-end
 Reactive (Non-blocking)
 
 - [Spring Boot](https://spring.io/projects/spring-boot)
@@ -23,7 +24,7 @@ Reactive (Non-blocking)
 - [MongoDB](https://www.mongodb.com/ko-kr)
 - [Spring Boot](https://spring.io/projects/spring-boot)
 
-## Else
+### Else
 
 - [카카오 로그인 REST API](https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api)
 
