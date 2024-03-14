@@ -31,7 +31,6 @@ The server application is reactive(non-blocking). The Server implements RESTful 
     - [Webflux](https://docs.spring.io/spring-framework/reference/web/webflux.html)
     - [Spring Data MongoDB Reactive](https://docs.spring.io/spring-data/mongodb/reference/index.html)
 - [MongoDB](https://www.mongodb.com/ko-kr)
-- [Spring Boot](https://spring.io/projects/spring-boot)
 
 ### APIs
 - [카카오 로그인 REST API](https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api)
