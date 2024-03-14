@@ -6,7 +6,7 @@ This repo contains the source code and documentation powering 여행 케미 테�
 ## Features
 The client source code is fully TypeScript-based.
 
-The Server Application is reactive(non-blocking). The Server implements RESTful API.
+The server application is reactive(non-blocking). The Server implements RESTful API.
 
 
 
