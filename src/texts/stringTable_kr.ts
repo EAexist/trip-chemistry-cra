@@ -31,7 +31,7 @@ const stringTable_kr = {
                 // contact: ['오류가 계속되면 ', '/name', '에게 알려주세요.'],
                 // connect: '지금 서버에 연결할 수 없어요. 잠시 후 다시 시도해주세요.',
             },
-            title: "여행 케미 테스트",
+            title: "여행 타입 테스트",
             reference: "제공: ",
             linkText: "에서 보기",
             linkTextList: [
@@ -359,7 +359,7 @@ const stringTable_kr = {
             },
         },
         "topNav": {
-            "home": "여행 케미 테스트",
+            "home": "여행 타입 테스트",
             "test": "테스트",
             "result": "내 결과",
             "chemistry": "케미 보기",
@@ -420,12 +420,12 @@ const stringTable_kr = {
         "contents": {
             "home": {
                 "label": "소개",
-                "appTitle": "여행 케미 테스트",
+                "appTitle": "여행 타입 테스트",
                 "startButton": "테스트 시작하기",
                 "sections": [
                     {
                         "id": "title",
-                        title: "여행 케미 테스트",
+                        title: "여행 타입 테스트",
                         "body": "친구와 나의 같은 듯 다른 여행 스타일,\n여행 전 미리 알아보고 떠나자!"
                     },
                     {

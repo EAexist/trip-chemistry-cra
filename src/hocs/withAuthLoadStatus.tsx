@@ -1,5 +1,5 @@
-import { ComponentType, PropsWithChildren } from "react";
-import { LoadStatus } from "../reducers";
+import { ComponentType } from "react";
+import { LoadStatus } from "../interfaces/enums/LoadStatus";
 import { useAuthLoadStatus } from "../reducers/authReducer";
 
 interface WithLoadStatusProps { 

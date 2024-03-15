@@ -8,13 +8,13 @@ import { StatusCodes } from "http-status-codes";
 import { useDispatch, useSelector } from "react-redux";
 
 /* App */
-import { IWithLoadStatus, LoadStatus } from ".";
 import { HEADERS_AXIOS, TEST_TYPE } from "../common/app-const";
 import { ITestAnswer, ITestAnswerDTO, testAnswerToDTO } from "../interfaces/ITestAnswer";
 import { AppDispatch, RootState } from "../store";
 import { useUserId } from "./authReducer";
 import { ExpectationTag } from "../interfaces/enums/ExpectationTag";
 import { ActivityTag } from "../interfaces/enums/ActivityTag";
+import { IWithLoadStatus, LoadStatus } from "../interfaces/enums/LoadStatus";
 
 
 

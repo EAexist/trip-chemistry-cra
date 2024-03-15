@@ -5,15 +5,15 @@ import { useCallback, useContext, useState } from "react";
 import { Done, NavigateBefore } from "@mui/icons-material";
 import { Button, IconButton, Toolbar } from "@mui/material";
 
-/* Trip Chemistry */
+/* App */
 import { useSelector } from "react-redux";
 import { USER } from "../../common/app-const";
-import RoutedMotionPage from "../../components/Motion/RoutedMotionPage";
-import AppBarContext, { useHideAppbar } from "../../contexts/AppBarContext";
+import RoutedMotionPage from "../../motion/components/RoutedMotionPage";
+import AppBarContext, { useHideAppbar } from "../../components/AppBar/AppBarContext";
 import useSetNickname from "../../hooks/useSetNickname";
 import { useUserInfo } from "../../reducers/authReducer";
 import { RootState } from "../../store";
-import TextFieldBlock from "./TextFieldBlock";
+import TextFieldBlock from "../../components/Block/TextFieldBlock";
 
 interface SetNicknamePageProps {
     handleClose: () => void;

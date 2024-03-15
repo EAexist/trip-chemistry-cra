@@ -1,5 +1,4 @@
-import { IProfileId } from "../reducers";
-import { IProfile } from "./IProfile";
+import { IProfile, IProfileId } from "./IProfile";
 
 interface ICityChemistry {
     [key: string]: number

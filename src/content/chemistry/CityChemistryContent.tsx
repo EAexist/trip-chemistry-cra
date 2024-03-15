@@ -6,11 +6,11 @@ import { StarBorder, ThumbUp } from "@mui/icons-material";
 import { CardActionArea, CardContent, Divider, Rating, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-/* Trip Chemistry */
+/* App */
 import { TEST } from "../../common/app-const";
 import ImageCard from "../../components/Card/ImageCard";
 import useValueToProfileIdList from "../../hooks/useValueToProfileIdList";
-import { useCityChemistry } from "../../reducers/tripReducer";
+import { useCityChemistry } from "../../reducers/chemistryReducer";
 import { useStrings } from "../../texts";
 import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
 import FriendAvatar from "../../components/Avatar/FriendAvatar";
@@ -66,7 +66,7 @@ function CityChemistryContent({ cityClass }: CityChemistryContentProps) {
                 {
                     Object.entries(valueToProfileList).reverse().map(([value, idList], index) => (
                         <Stack sx={{ flexWrap: "wrap" }}>
-                            <div className="body--centered">
+                            <div className="block--centered">
                                 <Rating value={Number(value)} readOnly max={Number(value)} sx={{ fontSize: "14px" }}/>
                                 <p className="typography-note">{testStrings.test.city.answers[Number(value) as keyof typeof testStrings.test.city.answers].label}</p>
                             </div>

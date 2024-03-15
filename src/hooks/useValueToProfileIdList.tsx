@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import { IProfileId } from "../reducers";
+import { IProfileId } from "../interfaces/IProfile";
 import { TestName } from "../reducers/testAnswerReducer";
-import { useTestAnswerObject } from "../reducers/tripReducer";
+import { useTestAnswerObject } from "../reducers/chemistryReducer";
 
 interface IvalueToProfiles {[value: string] : IProfileId[]};
 
@@ -35,7 +35,7 @@ const useValueToProfileIdList = ( testName: TestName ) => {
 
         setValueToProfileIdList(valueToProfileListTemp);
 
-    }, [ testAnswerObject ]);
+    }, [ testAnswerObject, testName ]);
     
     useEffect(() => {
         console.log(`[useValueToProfileIdList]: valueToProfileList=${JSON.stringify(valueToProfileList)}}`);

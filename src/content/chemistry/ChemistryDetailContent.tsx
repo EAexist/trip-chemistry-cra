@@ -5,25 +5,24 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSelector } from "react-redux";
 
-import { Divider, List, ListItem, Stack } from "@mui/material";
+import { List, ListItem, Stack } from "@mui/material";
 
-/* Trip Chemistry */
+/* App */
 import { SLIDERPROPS_CHEMISTRY_BUDGET_FOOD, TEST } from "../../common/app-const";
 import SectionPaper from "../../components/Paper/SectionPaper";
 import { useStrings } from "../../texts";
 
-import AvatarGroup from "../../components/Avatar/AvatarGroup";
+import FriendAvatar from "../../components/Avatar/FriendAvatar";
 import NavigationButton from "../../components/Button/NavigationButton";
 import ToggleButton from "../../components/Button/ToggleButton";
-import ProfileImage from "../../components/ProfileImage";
-import ChemistrySlider from "../../components/Slider/ChemistrySlider";
-import TestResultBox, { MotionTestResultBox } from "../../components/TestResultBox";
+import ProfileImage from "../../components/Profile/ProfileImage";
+import ChemistrySlider from "./component/ChemistrySlider";
+import TestResultBlock from "../../components/Profile/TestResultBlock";
 import useValueToProfileIdList from "../../hooks/useValueToProfileIdList";
-import { useChemistry, useProfileAll, useProfileIdList, useSortedCityList } from "../../reducers/tripReducer";
+import { FADEIN, FADEIN_VIEWPORT } from "../../motion/props";
+import { useChemistry, useProfileAll, useProfileIdList, useSortedCityList } from "../../reducers/chemistryReducer";
 import { RootState } from "../../store";
 import CityChemistryContent from "./CityChemistryContent";
-import FriendAvatar from "../../components/Avatar/FriendAvatar";
-import { FADEIN, FADEIN_VIEWPORT } from "../../motion/props";
 
 interface ChemistryDetailContentProps {
 
@@ -48,7 +47,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
     const budgetAnswerToProfiles = useValueToProfileIdList('food');
 
     const characterSectionCharacter = useSelector((state: RootState) =>
-        state.trip.data.profileList[answeredProfileIdList[characterSectionActiveUserIndex]]?.testResult.tripCharacter
+        state.chemistry.data.profileList[answeredProfileIdList[characterSectionActiveUserIndex]]?.testResult.tripCharacter
     );
 
     const leaderDataList = useProfileAll( chemistry?.leaderList, "nickname" );
@@ -76,14 +75,14 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                                     selected={characterSectionActiveUserIndex === index}
                                     className="toggle-button--button-base"
                                 >
-                                    <FriendAvatar key={id} id={id} labelSize="lg" />
+                                    <FriendAvatar key={id} id={id} labelSize="large" />
                                 </ToggleButton>
                             ))
                         }
                     </Stack>
                     <AnimatePresence mode={"wait"} initial={false}>
                         <motion.div key={characterSectionActiveUserIndex} {...{...FADEIN, exit: "hidden" }} className="navigation-button__container">
-                            <TestResultBox key={characterSectionActiveUserIndex}id={answeredProfileIdList[characterSectionActiveUserIndex]} />
+                            <TestResultBlock key={characterSectionActiveUserIndex}id={answeredProfileIdList[characterSectionActiveUserIndex]} />
                             {
                                 (characterSectionActiveUserIndex > 0) &&
                                 <NavigationButton navigateTo="prev" onClick={() => setCharacterSectionActiveUserIndex((prev) => prev > 0 ? prev - 1 : prev)} />
@@ -203,7 +202,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
             <SectionPaper>
                 <motion.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.budget.title}</motion.h5>
                 <motion.div  {...FADEIN_VIEWPORT} className="block__body">
-                    <div className="body--centered">
+                    <div className="block--centered">
                         <ChemistrySlider {...SLIDERPROPS_CHEMISTRY_BUDGET_FOOD} />
                     </div>
                     {
@@ -229,7 +228,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                 <ul>
                 {
                     sortedCityList && sortedCityList.map((cityClass) => (
-                        <motion.li {...FADEIN_VIEWPORT} className="sub-section">
+                        <motion.li {...FADEIN_VIEWPORT}>
                             <CityChemistryContent cityClass={cityClass as keyof typeof TEST.city.subTests} />
                         </motion.li>
                     ))

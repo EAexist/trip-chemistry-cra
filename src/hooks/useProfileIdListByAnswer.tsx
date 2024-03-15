@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import { IProfileId } from "../reducers";
+import { IProfileId } from "../interfaces/IProfile";
 import { TestName } from "../reducers/testAnswerReducer";
-import { useTestAnswerObject } from "../reducers/tripReducer";
+import { useTestAnswerObject } from "../reducers/chemistryReducer";
 
 const useProfileIdListByAnswer = ( testName: TestName, answer: number ) => {
 
@@ -23,11 +23,11 @@ const useProfileIdListByAnswer = ( testName: TestName, answer: number ) => {
         setProfileList(userListTemp);
 
         setAscendingOrder( Array.from(new Set( Object.values( testAnswerObject ) )).sort().indexOf( answer ) );
-    }, [ testAnswerObject, answer ]);
+    }, [ testAnswerObject, answer, testName ]);
 
-    useEffect(()=>{
-        console.log(`[useProfileIdListByAnswer] ${answer}/${Object.values( testAnswerObject )} ascendingOrder=${ascendingOrder}`);
-    }, [ testAnswerObject, ascendingOrder ])
+    // useEffect(()=>{
+    //     console.log(`[useProfileIdListByAnswer] ${answer}/${Object.values( testAnswerObject )} ascendingOrder=${ascendingOrder}`);
+    // }, [ testAnswerObject, ascendingOrder ])
 
     return ({
         userList,

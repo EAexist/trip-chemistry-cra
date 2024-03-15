@@ -8,25 +8,23 @@ import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
-/* Trip Chemistry */
+/* App */
 import { useStrings } from "../../texts";
 
-import SectionPaper from "../../components/Paper/SectionPaper";
-import { LoadStatus } from "../../reducers";
-import { useGetProfile, useHasAnsweredTest, useIsAuthorized, useUserId } from "../../reducers/authReducer";
-// import { clearChemistry, useChemistryLoadStatus, useIsChemistryUpdated } from "../../reducers/chemistryReducer";
-// import { deleteUser, setAllREST, useProfileIdList, useProfileList } from "../../reducers/profileReducer";
 import FriendAvatar from "../../components/Avatar/FriendAvatar";
-import RoutedMotionPage from "../../components/Motion/RoutedMotionPage";
+import NoticeBlock from "../../components/Block/NoticeBlock";
+import SectionPaper from "../../components/Paper/SectionPaper";
+import { LoadStatus } from "../../interfaces/enums/LoadStatus";
+import RoutedMotionPage from "../../motion/components/RoutedMotionPage";
 import { FADEIN_VIEWPORT } from "../../motion/props";
-import { asyncGetChemistry, asyncJoinChemistry, useChemistry, useChemistryLoadStatus, useIsChemistryEnabled } from "../../reducers/tripReducer";
+import { useGetProfile, useHasAnsweredTest, useIsAuthorized, useUserId } from "../../reducers/authReducer";
+import { asyncGetChemistry, asyncJoinChemistry, useChemistry, useChemistryLoadStatus, useIsChemistryEnabled } from "../../reducers/chemistryReducer";
 import { AppDispatch } from "../../store";
 import getImgSrc, { FORMATPNG } from "../../utils/getImgSrc";
-import LoadContent from "../LoadContent";
-import NoticeBlock from "../NoticeBlock";
+import LoadRequiredContent from "../LoadRequiredContent";
 import ChemistryDetailContent from "./ChemistryDetailContent";
-import { MotionList } from "../../components/Motion/MotionList";
-import { MotionListItem } from "../../components/Motion/MotionListItem";
+import HelmetWrapper from "../../helmet/HelmetWrapper";
+import { Helmet } from "react-helmet-async";
 
 interface ChemistryContentProps {
 
@@ -177,14 +175,26 @@ function ChemistryContent({ }: ChemistryContentProps) {
     })
 
     return (
-        <LoadContent
+        <LoadRequiredContent
             status={chemistryLoadStatus}
             setStatus={setChemistryLoadStatus}
             handleSuccess={handleChemistrySuccess}
             handleFail={handleChemistryFail}
         >
+        {/* MetaData
+            Not Crawled.
+            Open Graph Protocol Metadata for SNS(Kakaotalk, Instagram) Share.
+        */}
+        <HelmetWrapper
+            title={ `여행 타입 테스트 | 친구들과의 여행을 준비해보세요.` }
+            // description={ `DESCRIPTION` }
+            description={ Object.values(profileList).length > 0 ? `${Object.values(profileList)[0].nickname}님의 ${title}. 참여하고 여행의 리더, 일정, 예산 그리고 여행지를 함께 결정해보세요.` : `${title}. 참여하고 여행의 리더, 일정, 예산 그리고 여행지를 함께 결정해보세요.` }
+            keywords={"여행, 여행 일정, 여행지, 여행 계획, 여행 예산, 국내여행, 해외여행, MBTI"}
+            url={"https://eaexist.github.io/tripchemistry"}
+            image={"/static/images/meta/social-meta-iamge.jpg"}
+        />
             <Toolbar />
-            <RoutedMotionPage className="page min-fill-window flex content__body--gray block__body">
+            <RoutedMotionPage className="page min-fill-window flex block--gray block__body">
                 <SectionPaper className="block__body body__head">
                     <div className="body__head typography-note">
                         {
@@ -320,7 +330,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                         <SectionPaper
                             square={false}
                             sx={{ borderRadius: "16px" }}
-                            className="block__body block--with-margin--sm flex"
+                            className="block__body block--with-margin--small flex"
                         >
                             <Grid container className="body__head">
                                 {
@@ -381,7 +391,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                                 </IconButton>
                             }
                             severity="success"
-                            className="block--with-margin--sm"
+                            className="block--with-margin--small"
                         >
                             링크를 복사했어요.
                         </Alert>
@@ -400,7 +410,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                     </Button>
                 </div>
             }
-        </LoadContent>
+        </LoadRequiredContent>
     );
 }
 export default ChemistryContent;

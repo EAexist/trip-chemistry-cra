@@ -3,17 +3,17 @@ import { useState } from "react";
 
 /* React Packages */
 import { Close, Done } from "@mui/icons-material";
-import { Button, Grid, Stack } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, Grid } from "@mui/material";
 import { motion } from 'framer-motion';
+import { useDispatch } from "react-redux";
 
-/* Trip Chemistry */
+/* App */
 import { useLocation, useNavigate } from "react-router-dom";
+import { SLIDEINUPINVIEW } from "../../motion/props";
 import { authorize, setIsInitialized } from "../../reducers/authReducer";
-import { AppDispatch, RootState } from "../../store";
-import { AuthLoadContent } from "../LoadContent";
+import { AppDispatch } from "../../store";
+import { AuthLoadRequiredContent } from "../LoadRequiredContent";
 import SetNicknamePage from "./SetNicknamePage";
-import { SLIDEINLEFT, SLIDEINUPINVIEW } from "../../motion/props";
 
 interface InitializeNicknameContentProps {
 };
@@ -24,9 +24,6 @@ function InitializeNicknameContent({ }: InitializeNicknameContentProps) {
     const { state } = useLocation();
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
-
-    /* Reducers */
-    const doRequireInitialization = useSelector((state: RootState) => state.auth.data.doRequireInitialization);
 
     /* States */
     const [isConfirmCancelModalOpen, setIsConfirmCancelModalOpen] = useState(false);
@@ -51,8 +48,7 @@ function InitializeNicknameContent({ }: InitializeNicknameContentProps) {
     }
 
     return (
-        <AuthLoadContent
-            // handleFail={handleFail}
+        <AuthLoadRequiredContent
             handleSuccess={handleSuccess}
         >
             {
@@ -62,7 +58,7 @@ function InitializeNicknameContent({ }: InitializeNicknameContentProps) {
                             isConfirmCancelModalOpen
                             &&
                             <motion.div {...SLIDEINUPINVIEW} className="page fill-window flex">
-                                <div className='block--with-margin-lg block__body body--centered flex-grow'>
+                                <div className='block--with-margin-lg block__body block--centered flex-grow'>
                                     <h3 className='typography-label'>
                                         {`닉네임을 설정 중이에요.\n취소하고 처음으로 돌아갈까요?`}
                                     </h3>
@@ -88,7 +84,7 @@ function InitializeNicknameContent({ }: InitializeNicknameContentProps) {
                     </>
                     // : <></>
             }
-        </AuthLoadContent>
+        </AuthLoadRequiredContent>
     );
 }
 export default InitializeNicknameContent;

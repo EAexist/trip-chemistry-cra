@@ -1,29 +1,28 @@
 /* React */
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 /* React Packages */
-import { motion } from 'framer-motion';
-import { Button, IconButton, Toolbar } from "@mui/material";
 import { Done, NavigateBefore, NavigateNext } from "@mui/icons-material";
-import { Swiper, SwiperRef, SwiperSlide, } from 'swiper/react';
+import { Button, IconButton, Toolbar } from "@mui/material";
+import { motion } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
 import SwiperCore from 'swiper';
+import { Swiper, SwiperRef, SwiperSlide, } from 'swiper/react';
 
-/* Trip Chemistry */
-import { SWIPERPROPS_PAGE } from "../../common/swiperProps";
-import { useHideAppbar } from "../../contexts/AppBarContext";
+/* App */
+import { useHideAppbar } from "../../components/AppBar/AppBarContext";
+import TextFieldBlock from "../../components/Block/TextFieldBlock";
 import useCreateChemistry from "../../hooks/useCreateChemistry";
-import { useChemistryId, useChemistryLoadStatus } from "../../reducers/tripReducer";
-import LoadContent, { AuthLoadContent } from "../LoadContent";
-import TextFieldBlock from "../login/TextFieldBlock";
-import { useGetProfile } from "../../reducers/authReducer";
 import { SLIDEINLEFT } from "../../motion/props";
+import { useGetProfile } from "../../reducers/authReducer";
+import { useChemistryId, useChemistryLoadStatus } from "../../reducers/chemistryReducer";
+import { SWIPERPROPS_PAGE } from "../../swiper/props";
+import LoadRequiredContent, { AuthLoadRequiredContent } from "../LoadRequiredContent";
 
 interface CreateChemistryContentProps {
 };
 
-function CreateChemistryContent({
-}: CreateChemistryContentProps) {
+function CreateChemistryContent({}: CreateChemistryContentProps) {
 
     /* Constants */
     const maxTitleLength = 20;
@@ -43,7 +42,6 @@ function CreateChemistryContent({
     const [ swiper, setSwiper ] = useState<SwiperCore>();
     const isInputAllowed = title.length > 0
     const swiperRef = useRef<SwiperRef>(null);
-    // const [activeIndex, setActiveIndex] = useState<number>(0);
 
     /* Event Handlers */
     /* Swiper Navigation */
@@ -82,27 +80,25 @@ function CreateChemistryContent({
     /* Side Effects */
 
     return (
-        <LoadContent
+        <LoadRequiredContent
             {...{
                 status,
                 setStatus,
                 handleSuccess: handleCreateChemistrySuccess
             }}
         >
-            <AuthLoadContent
+            <AuthLoadRequiredContent
                 handleSuccess={handleGetProfileSuccess}
             >
                 {
                     isAppBarHidden &&
                     <motion.div {...SLIDEINLEFT} className="page fill-window">
                         {
-                            // swiperRef.current && swiperRef.current.swiper &&
                             <Toolbar>
                                 {
                                     <IconButton
                                         edge="start"
                                         aria-label="cancel"
-                                        // onClick={swiperRef.current?.swiper.isBeginning ? handleClose : handleNavigatePrev}
                                         onClick={swiper?.isBeginning ? handleClose : handleNavigatePrev}
                                     >
                                         <NavigateBefore />
@@ -157,8 +153,8 @@ function CreateChemistryContent({
                         </Swiper>
                     </motion.div>
                 }
-            </AuthLoadContent>
-        </LoadContent>
+            </AuthLoadRequiredContent>
+        </LoadRequiredContent>
     );
 }
 export default CreateChemistryContent;

@@ -1,10 +1,9 @@
 import { useEffect } from "react";
-import { IProfile } from "../../interfaces/IProfile";
-import { IProfileId } from "../../reducers";
-import { useProfile } from "../../reducers/tripReducer";
-import ProfileAvatar, { ProfileAvatarProps } from "./ProfileAvatar";
+import { IProfile, IProfileId } from "../../interfaces/IProfile";
+import { useProfile } from "../../reducers/chemistryReducer";
+import LabeledAvatar, { LabeledAvatarProps } from "./LabeledAvatar";
 
-interface FriendAvatarProps extends ProfileAvatarProps {
+interface FriendAvatarProps extends LabeledAvatarProps {
     id : IProfileId;
 };
 
@@ -18,7 +17,7 @@ function FriendAvatar({ id, ...props }: FriendAvatarProps) {
     }, [])
 
     return (
-        <ProfileAvatar characterId={characterId} nickname={ nickname } {...props}/>
+        <LabeledAvatar characterId={characterId} nickname={ nickname } {...props}/>
     );
 }
 export default FriendAvatar;

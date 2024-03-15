@@ -6,16 +6,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { CONTENTS } from "../../common/app-const";
-import { useAppBar } from "../../contexts/AppBarContext";
+import { useAppBar } from "./AppBarContext";
 import { VARIANTS_STAGGER_CHILDREN } from "../../motion/props";
 import { useIsAuthorized, useUserInfo } from "../../reducers/authReducer";
 import { useStrings } from "../../texts";
 import UserAvatar from "../Avatar/UserAvatar";
 import Logo from "../Logo";
-import { MotionList } from "../Motion/MotionList";
-import { MotionListItem } from "../Motion/MotionListItem";
+import { MotionList } from "../../motion/components/MotionList";
+import { MotionListItem } from "../../motion/components/MotionListItem";
 import PngIcon from "../PngIcon";
-import { MotionListSubheader } from "../Motion/MotionListSubheader";
+import { MotionListSubheader } from "../../motion/components/MotionListSubheader";
 
 interface AppBarProps {
 };
@@ -136,8 +136,8 @@ function AppBar({ }: AppBarProps) {
                             <MotionListSubheader disableGutters className="block--with-margin-x">{`내 정보`}</MotionListSubheader>
                             <MotionListItem key={"profile"}>
                                 <ListItemButton 
-                                    onClick={() => handleDrawerItemClick(isAuthorized ? 'user' : 'login')} 
-                                    selected={pathname.includes(isAuthorized ? 'user' : 'login' )}
+                                    onClick={() => handleDrawerItemClick('user')} 
+                                    selected={pathname.includes('user')}
                                     disableGutters 
                                     className="block--with-padding-x"
                                 >

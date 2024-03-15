@@ -4,11 +4,11 @@ import { Button, Toolbar } from "@mui/material";
 import { motion } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
 
-/* Trip Chemistry */
-import ChemistrySummaryButton from "../../components/ChemistrySummaryButton";
+/* App */
+import ChemistrySummaryButton from "./component/ChemistrySummaryButton";
 import { FADEIN_VIEWPORT, STAGGER_CHILDREN, VARIANTS_SLIDE_UP } from "../../motion/props";
 import { useChemistryIdList } from "../../reducers/authReducer";
-import RoutedMotionPage from "../../components/Motion/RoutedMotionPage";
+import RoutedMotionPage from "../../motion/components/RoutedMotionPage";
 
 interface ChemistryListContentProps {
 
@@ -28,7 +28,7 @@ function ChemistryListContent({ }: ChemistryListContentProps) {
     }
 
     return (
-        <RoutedMotionPage className="page fill-window flex content__body--gray">
+        <RoutedMotionPage className="page fill-window flex block--gray">
         {/* <div className="page  min-fill-window"> */}
             <Toolbar/>
             <div className="block--with-margin-x block__body">

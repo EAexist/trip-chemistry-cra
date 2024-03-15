@@ -1,27 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
 import testAnswerReducer from "../reducers/testAnswerReducer";
-import chemistryReducer from "../reducers/chemistryReducer";
-// import profileReducer from "../reducers/profileReducer";
 import profileSearchReducer from "../reducers/profileSearchReducer";
 import authReducer from "../reducers/authReducer";
-import tripReducer from "../reducers/tripReducer";
-// import profileReducer from "../reducers/userListReducer";
-// import cityGroupReducer from "../reducers/cityGroupReducer";
-// import chemistryReducer from "../reducers/chemistryReducer";
+import chemistryReducer from "../reducers/chemistryReducer";
 
 export const store = configureStore({
     reducer: {
         auth: authReducer,
         testAnswer: testAnswerReducer,
-        // profile: profileReducer,
         profileSearch: profileSearchReducer,
-        // cityGroup: cityGroupReducer,
         chemistry: chemistryReducer,
-        trip: tripReducer,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-        // serializableCheck: false,
-    }),
+    // middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    //     serializableCheck: false,
+    // }),
     devTools: process.env.NODE_ENV !== 'production',
 });
 

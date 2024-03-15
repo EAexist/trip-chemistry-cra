@@ -3,7 +3,7 @@ import { PropsWithChildren, useEffect, useRef, useState } from "react";
 import { useMotionValueEvent, useScroll } from "framer-motion";
 
 import PageContext from "./PageContext";
-import Step from "../Step/Step";
+import Step from "../Step/components/Step";
 import { useLocation, useNavigate } from "react-router-dom";
 
 /* ScrollPageContainer
@@ -48,15 +48,15 @@ const ScrollPageContainer = ({ onPageChange, pages, children }: PropsWithChildre
     }, [page, onPageChange, pathname, navigate])
 
     return (
-        <div ref={ref} className="scroll-page__container">
+        <div ref={ref} className="ScrollPageContainer">
             {
                 Array.from({ length: pages }, (value, index) => (
                     <Step key={index} index={index} className="fill-window" style={{ visibility: "hidden" }}/>
                 ))
             }
             <div className="fill-window" />
-            <div className="scroll-page__viewport-container">
-                <div ref={pageRef} className="scroll-page__viewport fill-window">
+            <div className="ScrollPageContainer__viewport-container">
+                <div ref={pageRef} className="ScrollPageContainer__viewport fill-window">
                     <PageContext.Provider value={{ activePage: page }}>
                         {children}
                     </PageContext.Provider>

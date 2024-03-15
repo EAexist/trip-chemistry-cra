@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { ITestResult } from "../../interfaces/ITestResult";
 import { useUserProfile } from "../../reducers/authReducer";
-import ProfileAvatar, { ProfileAvatarProps } from "./ProfileAvatar";
+import LabeledAvatar, { LabeledAvatarProps } from "./LabeledAvatar";
 
-interface UserAvatarProps extends ProfileAvatarProps {
+interface UserAvatarProps extends LabeledAvatarProps {
 };
 
 function UserAvatar({ ...props }: UserAvatarProps) {
@@ -16,7 +16,7 @@ function UserAvatar({ ...props }: UserAvatarProps) {
     }, [])
 
     return (
-        <ProfileAvatar characterId={characterId} {...props}/>
+        <LabeledAvatar characterId={characterId} {...props}/>
     );
 }
 export default UserAvatar;

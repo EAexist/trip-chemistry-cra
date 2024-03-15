@@ -1,0 +1,44 @@
+/* React */
+
+/* React Packages */
+import { Outlet, useNavigate } from "react-router-dom";
+
+/* App */
+import { useSelector } from "react-redux";
+import NoticeBlock from "../components/Block/NoticeBlock";
+import { useHasAnsweredTest } from "../reducers/authReducer";
+import { RootState } from "../store";
+import getImgSrc, { FORMATPNG } from "../utils/getImgSrc";
+
+interface TestRequiredRouteProps {
+
+};
+
+function TestRequiredRoute({ }: TestRequiredRouteProps) {
+
+    const navigate = useNavigate();
+
+    /* Reducers */
+    const nickname = useSelector((state: RootState) => state.auth.data.profile.nickname )
+    const hasAnsweredTest = useHasAnsweredTest();
+
+    /* Event Handlers */
+    const handleHasNotAnsweredTest = () => {
+        navigate('test');        
+    }
+
+    return (
+        hasAnsweredTest 
+        ?
+        <Outlet />
+        :
+        <NoticeBlock
+            alt={"miss"}
+            src={ getImgSrc('/info', "MISS", FORMATPNG) }
+            body={`${nickname} 님의 여행은 어떤 모습일까요?\n테스트를 완료하고 결과를 확인해보세요.`}
+            buttonText={"테스트하러 가기"}
+            handleClick={handleHasNotAnsweredTest}
+        />
+    );
+}
+export default TestRequiredRoute;

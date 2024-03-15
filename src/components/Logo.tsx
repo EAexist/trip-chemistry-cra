@@ -38,7 +38,7 @@ interface LogoProps extends React.ImgHTMLAttributes<HTMLImageElement> {
     iconName?: string;
 };
 
-function Logo({ id, format='png', className = 'logo--md', iconName, ...props }: LogoProps) {
+function Logo({ id, format='png', className = 'logo--medium', iconName, ...props }: LogoProps) {
 
     // const logo = LOGOS[id];
 

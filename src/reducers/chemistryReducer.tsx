@@ -2,50 +2,84 @@
 import { useCallback } from "react";
 
 /* React Packages */
-import { useDispatch, useSelector } from "react-redux";
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import qs from "qs";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
-/*** Trip Chemistry ***/
-import { AppDispatch, RootState } from "../store";
-import { IWithLoadStatus, LoadStatus, IProfileId } from ".";
+/*** Chemistry Chemistry ***/
+import { RootState } from "../store";
 import { HEADERS_AXIOS } from "../common/app-const";
+import { IChemistry, defaultChemistry } from "../interfaces/IChemistry";
+import { IProfile, IProfileId, defaultProfile } from "../interfaces/IProfile";
+import { IWithLoadStatus, LoadStatus } from "../interfaces/enums/LoadStatus";
+import { TestName } from "./testAnswerReducer";
 
-interface ICityChemistry{
-    [ key : string ] : number
+interface IChemistryCreateDTO extends Pick<IChemistry, "title" | "titleCity"> {
+    userId: IProfileId;
 };
 
-interface IChemistry {
-    leaderList: IProfileId[];
-    cityChemistry: ICityChemistry;
-    scheduleChemistryText?: string[];
-    budgetChemistryText?: string[];
-};
+type IChemistryState = IWithLoadStatus<IChemistry>;
 
-type IChemistryState = IWithLoadStatus<IChemistry | undefined>;
 
 const initialState: IChemistryState = {
-    data: undefined,
+    data: defaultChemistry,
     loadStatus: LoadStatus.REST,
 };
 
-const asyncGetChemistry = createAsyncThunk("chemistry",
-    async ( idList: IProfileId[], thunkAPI ) => {
-        console.log(`[asyncGetChemistry] GET /chemistry?idList=${idList}`);
+export const asyncCreateChemistry = createAsyncThunk("chemistry/asyncCreateChemistry",
+    async (createDTO: IChemistryCreateDTO, thunkAPI) => {
+        console.log(`[asyncCreateChemistry] POST /chemistry/create\n\tcreateDTO=${JSON.stringify(createDTO)}`);
+        try {
+            const response = await axios.post(`/chemistry/create`,
+                createDTO,
+                {
+                    method: "POST",
+                    headers: HEADERS_AXIOS,
+                });
+            return response.data;
+        }
+        catch (e: any) {
+            console.log(`[asyncCreateChemistry] error: ${e}`);
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+export const asyncJoinChemistry = createAsyncThunk("chemistry/asyncJoinChemistry",
+    async ({ userId, chemistryId }: { userId: string, chemistryId: string }, thunkAPI) => {
+        console.log(`[asyncJoinChemistry] PUT /chemistry/join\n\tuserId=${userId}\n\tchemistryId=${chemistryId}`);
+        try {
+            const response = await axios.put(`/chemistry/join`,
+                {
+                    userId: userId,
+                    chemistryId: chemistryId
+                },
+                {
+                    method: "PUT",
+                    headers: HEADERS_AXIOS,
+                });
+            return response.data;
+        }
+        catch (e: any) {
+            console.log(`[asyncJoinChemistry] error: ${e}`);
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+const asyncGetChemistry = createAsyncThunk("chemistry/asyncGetChemistry",
+    async (id: string, thunkAPI) => {
+        console.log(`[asyncGetChemistry] GET /chemistry\n\tid=${id}`);
         try {
             const response = await axios.get(`/chemistry`,
                 {
                     method: "GET",
                     headers: HEADERS_AXIOS,
-                    params: { 
-                        idList: idList 
-                    },
-                    paramsSerializer : params => {
-                        return qs.stringify( params, { arrayFormat: 'comma' });
+                    params: {
+                        id: id
                     }
                 });
-            return { chemistry: response.data };
+            return response.data;
         }
         catch (e: any) {
             console.log(`[asyncGetChemistry] error: ${e}`);
@@ -61,15 +95,51 @@ const chemistrySlice = createSlice({
         setChemistryLoadStatus: (state, action: PayloadAction<LoadStatus>) => {
             state.loadStatus = action.payload;
         },
-        clearChemistry: ( state ) => {
-            state.data = undefined;
+        clearChemistry: (state) => {
+            state.data = defaultChemistry;
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(asyncGetChemistry.fulfilled, (state, action: PayloadAction<{ chemistry: IChemistry }>) => {
+        /* asyncCreateChemistry */
+        builder.addCase(asyncCreateChemistry.fulfilled, (state, action: PayloadAction<IChemistry>) => {
+            console.log(`asyncCreateChemistry.fulfilled: action.payload=${JSON.stringify(action.payload)}`);
+            state.data = {
+                ...defaultChemistry,
+                ...action.payload,
+            }
+            state.loadStatus = LoadStatus.SUCCESS;
+        });
+        builder.addCase(asyncCreateChemistry.pending, (state, action) => {
+            console.log(`asyncCreateChemistry.pending`);
+            /* https://github.com/reduxjs/redux-toolkit/issues/776 */
+            state.loadStatus = LoadStatus.PENDING;
+        });
+        builder.addCase(asyncCreateChemistry.rejected, (state, action) => {
+            console.log(`asyncCreateChemistry.rejected`);
+            state.loadStatus = LoadStatus.FAIL;
+        });
+
+        /* asyncJoinChemistry */
+        builder.addCase(asyncJoinChemistry.fulfilled, (state, action: PayloadAction<IChemistry>) => {
+            console.log(`asyncJoinChemistry.fulfilled: action.payload=${JSON.stringify(action.payload)}`);
+            state.data = action.payload;
+            state.loadStatus = LoadStatus.SUCCESS;
+        });
+        builder.addCase(asyncJoinChemistry.pending, (state, action) => {
+            console.log(`asyncJoinChemistry.pending`);
+            /* https://github.com/reduxjs/redux-toolkit/issues/776 */
+            state.loadStatus = LoadStatus.PENDING;
+        });
+        builder.addCase(asyncJoinChemistry.rejected, (state, action) => {
+            console.log(`asyncJoinChemistry.rejected`);
+            state.loadStatus = LoadStatus.FAIL;
+        });
+
+        /* asyncGetChemistry */
+        builder.addCase(asyncGetChemistry.fulfilled, (state, action: PayloadAction<IChemistry>) => {
             console.log(`asyncGetChemistry.fulfilled: action.payload=${JSON.stringify(action.payload)}`);
-            state.data = action.payload.chemistry; 
-            state.loadStatus = LoadStatus.SUCCESS; 
+            state.data = action.payload;
+            state.loadStatus = LoadStatus.SUCCESS;
         });
         builder.addCase(asyncGetChemistry.pending, (state, action) => {
             console.log(`asyncGetChemistry.pending`);
@@ -84,32 +154,29 @@ const chemistrySlice = createSlice({
 })
 
 const useChemistry = () => {
-    return ( useSelector((state: RootState) => state.chemistry ));
+    return (useSelector((state: RootState) => state.chemistry.data));
 };
 
-const useIsChemistryUpdated = () => {
-    return ( useSelector((state: RootState) => ( state.chemistry.loadStatus === LoadStatus.REST ) && ( state.chemistry.data !== undefined ) ));
+const useChemistryId = () => {
+    return (useSelector((state: RootState) => state.chemistry.data.id));
 };
 
-const useCityChemistry = ( cityClass : string ) => {
-    return ( useSelector((state: RootState) => state.chemistry.data ? state.chemistry.data.cityChemistry[ cityClass ] : -1 ));
+// const useIsChemistryUpdated = () => {
+//     return (useSelector((state: RootState) => (state.chemistry.loadStatus === LoadStatus.REST) && (state.chemistry.data !== undefined)));
+// };
+
+const useIsChemistryEnabled = () => {
+
+    return useProfileIdList().length > 1;
+};
+
+const useCityChemistry = (cityClass: string) => {
+    return (useSelector((state: RootState) => state.chemistry.data ? state.chemistry.data.cityChemistry[cityClass] : -1));
 };
 
 const useSortedCityList = () => {
-    return ( useSelector((state: RootState) => state.chemistry.data ? Object.entries(state.chemistry.data.cityChemistry).sort(( a, b ) => ( b[1] - a[1] )).map(([ cityClass, score ]) => cityClass )  : undefined ) );
+    return (useSelector((state: RootState) => state.chemistry.data.cityChemistry ? Object.entries(state.chemistry.data.cityChemistry).sort((a, b) => (b[1] - a[1])).map(([cityClass, score]) => cityClass) : undefined));
 };
-
-// const useGetChemistry = () => {
-//     const dispatch = useDispatch<AppDispatch>(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
-//     const idList = useProfileIdList();
-
-//     return useCallback(() => {
-//         console.log("[chemistryReducer] useGetChemistry");
-//         dispatch(chemistrySlice.actions.setChemistryLoadStatus(LoadStatus.PENDING));
-//         dispatch(asyncGetChemistry(idList));
-//     }, [ idList, dispatch ]
-//     );
-// }
 
 const useChemistryLoadStatus = () => {
     const dispatch = useDispatch(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
@@ -118,13 +185,61 @@ const useChemistryLoadStatus = () => {
         useSelector((state: RootState) => state.chemistry.loadStatus),
         useCallback((status: LoadStatus) =>
             dispatch(chemistrySlice.actions.setChemistryLoadStatus(status))
-            , [ dispatch ]),
+            , [dispatch]),
     ] as const);
+}
+
+const useTestAnswerObject = (testName: TestName) => {
+
+    return (
+        useSelector((state: RootState) =>
+            Object.fromEntries(
+                Object.entries(state.chemistry.data?.profileList)
+                    .filter(([ , profile ]) => profile.testAnswer !== null )
+                    .map(([ id, profile ]) => {
+                        return ([ id, profile.testAnswer[testName] ] as const)
+                    })
+            )
+            , shallowEqual
+        )
+    );
+};
+
+const useProfile = ( id: string, key?: keyof IProfile ) => {
+    return (
+        useSelector((state: RootState) => Object.keys(state.chemistry.data.profileList).includes(id) 
+        ? key 
+        ? state.chemistry.data.profileList[id][key] 
+        : state.chemistry.data.profileList[id]  
+        : defaultProfile )
+    );
+} 
+
+const useProfileIdList = ( answeredProfileOnly : boolean = true ) => {
+    return (
+        useSelector((state: RootState) => Object.values(state.chemistry.data.profileList)
+            .filter( profile => answeredProfileOnly ? (profile.testAnswer !== null) : true )
+            .map( profile => profile.id )
+        , shallowEqual)
+    );
+}
+
+function useProfileAll<T extends (keyof IProfile) | IProfile>(idList?: IProfileId[], key?: keyof IProfile, answeredProfileOnly : boolean = true): T[] {
+    return (useSelector((state: RootState) =>
+        Object.values(state.chemistry.data.profileList).filter(({ id }) => idList ? idList.includes(id) : true)
+            .filter(({ testAnswer }) => answeredProfileOnly ? (testAnswer !== null) : true )
+            .map(( profile ) =>
+                key
+                    ? profile[key]
+                    : profile
+            )
+    ) as T[]
+    );
 }
 
 export default chemistrySlice.reducer;
 export const { clearChemistry } = chemistrySlice.actions;
-export { useChemistry, useChemistryLoadStatus, useCityChemistry, useSortedCityList, useIsChemistryUpdated };
+export { asyncGetChemistry, useChemistry, useChemistryId, useChemistryLoadStatus, useCityChemistry, useIsChemistryEnabled, useProfile, useProfileAll, useProfileIdList, useSortedCityList, useTestAnswerObject };
 
 /* Deprecated */
 /* 데이터 Fetch, 로드 상태 관리, 로드 전 초기 렌더 방지. */
@@ -140,7 +255,7 @@ export { useChemistry, useChemistryLoadStatus, useCityChemistry, useSortedCityLi
 //         if(key === 'testResult'){
 //             dispatch(asyncGetTestResult(id));
 //         }
-//         else if(key === 'testResponse'){                
+//         else if(key === 'testResponse'){
 //             dispatch(asyncGetTestAnswer(id));
 //         }
 //         setDoWaitApi(false);

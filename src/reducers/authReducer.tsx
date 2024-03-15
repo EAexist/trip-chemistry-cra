@@ -1,18 +1,17 @@
 /*** React ***/
 import { useCallback, useEffect } from "react";
 
-import axios, { HttpStatusCode } from "axios";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { useParams } from "react-router-dom";
 
 /*** Trip Chemistry ***/
-/* Component */
-import { AppDispatch, RootState } from "../store";
-import { IWithLoadStatus, LoadStatus, IProfileId } from ".";
 import { HEADERS_AXIOS } from "../common/app-const";
+import { IProfileId } from "../interfaces/IProfile";
 import { IUserProfile, defaultUserProfile } from "../interfaces/IUserProfile";
-import { useParams } from "react-router-dom";
-import { IProfile } from "../interfaces/IProfile";
+import { IWithLoadStatus, LoadStatus } from "../interfaces/enums/LoadStatus";
+import { AppDispatch, RootState } from "../store";
 
 /* Interface */
 
@@ -214,28 +213,8 @@ const authSlice = createSlice({
         setIsInitialized: (state) => {
             state.data.doRequireInitialization = false;
         },
-        // setRedirectpath: (state, action: PayloadAction<string>) => {
-        //     state.data.redirectPath = action.payload;
-        // },
     },
     extraReducers: (builder) => {
-
-        /* asyncKakaoAuth */
-        // builder.addCase(asyncKakaoAuth.fulfilled, (state, action: PayloadAction<ILoginResultDTO>) => {
-        //     console.log(`[asyncKakaoAuth] fulfilled\n\taction.payload=${action.payload.profile.id} type=${typeof(action.payload.profile.id)}`);
-        //     state.data.id = action.payload.profile.id;
-        //     state.data.authProviderNickname = action.payload.authProviderNickname;
-        //     state.loadStatus = LoadStatus.SUCCESS;
-        // });
-        // builder.addCase(asyncKakaoAuth.pending, (state, action) => {
-        //     console.log(`[asyncKakaoAuth] pending`);
-        //     /* https://github.com/reduxjs/redux-toolkit/issues/776 */
-        //     state.loadStatus = LoadStatus.PENDING;
-        // });
-        // builder.addCase(asyncKakaoAuth.rejected, (state, action) => {
-        //     console.log(`[asyncKakaoAuth] rejected`);
-        //     state.loadStatus = LoadStatus.FAIL;
-        // });
 
         /* asyncGuestSignIn */
         builder.addCase(asyncGuestSignIn.fulfilled, (state, action: PayloadAction<IUserProfile>) => {
@@ -421,7 +400,7 @@ const useAuthorize = () => {
     return (
         useCallback(() => {
             dispatch(authorize());
-        }, [])
+        }, [ dispatch ])
     )
 }
 
@@ -462,10 +441,10 @@ const useGuestLogin = () => {
 
 export default authSlice.reducer;
 export const { authorize, setLoadStatus, setIsInitialized, disableAutoLogin } = authSlice.actions;
-export { asyncKakaoLogin, asyncKakaoLogout, asyncKakaoLoginByAccessToken, asyncGuestSignIn };
+export { asyncGuestSignIn, asyncKakaoLogin, asyncKakaoLoginByAccessToken, asyncKakaoLogout };
 
 /* Selector Hooks */
-export { useIsAutoLoginEnabled, useIsAuthorized, useIsInitialized, useUserId, useUserInfo, useUserProfile, useHasAnsweredTest, useChemistryIdList };
+export { useChemistryIdList, useHasAnsweredTest, useIsAuthorized, useIsAutoLoginEnabled, useIsInitialized, useUserId, useUserInfo, useUserProfile };
 
 /* Selector & Dispatch Hooks */
-export { useAuthLoadStatus, useGetProfile, useGuestLogin, useAuthorize };
+export { useAuthLoadStatus, useAuthorize, useGetProfile, useGuestLogin };

@@ -8,9 +8,9 @@ import axios from "axios";
 /*** Trip Chemistry ***/
 /* Component */
 import { AppDispatch, RootState } from "../store";
-import { IWithLoadStatus, LoadStatus, IProfileId } from ".";
 import { HEADERS_AXIOS } from "../common/app-const";
-import { IProfile } from "../interfaces/IProfile";
+import { IProfile, IProfileId } from "../interfaces/IProfile";
+import { IWithLoadStatus, LoadStatus } from "../interfaces/enums/LoadStatus";
 
 type IProfileprofileSearchState = IWithLoadStatus<{
     searchedProfileList: IProfile[],

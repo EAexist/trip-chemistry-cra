@@ -23,9 +23,9 @@ const FoodImageCard = ({ id, isActive, ...props }: FoodImageCardProps) => {
 
     return (
         <a href={isActive ? data.link : undefined} target="_blank" rel="noopener noreferrer">
-            <ButtonBase className="body--full" disabled={!isActive}>
+            <ButtonBase className="block--full" disabled={!isActive}>
                 <ImageCard src={getImgSrc("/food", data.restaurant, FORMATWEBP)} title={strings.name} sx={{ width: "196px", height: "196px", borderRadius: "12px" }} />
-                <div className="block__body body--centered" style={isActive ? {} : { position: 'absolute', top: '100%', opacity: 0.5 }}>
+                <div className="block__body block--centered" style={isActive ? {} : { position: 'absolute', top: '100%', opacity: 0.5 }}>
                     <h3 className="typography-name"> {strings.name}</h3>
                     {
                         isActive &&

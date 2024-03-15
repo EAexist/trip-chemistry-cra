@@ -1,13 +1,12 @@
 /* React */
-import { useLocation } from "react-router-dom";
 
 /* React Packages */
 import { useEffect } from "react";
-import useKakaoLogin from "../../hooks/useKakaoLogin";
-import { LoadStatus } from "../../reducers";
-import { disableAutoLogin, useAuthLoadStatus, useAuthorize, useUserProfile } from "../../reducers/authReducer";
-import { IUserProfile } from "../../interfaces/IUserProfile";
 import { useDispatch } from "react-redux";
+import useKakaoLogin from "../../hooks/useKakaoLogin";
+import { IUserProfile } from "../../interfaces/IUserProfile";
+import { LoadStatus } from "../../interfaces/enums/LoadStatus";
+import { disableAutoLogin, useAuthLoadStatus, useAuthorize, useUserProfile } from "../../reducers/authReducer";
 import { AppDispatch } from "../../store";
 
 interface KakaoAuthRedirectPageProps {

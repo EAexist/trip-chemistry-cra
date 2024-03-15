@@ -1,26 +1,23 @@
 /* React */
-import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 /* React Packages */
-import { Button, Checkbox, Grid, Icon, IconButton, InputAdornment, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Stack, TextField, Toolbar } from '@mui/material';
 import { Close, Done, NavigateBefore, QuestionMark, Search, Warning } from '@mui/icons-material';
+import { Button, Checkbox, Grid, Icon, IconButton, InputAdornment, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Stack, TextField, Toolbar } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
-/* Trip Chemistry */
-import { LoadStatus } from '../../reducers';
-import { AppDispatch } from '../../store';
-import AppBarContext, { useHideAppbar } from '../../contexts/AppBarContext';
+/* App */
+import LabeledAvatar from '../../components/Avatar/LabeledAvatar';
+import RoutedMotionPage from '../../motion/components/RoutedMotionPage';
+import { useHideAppbar } from '../../components/AppBar/AppBarContext';
 import { IProfile } from '../../interfaces/IProfile';
+import { LoadStatus } from '../../interfaces/enums/LoadStatus';
 import { useUserId } from '../../reducers/authReducer';
-import { clearChemistry } from '../../reducers/chemistryReducer';
+import { useProfileIdList } from '../../reducers/chemistryReducer';
 import { addFlagged, asyncSearchProfile, deleteFlagged, resetSearch, useAddProfiles, useFlaggedProfileList, useProfileSearchStatus, useSearchedProfileList } from '../../reducers/profileSearchReducer';
-import { useProfileIdList } from '../../reducers/tripReducer';
+import { AppDispatch } from '../../store';
 import { useStrings } from '../../texts';
-import ProfileAvatar from '../../components/Avatar/ProfileAvatar';
-import { SLIDEINLEFT } from '../../motion/props';
-import RoutedMotionPage from '../../components/Motion/RoutedMotionPage';
 
 
 interface SearchAndInviteFriendContentProps {
@@ -62,7 +59,7 @@ function SearchAndInviteFriendContent({ handleSucess }: SearchAndInviteFriendCon
     }
 
     const handleAddFriendAndClose = () => {
-        dispatch(clearChemistry());
+        // dispatch(clearChemistry());
         addusers();
         handleClose();
     }
@@ -80,12 +77,8 @@ function SearchAndInviteFriendContent({ handleSucess }: SearchAndInviteFriendCon
     }
 
     const handleConfirmSuccess = () => {
-        handleSucess && handleSucess();
-        // dispatch(endSearch(idToSearch));
     };
     const handleConfirmMissFail = () => {
-        // dispatch(endSearch(idToSearch));
-
     };
 
     /* Side Effects */
@@ -107,7 +100,7 @@ function SearchAndInviteFriendContent({ handleSucess }: SearchAndInviteFriendCon
         <Stack>
             {
                 Object.values(flaggedProfileList).map((profile) => (
-                    <ProfileAvatar key={profile.nickname} {...profile} labelSize="lg" />
+                    <LabeledAvatar key={profile.nickname} {...profile} labelSize="large" />
                 ))
             }
         </Stack>
@@ -118,7 +111,7 @@ function SearchAndInviteFriendContent({ handleSucess }: SearchAndInviteFriendCon
             {
                 isConfirmModalOpen
                     ?
-                    <div className='block--with-margin block__body body--centered flex-grow'>
+                    <div className='block--with-margin block__body block--centered flex-grow'>
                         <h3 className='typography-label'>
                             {`${flaggedProfileListLength}명을 친구로 추가할까요?`}
                         </h3>
@@ -176,7 +169,7 @@ function SearchAndInviteFriendContent({ handleSucess }: SearchAndInviteFriendCon
                             {
                                 profileSearchtatus === LoadStatus.FAIL
                                     ?
-                                    <div className='flex-grow body--centered block__body'>
+                                    <div className='flex-grow block--centered block__body'>
                                         <Warning />
                                         <h4>{commonStrings.error.connect}</h4>
                                         <p>{commonStrings.error.contact}</p>
@@ -187,7 +180,7 @@ function SearchAndInviteFriendContent({ handleSucess }: SearchAndInviteFriendCon
                                     </div>
                                     :
                                     (input !== "") && (profileSearchResultList.length === 0) ?
-                                        <div className='flex-grow body--centered'>
+                                        <div className='flex-grow block--centered'>
                                             <QuestionMark />
                                             <p>사용자를 찾을 수 없어요. <br /> 친구의 닉네임과 태그를 다시 확인해주세요.</p>
                                         </div>
@@ -220,7 +213,7 @@ function SearchAndInviteFriendContent({ handleSucess }: SearchAndInviteFriendCon
                                                             >
                                                                 <ListItemButton disableGutters onClick={() => handleToggle(profile)} disabled={idList.includes(profile.id)} style={{ zIndex: 2 }}>
                                                                     <ListItemAvatar>
-                                                                        <ProfileAvatar characterId={profile.testResult ? profile.testResult.tripCharacter.id : undefined} showLabel={false} />
+                                                                        <LabeledAvatar characterId={profile.testResult ? profile.testResult.tripCharacter.id : undefined} showLabel={false} />
                                                                     </ListItemAvatar>
                                                                     <ListItemText primary={profile.nickname} />
                                                                 </ListItemButton>

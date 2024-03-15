@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { UserTestResultBox } from "../../components/TestResultBox";
+import { UserTestResultBlock } from "../../components/Profile/TestResultBlock";
+import { FADEIN_VIEWPORT } from "../../motion/props";
 import { RootState } from "../../store";
 import { useStrings } from "../../texts";
-import { FADEIN_VIEWPORT, SLIDEINUPINVIEW } from "../../motion/props";
 
 interface ResultContentProps {
 
@@ -36,7 +36,7 @@ function ResultContent({ }: ResultContentProps) {
                 {/* <SectionPaper className="body__head"> */}
                 <motion.h5 className="typography-heading">{strings.sections.tripCharacter.title}</motion.h5>
                 <div className="block__body">
-                    <UserTestResultBox />
+                    <UserTestResultBlock />
                     {
                         character.body.split("\n").map((text) =>
                             <p key={text}>{text}</p>

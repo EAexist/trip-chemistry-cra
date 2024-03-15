@@ -22,7 +22,7 @@ function AuthContent({ }: AuthContentProps) {
     useEffect(() => {
         if (state && state.loginRedirectPath)
             console.log(`[AuthContent] ${state.loginRedirectPath}`);
-    }, [state])
+    }, [ state ])
 
     return (
         isAuthorized
@@ -34,8 +34,14 @@ function AuthContent({ }: AuthContentProps) {
                     : '/home'}
                     `} />
             :
+            /* Allow access by navigate( path, { state: {loginRedirectPath} }) only.
+                Redirect access by URL to Homepage.
+            */
+            (state && state.loginRedirectPath)
+            ?
             <Outlet />
-        // <AnimatedOutlet />
+            :
+            <Navigate to={'../home'} />
     );
 }
 export default AuthContent;

@@ -1,7 +1,7 @@
 import { ComponentType } from "react";
-import { IProfileId } from "../reducers";
+import { IProfileId } from "../interfaces/IProfile";
 import { IProfile } from "../interfaces/IProfile";
-import { useProfile } from "../reducers/tripReducer";
+import { useProfile } from "../reducers/chemistryReducer";
 
 interface WithProfileProps extends IProfile { };
 

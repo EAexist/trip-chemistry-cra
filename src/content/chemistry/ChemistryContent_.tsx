@@ -8,7 +8,7 @@
 // import { Button, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Toolbar } from "@mui/material";
 // import { Add, Close, KeyboardArrowDown } from "@mui/icons-material";
 
-// /* Trip Chemistry */
+// /* App */
 // import { useStrings } from "../../texts";
 
 // import { asyncGetProfile, deleteUser, setAllREST, setStatus, useProfileIdList, useProfileList } from "../../reducers/profileReducer";
@@ -18,7 +18,7 @@
 // import AvatarProfile from "../../components/Avatar/AvatarProfile";
 // import { useNavigate } from "react-router-dom";
 // import Tooltip from "../../components/Tooltip";
-// import LoadContent from "../LoadContent";
+// import LoadRequiredContent from "../LoadRequiredContent";
 // import { useUserId } from "../../reducers/authReducer";
 // import SectionPaper from "../../components/Paper/SectionPaper";
 // import ChemistryResultContent from "./ChemistryDetailContent";
@@ -112,12 +112,12 @@
 //     })
 
 //     return (
-//         <LoadContent
+//         <LoadRequiredContent
 //             status={chemistryLoadStatus}
 //             setStatus={setChemistryLoadStatus}
 //             handleFail={handleChemistryFail}
 //         >
-//             <div className="page content__body--gray min-fill-window" >
+//             <div className="page block--gray min-fill-window" >
 //                 <Toolbar />
 //                 <SectionPaper>
 //                     <h2 className="typography-heading">함께 여행할 친구들</h2>
@@ -199,7 +199,7 @@
 //                     </div>
 //                 }
 //             </div>
-//         </LoadContent>
+//         </LoadRequiredContent>
 //     );
 // }
 // export default ChemistryContent;

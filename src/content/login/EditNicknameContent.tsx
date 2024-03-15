@@ -2,10 +2,10 @@
 
 /* React Packages */
 
-/* Trip Chemistry */
+/* App */
 import { useNavigate } from "react-router-dom";
 import SetNicknamePage from "./SetNicknamePage";
-import { AuthLoadContent } from "../LoadContent";
+import { AuthLoadRequiredContent } from "../LoadRequiredContent";
 
 interface EditNicknameContentProps {
 };
@@ -29,14 +29,14 @@ function EditNicknameContent({ }: EditNicknameContentProps) {
     // }
 
     return (
-        <AuthLoadContent
+        <AuthLoadRequiredContent
             // handleFail={handleFail}
             handleSuccess={handleClose}
         >
             <SetNicknamePage
                 handleClose={handleClose}
             />
-        </AuthLoadContent>
+        </AuthLoadRequiredContent>
     );
 }
 export default EditNicknameContent;

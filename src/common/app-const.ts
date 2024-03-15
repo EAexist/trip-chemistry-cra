@@ -1,5 +1,5 @@
 import { SliderProps } from "@mui/material";
-import { ChemistrySliderProps } from "../components/Slider/ChemistrySlider";
+import { ChemistrySliderProps } from "../content/chemistry/component/ChemistrySlider";
 import { TripTag } from "../interfaces/enums/TripTag";
 
 export const USER = {

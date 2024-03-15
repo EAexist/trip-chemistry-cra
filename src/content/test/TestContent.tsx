@@ -3,10 +3,10 @@ import { useEffect, useRef, useState } from "react";
 
 /* React Packages */
 
-import { Button, ButtonBase, Card, CardContent, CardMedia, Icon, List, ListItem, ListItemButton, ListItemText, Stack, Tooltip, useTheme } from "@mui/material";
-import { ArrowRight, ExpandMore, NavigateNext } from "@mui/icons-material";
-import { AnimatePresence, LayoutGroup, motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { useDispatch, useSelector } from "react-redux";
+import { ExpandMore, NavigateNext } from "@mui/icons-material";
+import { Button, ButtonBase, Card, CardContent, CardMedia, List, ListItem, ListItemButton, ListItemText, Stack, Tooltip, useTheme } from "@mui/material";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 /* Swiper */
@@ -15,22 +15,14 @@ import 'swiper/css/navigation';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 /* App */
-import '../../styles/index.css';
-// import '../styles/Test.css';
-// import '../styles/TopNav.css';
-
 import { CITY, LINK, NATION, SLIDERPROPS_TEST_BUDGET_FOOD, TEST, TEST_SECTIONS } from "../../common/app-const";
-import { AppDispatch, RootState } from "../../store";
+import { RootState } from "../../store";
 import { useStrings } from "../../texts";
 
-import { SWIPERPROPS_CAROUSEL, SWIPERPROPS_FOODCARDCAROUSEL } from "../../common/swiperProps";
-import SectionButton from "../../components/Button/SectionButton";
-import TestAnswerBadge from "../../components/Button/TestAnswerBadge";
-import AnswerButtonGroup from "../../components/ButtonGroup/AnswerButtonGroup";
+import TestSection from "../../components/Block/TestSection";
 import FoodImageCard from "../../components/Card/FoodImageCard";
 import ImageCard from "../../components/Card/ImageCard";
 import OptionCard from "../../components/Card/OptionCard";
-import TagSetTestAnswerChip from "../../components/Chip/TagSetTestAnswerChip";
 import GoogleMapContext from "../../components/GoogleMap/common/GoogleMapContext";
 import { OPTIONS_TEST_SCHEDULE } from "../../components/GoogleMap/common/options";
 import GoogleMap from "../../components/GoogleMap/ui/GoogleMap";
@@ -39,18 +31,22 @@ import Logo from "../../components/Logo";
 import PngIcon from "../../components/PngIcon";
 import ScrollPageContainer from "../../components/ScrollPage/ScrollPageContainer";
 import ScrollPageItem from "../../components/ScrollPage/ScrollPageItem";
-import AnswerSlider from "../../components/Slider/AnswerSlider";
 import { StepCheckpointContextProvider } from "../../components/Step/StepCheckpointContext";
 import StepContext from "../../components/Step/StepContext";
-import Stepper from "../../components/Step/Stepper";
-import TestInstruction from "../../components/TestInstruction";
-import TestSection from "../../components/TestSection";
+import SectionButton from "../../components/Step/components/SectionButton";
+import Stepper from "../../components/Step/components/Stepper";
+import { FADEIN } from "../../motion/props";
 import { useGetProfile } from "../../reducers/authReducer";
 import { NumericTestName, SetTestName, TestName, useIsAllTestAnswered, useSubmitAnswer, useTestAnswerStatus } from "../../reducers/testAnswerReducer";
+import { SWIPERPROPS_CAROUSEL, SWIPERPROPS_FOODCARDCAROUSEL } from "../../swiper/props";
 import getImgSrc, { FORMATPNG, FORMATWEBP } from "../../utils/getImgSrc";
 import { priceText } from "../../utils/priceText";
-import LoadContent, { AuthLoadContent } from "../LoadContent";
-import { FADEIN } from "../../motion/props";
+import LoadRequiredContent, { AuthLoadRequiredContent } from "../LoadRequiredContent";
+import AnswerButtonGroup from "./component/AnswerButtonGroup";
+import AnswerSlider from "./component/AnswerSlider";
+import TagSetTestAnswerChip from "./component/TagSetTestAnswerChip";
+import TestAnswerBadge from "./component/TestAnswerBadge";
+import TestInstruction from "./component/TestInstruction";
 
 interface TestContentProps {
 
@@ -60,7 +56,6 @@ function TestContent({ }: TestContentProps) {
 
     const navigate = useNavigate();
     const theme = useTheme();
-    const dispatch = useDispatch<AppDispatch>();
 
     /* contentstrings */
     const contentstrings = useStrings().public.contents.test;
@@ -82,15 +77,12 @@ function TestContent({ }: TestContentProps) {
     const [isConfirmTooltipOpen, setIsConfirmTooltipOpen] = useState(false);
     const [step, setStep] = useState(0);
     const [showScrollDownIcon, setShowScrollDownIcon] = useState(true);
+    const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
 
     /* 첫 렌더 후 Scroll Resotration 중에 Top Nav 가 슬라이드 되는 모션을 방지함. */
     const [ preventInitialSwipe, setPreventInitialSwipe ] = useState(true);
 
     /* Event Handlers */
-    const handleFoodImageCardClick = (id: string) => {
-
-    };
-
     const handleCityCardClick = (key: string, cityIndex: number) => {
         navigate(`../city/${key}`, { state: { initialIndex: cityIndex } });
     };
@@ -102,16 +94,20 @@ function TestContent({ }: TestContentProps) {
     };
 
     const handleConfirmTooltipClick = () => {
-        // submitAnswer();
+        /* @TODO Scroll To First UnAnswered Test Section. */
     }
 
     const handleConfirmButtonClick = () => {
         submitAnswer();
     }
 
-    const handleSubmitSuccess = getProfile;
+    const handleSubmitSuccess = () => {
+        setIsAnswerSubmitted(true);
+        getProfile();
+    };
     const handleLoadSuccess = () => {
         navigate('../result');
+        // setIsAnswerSubmitted(false);
     }
     // const handleFail = () => {
     //     navigate('test');
@@ -158,13 +154,14 @@ function TestContent({ }: TestContentProps) {
       }, []);
 
     return (
-        <LoadContent {...{
+        <LoadRequiredContent {...{
             status: submitStatus,
             setStatus: setSubmitStatus,
             handleSuccess: handleSubmitSuccess,
         }}>
-            <AuthLoadContent {...{
+            <AuthLoadRequiredContent {...{
                 handleSuccess: handleLoadSuccess,
+                isEnabled: isAnswerSubmitted,
             }}>
                 <div className="page">
                     <StepContext.Provider value={{ step, setStep }}>
@@ -183,7 +180,7 @@ function TestContent({ }: TestContentProps) {
                                                         sx={{ height: "100%", display: 'flex', alignItems: 'start', paddingTop: '8px' }}
                                                         paperSx={{ opacity: 0.4 }}
                                                         elevation={1}
-                                                    // className="button-group__item"
+                                                    // className="ButtonGroup__item"
                                                     >
                                                     <TestAnswerBadge testName={testName as TestName} sx={{ height: 'fit-content', padding: "4px" }}>
                                                         <PngIcon name={testName} size={"large"} />
@@ -202,7 +199,7 @@ function TestContent({ }: TestContentProps) {
                                             <ScrollPageItem key={testName} page={index} className="flex">
                                                 <TestSection>
                                                     {/* https://codesandbox.io/p/sandbox/6gw7p4?file=/src/App.jsx */}
-                                                    <div className="flex-grow body--centered">
+                                                    <div className="flex-grow block--centered">
                                                         <div className="block--with-margin-x block__body">
                                                             <TestInstruction testName={testName as TestName} />
                                                             <Stack flexWrap={"wrap"} justifyContent={"center"} rowGap={1}>
@@ -261,7 +258,7 @@ function TestContent({ }: TestContentProps) {
                                 </ScrollPageItem>
                                 <ScrollPageItem page={3} className="flex">
                                     <TestSection >
-                                        <div className="flex-grow body--centered">
+                                        <div className="flex-grow block--centered">
                                             <Card className="test__google-map-container modal__container">
                                                 <GoogleMapContext.Provider value={{ map: scheduleExampleMap as google.maps.Map, setMap: setScheduleExampleMap }}>
                                                     <GoogleMap opts={OPTIONS_TEST_SCHEDULE}>
@@ -290,19 +287,19 @@ function TestContent({ }: TestContentProps) {
                                 <ScrollPageItem page={4} className="flex">
                                     <TestSection >
                                         {/* https://codesandbox.io/p/sandbox/6gw7p4?file=/src/App.jsx */}
-                                        <div className="flex-grow body--centered">
-                                            <Swiper {...SWIPERPROPS_FOODCARDCAROUSEL} className="carousel__swiper carousel__swiper__food modal__container" ref={foodCarouselSwiperRef}>
-                                                <TestInstruction testName="food" showBackdrop={true} className="body--centered" />
+                                        <div className="flex-grow block--centered">
+                                            <Swiper {...SWIPERPROPS_FOODCARDCAROUSEL} className="carousel__swiper carousel--coverflow__swiper modal__container" ref={foodCarouselSwiperRef}>
+                                                <TestInstruction testName="food" showBackdrop={true} className="block--centered" />
                                                 {
                                                     Object.values(TEST.food.examples).map((id, index) => (
-                                                        <SwiperSlide key={id} className="carousel__swiper carousel__swiper__food">
+                                                        <SwiperSlide key={id} className="carousel__swiper carousel--coverflow__swiper">
                                                             {({ isActive }) => (
                                                                 id === "more"
                                                                     ? (
                                                                         <AnimatePresence mode={"wait"} initial={false}>
                                                                         {
                                                                         isActive
-                                                                            ? <motion.div key={"summary"} {...{...FADEIN, exit: "hidden" }} style={{ width: "260px", height: "240px" }} className="body--centered block--with-padding">
+                                                                            ? <motion.div key={"summary"} {...{...FADEIN, exit: "hidden" }} style={{ width: "260px", height: "240px" }} className="block--centered block--with-padding">
                                                                                 <div className="block-with-margin-x">
                                                                                     <p>더 많은 식당 찾아보기</p>
                                                                                     <List>
@@ -314,7 +311,7 @@ function TestContent({ }: TestContentProps) {
                                                                                                             <ListItemText
                                                                                                                 primary={
                                                                                                                     <Stack>
-                                                                                                                        <Logo id={source} className="logo--sm"/>
+                                                                                                                        <Logo id={source} className="logo--small"/>
                                                                                                                         <p>{commonStrings.linkType[source as keyof typeof commonStrings.linkType].name}</p>
                                                                                                                     </Stack>
                                                                                                                 }
@@ -330,7 +327,7 @@ function TestContent({ }: TestContentProps) {
                                                                                     </List>
                                                                                 </div>
                                                                             </motion.div>
-                                                                            : <motion.div key={"detail"} {...{...FADEIN, exit: "hidden" }} style={{ width: "200px", height: "240px", position: "absolute", opacity: 0.5 }} className="body--centered">
+                                                                            : <motion.div key={"detail"} {...{...FADEIN, exit: "hidden" }} style={{ width: "200px", height: "240px", position: "absolute", opacity: 0.5 }} className="block--centered">
                                                                                 <p>
                                                                                     {`더 많은 식당\n찾아보기`}
                                                                                 </p>
@@ -351,10 +348,10 @@ function TestContent({ }: TestContentProps) {
                                             </div>
                                             {
                                                 foodAnswer !== undefined
-                                                    ? <h4 className='test__answer'>
+                                                    ? <h4 className='typography-test-answer'>
                                                         {priceText(foodAnswer)} {(foodAnswer === SLIDERPROPS_TEST_BUDGET_FOOD.max) ? '이상' : ''}
                                                     </h4>
-                                                    // : <h4 className='test__answer'>? 원</h4>
+                                                    // : <h4 className='typography-test-answer'>? 원</h4>
                                                     : <></>
                                             }
                                             <div className="container--center" style={{ marginTop: 0 }}>
@@ -370,13 +367,13 @@ function TestContent({ }: TestContentProps) {
                                         // <SectionPaperWithStep key={key} index={0e="section">
                                         <ScrollPageItem page={5 + index} className="flex">
                                             <TestSection >
-                                                <div className="flex-grow body--centered">
+                                                <div className="flex-grow block--centered">
                                                     {/* <h4 className='carousel__title'>{contentstrings.subTest[key as keyof typeof contentstrings.subTest].title}</h4> */}
                                                     <Swiper {...SWIPERPROPS_CAROUSEL} className="carousel__swiper">
                                                         {
                                                             examples.map((cityId, index) => (
                                                                 <SwiperSlide key={cityId} className="carousel__swiper">
-                                                                    <ButtonBase onClick={() => handleCityCardClick(key, index)} className="body--full block__body">
+                                                                    <ButtonBase onClick={() => handleCityCardClick(key, index)} className="block--full block__body">
                                                                         <ImageCard
                                                                             src={getImgSrc("/city", cityId, FORMATWEBP)}
                                                                             title={cityId}
@@ -453,14 +450,14 @@ function TestContent({ }: TestContentProps) {
                                 ease: "easeInOut",
                                 repeat: Infinity,
                             }}
-                            className="floating--bottom body--centered block--with-padding--sm"
+                            className="floating--bottom block--centered block--with-padding--small"
                         >
                             <ExpandMore className="typography-gray" sx={{ fontSize: "40px" }} />
                         </motion.div>
                     }
                 </div >
-            </AuthLoadContent>
-        </LoadContent>
+            </AuthLoadRequiredContent>
+        </LoadRequiredContent>
     );
 }
 export default TestContent;

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { useUserId } from "../reducers/authReducer";
 import { AppDispatch } from "../store";
-import { asyncCreateChemistry } from "../reducers/tripReducer";
+import { asyncCreateChemistry } from "../reducers/chemistryReducer";
 
 const useCreateChemistry = () => {
 

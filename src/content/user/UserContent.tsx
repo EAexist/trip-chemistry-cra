@@ -6,26 +6,23 @@ import { Button, ButtonBase, Icon, IconButton, Stack, Toolbar } from "@mui/mater
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-/* Trip Chemistry */
+/* App */
 import UserAvatar from "../../components/Avatar/UserAvatar";
-import KakaoLoginButton from "../../components/KakaoLoginButton";
+import KakaoLoginButton from "../../components/Button/KakaoLoginButton";
+import RoutedMotionPage from "../../motion/components/RoutedMotionPage";
 import { IUserProfile } from "../../interfaces/IUserProfile";
 import { AuthProvider } from "../../interfaces/enums/AuthProvider";
-import { asyncKakaoLogout, useHasAnsweredTest, useUserProfile } from "../../reducers/authReducer";
+import { asyncKakaoLogout, useUserProfile } from "../../reducers/authReducer";
 import { AppDispatch } from "../../store";
-import { AuthLoadContent } from "../LoadContent";
-import RoutedMotionPage from "../../components/Motion/RoutedMotionPage";
+import { AuthLoadRequiredContent } from "../LoadRequiredContent";
 
-interface UserContentProps {
-
-};
+interface UserContentProps {};
 
 function UserContent({ }: UserContentProps) {
 
     /* Hooks */
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
-    const hasAnsweredTest = useHasAnsweredTest();
 
     /* Reducers */
     const { id, authProvider, nickname } = useUserProfile() as IUserProfile;
@@ -51,12 +48,12 @@ function UserContent({ }: UserContentProps) {
 
 
     return (
-        <AuthLoadContent
+        <AuthLoadRequiredContent
             handleSuccess={handleLogoutSuccess}
         >
         <RoutedMotionPage className="flex fill-window">
             <Toolbar />
-            <div className='flex-grow body--centered block__body'>
+            <div className='flex-grow block--centered block__body'>
                 <div>
                 <ButtonBase onClick={handleClickAvatar}>
                     <UserAvatar sx={{ height: "128px", width: "128px" }} showLabel={false} />
@@ -106,7 +103,7 @@ function UserContent({ }: UserContentProps) {
                         }
             </div>
         </RoutedMotionPage>
-        </AuthLoadContent>
+        </AuthLoadRequiredContent>
     );
 }
 export default UserContent;

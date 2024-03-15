@@ -14,9 +14,9 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { SWIPERPROPS_HOMECONTENT } from "../../common/swiperProps";
-import PaginationDiv from "../../components/PaginationDiv";
-import SwiperAutoplayProgress from "../../components/SwiperAutoplayProgress";
+import { SWIPERPROPS_HOMECONTENT } from "../../swiper/props";
+import PaginationDiv from "../../swiper/components/PaginationDiv";
+import SwiperAutoplayProgress from "../../swiper/components/SwiperAutoplayProgress";
 import { useStrings } from "../../texts";
 
 interface HomeContentProps {

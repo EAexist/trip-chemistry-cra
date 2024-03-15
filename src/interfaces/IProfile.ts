@@ -1,4 +1,3 @@
-import { IWithLoadStatus, LoadStatus } from "../reducers";
 import { ITestAnswer, defaultTestAnswer } from "./ITestAnswer";
 import { ITestResult, defaultTestResult } from "./ITestResult";
 
@@ -8,8 +7,6 @@ export interface IProfile {
     discriminator: string;
     testAnswer: ITestAnswer;
     testResult: ITestResult;
-    // testAnswer: IWithLoadStatus<ITestAnswer>;
-    // testResult: IWithLoadStatus<ITestResult>;
 };
 
 export const defaultProfile = {
@@ -19,3 +16,5 @@ export const defaultProfile = {
     testAnswer: defaultTestAnswer,
     testResult: defaultTestResult,
 };
+
+export type IProfileId = string;
