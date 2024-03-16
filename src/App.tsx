@@ -76,6 +76,7 @@ function App() {
                     <Route key={'new'} path={'new'} element={<CreateChemistryContent />} />
                 </Route>
             </Route>
+            {/* [SEO, Authorization] Routes are protected from access-by-URL. Can only be accessed by useNavigate Hook (/initializeNickname) or redirection from Kakao Auth API Page (/kakaoAuthRedirect). Routes are excluded in robots.txt. URL Accesses are redirected to login page. */}
             <Route key={'login'} path={'login'} element={<AuthContent />} >
                 <Route key={'initializeNickname'} path={'initializeNickname'} element={<InitializeNicknameContent />} />
                 <Route key={'redirectURI'} path={'kakaoAuthRedirect'} element={<KakaoAuthRedirectPage />} />
