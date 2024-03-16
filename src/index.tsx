@@ -1,13 +1,15 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
+import './index.css';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.hydrateRoot(
+/* SSR with Express.js */
+ReactDOM.hydrateRoot(
   document.getElementById('root') as HTMLElement,
   <App />
 );
+
+/* CSR */
 // root.render(
 //   // <React.StrictMode>
 //     <App />
