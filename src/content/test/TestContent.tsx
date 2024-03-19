@@ -220,7 +220,7 @@ function TestContent({ }: TestContentProps) {
                                         )
                                     })
                                 }
-                                <ScrollPageItem page={2} className="flex">
+                                <ScrollPageItem key={"leadership"} page={2} className="flex">
                                     <TestSection>
                                         <div className="modal__container flex-grow">
                                             {/* <TestInstructionModal testName="leadership" /> */}
@@ -256,7 +256,7 @@ function TestContent({ }: TestContentProps) {
                                         </div>
                                     </TestSection>
                                 </ScrollPageItem>
-                                <ScrollPageItem page={3} className="flex">
+                                <ScrollPageItem key={"schedule"} page={3} className="flex">
                                     <TestSection >
                                         <div className="flex-grow block--centered">
                                             <Card className="test__google-map-container modal__container">
@@ -284,7 +284,7 @@ function TestContent({ }: TestContentProps) {
                                         </div>
                                     </TestSection>
                                 </ScrollPageItem>
-                                <ScrollPageItem page={4} className="flex">
+                                <ScrollPageItem key={"budget"} page={4} className="flex">
                                     <TestSection >
                                         {/* https://codesandbox.io/p/sandbox/6gw7p4?file=/src/App.jsx */}
                                         <div className="flex-grow block--centered">
@@ -365,7 +365,7 @@ function TestContent({ }: TestContentProps) {
                                 {
                                     Object.entries(TEST.city.subTests).map(([key, { examples }], index) => (
                                         // <SectionPaperWithStep key={key} index={0e="section">
-                                        <ScrollPageItem page={5 + index} className="flex">
+                                        <ScrollPageItem key={key} page={5 + index} className="flex">
                                             <TestSection >
                                                 <div className="flex-grow block--centered">
                                                     {/* <h4 className='carousel__title'>{contentstrings.subTest[key as keyof typeof contentstrings.subTest].title}</h4> */}
