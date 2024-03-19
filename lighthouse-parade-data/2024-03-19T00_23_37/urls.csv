@@ -1,0 +1,12 @@
+URL,content_type,bytes,response
+"http://localhost:3001/",text/html; charset=utf-8,11880,200
+"http://localhost:3001/static/favicon.ico",text/html; charset=utf-8,2272,200
+"http://localhost:3001/static/logo192.png",text/html; charset=utf-8,2272,200
+"http://localhost:3001/static/%5C%22%5C%22;%5Cn",text/html; charset=utf-8,2272,200
+"http://localhost:3001/static/hashIndex",text/html; charset=utf-8,2272,200
+"http://localhost:3001/static/typeof",text/html; charset=utf-8,2272,200
+"http://localhost:3001/static/href.replace%28/",text/html; charset=utf-8,2272,200
+"http://localhost:3001/static/%280,react_router__WEBPACK_IMPORTED_MODULE_3__.useHref%29%28to,",text/html; charset=utf-8,2272,200
+"http://localhost:3001/static/_a.src,",text/html; charset=utf-8,2272,200
+"http://localhost:3001/static/url;%5Cn%5Cn",text/html; charset=utf-8,2272,200
+"http://localhost:3001/static/urlParsingNode.href;%5Cn",text/html; charset=utf-8,2272,200

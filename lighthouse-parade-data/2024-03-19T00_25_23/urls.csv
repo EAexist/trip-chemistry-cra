@@ -1,0 +1,4 @@
+URL,content_type,bytes,response
+"http://localhost:3001/",text/html; charset=utf-8,11880,200
+"http://localhost:3001/static/favicon.ico",text/html; charset=utf-8,2272,200
+"http://localhost:3001/static/logo192.png",text/html; charset=utf-8,2272,200

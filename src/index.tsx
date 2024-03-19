@@ -1,19 +1,22 @@
-import ReactDOM from 'react-dom/client';
+import ReactDOM, { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from 'react-router-dom';
 
 /* SSR with Express.js */
 ReactDOM.hydrateRoot(
-  document.getElementById('root') as HTMLElement,
-  <App />
+  document.getElementById('root') as HTMLElement,  
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
 );
-
 /* CSR */
+// const root = createRoot(document.getElementById('root') as HTMLElement);
 // root.render(
-//   // <React.StrictMode>
+//   <BrowserRouter>
 //     <App />
-//   // </React.StrictMode>
+//   </BrowserRouter>
 // );
 
 // If you want to start measuring performance in your app, pass a function

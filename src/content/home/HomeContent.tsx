@@ -10,8 +10,8 @@ import { Button, Stack, Toolbar, useTheme } from "@mui/material";
 
 /* Swiper */
 import SwiperType from "swiper";
-import 'swiper/css';
-import 'swiper/css/pagination';
+// import 'swiper/css';
+// import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { SWIPERPROPS_HOMECONTENT } from "../../swiper/props";

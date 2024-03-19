@@ -53,7 +53,7 @@ function KakaoLoginButton({ }: KakaoLoginButtonProps) {
     return (
         <a href={url}>
             <ButtonBase>
-                <img height={'48px'} src={getImgSrc("kakao", "kakao_login_large_narrow", FORMATPNG)} alt={"kakao_login"} />
+                <img height={'48px'} src={getImgSrc("/kakao", "kakao_login_large_narrow", FORMATPNG)} alt={"kakao_login"} />
             </ButtonBase>
         </a>
     );

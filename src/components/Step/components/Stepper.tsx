@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect, useRef } from "react";
+import { PropsWithChildren, lazy, useEffect, useRef } from "react";
 
 /* Swiper */
 import { Swiper, SwiperRef } from 'swiper/react';

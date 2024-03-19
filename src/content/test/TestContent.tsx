@@ -10,8 +10,8 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 /* Swiper */
-import 'swiper/css';
-import 'swiper/css/navigation';
+// import 'swiper/css';
+// import 'swiper/css/navigation';
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 /* App */

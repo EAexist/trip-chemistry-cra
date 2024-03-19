@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES5",
     "lib": [
       "dom",
       "dom.iterable",
@@ -13,14 +13,22 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
+    // "preserveValueImports": false,
+    // "module": "CommonJS",
+    // "module": "NodeNext",
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "noEmit": false,
+    "jsx": "react-jsx",
   },
   "include": [
-    "src"
-, "src/content/login/.tsx"  ]
+    "src",
+    "src/content/login/.tsx"
+  ],
+  "ts-node": {
+    "esm": true
+  },
+  "noImplicitAny": false
 }

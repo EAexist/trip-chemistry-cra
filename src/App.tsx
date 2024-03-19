@@ -2,12 +2,12 @@
 import { ThemeProvider } from '@mui/material';
 import { AnimatePresence } from 'framer-motion';
 import { Provider } from 'react-redux';
-import { Navigate, Outlet, Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
+import { BrowserRouter, Navigate, Outlet, Route, RouteObject, RouterProvider, Routes, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 
 /* App */
 import { TEST } from './common/app-const';
 import AppBar from './components/AppBar/AppBar';
-import Page from './route/Page';
+import { AppBarContextProvider } from './components/AppBar/AppBarContext';
 import ChemistryContent from './content/chemistry/ChemistryContent';
 import ChemistryListContent from './content/chemistry/ChemistryListContent';
 import CreateChemistryContent from './content/chemistry/CreateChemistryContent';
@@ -18,27 +18,24 @@ import AuthContent from './content/login/AuthContent';
 import EditNicknameContent from './content/login/EditNicknameContent';
 import InitializeNicknameContent from './content/login/InitializeNicknameContent';
 import KakaoAuthRedirectPage from './content/login/KakaoAuthRedirectPage';
-import LoginContent from './content/login/LoginContent';
 import ResultContent from './content/result/ResultContent';
 import TestContent from './content/test/TestContent';
 import UserContent from './content/user/UserContent';
-import { AppBarContextProvider } from './components/AppBar/AppBarContext';
 import AuthRequiredRoute from './route/AuthRequiredRoute';
+import Page from './route/Page';
 import TestRequiredRoute from './route/TestRequiredRoute';
 import { store } from './store';
 import { theme } from './theme';
 
-import './index.css';
-import './styles/index.css';
-import GuestRoute from './route/GuestRoute';
+import { useEffect, useState } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import HelmetWrapper from './helmet/HelmetWrapper';
+import './index.css';
 import AuthRecommendedPage from './route/AuthRecommendedPage';
-
+import GuestRoute from './route/GuestRoute';
+import './styles/index.css';
 
 function App() {
-
-    const helmetContext = {};
 
     const sessionRoute =
         <Route element={<>
@@ -83,41 +80,30 @@ function App() {
             </Route>
         </Route>;
 
-    const router = createBrowserRouter(
-        createRoutesFromElements(
-            <>
-                <Route path={'/*'} element={<Page />}>
-                    <Route key={'index'} element={<Outlet />} >
-                        {sessionRoute}
-                    </Route>
-                    <Route key={'guest'} path={'guest/:id'} element={<GuestRoute />}>
-                        {sessionRoute}
-                    </Route>
-                </Route>
-            </>
-        )
-    );
-
     return (
-        <HelmetProvider context={helmetContext}>
-            <Provider store={store}>
-                <ThemeProvider theme={theme}>
-                    <AppBarContextProvider>
-                        <HelmetWrapper
-                            title={"여행 타입 테스트"}
-                            description={"여행 타입 테스트로 친구들과 함께 떠나는 여행 준비하기. 나의 여행 MBTI는 뭘까? 여행 계획, 여행 일정, 여행 예산, 그리고 여행지까지 서로 다른 취향을 맞춰봐!"}
-                            keywords={"여행, 여행 일정, 여행지, 여행 계획, 여행 예산, 국내여행, 해외여행, MBTI"}
-                            url={"https://eaexist.github.io/tripchemistry"}
-                            image={"/static/images/meta/social-meta-iamge.jpg"}
-                        />
-                        <AnimatePresence>
-                            <RouterProvider router={router} />
-                        </AnimatePresence>
-                        {/* </Content> */}
-                    </AppBarContextProvider>
-                </ThemeProvider>
-            </Provider>
-        </HelmetProvider>
+        // <AnimatePresence>
+        <Provider store={store}>
+            <ThemeProvider theme={theme}>
+                    {/* <AppBarContextProvider> */}
+                        <Routes>
+                            <Route path={'/'} element={<Page />} >
+
+                                {/* Debug */}
+                                {/* <Route key={'page'} path={'page'} element={<Page />} />
+                        <Route key={'home'} path={'home'} element={<><h1>HELLO HOME</h1></>} /> */}
+
+                                <Route key={'index'} element={<Outlet />} >
+                                    {sessionRoute}
+                                </Route>
+                                <Route key={'guest'} path={'guest/:id'} element={<GuestRoute />}>
+                                    {sessionRoute}
+                                </Route>
+                            </Route>
+                        </Routes>
+                    {/* </AppBarContextProvider> */}
+            </ThemeProvider>
+        </Provider>
+        // </AnimatePresence>
     );
 }
 

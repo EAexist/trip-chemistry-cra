@@ -1,8 +1,8 @@
 import { Autoplay, EffectCards, EffectCoverflow, Navigation, Pagination } from "swiper/modules";
 import { SwiperOptions } from "swiper/types";
 
-import 'swiper/css';
-import 'swiper/css/pagination';
+// import 'swiper/css';
+// import 'swiper/css/pagination';
 
 export const AUTOPLAY_DELAY = 4000;
 

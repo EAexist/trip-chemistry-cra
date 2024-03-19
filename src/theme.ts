@@ -88,7 +88,7 @@ export const theme = createTheme({
     components: {
         MuiAppBar: {
             defaultProps: {
-                elevation: 2,
+                elevation: 1,
                 color: "secondary",
                 // color: "transparent",
             }
