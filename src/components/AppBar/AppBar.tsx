@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
 
-import { Avatar, Button, Divider, Drawer, IconButton, ListItemAvatar, ListItemButton, ListItemText, AppBar as MuiAppBar, Toolbar, duration, useTheme } from "@mui/material";
 import { Close, Menu } from "@mui/icons-material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Avatar, Button, Divider, IconButton, ListItemAvatar, ListItemButton, ListItemText, AppBar as MuiAppBar, Toolbar, useTheme } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { CONTENTS } from "../../common/app-const";
-import { useAppBar } from "./AppBarContext";
+import { MotionList } from "../../motion/components/MotionList";
+import { MotionListItem } from "../../motion/components/MotionListItem";
+import { MotionListSubheader } from "../../motion/components/MotionListSubheader";
 import { VARIANTS_STAGGER_CHILDREN } from "../../motion/props";
 import { useIsAuthorized, useUserInfo } from "../../reducers/authReducer";
 import { useStrings } from "../../texts";
 import UserAvatar from "../Avatar/UserAvatar";
 import Logo from "../Logo";
-import { MotionList } from "../../motion/components/MotionList";
-import { MotionListItem } from "../../motion/components/MotionListItem";
 import PngIcon from "../PngIcon";
-import { MotionListSubheader } from "../../motion/components/MotionListSubheader";
+import { useAppBar } from "./AppBarContext";
 
 interface AppBarProps {
 };

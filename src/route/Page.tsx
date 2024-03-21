@@ -1,14 +1,12 @@
 import { useEffect } from "react";
-import { Provider, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Outlet, ScrollRestoration } from "react-router-dom";
 import { AuthLoadRequiredContent } from "../content/LoadRequiredContent";
 import { asyncKakaoLoginByAccessToken, disableAutoLogin, useAuthorize, useIsAutoLoginEnabled } from "../reducers/authReducer";
-import { AppDispatch, store } from "../store";
+import { AppDispatch } from "../store";
 import { HelmetProvider } from "react-helmet-async";
-import { ThemeProvider } from "styled-components";
 import { AppBarContextProvider } from "../components/AppBar/AppBarContext";
 import HelmetWrapper from "../helmet/HelmetWrapper";
-import { theme } from "../theme";
 
 interface PageProps {
 

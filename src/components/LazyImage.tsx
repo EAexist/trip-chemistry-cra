@@ -8,6 +8,8 @@ import { PropsWithChildren, useEffect, useRef, useState } from "react";
 interface LazyImageProps{
     src: string;
     alt: string;
+    width: string;
+    height: string;
     sx?: React.CSSProperties;
     className?: string;
     placeholderSrc?: string;

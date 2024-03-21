@@ -5,7 +5,12 @@ import { useState } from "react";
 import { ArrowRight, ExpandMore, NavigateBefore, ThumbUp } from "@mui/icons-material";
 import { Accordion, AccordionDetails, AccordionSummary, AppBar, Button, CardContent, Divider, Icon, IconButton, ListItemAvatar, ListItemText, Rating, Stack, Toolbar } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+
+/* Swiper */
 import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination'; /* Page */
+import 'swiper/css/navigation'; /* Page */
 
 /* App */
 import { CITY, NATION, TEST } from "../../common/app-const";
@@ -23,6 +28,7 @@ import { VARIANTS_STAGGER_CHILDREN } from "../../motion/props";
 import { useCityChemistry, useIsChemistryEnabled, useProfileAll } from "../../reducers/chemistryReducer";
 import { useStrings } from "../../texts";
 import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
+import Flag from "../../components/Flag";
 
 interface CityDetailContentProps {
     cityClass: keyof typeof TEST.city.subTests;
@@ -149,7 +155,7 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                 </div>
             }
             <Divider variant="middle" />
-            <Swiper {...SWIPERPROPS_CITYDETAILCONTENT} initialSlide={state && state.initialIndex ? state.initialIndex : 0} className="page__swiper">
+            <Swiper {...SWIPERPROPS_CITYDETAILCONTENT} initialSlide={state && state.initialIndex ? state.initialIndex : 0} className="">
                 <div slot="container-start" >
                     <PaginationDiv className='pageSwiper-pagination' sx={{ justifyContent: 'center' }} />
                 </div>
@@ -170,7 +176,7 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                                             <h3 className="typography-heading">{cityId}</h3>
                                             {
                                                 NATION[CITY[cityId as keyof typeof CITY].nation as keyof typeof NATION].flag
-                                                && <span className={`fi fi-${CITY[cityId as keyof typeof CITY].nation}`}></span>
+                                                && <Flag id={CITY[cityId as keyof typeof CITY].nation} />
                                             }
                                         </Stack>
                                     </CardContent>

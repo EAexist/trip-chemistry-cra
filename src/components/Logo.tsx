@@ -1,5 +1,6 @@
 import { Icon } from "@mui/material";
 import getImgSrc, { FORMATPNG, FORMATSVG, FORMATWEBP } from "../utils/getImgSrc";
+import { Image } from "@mui/icons-material";
 
 const LOGOS: {
     [key: string]: {
@@ -34,11 +35,11 @@ const LOGOS: {
 interface LogoProps extends React.ImgHTMLAttributes<HTMLImageElement> {
     // id: keyof typeof LOGOS;
     id: string;
-    format?: 'png' | 'mui-icon' | 'svg'
+    format?: 'webp' | 'png' | 'mui-icon' | 'svg'
     iconName?: string;
 };
 
-function Logo({ id, format='png', className = 'logo--medium', iconName, ...props }: LogoProps) {
+function Logo({ id, format='webp', className = 'logo--medium', iconName, ...props }: LogoProps) {
 
     // const logo = LOGOS[id];
 
@@ -47,13 +48,16 @@ function Logo({ id, format='png', className = 'logo--medium', iconName, ...props
             ?
             iconName && <Icon className={className}>{iconName}</Icon>
             : <img
-                className={`logo ${className}`}
                 src={getImgSrc('/logos', `logo-${id}`,
                     format === "svg" ? FORMATSVG
                         : format === "png" ? FORMATPNG
                             : format === "webp" ? FORMATWEBP
                                 : ''
-                )} alt={id}
+                )}
+                alt={id}
+                width={ "24px" }
+                height={ "24px" }
+                className={`Logo ${className}`}
                 {...props}
             />
     )

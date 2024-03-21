@@ -131,7 +131,7 @@ function CreateChemistryContent({}: CreateChemistryContentProps) {
                         <Swiper
                             {...SWIPERPROPS_PAGE}
                             ref={swiperRef}
-                            className="page__swiper"
+                            className=""
                             onSwiper={(swiper)=>setSwiper(swiper)}
                         >
                             <SwiperSlide key={"title"} className=''>

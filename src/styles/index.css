@@ -1,3 +1,4 @@
+@import "../fonts/font.css"; 
 :root {
     --margin-x: 24px;
     --margin-x--small: 12px;
@@ -178,7 +179,6 @@ body {
         text-align: center;
     }
 }
-
 
 /**** General ****/
 .sticky {
@@ -582,18 +582,18 @@ body {
 }
 
 /* Logo */
-.logo {
+.Logo {
     width: auto;
 }
-.logo--small {
+.Logo--small {
     height: 1.2rem;
 }
 
-.logo--medium {
+.Logo--medium {
     height: 2rem;
 }
 
-.logo--large {
+.Logo--large {
     height: 2rem;
 }
 

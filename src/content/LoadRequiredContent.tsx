@@ -7,7 +7,7 @@ import { CircularProgress, Modal } from "@mui/material";
 /* App */
 import { LoadStatus } from "../interfaces/enums/LoadStatus";
 import withAuthLoadStatus, { WithLoadStatusProps } from "../hocs/withAuthLoadStatus";
-import getImgSrc, { FORMATPNG } from "../utils/getImgSrc";
+import getImgSrc, { FORMATWEBP } from "../utils/getImgSrc";
 import NoticeBlock from "../components/Block/NoticeBlock";
 
 interface LoadRequiredContentProps extends WithLoadStatusProps {
@@ -127,7 +127,7 @@ function LoadRequiredContent({
                 <NoticeBlock
                     title={"여행 타입 테스트"}
                     alt={delayedStatus}
-                    src={getImgSrc('/info', delayedStatus, FORMATPNG)}
+                    src={getImgSrc('/info', delayedStatus, FORMATWEBP)}
                     {...noticeBlockProps[delayedStatus]}
                 />
             : children

@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 /* App */
 import { KAKAO_AUTH_URL_BASE } from "../../common/auth";
 import { AppDispatch } from "../../store";
-import getImgSrc, { FORMATPNG } from "../../utils/getImgSrc";
+import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
 
 interface KakaoLoginButtonProps {
 
@@ -53,7 +53,7 @@ function KakaoLoginButton({ }: KakaoLoginButtonProps) {
     return (
         <a href={url}>
             <ButtonBase>
-                <img height={'48px'} src={getImgSrc("/kakao", "kakao_login_large_narrow", FORMATPNG)} alt={"kakao_login"} />
+                <img height={'48px'} width={'96px'} src={getImgSrc("/kakao", "kakao_login_large_narrow", FORMATWEBP)} alt={"kakao_login"} />
             </ButtonBase>
         </a>
     );

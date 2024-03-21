@@ -12,17 +12,37 @@
 
 ***************************************************************************************/
 import express from "express";
+import fs from 'fs';
+import serveStatic from "serve-static";
+import expressStaticGzip from "express-static-gzip";
+
 import ReactDOMServer from "react-dom/server";
 import { StaticRouter } from "react-router-dom/server";
+
 import App from "../App.tsx";
-import fs from 'fs';
-// const express = require('express');
-// const React = require('react');
-// const ReactDOMServer = require('react-dom/server');
-// const App = require('./client/src/App').default;
 
 const app = express();
-app.use('/static', express.static(__dirname));
+
+
+/* Middlewares */
+
+/* Default Serve */
+// app.use('/static', express.static(__dirname));
+
+/* Set cache time for static files. */
+// app.use('/static', serveStatic(__dirname, {
+//   maxAge: 8380800000
+// }))
+
+/* Compression */
+app.use('/static', expressStaticGzip(__dirname, {
+// app.use('/*', expressStaticGzip(__dirname, {
+  enableBrotli: true,
+  orderPreference: ['br', 'gz'],
+  setHeaders: function (res, path) {
+     res.setHeader("Cache-Control", "public, max-age=31536000");
+  }
+}));
 
 const PORT = process.env.PORT || 3001;
 

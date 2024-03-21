@@ -10,8 +10,8 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 /* Swiper */
-// import 'swiper/css';
-// import 'swiper/css/navigation';
+import 'swiper/css';
+import 'swiper/css/effect-coverflow'; /* Food Carousel */
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 /* App */
@@ -47,6 +47,7 @@ import AnswerSlider from "./component/AnswerSlider";
 import TagSetTestAnswerChip from "./component/TagSetTestAnswerChip";
 import TestAnswerBadge from "./component/TestAnswerBadge";
 import TestInstruction from "./component/TestInstruction";
+import Flag from "../../components/Flag";
 
 interface TestContentProps {
 
@@ -384,7 +385,7 @@ function TestContent({ }: TestContentProps) {
                                                                             <h3 className="typography-name">{commonStrings.city[cityId as keyof typeof commonStrings.city].name}</h3>
                                                                             {
                                                                                 NATION[CITY[cityId as keyof typeof CITY].nation as keyof typeof NATION].flag
-                                                                                && <span className={`fi fi-${CITY[cityId as keyof typeof CITY].nation}`}></span>
+                                                                                && <Flag id={CITY[cityId as keyof typeof CITY].nation} />
                                                                             }
                                                                         </Stack>
                                                                     </ButtonBase>

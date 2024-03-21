@@ -51,12 +51,16 @@ function NoticeBlock({
                         <LazyImage
                             src={src}
                             alt={alt}
+                            width={ "256px" }
+                            height={ "256px" }
                             containerClassName="NoticeBlock__image"
                         />
                         :
                         <img
                             src={src}
                             alt={alt}
+                            width={ "256px" }
+                            height={ "256px" }
                             className="NoticeBlock__image"
                         />
                     }

@@ -1,9 +1,13 @@
-import { ButtonBase, CardProps, Divider, Stack } from "@mui/material";
 import { useEffect } from "react";
+
+import { ButtonBase, CardProps, Divider, Stack } from "@mui/material";
+
 import { CITY, FOOD, NATION } from "../../common/app-const";
 import { useStrings } from "../../texts";
 import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
 import ImageCard from "./ImageCard";
+import Flag from "../Flag";
+
 
 interface FoodImageCardProps extends CardProps {
     id: string;
@@ -35,7 +39,7 @@ const FoodImageCard = ({ id, isActive, ...props }: FoodImageCardProps) => {
                             <p> {cityName}</p>
                             {
                                 NATION[nationId].flag
-                                && <span className={`fi fi-${nationId}`}></span>
+                                && <Flag id={nationId} />
                             }
                         </Stack>
                     }

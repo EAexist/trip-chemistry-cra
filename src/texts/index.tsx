@@ -3,7 +3,7 @@ import { useState, createContext, useContext, PropsWithChildren } from 'react';
 
 import baseLangStrings from './stringTable_kr';
 
-type LangKey = "ko-kr";
+// type LangKey = "ko-kr";
 type JsonLocalizedStrings = typeof baseLangStrings;
 
 const baseTextContext = createContext<JsonLocalizedStrings>(baseLangStrings);
@@ -31,7 +31,7 @@ const ContentKey = {
 type ContentKey = typeof ContentKey[keyof typeof ContentKey]; 
 // type TestContentStrings = typeof 
 
-type TextKey = keyof (typeof baseLangStrings["public"]);
+// type TextKey = keyof (typeof baseLangStrings["public"]);
 
 function useContentString( key: ContentKey ) {
     const strings = useContext(baseTextContext).public.contents[key];

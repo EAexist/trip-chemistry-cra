@@ -1,6 +1,6 @@
-import { PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { PropsWithChildren, useEffect, useRef } from 'react';
 
-import { GoogleMapContextProvider, useGoogleMapContext } from '../common/GoogleMapContext';
+import { useGoogleMapContext } from '../common/GoogleMapContext';
 
 interface GoogleMapProps { 
   className? : string,

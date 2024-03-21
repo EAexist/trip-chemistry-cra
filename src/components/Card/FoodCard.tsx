@@ -1,8 +1,11 @@
+
+import { useEffect } from "react";
 import { Card, CardActionArea, CardContent, CardMedia, CardProps, Stack } from "@mui/material";
+
 import { CITY, FOOD, NATION } from "../../common/app-const";
 import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
 import { useStrings } from "../../texts";
-import { useEffect } from "react";
+import Flag from "../Flag";
 
 interface FoodCardProps extends CardProps {
     id: string;
@@ -37,7 +40,7 @@ const FoodCard = ({ id, isActive, ...props }: FoodCardProps) => {
                                     <p> {cityName}</p>
                                     {
                                         NATION[nationId].flag
-                                        && <span className={`fi fi-${nationId}`}></span>
+                                        && <Flag id={nationId} />
                                     }
                                 </Stack>
                                 {/* <Stack className="typography--profile-label" style={{ marginBottom: "-8px" }}>

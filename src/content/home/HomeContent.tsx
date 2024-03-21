@@ -4,15 +4,13 @@ import { useState } from "react";
 /* React Packages */
 import { useMotionValueEvent, useScroll } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
 import { Button, Stack, Toolbar, useTheme } from "@mui/material";
 
-
 /* Swiper */
-import SwiperType from "swiper";
-// import 'swiper/css';
-// import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperType from "swiper";
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 import { SWIPERPROPS_HOMECONTENT } from "../../swiper/props";
 import PaginationDiv from "../../swiper/components/PaginationDiv";
@@ -63,16 +61,17 @@ function HomeContent({ }: HomeContentProps) {
                 onSwiper={(swiper) => {
                     setSwiper(swiper);
                 }}
-                className="page__swiper flex fill-window"
+                className="flex fill-window"
+                style={{ display: 'flex' }}
             >
                 {(strings.sections as { title: string, body: string }[]).map(({ title, body }, index) => (
-                    <SwiperSlide key={title} className="flex" style={{ overflowY: 'visible' }}>
+                    <SwiperSlide key={title} style={{ overflowY: 'visible', display: 'flex', flexDirection: 'column' }}>
                         <Toolbar />
                         <div className="block--with-margin-x block__body flex-grow flex" style={{ justifyContent: "end" }}>
                             <h3 className="typography-heading">{title}</h3>
                             <p className="">{body}</p>
                         </div>
-                        <div style={{ position: "absolute", width: "100%", }} className="fill-window">
+                        <div style={{ position: "absolute", width: "100%" }} className="fill-window">
                             {/* Background Image */}
                         </div>
                     </SwiperSlide>

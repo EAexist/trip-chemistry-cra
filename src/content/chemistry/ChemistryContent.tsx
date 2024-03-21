@@ -14,17 +14,16 @@ import { useStrings } from "../../texts";
 import FriendAvatar from "../../components/Avatar/FriendAvatar";
 import NoticeBlock from "../../components/Block/NoticeBlock";
 import SectionPaper from "../../components/Paper/SectionPaper";
+import HelmetWrapper from "../../helmet/HelmetWrapper";
 import { LoadStatus } from "../../interfaces/enums/LoadStatus";
 import RoutedMotionPage from "../../motion/components/RoutedMotionPage";
 import { FADEIN_VIEWPORT } from "../../motion/props";
 import { useGetProfile, useHasAnsweredTest, useIsAuthorized, useUserId } from "../../reducers/authReducer";
 import { asyncGetChemistry, asyncJoinChemistry, useChemistry, useChemistryLoadStatus, useIsChemistryEnabled } from "../../reducers/chemistryReducer";
 import { AppDispatch } from "../../store";
-import getImgSrc, { FORMATPNG } from "../../utils/getImgSrc";
+import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
 import LoadRequiredContent from "../LoadRequiredContent";
 import ChemistryDetailContent from "./ChemistryDetailContent";
-import HelmetWrapper from "../../helmet/HelmetWrapper";
-import { Helmet } from "react-helmet-async";
 
 interface ChemistryContentProps {
 
@@ -32,10 +31,6 @@ interface ChemistryContentProps {
 
 
 function ChemistryContent({ }: ChemistryContentProps) {
-
-    const strings = useStrings().public.contents.chemistry;
-
-
 
     /* Hooks */
     const navigate = useNavigate();
@@ -63,12 +58,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
     const [isLinkCopiedAlertOpen, setIsLinkCopiedAlertOpen] = useState(false);
     const [isInviteOptionsOpen, setIsInviteOptionsOpen] = useState(false);
-
     // const [characterSectionActiveIProfileId, setCharacterSectionActiveIProfileId] = useState<IProfileId | undefined>(userId);
-
-    const resultContentTopRef = useRef<HTMLDivElement>(null);
-
-    const [showFloatingButton, setShowFloatingButton] = useState<boolean>(true);
 
     /* Event Handlers */
     const handleClickNavigateBefore = () => {
@@ -163,16 +153,16 @@ function ChemistryContent({ }: ChemistryContentProps) {
     }, [isShareModalOpen])
 
     /* Motion */
-    const { scrollY } = useScroll();
+    // const { scrollY } = useScroll();
 
-    useMotionValueEvent(scrollY, "change", (latest) => {
-        if (scrollY.get() > window.innerHeight * 0.4) {
-            setShowFloatingButton(false);
-        }
-        else {
-            setShowFloatingButton(true);
-        }
-    })
+    // useMotionValueEvent(scrollY, "change", (latest) => {
+    //     if (scrollY.get() > window.innerHeight * 0.4) {
+    //         setShowFloatingButton(false);
+    //     }
+    //     else {
+    //         setShowFloatingButton(true);
+    //     }
+    // })
 
     return (
         <LoadRequiredContent
@@ -303,7 +293,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                         <Paper elevation={0}>
                             <NoticeBlock
                                 alt={"invite"}
-                                src={getImgSrc('/info', "invite", FORMATPNG)}
+                                src={getImgSrc('/info', "invite", FORMATWEBP)}
                                 {
                                 ...Object.keys(profileList).length < 2
                                     ?

@@ -3,7 +3,7 @@ const getImgSrc = (path: string, filename: string, format: string) => {
      *  https://stackoverflow.com/questions/60874394/how-to-use-static-media-assets-generated-by-cra-s-npm-build-in-ssr-mode
      */
     const basePath = `${process.env.PUBLIC_URL}/images`;
-    // const basePath = `${process.env.PUBLIC_URL}/static/images`;
+    // const basePath = `static/images`;
     
     return(
         `${basePath}${path}/${filename}.${format}`

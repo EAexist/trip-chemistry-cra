@@ -22,16 +22,22 @@
 *    Author: 이듬(E.UID)
 *    Availability: https://yamoo9.gitbook.io/webpack/react/create-your-own-react-app/configure-css
 ***************************************************************************************/
-
 const path = require('path');
 const webpack = require('webpack');
 const webpackNodeExternals = require('webpack-node-externals');
 const copyWebPackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const InterpolateHtmlPlugin = require('interpolate-html-plugin');
+const Dotenv = require("dotenv-webpack");
+
+/* Compression */
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CompressionWebpackPlugin = require('compression-webpack-plugin');
+const BrotliWebpackPlugin = require('brotli-webpack-plugin');
 
 const devMode = process.env.NODE_ENV !== "production";
+console.log(devMode, process.env.NODE_ENV);
+
 
 /* ES6 Import */
 // import path from 'path';
@@ -99,7 +105,7 @@ const babelLoader = {
      */
     {
       test: /\.(png|jpg|webp|svg|jpeg|gif|)$/,
-      type: "asset", 
+      type: "asset",
     },
     /*  Wepback.js. Webpack - Guides - Asset Management - Loading Fonts
         ( https://webpack.js.org/guides/asset-management/#loading-fonts )
@@ -119,14 +125,14 @@ const babelLoader = {
       test: /\.(ttf|woff2)$/i,
       type: 'asset/resource',
       generator: {
-          filename: (pathData) => {
-            const filepath = path
-              .dirname(pathData.filename)
-              .split("/")
-              .slice(1)
-              .join("/");
-            return `/${filepath}/[name].[hash][ext][query]`;
-          },
+        filename: (pathData) => {
+          const filepath = path
+            .dirname(pathData.filename)
+            .split("/")
+            .slice(1)
+            .join("/");
+          return `/${filepath}/[name].[hash][ext][query]`;
+        },
       },
     },
   ]
@@ -141,7 +147,6 @@ const resolve = {
 
 const serverConfig = {
   target: 'node',
-  mode: 'development',
   entry: './src/server/index.jsx',
   output: {
     path: path.join(__dirname, '/dist'),
@@ -152,13 +157,13 @@ const serverConfig = {
     new webpack.EnvironmentPlugin({
       PORT: 3001
     }),
+    new Dotenv(),
   ],
   resolve
 };
 
 const clientConfig = {
-  target: 'web',
-  mode: 'development',
+  target: ['web', 'es2017'],
   entry: './src/index.tsx',
   output: {
     path: path.join(__dirname, '/dist'),
@@ -173,83 +178,50 @@ const clientConfig = {
   plugins: [
     new HtmlWebpackPlugin({
       template: `${__dirname}/public/index.html`,
-      // favicon: "./public/favicon.ico",
+      favicon: "./public/favicon.ico",
     }),
     new InterpolateHtmlPlugin({
-       PUBLIC_URL: '/static'
+      PUBLIC_URL: '/static'
     }),
-    /*  !! @TODO [env variable Security Issue]
-        ( https://stackoverflow.com/questions/41359504/webpack-bundle-js-uncaught-referenceerror-process-is-not-defined )
-    */
-    new webpack.DefinePlugin({
-      'process.env': JSON.stringify(process.env),
-      'process.env.NODE_ENV': JSON.stringify('development')
-    }),
-    /* Copy Project's public static contents( public/ : images, manifest.json, robots.txt ) to dist/  */
-    // new copyWebPackPlugin({
-    //   patterns: [
-    //     {
-    //       from: "public/images", to: "images"
-    //     },
-    //     {
-    //       from: "robots.txt", to: "robots.txt"
-    //     },
-    //     {
-    //       from: "public/manifest.json", to: "manifest.json"
-    //     }
-    //   ]
+    // /*  !! @TODO [env variable Security Issue]
+    //     ( https://stackoverflow.com/questions/41359504/webpack-bundle-js-uncaught-referenceerror-process-is-not-defined )
+    // */
+    // new webpack.DefinePlugin({
+    //   'process.env.NODE_ENV': JSON.stringify('development')
     // }),
+    /* Copy Project's public static contents( public/ : images, manifest.json, robots.txt ) to dist/  */
+    new copyWebPackPlugin({
+      patterns: [
+        {
+          from: "robots.txt", to: "robots.txt"
+        },
+        {
+          from: "public/manifest.json", to: "manifest.json"
+        },
+        {
+          from: "public/images", to: "images"
+        }
+      ]
+    }),
+    new Dotenv(),
+    new CompressionWebpackPlugin({
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+    }),
+    new BrotliWebpackPlugin({
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+    })
+
   ]
     .concat(
       devMode ? [] : [new MiniCssExtractPlugin()]
     ),
+  experiments: {
+    outputModule: true,
+  },
   resolve
 };
 
-// export default {
-//   target: 'node',
-//   mode: 'development',
-//   externals: [webpackNodeExternals()],
-//   entry: './index.js',
-//   output: {
-//     filename: 'server.js',
-//     path: path.resolve(__dirname, 'build'),
-//   },
-//   module: {
-//     rules: [
-//       {
-//         test: /\.(js)$/,
-//         exclude: /node_modules/,
-//         use: {
-//           loader: 'babel-loader',
-//           options: {
-//             presets: [
-//               '@babel/preset-env',
-//               '@babel/preset-react',
-//             ],
-//           },
-//         },
-//       },
-//       {
-//         test: /\.(ts|tsx)$/,
-//         exclude: /node_modules/,
-//         use: {
-//           loader: 'ts-loader',
-//         },
-//       },
-//       {
-//         test: /\.css$/,
-//         use: 'css-loader'
-//       },
-//     ],
-//   },
-//   resolve: {
-//     extensions: ['.js', '.ts', '.tsx'],
-//   },
-//   experiments: {
-//      outputModule: true,
-//   },
-// };
-
-module.exports = [ serverConfig ];
-// module.exports = [ clientConfig, serverConfig ];
+// module.exports = [ serverConfig ];
+module.exports = [ clientConfig, serverConfig];

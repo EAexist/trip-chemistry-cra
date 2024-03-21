@@ -1,10 +1,10 @@
-import { PropsWithChildren, useCallback, useEffect, } from 'react';
-import { Icon, Paper } from '@mui/material';
+import { Icon } from '@mui/material';
+import { useCallback, useEffect } from 'react';
 
 import withGoogleMapMarker, { withGoogleMapMarkerProps } from '../common/withGoogleMapMarker';
 
-import styles from "./GoogleMapMarker.module.css";
 import { Circle, LocationOn } from '@mui/icons-material';
+import styles from "./GoogleMapMarker.module.css";
 
 interface MapMarkerProps extends withGoogleMapMarkerProps {
   label: string; 

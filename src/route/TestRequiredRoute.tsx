@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import NoticeBlock from "../components/Block/NoticeBlock";
 import { useHasAnsweredTest } from "../reducers/authReducer";
 import { RootState } from "../store";
-import getImgSrc, { FORMATPNG } from "../utils/getImgSrc";
+import getImgSrc, { FORMATWEBP } from "../utils/getImgSrc";
 
 interface TestRequiredRouteProps {
 
@@ -34,7 +34,7 @@ function TestRequiredRoute({ }: TestRequiredRouteProps) {
         :
         <NoticeBlock
             alt={"miss"}
-            src={ getImgSrc('/info', "MISS", FORMATPNG) }
+            src={ getImgSrc('/info', "MISS", FORMATWEBP) }
             body={`${nickname} 님의 여행은 어떤 모습일까요?\n테스트를 완료하고 결과를 확인해보세요.`}
             buttonText={"테스트하러 가기"}
             handleClick={handleHasNotAnsweredTest}

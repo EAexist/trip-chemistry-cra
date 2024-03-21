@@ -4,10 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 /* Mui */
 import { Icon, IconButton, useTheme } from "@mui/material";
 
-
 /* Swiper */
 import SwiperType from "swiper";
 import { AUTOPLAY_DELAY } from "../props";
+
 interface SwiperAutoplayProgressProps {
     swiper: SwiperType;
     className?: string;

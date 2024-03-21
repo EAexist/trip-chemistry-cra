@@ -1,5 +1,5 @@
 import { Avatar, AvatarProps, Stack, useTheme } from "@mui/material";
-import getImgSrc, { FORMATPNG } from "../../utils/getImgSrc";
+import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
 import { IProfile } from "../../interfaces/IProfile";
 import { useEffect } from "react";
 
@@ -30,7 +30,7 @@ function LabeledAvatar({ characterId, showLabel = true, labelSize, nickname, tes
         >
             <Avatar
                 alt={nickname}
-                src={getImgSrc('/character', imageId, FORMATPNG)}
+                src={getImgSrc('/character', imageId, FORMATWEBP)}
                 className={`profile__avatar ${className}`}
                 style={{ backgroundColor: theme.palette.primary.light }}
                 {...props as AvatarProps}

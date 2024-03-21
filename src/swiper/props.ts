@@ -1,9 +1,6 @@
 import { Autoplay, EffectCards, EffectCoverflow, Navigation, Pagination } from "swiper/modules";
 import { SwiperOptions } from "swiper/types";
 
-// import 'swiper/css';
-// import 'swiper/css/pagination';
-
 export const AUTOPLAY_DELAY = 4000;
 
 export const SWIPERPROPS_PAGE : SwiperOptions | { className: string } = {
@@ -48,17 +45,12 @@ export const SWIPERPROPS_HOMECONTENT : SwiperOptions | { className: string } = {
 }
 
 export const SWIPERPROPS_STEPPER : SwiperOptions | { className: string } = {
-    modules: [ Navigation ],
+    // modules: [ Navigation ],
     slidesPerView: 'auto',
     spaceBetween: 16,
 }
 
 export const SWIPERPROPS_CAROUSEL : SwiperOptions | { className: string } = {
-    modules: [ Autoplay ],
-    // autoplay: {,
-    //     delay: autoPlayDelay,
-    //     disableOnInteraction: false,
-    // }}
     // loop: true,
     speed: 500,
     slidesPerView: 'auto',
