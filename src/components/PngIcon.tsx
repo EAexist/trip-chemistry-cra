@@ -9,13 +9,17 @@ interface PngIconProps{
 
 function PngIcon({ name, size = "medium" } : PngIconProps ){
     const basePath = '/icon'
+    const src = getImgSrc( basePath, `${name}-${size}`, FORMATWEBP );
     return(
         <img 
-            src={ getImgSrc( basePath, name, FORMATWEBP )}
+            src={ src }
             alt={ name }
             width={ "24px" }
             height={ "24px" }
-            className={`PngIcon PngIcon--${size}`}       
+            className={`PngIcon PngIcon--${size}`}
+            srcSet={ `${src.replace(size, `medium`)} 24w` }
+            sizes={ '24w' }
+            // sizes={( size === "medium" ) ? '24w' : '30w' }        
         />
     );
 }

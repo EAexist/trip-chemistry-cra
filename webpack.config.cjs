@@ -22,36 +22,39 @@
 *    Author: 이듬(E.UID)
 *    Availability: https://yamoo9.gitbook.io/webpack/react/create-your-own-react-app/configure-css
 ***************************************************************************************/
+
 const path = require('path');
 const webpack = require('webpack');
-const webpackNodeExternals = require('webpack-node-externals');
-const copyWebPackPlugin = require("copy-webpack-plugin");
+const nodeExternals = require('webpack-node-externals');
+const copyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackInjectAttributesPlugin = require('html-webpack-inject-attributes-plugin');
 const InterpolateHtmlPlugin = require('interpolate-html-plugin');
 const Dotenv = require("dotenv-webpack");
 
 /* Compression */
+const CompressionPlugin = require('compression-webpack-plugin');
+const BrotliPlugin = require('brotli-webpack-plugin');
+
+/* CSS */
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CompressionWebpackPlugin = require('compression-webpack-plugin');
-const BrotliWebpackPlugin = require('brotli-webpack-plugin');
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const FontPreloadPlugin = require("webpack-font-preload-plugin");
 
-const devMode = process.env.NODE_ENV !== "production";
-console.log(devMode, process.env.NODE_ENV);
+/* Pre-Render */
+const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
+const PrerendererPlugin = require('@prerenderer/webpack-plugin');
 
+/* Code Splitting */
+const LoadablePlugin = require('@loadable/webpack-plugin');
 
-/* ES6 Import */
-// import path from 'path';
-// import { fileURLToPath } from 'url';
-// import webpackNodeExternals from 'webpack-node-externals';
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
 
 /*  !! @TODO [serverConfig, clientConfig module 정의 구분]
     .css, module.css 등 asset 관련 rule은 clientConfig에만 필요하고 serverConfig에서 제외해도 될 것 같은데 serverConfig에서 제외할 경우 오류 발생함.
     이유 알 수 없음.
     우선 babelLoader 값을 clientConfig와 serverConfig에 동일하게 적용.
 */
-const babelLoader = {
+const babelLoader = (devMode) => ({
   rules: [
     {
       test: /.(js|jsx)$/,
@@ -97,16 +100,16 @@ const babelLoader = {
         },
       ],
     },
-    /*  src/public/ 경로의 자원은 로드하지 않음. copyWebPackPlugin 을 통해 dist/ 로 복사함. */
+    /*  src/public/ 경로의 자원은 로드하지 않음. copyPlugin 을 통해 dist/ 로 복사함. */
     /*  @TODO [추후에 image를 번들로 build 및 import 할 경우]  
         네트워크 성능 vs. 번들 사이즈 tradeoff 조정 위해  inline / resource 로드를 선택할 기준 파일 크기를 설정할 수 있음. 
         상민. 2022, 7.20. [Webpack5] loader와 asset modules.
         ( https://velog.io/@tkdals0978/Webpack5-loader ) 
      */
-    {
-      test: /\.(png|jpg|webp|svg|jpeg|gif|)$/,
-      type: "asset",
-    },
+    // {
+    //   test: /\.(png|jpg|webp|svg|jpeg|gif|)$/,
+    //   type: "asset",
+    // },
     /*  Wepback.js. Webpack - Guides - Asset Management - Loading Fonts
         ( https://webpack.js.org/guides/asset-management/#loading-fonts )
 
@@ -131,12 +134,12 @@ const babelLoader = {
             .split("/")
             .slice(1)
             .join("/");
-          return `/${filepath}/[name].[hash][ext][query]`;
+          return `${filepath}/[name].[hash][ext][query]`;
         },
       },
     },
   ]
-};
+});
 
 const resolve = {
   extensions: ['.js', '.ts', '.tsx'],
@@ -145,83 +148,141 @@ const resolve = {
   },
 };
 
-const serverConfig = {
-  target: 'node',
-  entry: './src/server/index.jsx',
-  output: {
-    path: path.join(__dirname, '/dist'),
-    filename: 'server.cjs',
-  },
-  module: babelLoader,
-  plugins: [
-    new webpack.EnvironmentPlugin({
-      PORT: 3001
-    }),
-    new Dotenv(),
-  ],
-  resolve
+/* Wepback.js. Webpack - Configuration - Output - output.assetModuleFilename
+  ( https://webpack.kr/configuration/mode/ ) */
+const serverConfig = (env, argv) => {
+  const devMode = argv.mode === 'development';
+  return ({
+    target: 'node',
+    entry: './src/server/index.jsx',
+    output: {
+      path: path.join(__dirname, '/dist'),
+      filename: 'server.cjs',
+    },
+    module: babelLoader(devMode),
+    plugins: [
+      new webpack.EnvironmentPlugin({
+        PORT: 3001
+      }),
+      new Dotenv(),
+    ].concat(
+      devMode ? []
+      : [
+        new MiniCssExtractPlugin(),
+        /* Compression 
+          Compression Plugins should appear after file generating plugins. */
+        new CompressionPlugin({
+          test: /\.js$|\.css$|\.html$/,
+          threshold: 10240,
+        }),
+        new BrotliPlugin({
+          test: /\.js$|\.css$|\.html$/,
+          threshold: 10240,
+        }),
+      ]),
+    resolve
+  })
 };
 
-const clientConfig = {
-  target: ['web', 'es2017'],
-  entry: './src/index.tsx',
-  output: {
-    path: path.join(__dirname, '/dist'),
-    /*
-     * Appends /static to index.html when looking for client.js
-     * This is where Express is serving static files from
-     */
-    publicPath: '/static',
-    filename: 'client.js',
-  },
-  module: babelLoader,
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: `${__dirname}/public/index.html`,
-      favicon: "./public/favicon.ico",
-    }),
-    new InterpolateHtmlPlugin({
-      PUBLIC_URL: '/static'
-    }),
-    // /*  !! @TODO [env variable Security Issue]
-    //     ( https://stackoverflow.com/questions/41359504/webpack-bundle-js-uncaught-referenceerror-process-is-not-defined )
-    // */
-    // new webpack.DefinePlugin({
-    //   'process.env.NODE_ENV': JSON.stringify('development')
-    // }),
-    /* Copy Project's public static contents( public/ : images, manifest.json, robots.txt ) to dist/  */
-    new copyWebPackPlugin({
-      patterns: [
-        {
-          from: "robots.txt", to: "robots.txt"
+const clientConfig = (env, argv) => {
+  const devMode = argv.mode === 'development';
+  return ({
+    target: ['web', 'es2017'],
+    entry: './src/index.tsx',
+    output: {
+      path: path.join(__dirname, '/dist'),
+      /* Appends /static to index.html when looking for client.js. This is where Express is serving static files from */
+      publicPath: 'static/',
+      filename: 'app.js',
+      chunkFilename: '[name].[chunkhash].js'
+    },
+    module: babelLoader(devMode),
+    plugins: [
+      new Dotenv(),
+      new HtmlWebpackPlugin({
+        template: `${__dirname}/public/index.html`,
+        favicon: `${__dirname}/public/favicon.ico`,
+        attributes: {
+          "defer": function (tag, compilation, index) {
+                if (( tag.tagName === 'link' ) || ( tag.tagName === 'script' )) {
+                    return true;
+                }
+            }
         },
-        {
-          from: "public/manifest.json", to: "manifest.json"
-        },
-        {
-          from: "public/images", to: "images"
-        }
-      ]
-    }),
-    new Dotenv(),
-    new CompressionWebpackPlugin({
-      test: /\.js$|\.css$|\.html$/,
-      threshold: 10240,
-    }),
-    new BrotliWebpackPlugin({
-      test: /\.js$|\.css$|\.html$/,
-      threshold: 10240,
-    })
+      }),
+      new HtmlWebpackInjectAttributesPlugin(),
+      new InterpolateHtmlPlugin({
+        PUBLIC_URL: '/static'
+      }),
+      new FontPreloadPlugin(),
+      /* Copy Project's public static contents( public/ : images, manifest.json, robots.txt ) to dist/  */
+      new copyPlugin({
+        patterns: [
+          {
+            from: "robots.txt", to: "robots.txt"
+          },
+          {
+            from: "public/manifest.json", to: "manifest.json"
+          },
+          {
+            from: "public/images", to: "images"
+          }
+        ]
+      }),
 
-  ]
-    .concat(
-      devMode ? [] : [new MiniCssExtractPlugin()]
-    ),
-  experiments: {
-    outputModule: true,
-  },
-  resolve
+      /* Pre-Render 
+        @TODO PreRendererPlugin is not working.
+      */
+      new PrerendererPlugin({
+        routes: [ '/', '/home/', '/test/' ],
+      }),
+
+      /* Loadable Components (Code Splitting) */
+      new LoadablePlugin(),
+
+      /* .env variables */
+      // /*  !! @TODO [env variable Security Issue]
+      //     ( https://stackoverflow.com/questions/41359504/webpack-bundle-js-uncaught-referenceerror-process-is-not-defined )
+      // */
+    ].concat(
+      devMode ? []
+      : [
+        new MiniCssExtractPlugin({
+          attributes: {
+            defer: "defer",
+          },
+        }),
+        /* Compression 
+          Compression Plugins should appear after file generating plugins. */
+        new CompressionPlugin({
+          test: /\.js$|\.css$|\.html$/,
+          // threshold: 10240,
+        }),
+        new BrotliPlugin({
+          test: /\.js$|\.css$|\.html$/,
+          // threshold: 10240,
+        }),
+      ]),
+    experiments: {
+      outputModule: true,
+    },  
+    optimization: {
+      minimizer: devMode ? [] : [
+        /* For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line
+          ( https://webpack.kr/configuration/optimization/#optimizationminimizer ) */
+        `...`,
+        new CssMinimizerPlugin(),
+        // new TerserPlugin(),
+        // new OptimizeCSSAssetsPlugin(),
+      ],
+      // splitChunks: {
+      //   chunks: "all",
+      //   name: false,
+      // },
+    },
+    resolve
+  })
 };
 
 // module.exports = [ serverConfig ];
-module.exports = [ clientConfig, serverConfig];
+module.exports = [ clientConfig, serverConfig ];

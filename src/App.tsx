@@ -1,41 +1,42 @@
 /* React Packages */
 import { ThemeProvider } from '@mui/material';
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense } from 'react';
 import { Provider } from 'react-redux';
 import { Outlet, Route, Routes } from 'react-router-dom';
+import loadable from '@loadable/component';
 
 /* App */
-import { TEST } from './common/app-const';
 import AppBar from './components/AppBar/AppBar';
 import Page from './route/Page';
 import { store } from './store';
 import { theme } from './theme';
 
-// import './index.css';
 import './styles/index.css';
+import { TEST } from './common/app-const';
+import CityDetailContent from './content/city/CityDetailContent';
 
 /* [Performance][Code Splitting]  */
 /* 1. Static Import */
-import AuthRequiredRoute from './route/AuthRequiredRoute';
-import TestRequiredRoute from './route/TestRequiredRoute';
-import GuestRoute from './route/GuestRoute';
-import AuthRecommendedPage from './route/AuthRecommendedPage';
+// import AuthRequiredRoute from './route/AuthRequiredRoute';
+// import TestRequiredRoute from './route/TestRequiredRoute';
+// import GuestRoute from './route/GuestRoute';
+// import AuthRecommendedPage from './route/AuthRecommendedPage';
 
-import HomeContent from './content/home/HomeContent';
-import ChemistryContent from './content/chemistry/ChemistryContent';
-import SearchAndInviteFriendContent from './content/chemistry/SearchAndInviteFriendContent';
-import CityDetailContent from './content/city/CityDetailContent';
-import TestContent from './content/test/TestContent';
+// import HomeContent from './content/home/HomeContent';
+// import ChemistryContent from './content/chemistry/ChemistryContent';
+// import SearchAndInviteFriendContent from './content/chemistry/SearchAndInviteFriendContent';
+// import CityDetailContent from './content/city/CityDetailContent';
+// import TestContent from './content/test/TestContent';
 
-import AuthContent from './content/login/AuthContent';
-import InitializeNicknameContent from './content/login/InitializeNicknameContent';
-import KakaoAuthRedirectPage from './content/login/KakaoAuthRedirectPage';
+// import AuthContent from './content/login/AuthContent';
+// import InitializeNicknameContent from './content/login/InitializeNicknameContent';
+// import KakaoAuthRedirectPage from './content/login/KakaoAuthRedirectPage';
 
-import UserContent from './content/user/UserContent';
-import EditNicknameContent from './content/login/EditNicknameContent';
-import ResultContent from './content/result/ResultContent';
-import ChemistryListContent from './content/chemistry/ChemistryListContent';
-import CreateChemistryContent from './content/chemistry/CreateChemistryContent';
+// import UserContent from './content/user/UserContent';
+// import EditNicknameContent from './content/login/EditNicknameContent';
+// import ResultContent from './content/result/ResultContent';
+// import ChemistryListContent from './content/chemistry/ChemistryListContent';
+// import CreateChemistryContent from './content/chemistry/CreateChemistryContent';
 
 /* 2. Lzay Import */
 // const AuthRequiredRoute = lazy(() => import('./route/AuthRequiredRoute'));
@@ -59,143 +60,32 @@ import CreateChemistryContent from './content/chemistry/CreateChemistryContent';
 // const ChemistryListContent = lazy(() => import('./content/chemistry/ChemistryListContent'));
 // const CreateChemistryContent = lazy(() => import('./content/chemistry/CreateChemistryContent'));
 
+/* 3. Loadable Components */
+const AuthRequiredRoute = loadable(() => import('./route/AuthRequiredRoute'));
+// const TestRequiredRoute = loadable(() => import('./route/TestRequiredRoute'));
+// const GuestRoute = loadable(() => import('./route/GuestRoute'));
+// const AuthRecommendedPage = loadable(() => import(/* webpackChunkName: "AuthRecommendedPage" */ './route/AuthRecommendedPage'));
+
+const HomeContent = loadable(() => import(/* webpackChunkName: "HomeContent" */ './content/home/HomeContent'));
+// const ChemistryContent = loadable(() => import('./content/chemistry/ChemistryContent'));
+// const SearchAndInviteFriendContent = loadable(() => import('./content/chemistry/SearchAndInviteFriendContent'));
+// const CityDetailContent = loadable(() => import('./content/city/CityDetailContent'));
+const TestContent = loadable(() => import(/* webpackChunkName: "TestContent" */ './content/test/TestContent'));
+
+// const AuthContent = loadable(() => import('./content/login/AuthContent'));
+// const InitializeNicknameContent = loadable(() => import('./content/login/InitializeNicknameContent'));
+// const KakaoAuthRedirectPage = loadable(() => import('./content/login/KakaoAuthRedirectPage'));
+
+// const UserContent = loadable(() => import('./content/user/UserContent'));
+// const EditNicknameContent = loadable(() => import('./content/login/EditNicknameContent'));
+// const ResultContent = loadable(() => import('./content/result/ResultContent'));
+// const ChemistryListContent = loadable(() => import('./content/chemistry/ChemistryListContent'));
+// const CreateChemistryContent = loadable(() => import('./content/chemistry/CreateChemistryContent'));
+
 function App() {
 
-    const lazyLoadRoutes = false;
-    const sessionRoute =
-        lazyLoadRoutes
-            ?
-            /* Lazy Import of Route Elements */
-            <Route element={<>
-                <AppBar />
-                <Outlet /></>
-            }>
-                <Route key={'home'} path={'home'} element={
-                    <Suspense>
-                        <HomeContent />
-                    </Suspense>} />
-                <Route key={'chemistry'} path={'chemistry/:chemistryId'} element={<Outlet />} >
-                    <Route key={'index'} index element={
-                        <Suspense>
-                            <ChemistryContent />
-                        </Suspense>} />
-                    <Route key={'searchAndInviteFriend'} path={'searchAndInviteFriend'} element={
-                        <Suspense>
-                            <SearchAndInviteFriendContent />
-                        </Suspense>} />
-                </Route>
-                <Route key={'city'} path={'city'} element={<Outlet />} >
-                    {
-                        Object.keys(TEST.city.subTests).map((cityClass) => (
-                            <Route key={cityClass} path={cityClass} element={
-                                <Suspense>
-                                    <CityDetailContent cityClass={cityClass as keyof typeof TEST.city.subTests} />
-                                </Suspense>} />
-                        ))
-                    }
-                </Route>
-                {/* [SEO, Authorization] Hide Contents by style={ display: 'none' } when unAuthorized. Content must be rendered yet is visible. */}
-                <Route key={'authRecommended'} element={
-                    <Suspense>
-                        <AuthRecommendedPage />
-                    </Suspense>}>
-                    <Route key={'test'} path={'test'} element={
-                        <Suspense>
-                            <TestContent />
-                        </Suspense>} />
-                </Route>
-                {/* [SEO, Authorization] Routes are excluded in robots.txt. URL Accesses are redirected to login page. */}
-                <Route key={'authRequired'} element={
-                    <Suspense>
-                        <AuthRequiredRoute />
-                    </Suspense>}>
-                    <Route key={'user'} path={'user'} element={<Outlet />} >
-                        <Route key={'index'} index element={
-                            <Suspense>
-                                <UserContent />
-                            </Suspense>} />
-                        <Route key={'setNickname'} path={'setNickname'} element={
-                            <Suspense>
-                                <EditNicknameContent />
-                            </Suspense>} />
-                    </Route>
-                    <Route key={'testRequired'} element={
-                        <Suspense>
-                            <TestRequiredRoute />
-                        </Suspense>}>
-                        <Route key={'result'} path={'result'} element={
-                            <Suspense>
-                                <ResultContent />
-                            </Suspense>} />
-                    </Route>
-                    <Route key={'myChemistry'} path={'myChemistry'} element={<Outlet />} >
-                        <Route key={'myChemistry'} index element={
-                            <Suspense>
-                                <ChemistryListContent />
-                            </Suspense>} />
-                        <Route key={'new'} path={'new'} element={
-                            <Suspense>
-                                <CreateChemistryContent />
-                            </Suspense>} />
-                    </Route>
-                </Route>
-                {/* [SEO, Authorization] Routes are protected from access-by-URL. Can only be accessed by useNavigate Hook (/initializeNickname) or redirection from Kakao Auth API Page (/kakaoAuthRedirect). Routes are excluded in robots.txt. URL Accesses are redirected to login page. */}
-                <Route key={'login'} path={'login'} element={
-                    <Suspense>
-                        <AuthContent />
-                    </Suspense>} >
-                    <Route key={'initializeNickname'} path={'initializeNickname'} element={
-                        <Suspense>
-                            <InitializeNicknameContent />
-                        </Suspense>} />
-                    <Route key={'redirectURI'} path={'kakaoAuthRedirect'} element={
-                        <Suspense>
-                            <KakaoAuthRedirectPage />
-                        </Suspense>} />
-                </Route>
-            </Route>
-            :
-            /* Static Import of Route Elements */
-            <Route element={<>
-                <AppBar />
-                <Outlet /></>
-            }>
-                <Route key={'home'} path={'home'} element={<HomeContent />} />
-                <Route key={'chemistry'} path={'chemistry/:chemistryId'} element={<Outlet />} >
-                    <Route key={'index'} index element={<ChemistryContent />} />
-                    <Route key={'searchAndInviteFriend'} path={'searchAndInviteFriend'} element={<SearchAndInviteFriendContent />} />
-                </Route>
-                <Route key={'city'} path={'city'} element={<Outlet />} >
-                    {
-                        Object.keys(TEST.city.subTests).map((cityClass) => (
-                            <Route key={cityClass} path={cityClass} element={<CityDetailContent cityClass={cityClass as keyof typeof TEST.city.subTests} />} />
-                        ))
-                    }
-                </Route>
-                {/* [SEO, Authorization] Hide Contents by style={ display: 'none' } when unAuthorized. Content must be rendered yet is visible. */}
-                <Route key={'authRecommended'} element={<AuthRecommendedPage />}>
-                    <Route key={'test'} path={'test'} element={<TestContent />} />
-                </Route>
-                {/* [SEO, Authorization] Routes are excluded in robots.txt. URL Accesses are redirected to login page. */}
-                <Route key={'authRequired'} element={<AuthRequiredRoute />}>
-                    <Route key={'user'} path={'user'} element={<Outlet />} >
-                        <Route key={'index'} index element={<UserContent />} />
-                        <Route key={'setNickname'} path={'setNickname'} element={<EditNicknameContent />} />
-                    </Route>
-                    <Route key={'testRequired'} element={<TestRequiredRoute />}>
-                        <Route key={'result'} path={'result'} element={<ResultContent />} />
-                    </Route>
-                    <Route key={'myChemistry'} path={'myChemistry'} element={<Outlet />} >
-                        <Route key={'myChemistry'} index element={<ChemistryListContent />} />
-                        <Route key={'new'} path={'new'} element={<CreateChemistryContent />} />
-                    </Route>
-                </Route>
-                {/* [SEO, Authorization] Routes are protected from access-by-URL. Can only be accessed by useNavigate Hook (/initializeNickname) or redirection from Kakao Auth API Page (/kakaoAuthRedirect). Routes are excluded in robots.txt. URL Accesses are redirected to login page. */}
-                <Route key={'login'} path={'login'} element={<AuthContent />} >
-                    <Route key={'initializeNickname'} path={'initializeNickname'} element={<InitializeNicknameContent />} />
-                    <Route key={'redirectURI'} path={'kakaoAuthRedirect'} element={<KakaoAuthRedirectPage />} />
-                </Route>
-            </Route>;
+    const debug = true;
+    const lazyLoadRoutes = true;
 
     // useEffect(()=>{
     //     console.log(JSON.stringify(process.env));
@@ -209,18 +99,31 @@ function App() {
                 <Routes>
                     <Route path={'/'} element={<Page />} >
                         {/* Debug */}
-                        {/* <Route element={<>
-                            <AppBar />
-                            <Outlet /></>
+                        <Route element={
+                            <>
+                                <AppBar />
+                                <Outlet />
+                            </>
                         }>
                             <Route key={'home'} path={'home'} element={<HomeContent />} />
-                        </Route> */}
-                        <Route key={'index'} element={<Outlet />} >
+                            <Route key={'authRequired'} element={<AuthRequiredRoute />}>
+                                <Route key={'test'} path={'test'} element={<TestContent />} />
+                            </Route>
+                            <Route key={'testPreview'} path={'testPreview'} element={<TestContent />} />
+                        </Route>
+                        <Route key={'city'} path={'city'} element={<Outlet />} >
+                            {
+                                Object.keys(TEST.city.subTests).map((cityClass) => (
+                                    <Route key={cityClass} path={cityClass} element={<CityDetailContent cityClass={cityClass as keyof typeof TEST.city.subTests} />} />
+                                ))
+                            }
+                        </Route>
+                        {/* <Route key={'index'} element={<Outlet />} >
                             {sessionRoute}
                         </Route>
                         <Route key={'guest'} path={'guest/:id'} element={<GuestRoute />}>
                             {sessionRoute}
-                        </Route>
+                        </Route> */}
                     </Route>
                 </Routes>
                 {/* </AppBarContextProvider> */}

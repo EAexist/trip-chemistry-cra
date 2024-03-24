@@ -49,7 +49,8 @@ const ScrollPageContainer = ({ onPageChange, pages, children }: PropsWithChildre
 
     return (
         <div ref={ref} className="ScrollPageContainer">
-            {
+        {children}
+            {/* {
                 Array.from({ length: pages }, (value, index) => (
                     <Step key={index} index={index} className="fill-window" style={{ visibility: "hidden" }}/>
                 ))
@@ -61,7 +62,7 @@ const ScrollPageContainer = ({ onPageChange, pages, children }: PropsWithChildre
                         {children}
                     </PageContext.Provider>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }

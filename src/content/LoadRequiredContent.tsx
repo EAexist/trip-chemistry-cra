@@ -2,13 +2,15 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 
 /* React Packages */
-import { CircularProgress, Modal } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 
 /* App */
 import { LoadStatus } from "../interfaces/enums/LoadStatus";
 import withAuthLoadStatus, { WithLoadStatusProps } from "../hocs/withAuthLoadStatus";
 import getImgSrc, { FORMATWEBP } from "../utils/getImgSrc";
-import NoticeBlock from "../components/Block/NoticeBlock";
+import loadable from "@loadable/component";
+
+const NoticeBlock = loadable(() => import(/* webpackChunkName: "NoticeBlock" */ "../components/Block/NoticeBlock"));
 
 interface LoadRequiredContentProps extends WithLoadStatusProps {
     handleSuccess?: () => void;
@@ -54,20 +56,20 @@ function LoadRequiredContent({
         [LoadStatus.FAIL]: {
             body: failText,
             buttonText: handleFailButtonText,
-            handleClick: 
-            () => {
-                handleFail();
-                setStatus(LoadStatus.REST);
-            }
+            handleClick:
+                () => {
+                    handleFail();
+                    setStatus(LoadStatus.REST);
+                }
         },
         [LoadStatus.MISS]: {
             body: missText,
             buttonText: handleMissButtonText,
-            handleClick: 
-            () => {
-                handleMiss();
-                setStatus(LoadStatus.REST);
-            }
+            handleClick:
+                () => {
+                    handleMiss();
+                    setStatus(LoadStatus.REST);
+                }
         },
     }
 
@@ -111,17 +113,18 @@ function LoadRequiredContent({
                     break;
             }
         }
-    }, [ status, isPending, handleSuccess, setStatus, isEnabled, handleFail, showHandleFailButton ])
+    }, [status, isPending, handleSuccess, setStatus, isEnabled, handleFail, showHandleFailButton])
 
     return (
         isEnabled ?
             ((delayedStatus === LoadStatus.REST) || (delayedStatus === LoadStatus.PENDING))
                 ? <>
-                    {children}
-
-                    <Modal open={delayedStatus === LoadStatus.PENDING} className='block--centered'>
-                        <CircularProgress />
-                    </Modal>
+                    {children}{
+                        (delayedStatus === LoadStatus.PENDING) &&
+                        <div className='backdrop block--centered' style={{ width: '100vw', height: '100vh' }}>
+                            <CircularProgress />
+                        </div>
+                    }
                 </>
                 :
                 <NoticeBlock

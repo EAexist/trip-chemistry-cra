@@ -36,9 +36,6 @@ const asyncGuestSignIn = createAsyncThunk("authSlice/asyncGuestSignIn",
         console.log(`[asyncGuestSignIn] POST /auth/guest/signIn`);
         try {
             const response = await axios.post(`/auth/guest/signIn`,
-                // {
-                //     nickname: nickname
-                // },
                 {
                     method: "POST",
                     headers: HEADERS_AXIOS,

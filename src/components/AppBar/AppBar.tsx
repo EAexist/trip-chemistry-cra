@@ -31,7 +31,7 @@ function AppBar({ }: AppBarProps) {
     const theme = useTheme();
 
     /* States */
-    const [openDrawer, setOpenDrawer] = useState(false);    
+    const [openDrawer, setOpenDrawer] = useState(false);
     const [animateDrawerClose, setAnimateDrawerClose] = useState(false);
 
     /* Reducers */
@@ -111,86 +111,86 @@ function AppBar({ }: AppBarProps) {
             </MuiAppBar>
             {
                 animateDrawerClose &&
-            <AnimatePresence >
-            {
-                openDrawer &&
-                <motion.div
-                    initial={"closed"}
-                    animate={"open"}
-                    exit={"closed"}
-                    variants={variants_drawer}
-                    style={{ zIndex: `${theme.zIndex.appBar - 1}`}}
-                    className="drawer"
-                >
-                    <div
-                        className="page fill-window"
-                    >
-                        <Toolbar />
-                        <MotionList
-                            // initial={false}
-                            // animate={openDrawer ? "open" : "closed"}
-                            // initial={"open"}
-                            // exit={"closed"}
-                            variants={VARIANTS_STAGGER_CHILDREN}
+                <AnimatePresence >
+                    {
+                        openDrawer &&
+                        <motion.div
+                            initial={"closed"}
+                            animate={"open"}
+                            exit={"closed"}
+                            variants={variants_drawer}
+                            style={{ zIndex: `${theme.zIndex.appBar - 1}` }}
+                            className="drawer"
                         >
-                            <MotionListSubheader disableGutters className="block--with-margin-x">{`내 정보`}</MotionListSubheader>
-                            <MotionListItem key={"profile"}>
-                                <ListItemButton 
-                                    onClick={() => handleDrawerItemClick('user')} 
-                                    selected={pathname.includes('user')}
-                                    disableGutters 
-                                    className="block--with-padding-x"
+                            <div
+                                className="page fill-window"
+                            >
+                                <Toolbar />
+                                <MotionList
+                                    // initial={false}
+                                    // animate={openDrawer ? "open" : "closed"}
+                                    // initial={"open"}
+                                    // exit={"closed"}
+                                    variants={VARIANTS_STAGGER_CHILDREN}
                                 >
-                                    <ListItemAvatar>{
-                                        isAuthorized
-                                            ?
-                                            <UserAvatar showLabel={false} />
-                                            : <Avatar />
-                                    }
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary={
-                                            isAuthorized
-                                                ?
-                                                user.nickname
-                                                : "로그인하기"
-                                        }
-                                    // secondary={
-                                    //     isAuthorized ? getNameTag(user) : undefined
-                                    // }
-                                    />
-                                </ListItemButton>
-                            </MotionListItem>
-                            <Divider />
-                            <MotionListSubheader disableGutters className="block--with-margin-x">{`내 여행`}</MotionListSubheader>
-                            {
-                                Object.entries(CONTENTS).map(([content, { path, icon }]) =>
-                                    <MotionListItem key={content} >
-                                        <ListItemButton 
-                                            onClick={() => handleDrawerItemClick(path)} 
-                                            selected={pathname.includes(path)}
-                                            disableGutters 
+                                    <MotionListSubheader disableGutters className="block--with-margin-x">{`내 정보`}</MotionListSubheader>
+                                    <MotionListItem key={"profile"}>
+                                        <ListItemButton
+                                            onClick={() => handleDrawerItemClick('user')}
+                                            selected={pathname.includes('user')}
+                                            disableGutters
                                             className="block--with-padding-x"
                                         >
-                                            <ListItemAvatar>
-                                                <Avatar variant="rounded">
-                                                    <PngIcon name={icon} />
-                                                </Avatar>
+                                            <ListItemAvatar>{
+                                                isAuthorized
+                                                    ?
+                                                    <UserAvatar showLabel={false} />
+                                                    : <Avatar />
+                                            }
                                             </ListItemAvatar>
                                             <ListItemText
                                                 primary={
-                                                    strings.public.contents[content as keyof typeof strings.public.contents].label
+                                                    isAuthorized
+                                                        ?
+                                                        user.nickname
+                                                        : "로그인하기"
                                                 }
+                                            // secondary={
+                                            //     isAuthorized ? getNameTag(user) : undefined
+                                            // }
                                             />
                                         </ListItemButton>
                                     </MotionListItem>
-                                )
-                            }
-                        </MotionList>
-                    </div>
-                </motion.div>
-            }
-            </AnimatePresence>
+                                    <Divider />
+                                    <MotionListSubheader disableGutters className="block--with-margin-x">{`내 여행`}</MotionListSubheader>
+                                    {
+                                        Object.entries(CONTENTS).map(([content, { path, icon }]) =>
+                                            <MotionListItem key={content} >
+                                                <ListItemButton
+                                                    onClick={() => handleDrawerItemClick(path)}
+                                                    selected={pathname.includes(path)}
+                                                    disableGutters
+                                                    className="block--with-padding-x"
+                                                >
+                                                    <ListItemAvatar>
+                                                        <Avatar variant="rounded">
+                                                            <PngIcon name={icon} />
+                                                        </Avatar>
+                                                    </ListItemAvatar>
+                                                    <ListItemText
+                                                        primary={
+                                                            strings.public.contents[content as keyof typeof strings.public.contents].label
+                                                        }
+                                                    />
+                                                </ListItemButton>
+                                            </MotionListItem>
+                                        )
+                                    }
+                                </MotionList>
+                            </div>
+                        </motion.div>
+                    }
+                </AnimatePresence>
             }
         </>
     );

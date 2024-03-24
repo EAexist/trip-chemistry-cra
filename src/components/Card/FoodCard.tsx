@@ -43,10 +43,6 @@ const FoodCard = ({ id, isActive, ...props }: FoodCardProps) => {
                                         && <Flag id={nationId} />
                                     }
                                 </Stack>
-                                {/* <Stack className="typography--profile-label" style={{ marginBottom: "-8px" }}>
-                        <p> {commonStrings.linkType[data.linkType as keyof typeof commonStrings.linkType].name}</p>
-                        <Logo id={data.linkType}/>
-                    </Stack> */}
                             </>
                         }
 

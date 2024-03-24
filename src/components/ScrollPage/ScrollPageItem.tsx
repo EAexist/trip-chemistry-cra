@@ -20,11 +20,12 @@ const ScrollPageItem = ({ page, children, className }: PropsWithChildren<ScrollP
     const pageRef = useRef<HTMLDivElement>(null);
 
     return (
-        (activePage === page) &&
+        // (activePage === page) &&
         <motion.div
             ref={pageRef}
             {...FADEIN}
-            className={`ScrollPageItem fill-window ${className}`}
+            // className={`ScrollPageItem fill-window ${className}`}
+            className={`fill-window ${className}`}
         >
             {children}
         </motion.div>

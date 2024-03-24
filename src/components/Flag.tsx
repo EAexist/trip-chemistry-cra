@@ -8,7 +8,7 @@ function Flag({ id, ...props }: FlagProps) {
 
     return (
         <img
-            src={getImgSrc('/flag-icons/flags', `${id}`, FORMATSVG)}
+            src={getImgSrc('/flag-icons/flags/4x3', `${id}`, FORMATSVG)}
             alt={id}
             width={"16px"}
             height={"12px"}

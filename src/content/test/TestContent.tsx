@@ -39,7 +39,7 @@ import { FADEIN } from "../../motion/props";
 import { useGetProfile } from "../../reducers/authReducer";
 import { NumericTestName, SetTestName, TestName, useIsAllTestAnswered, useSubmitAnswer, useTestAnswerStatus } from "../../reducers/testAnswerReducer";
 import { SWIPERPROPS_CAROUSEL, SWIPERPROPS_FOODCARDCAROUSEL } from "../../swiper/props";
-import getImgSrc, { FORMATPNG, FORMATWEBP } from "../../utils/getImgSrc";
+import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
 import { priceText } from "../../utils/priceText";
 import LoadRequiredContent, { AuthLoadRequiredContent } from "../LoadRequiredContent";
 import AnswerButtonGroup from "./component/AnswerButtonGroup";
@@ -241,7 +241,9 @@ function TestContent({ }: TestContentProps) {
                                                                 component="img"
                                                                 alt={value}
                                                                 height={"100%"}
-                                                                image={getImgSrc("/test", `leadership_${value}`, FORMATPNG)}
+                                                                image={getImgSrc("/test", `leadership_${value}-medium`, FORMATWEBP)}
+                                                                srcSet={ `${getImgSrc("/test", `leadership_${value}-medium`, FORMATWEBP)} 128w` }
+                                                                sizes={ '30vw' }
                                                             />
                                                         </OptionCard>
                                                     ))
@@ -312,7 +314,7 @@ function TestContent({ }: TestContentProps) {
                                                                                                             <ListItemText
                                                                                                                 primary={
                                                                                                                     <Stack>
-                                                                                                                        <Logo id={source} className="logo--small"/>
+                                                                                                                        <Logo id={source} size="small"/>
                                                                                                                         <p>{commonStrings.linkType[source as keyof typeof commonStrings.linkType].name}</p>
                                                                                                                     </Stack>
                                                                                                                 }

@@ -84,15 +84,8 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                     >
                         <NavigateBefore />
                     </IconButton>
-                    <Stack>
-                        <h5 className="typography-note">{strings.test.city.title}</h5>
-                    </Stack>
-                    <IconButton
-                        edge="end"
-                        disabled
-                    >
-                        <Icon />
-                    </IconButton>
+
+                    <h5 className="typography-note " style={{ position: "absolute", width: "100%", textAlign: "center" }}>{strings.test.city.title}</h5>
                 </Toolbar>
             </AppBar>
             <Toolbar />
@@ -132,23 +125,23 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                         <AccordionDetails sx={{ padding: 0 }}>
                             {
                                 expanded &&
-                            <MotionList initial={"closed"} animate={"open"} variants={VARIANTS_STAGGER_CHILDREN}>
-                            {
-                                answerList.map(({ id, answer }) => (
-                                    <MotionListItem>
-                                        <ListItemAvatar>
-                                            <FriendAvatar id={id} />
-                                        </ListItemAvatar>
-                                        <ListItemText primary={
-                                            <Stack>
-                                                <Rating value={Number(answer)} readOnly precision={0.5} size={"small"} />
-                                                <p className="typography-note">{strings.test.city.answers[answer as keyof typeof strings.test.city.answers].label}</p>
-                                            </Stack>
-                                        } />
-                                    </MotionListItem>
-                                ))
-                            }
-                            </MotionList>
+                                <MotionList initial={"closed"} animate={"open"} variants={VARIANTS_STAGGER_CHILDREN}>
+                                    {
+                                        answerList.map(({ id, answer }) => (
+                                            <MotionListItem>
+                                                <ListItemAvatar>
+                                                    <FriendAvatar id={id} />
+                                                </ListItemAvatar>
+                                                <ListItemText primary={
+                                                    <Stack>
+                                                        <Rating value={Number(answer)} readOnly precision={0.5} size={"small"} />
+                                                        <p className="typography-note">{strings.test.city.answers[answer as keyof typeof strings.test.city.answers].label}</p>
+                                                    </Stack>
+                                                } />
+                                            </MotionListItem>
+                                        ))
+                                    }
+                                </MotionList>
                             }
                         </AccordionDetails>
                     </Accordion>
@@ -181,7 +174,7 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                                         </Stack>
                                     </CardContent>
                                 </ImageCard>
-                                <h5 className="typography-label" style={{ marginTop: "1rem", width: "90%" }}>{commonStrings.city[cityId as keyof typeof commonStrings.city].intro}</h5>
+                                <h4 className="typography-label" style={{ marginTop: "1rem", width: "90%" }}>{commonStrings.city[cityId as keyof typeof commonStrings.city].intro}</h4>
                                 <p>{commonStrings.city[cityId as keyof typeof commonStrings.city].body}</p>
                                 <div>
                                     <a href={CITY[cityId as keyof typeof CITY].link} target="_blank" rel="noopener noreferrer" className="flex">
@@ -203,7 +196,7 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                                 <div>
                                     <Stack>
                                         <p className="typography-note">{commonStrings.reference}{commonStrings.linkType[CITY[cityId as keyof typeof CITY].linkType as keyof typeof commonStrings.linkType].name}</p>
-                                        <Logo id={CITY[cityId as keyof typeof CITY].linkType} className="logo--medium" />
+                                        <Logo id={CITY[cityId as keyof typeof CITY].linkType} />
                                     </Stack>
                                 </div>
                                 <div />

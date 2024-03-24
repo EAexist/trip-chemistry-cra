@@ -1951,7 +1951,7 @@
                 "width": 32,
                 "height": 32
               },
-              "snippet": "<img class=\"logo logo--medium\" src=\"static/images/logos/logo-app.png\" alt=\"app\">",
+              "snippet": "<img class=\"logo Logo--medium\" src=\"static/images/logos/logo-app.png\" alt=\"app\">",
               "nodeLabel": "app"
             }
           }
@@ -3209,7 +3209,7 @@
                 "width": 32,
                 "height": 32
               },
-              "snippet": "<img class=\"logo logo--medium\" src=\"static/images/logos/logo-app.png\" alt=\"app\">",
+              "snippet": "<img class=\"logo Logo--medium\" src=\"static/images/logos/logo-app.png\" alt=\"app\">",
               "nodeLabel": "app"
             },
             "url": "http://localhost:3001/static/images/logos/logo-app.png",
@@ -3374,7 +3374,7 @@
                 "width": 32,
                 "height": 32
               },
-              "snippet": "<img class=\"logo logo--medium\" src=\"static/images/logos/logo-app.png\" alt=\"app\">",
+              "snippet": "<img class=\"logo Logo--medium\" src=\"static/images/logos/logo-app.png\" alt=\"app\">",
               "nodeLabel": "app"
             },
             "url": "http://localhost:3001/static/images/logos/logo-app.png",

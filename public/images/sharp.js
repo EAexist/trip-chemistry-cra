@@ -1,0 +1,22 @@
+import sharp from 'sharp';
+import fs from 'fs';
+
+const resize = ( directory, width, height, suffix ) => {
+    const path = `./public/images/${directory}`
+    fs.readdirSync(path).forEach(file => {
+        if(( !file.includes("medium")) && ( !file.includes("large") ) && ( !file.includes("small") ) ){
+            console.log(file);
+            sharp(`${path}/${file}`)
+                .resize(width, height) // width, height
+                .toFile(`${path}/${file.split('.')[0]}${suffix}.${file.split('.')[1]}.`);
+        }
+    });
+}
+
+// resize( 'icon', 256, 256, '-small' );
+// resize( 'icon', 512, 512, '-large' );
+
+// resize( 'logos', 256, 256, '-small' );
+// resize( 'logos', 256, 256, '-medium' );
+
+resize( 'test', 480, 480, '-medium' );
