@@ -1,5 +1,4 @@
 /* React Packages */
-import { ThemeProvider } from '@mui/material';
 import { lazy, Suspense } from 'react';
 import { Provider } from 'react-redux';
 import { Outlet, Route, Routes } from 'react-router-dom';
@@ -7,13 +6,13 @@ import loadable from '@loadable/component';
 
 /* App */
 import AppBar from './components/AppBar/AppBar';
-import Page from './route/Page';
+// import Page from './route/Page';
 import { store } from './store';
-import { theme } from './theme';
 
-import './styles/index.css';
 import { TEST } from './common/app-const';
 import CityDetailContent from './content/city/CityDetailContent';
+import { theme } from './theme';
+import { ThemeProvider } from '@mui/material';
 
 /* [Performance][Code Splitting]  */
 /* 1. Static Import */
@@ -61,7 +60,8 @@ import CityDetailContent from './content/city/CityDetailContent';
 // const CreateChemistryContent = lazy(() => import('./content/chemistry/CreateChemistryContent'));
 
 /* 3. Loadable Components */
-const AuthRequiredRoute = loadable(() => import('./route/AuthRequiredRoute'));
+const Page = loadable(() => import(/* webpackChunkName: "Page" */ './route/Page'));
+const AuthRequiredRoute = loadable(() => import(/* webpackChunkName: "AuthRequiredRoute" */ './route/AuthRequiredRoute'));
 // const TestRequiredRoute = loadable(() => import('./route/TestRequiredRoute'));
 // const GuestRoute = loadable(() => import('./route/GuestRoute'));
 // const AuthRecommendedPage = loadable(() => import(/* webpackChunkName: "AuthRecommendedPage" */ './route/AuthRecommendedPage'));
@@ -84,40 +84,25 @@ const TestContent = loadable(() => import(/* webpackChunkName: "TestContent" */ 
 
 function App() {
 
-    const debug = true;
-    const lazyLoadRoutes = true;
-
-    // useEffect(()=>{
-    //     console.log(JSON.stringify(process.env));
-    // }, []);
-
     return (
         // <AnimatePresence>
-        <Provider store={store}>
-            <ThemeProvider theme={theme}>
-                {/* <AppBarContextProvider> */}
+        // <ThemeProvider theme={theme}>
+            <Provider store={store}>
                 <Routes>
                     <Route path={'/'} element={<Page />} >
                         {/* Debug */}
-                        <Route element={
-                            <>
-                                <AppBar />
-                                <Outlet />
-                            </>
-                        }>
-                            <Route key={'home'} path={'home'} element={<HomeContent />} />
-                            <Route key={'authRequired'} element={<AuthRequiredRoute />}>
+                        <Route key={'home'} path={'home'} element={<HomeContent />} />
+                        <Route key={'testPreview'} path={'testPreview'} element={<TestContent />} />
+                        {/* <Route key={'authRequired'} element={<AuthRequiredRoute />}>
                                 <Route key={'test'} path={'test'} element={<TestContent />} />
                             </Route>
-                            <Route key={'testPreview'} path={'testPreview'} element={<TestContent />} />
-                        </Route>
-                        <Route key={'city'} path={'city'} element={<Outlet />} >
-                            {
-                                Object.keys(TEST.city.subTests).map((cityClass) => (
-                                    <Route key={cityClass} path={cityClass} element={<CityDetailContent cityClass={cityClass as keyof typeof TEST.city.subTests} />} />
-                                ))
-                            }
-                        </Route>
+                            <Route key={'city'} path={'city'} element={<Outlet />} >
+                                {
+                                    Object.keys(TEST.city.subTests).map((cityClass) => (
+                                        <Route key={cityClass} path={cityClass} element={<CityDetailContent cityClass={cityClass as keyof typeof TEST.city.subTests} />} />
+                                    ))
+                                }
+                            </Route> */}
                         {/* <Route key={'index'} element={<Outlet />} >
                             {sessionRoute}
                         </Route>
@@ -126,9 +111,8 @@ function App() {
                         </Route> */}
                     </Route>
                 </Routes>
-                {/* </AppBarContextProvider> */}
-            </ThemeProvider>
-        </Provider>
+            </Provider>
+        // </ThemeProvider>
         // </AnimatePresence>
     );
 }

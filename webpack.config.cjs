@@ -39,14 +39,11 @@ const BrotliPlugin = require('brotli-webpack-plugin');
 /* CSS */
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const FontPreloadPlugin = require("webpack-font-preload-plugin");
-
-/* Pre-Render */
-const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
-const PrerendererPlugin = require('@prerenderer/webpack-plugin');
+const HtmlCriticalPlugin = require("html-critical-webpack-plugin");
 
 /* Code Splitting */
 const LoadablePlugin = require('@loadable/webpack-plugin');
+
 
 
 /*  !! @TODO [serverConfig, clientConfig module 정의 구분]
@@ -63,7 +60,27 @@ const babelLoader = (devMode) => ({
         loader: 'babel-loader',
         options: {
           presets: ['@babel/preset-env',
-            ['@babel/preset-react', { 'runtime': 'automatic' }]]
+            ['@babel/preset-react', { 'runtime': 'automatic' }]],
+          plugins: [
+            [
+              'babel-plugin-import',
+              {
+                libraryName: '@mui/material',
+                libraryDirectory: '',
+                camel2DashComponentName: false,
+              },
+              'core',
+            ],
+            [
+              'babel-plugin-import',
+              {
+                libraryName: '@mui/icons-material',
+                libraryDirectory: '',
+                camel2DashComponentName: false,
+              },
+              'icons',
+            ],
+          ]
         }
       }
     },
@@ -82,7 +99,8 @@ const babelLoader = (devMode) => ({
       exclude: /\.module\.css$/i, // 모듈 파일 제외 설정
       use: [
         /* Do not use style-loader and mini-css-extract-plugin together. ( https://github.com/webpack-contrib/css-loader#recommend ) */
-        devMode ? "style-loader" : MiniCssExtractPlugin.loader,
+        // devMode ? "style-loader" : MiniCssExtractPlugin.loader,
+        MiniCssExtractPlugin.loader,
         "css-loader",
         "postcss-loader",
       ]
@@ -91,7 +109,8 @@ const babelLoader = (devMode) => ({
       test: /\.module\.css$/i,
       use: [
         /* Do not use style-loader and mini-css-extract-plugin together. ( https://github.com/webpack-contrib/css-loader#recommend ) */
-        devMode ? "style-loader" : MiniCssExtractPlugin.loader,
+        // devMode ? "style-loader" : MiniCssExtractPlugin.loader,
+        MiniCssExtractPlugin.loader,
         {
           loader: 'css-loader',
           options: {
@@ -124,20 +143,20 @@ const babelLoader = (devMode) => ({
         Harry Finn. (2021, Sep 3). Webpack 5: file-loader generates a copy of fonts with hash-name.
         ( https://stackoverflow.com/a/69041786 )
     */
-    {
-      test: /\.(ttf|woff2)$/i,
-      type: 'asset/resource',
-      generator: {
-        filename: (pathData) => {
-          const filepath = path
-            .dirname(pathData.filename)
-            .split("/")
-            .slice(1)
-            .join("/");
-          return `${filepath}/[name].[hash][ext][query]`;
-        },
-      },
-    },
+    // {
+    //   test: /\.(ttf|woff2)$/i,
+    //   type: 'asset/resource',
+    //   generator: {
+    //     filename: (pathData) => {
+    //       const filepath = path
+    //         .dirname(pathData.filename)
+    //         .split("/")
+    //         .slice(1)
+    //         .join("/");
+    //       return `${filepath}/[name].[hash][ext][query]`;
+    //     },
+    //   },
+    // },
   ]
 });
 
@@ -154,7 +173,9 @@ const serverConfig = (env, argv) => {
   const devMode = argv.mode === 'development';
   return ({
     target: 'node',
-    entry: './src/server/index.jsx',
+    entry: {
+      index: './src/server/index.jsx'
+    },
     output: {
       path: path.join(__dirname, '/dist'),
       filename: 'server.cjs',
@@ -166,20 +187,18 @@ const serverConfig = (env, argv) => {
       }),
       new Dotenv(),
     ].concat(
-      devMode ? []
-      : [
-        new MiniCssExtractPlugin(),
-        /* Compression 
-          Compression Plugins should appear after file generating plugins. */
-        new CompressionPlugin({
-          test: /\.js$|\.css$|\.html$/,
-          threshold: 10240,
-        }),
-        new BrotliPlugin({
-          test: /\.js$|\.css$|\.html$/,
-          threshold: 10240,
-        }),
-      ]),
+      devMode ? [new MiniCssExtractPlugin()]
+        : [
+          new MiniCssExtractPlugin(),
+          /* Compression 
+            Compression Plugins should appear after file generating plugins. */
+          new CompressionPlugin({
+            test: /\.js$|\.css$|\.html$/,
+          }),
+          new BrotliPlugin({
+            test: /\.js$|\.css$|\.html$/,
+          }),
+        ]),
     resolve
   })
 };
@@ -188,33 +207,38 @@ const clientConfig = (env, argv) => {
   const devMode = argv.mode === 'development';
   return ({
     target: ['web', 'es2017'],
-    entry: './src/index.tsx',
+    entry: './src/index_ssr.tsx',
     output: {
       path: path.join(__dirname, '/dist'),
-      /* Appends /static to index.html when looking for client.js. This is where Express is serving static files from */
       publicPath: 'static/',
-      filename: 'app.js',
+      filename: '[name].bundle.js',
       chunkFilename: '[name].[chunkhash].js'
     },
     module: babelLoader(devMode),
     plugins: [
+      /* .env variables */
+      // /*  !! @TODO [env variable Security Issue]
+      //     ( https://stackoverflow.com/questions/41359504/webpack-bundle-js-uncaught-referenceerror-process-is-not-defined )
+      // */
       new Dotenv(),
       new HtmlWebpackPlugin({
-        template: `${__dirname}/public/index.html`,
+        template: `${__dirname}/public/ssr_template.html`,
         favicon: `${__dirname}/public/favicon.ico`,
-        attributes: {
-          "defer": function (tag, compilation, index) {
-                if (( tag.tagName === 'link' ) || ( tag.tagName === 'script' )) {
-                    return true;
-                }
-            }
-        },
+        scriptLoading: 'module',
+        inject: "body",
+        minify: false,
+        // minify: devMode ? false : {
+        //   collapseWhitespace: true,
+        //   keepClosingSlash: true,
+        //   removeComments: true,
+        //   /* !!! */
+        //   removeRedundantAttributes: false,
+        //   removeScriptTypeAttributes: true,
+        //   removeStyleLinkTypeAttributes: true,
+        //   useShortDoctype: true
+        // }
       }),
-      new HtmlWebpackInjectAttributesPlugin(),
-      new InterpolateHtmlPlugin({
-        PUBLIC_URL: '/static'
-      }),
-      new FontPreloadPlugin(),
+      // new HtmlWebpackInjectAttributesPlugin(),
       /* Copy Project's public static contents( public/ : images, manifest.json, robots.txt ) to dist/  */
       new copyPlugin({
         patterns: [
@@ -224,65 +248,62 @@ const clientConfig = (env, argv) => {
           {
             from: "public/manifest.json", to: "manifest.json"
           },
-          {
-            from: "public/images", to: "images"
-          }
+          // {
+          //   from: "public/images", to: "images"
+          // }
         ]
       }),
-
-      /* Pre-Render 
-        @TODO PreRendererPlugin is not working.
-      */
-      new PrerendererPlugin({
-        routes: [ '/', '/home/', '/test/' ],
-      }),
-
       /* Loadable Components (Code Splitting) */
       new LoadablePlugin(),
-
-      /* .env variables */
-      // /*  !! @TODO [env variable Security Issue]
-      //     ( https://stackoverflow.com/questions/41359504/webpack-bundle-js-uncaught-referenceerror-process-is-not-defined )
-      // */
     ].concat(
-      devMode ? []
-      : [
-        new MiniCssExtractPlugin({
-          attributes: {
-            defer: "defer",
-          },
-        }),
-        /* Compression 
-          Compression Plugins should appear after file generating plugins. */
-        new CompressionPlugin({
-          test: /\.js$|\.css$|\.html$/,
-          // threshold: 10240,
-        }),
-        new BrotliPlugin({
-          test: /\.js$|\.css$|\.html$/,
-          // threshold: 10240,
-        }),
-      ]),
+      devMode ? [new MiniCssExtractPlugin()]
+        : [
+          /* Demián Renzulli. (2019-02-17). Defer non-critical CSS. web.dev.   
+            ( https://web.dev/articles/defer-non-critical-css ) */
+          /* MiniCssExtractPlugin
+            ( https://webpack.js.org/plugins/mini-css-extract-plugin/ ) */
+          new MiniCssExtractPlugin({
+            attributes: {
+              rel: "preload",
+              as: "style",
+              onload: "this.onload=null;this.rel='stylesheet'",
+            },
+          }),
+          // new HtmlCriticalPlugin({
+          //   base: path.join(path.resolve(__dirname), 'dist/'),
+          //   src: 'index.html',
+          //   dest: 'index.html',
+          //   inline: true,
+          //   minify: true,
+          //   extract: true,
+          //   // width: 375,
+          //   // height: 565,
+          //   penthouse: {
+          //     blockJSRequests: false,
+          //   }
+          // }),    
+          /* Compression 
+            Compression Plugins should appear after file generating plugins. */
+          new CompressionPlugin({
+            test: /\.js$|\.css$|\.html$/,
+          }),
+          new BrotliPlugin({
+            test: /\.js$|\.css$|\.html$/,
+          }),
+        ]),
     experiments: {
       outputModule: true,
-    },  
-    optimization: {
-      minimizer: devMode ? [] : [
-        /* For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line
-          ( https://webpack.kr/configuration/optimization/#optimizationminimizer ) */
-        `...`,
-        new CssMinimizerPlugin(),
-        // new TerserPlugin(),
-        // new OptimizeCSSAssetsPlugin(),
-      ],
-      // splitChunks: {
-      //   chunks: "all",
-      //   name: false,
-      // },
     },
-    resolve
-  })
-};
+    ...devMode ? {
+      optimization: {
+        chunkIds: 'named',
+        moduleIds: 'named',
+        mangleExports: false,
+        mangleWasmImports: false,
+        innerGraph: true,
+      }} : { },
+  resolve
+})};
 
 // module.exports = [ serverConfig ];
-module.exports = [ clientConfig, serverConfig ];
+module.exports = [clientConfig, serverConfig];

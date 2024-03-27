@@ -7,6 +7,7 @@ import { AppDispatch } from "../store";
 import { HelmetProvider } from "react-helmet-async";
 import { AppBarContextProvider } from "../components/AppBar/AppBarContext";
 import HelmetWrapper from "../helmet/HelmetWrapper";
+import AppBar from "../components/AppBar/AppBar";
 
 interface PageProps {
 
@@ -65,10 +66,12 @@ function Page({ }: PageProps) {
                 showHandleFailButton={false}
             >
                 {
-                    // ! isAutoLoginEnabaled
-                    true
+                    ! isAutoLoginEnabaled
                     &&
-                    <Outlet />
+                    <>
+                        <AppBar />
+                        <Outlet />
+                    </>
                 }
                 {/* https://reactrouter.com/en/main/components/scroll-restoration */}
                 {/* <ScrollRestoration

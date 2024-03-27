@@ -9,8 +9,9 @@ import { Button, Stack, Toolbar, useTheme } from "@mui/material";
 /* Swiper */
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperType from "swiper";
-import 'swiper/css';
+import 'swiper/css/bundle';
 import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
 
 import { SWIPERPROPS_HOMECONTENT } from "../../swiper/props";
 import PaginationDiv from "../../swiper/components/PaginationDiv";

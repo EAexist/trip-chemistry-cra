@@ -8,7 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 /* Swiper */
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
+import 'swiper/css/bundle';
 import 'swiper/css/pagination'; /* Page */
 import 'swiper/css/navigation'; /* Page */
 

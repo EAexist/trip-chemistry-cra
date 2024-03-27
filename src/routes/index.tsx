@@ -1,4 +1,56 @@
+import { Route, Routes } from "react-router-dom"
+import Page from "../route/Page"
+import loadable from "@loadable/component";
+import './styles/index.css';
 
+/* 3. Loadable Components */
+const AuthRequiredRoute = loadable(() => import('../route/AuthRequiredRoute'));
+// const TestRequiredRoute = loadable(() => import('../route/TestRequiredRoute'));
+// const GuestRoute = loadable(() => import('../route/GuestRoute'));
+// const AuthRecommendedPage = loadable(() => import(/* webpackChunkName: "AuthRecommendedPage" */ '../route/AuthRecommendedPage'));
+
+const HomeContent = loadable(() => import(/* webpackChunkName: "HomeContent" */ '../content/home/HomeContent'));
+// const ChemistryContent = loadable(() => import('../content/chemistry/ChemistryContent'));
+// const SearchAndInviteFriendContent = loadable(() => import('../content/chemistry/SearchAndInviteFriendContent'));
+// const CityDetailContent = loadable(() => import('../content/city/CityDetailContent'));
+const TestContent = loadable(() => import(/* webpackChunkName: "TestContent" */ '../content/test/TestContent'));
+
+// const AuthContent = loadable(() => import('../content/login/AuthContent'));
+// const InitializeNicknameContent = loadable(() => import('../content/login/InitializeNicknameContent'));
+// const KakaoAuthRedirectPage = loadable(() => import('../content/login/KakaoAuthRedirectPage'));
+
+// const UserContent = loadable(() => import('../content/user/UserContent'));
+// const EditNicknameContent = loadable(() => import('../content/login/EditNicknameContent'));
+// const ResultContent = loadable(() => import('../content/result/ResultContent'));
+// const ChemistryListContent = loadable(() => import('../content/chemistry/ChemistryListContent'));
+// const CreateChemistryContent = loadable(() => import('../content/chemistry/CreateChemistryContent'));
+
+const routes =
+        <Routes>
+                <Route path={'/'} element={<Page />} >
+                        {/* Debug */}
+                        <Route key={'home'} path={'home'} element={<HomeContent />} />
+                        <Route key={'testPreview'} path={'testPreview'} element={<TestContent />} />
+                        {/* <Route key={'authRequired'} element={<AuthRequiredRoute />}>
+            <Route key={'test'} path={'test'} element={<TestContent />} />
+        </Route>
+        <Route key={'city'} path={'city'} element={<Outlet />} >
+            {
+                Object.keys(TEST.city.subTests).map((cityClass) => (
+                    <Route key={cityClass} path={cityClass} element={<CityDetailContent cityClass={cityClass as keyof typeof TEST.city.subTests} />} />
+                ))
+            }
+        </Route> */}
+                        {/* <Route key={'index'} element={<Outlet />} >
+        {sessionRoute}
+    </Route>
+    <Route key={'guest'} path={'guest/:id'} element={<GuestRoute />}>
+        {sessionRoute}
+    </Route> */}
+                </Route>
+        </Routes>
+
+export default routes;
 // const lazyLoadRoutes = true;
 // const sessionRoute =
 // lazyLoadRoutes ?
@@ -101,13 +153,13 @@
 //             <Route key={'index'} index element={<ChemistryContent />} />
 //             <Route key={'searchAndInviteFriend'} path={'searchAndInviteFriend'} element={<SearchAndInviteFriendContent />} />
 //         </Route>
-        // <Route key={'city'} path={'city'} element={<Outlet />} >
-        //     {
-        //         Object.keys(TEST.city.subTests).map((cityClass) => (
-        //             <Route key={cityClass} path={cityClass} element={<CityDetailContent cityClass={cityClass as keyof typeof TEST.city.subTests} />} />
-        //         ))
-        //     }
-        // </Route>
+// <Route key={'city'} path={'city'} element={<Outlet />} >
+//     {
+//         Object.keys(TEST.city.subTests).map((cityClass) => (
+//             <Route key={cityClass} path={cityClass} element={<CityDetailContent cityClass={cityClass as keyof typeof TEST.city.subTests} />} />
+//         ))
+//     }
+// </Route>
 //         {/* [SEO, Authorization] Hide Contents by style={ display: 'none' } when unAuthorized. Content must be rendered yet is visible. */}
 //         <Route key={'authRecommended'} element={<AuthRecommendedPage />}>
 //             <Route key={'test'} path={'test'} element={<TestContent />} />
