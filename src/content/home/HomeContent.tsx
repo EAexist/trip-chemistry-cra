@@ -8,12 +8,14 @@ import { Button, Stack, Toolbar, useTheme } from "@mui/material";
 
 /* Swiper */
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from "swiper/modules";
 import SwiperType from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
+import { SwiperOptions } from "swiper/types";
+import { AUTOPLAY_DELAY, SWIPER_SPEED } from "../../swiper";
 
-import { SWIPERPROPS_HOMECONTENT } from "../../swiper/props";
 import PaginationDiv from "../../swiper/components/PaginationDiv";
 import SwiperAutoplayProgress from "../../swiper/components/SwiperAutoplayProgress";
 import { useStrings } from "../../texts";
@@ -53,6 +55,24 @@ function HomeContent({ }: HomeContentProps) {
             setShowFloatingButton(true);
         }
     })
+
+    /* Swiper */
+    const SWIPERPROPS_HOMECONTENT: SwiperOptions | { className: string } = {
+        modules: [ Pagination, Autoplay ],
+        loop: true,
+        // rewind: true,
+        speed: SWIPER_SPEED,
+        slidesPerView: 1,
+        pagination: {
+            clickable: true,
+            el: '.pageSwiper-pagination', 
+        },
+        // autoHeight: true,
+        autoplay : {
+            delay: AUTOPLAY_DELAY,
+            disableOnInteraction: false,
+        }
+    }
 
 
     return (

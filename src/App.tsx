@@ -92,7 +92,7 @@ function App() {
                     <Route path={'/'} element={<Page />} >
                         {/* Debug */}
                         <Route key={'home'} path={'home'} element={<HomeContent />} />
-                        <Route key={'testPreview'} path={'testPreview'} element={<TestContent />} />
+                        {/* <Route key={'testPreview'} path={'testPreview'} element={<TestContent />} /> */}
                         {/* <Route key={'authRequired'} element={<AuthRequiredRoute />}>
                                 <Route key={'test'} path={'test'} element={<TestContent />} />
                             </Route>

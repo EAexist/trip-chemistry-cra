@@ -43,6 +43,7 @@ const HtmlCriticalPlugin = require("html-critical-webpack-plugin");
 
 /* Code Splitting */
 const LoadablePlugin = require('@loadable/webpack-plugin');
+const { Minimize } = require('@mui/icons-material');
 
 /* Debug */
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -256,7 +257,7 @@ const clientConfig = (env, argv) => {
       }),
       /* Loadable Components (Code Splitting) */
       new LoadablePlugin(),
-      new BundleAnalyzerPlugin()
+      new BundleAnalyzerPlugin({ analyzerMode : 'static' })
     ].concat(
       devMode ? [new MiniCssExtractPlugin()]
         : [
@@ -303,6 +304,7 @@ const clientConfig = (env, argv) => {
         mangleExports: false,
         mangleWasmImports: false,
         innerGraph: true,
+        minimize: false,
       }} : { },
   resolve
 })};
