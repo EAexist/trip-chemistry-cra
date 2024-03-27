@@ -2,17 +2,16 @@
 import { useState } from "react";
 
 /* React Packages */
-import { useMotionValueEvent, useScroll } from "framer-motion";
+import { Button, Stack, Toolbar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Button, Stack, Toolbar, useTheme } from "@mui/material";
 
 /* Swiper */
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination } from "swiper/modules";
 import SwiperType from 'swiper';
 import 'swiper/css';
-import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
+import 'swiper/css/pagination';
+import { Autoplay, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { SwiperOptions } from "swiper/types";
 import { AUTOPLAY_DELAY, SWIPER_SPEED } from "../../swiper";
 
@@ -31,10 +30,9 @@ function HomeContent({ }: HomeContentProps) {
 
     /* Hookes */
     const navigate = useNavigate();
-    const theme = useTheme();
 
     /* States */
-    const [showFloatingButton, setShowFloatingButton] = useState<boolean>(true);
+    const [ showFloatingButton ] = useState<boolean>(true);
     const [swiper, setSwiper] = useState<SwiperType>();
 
     /* Reducers */
@@ -43,18 +41,6 @@ function HomeContent({ }: HomeContentProps) {
     const handleTestStart = () => {
         navigate('/test');
     };
-
-    /* Motion */
-    const { scrollY } = useScroll();
-
-    useMotionValueEvent(scrollY, "change", (latest) => {
-        if (scrollY.get() > window.innerHeight * 0.4) {
-            setShowFloatingButton(false);
-        }
-        else {
-            setShowFloatingButton(true);
-        }
-    })
 
     /* Swiper */
     const SWIPERPROPS_HOMECONTENT: SwiperOptions | { className: string } = {
@@ -97,7 +83,7 @@ function HomeContent({ }: HomeContentProps) {
                         </div>
                     </SwiperSlide>
                 ))}
-                <div slot="container-end" style={{ color: theme.palette.primary.main }}>
+                <div slot="container-end">
                     <div className="block--with-margin-x block__body">
                         <Stack>
                             {

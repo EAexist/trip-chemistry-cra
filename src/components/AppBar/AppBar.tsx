@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Close, Menu } from "@mui/icons-material";
 import { Avatar, Button, Divider, IconButton, ListItemAvatar, ListItemButton, ListItemText, AppBar as MuiAppBar, Toolbar, useTheme } from "@mui/material";
@@ -58,9 +58,9 @@ function AppBar({ }: AppBarProps) {
         // setAnimateDrawerLeaving(true);
     };
 
-    useEffect(() => {
-        console.log(`[AppBar]\n\tpathname=${pathname}`);
-    }, [pathname])
+    // useEffect(() => {
+    //     console.log(`[AppBar]\n\tpathname=${pathname}`);
+    // }, [ pathname ])
 
     const variants_drawer = {
         open: {
@@ -77,8 +77,6 @@ function AppBar({ }: AppBarProps) {
             }
         }
     };
-
-
 
     return (
         openAppBar &&

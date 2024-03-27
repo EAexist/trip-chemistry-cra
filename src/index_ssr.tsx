@@ -1,11 +1,11 @@
-import { createRoot, hydrateRoot } from 'react-dom/client';
+import { CacheProvider } from '@emotion/react';
+import { loadableReady } from '@loadable/component';
+import { ThemeProvider } from '@mui/material/styles';
+import { hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { loadableReady } from '@loadable/component';
 import createEmotionCache from './createEmotionCache';
-import { CacheProvider } from '@emotion/react';
-import { ThemeProvider } from '@mui/material/styles';
+import reportWebVitals from './reportWebVitals';
 import { theme } from './theme';
 
 import './styles/index.css';

@@ -50,7 +50,7 @@
   "scripts": {
     "build:client": "react-scripts build",
     "start:client:prod": "serve -s build",
-    "start:client": "craco start",
+    "start:client": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "clean": "find ./dist -maxdepth 1 -type f -not -name name -delete",
