@@ -89,6 +89,9 @@ export const theme = createTheme({
         MuiAppBar: {
             defaultProps: {
                 elevation: 1,
+                style: {
+                    backgroundColor: defaultTheme.palette.secondary.main,
+                }
             }
         },
         MuiStack: {
