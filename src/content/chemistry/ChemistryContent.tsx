@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 /* React Packages */
 import { AirplaneTicket, Close, Error, GroupAdd, NavigateBefore } from "@mui/icons-material";
 import { Alert, Avatar, Button, ButtonBase, Grid, Icon, IconButton, List, ListItem, ListItemAvatar, ListItemText, Modal, Paper, Stack, Toolbar } from "@mui/material";
-import { motion, useMotionValueEvent, useScroll } from "framer-motion";
+import { domAnimation, LazyMotion, m, useMotionValueEvent, useScroll } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -171,18 +171,18 @@ function ChemistryContent({ }: ChemistryContentProps) {
             handleSuccess={handleChemistrySuccess}
             handleFail={handleChemistryFail}
         >
-        {/* MetaData
+            {/* MetaData
             Not Crawled.
             Open Graph Protocol Metadata for SNS(Kakaotalk, Instagram) Share.
         */}
-        <HelmetWrapper
-            title={ `여행 타입 테스트 | 친구들과의 여행을 준비해보세요.` }
-            // description={ `DESCRIPTION` }
-            description={ Object.values(profileList).length > 0 ? `${Object.values(profileList)[0].nickname}님의 ${title}. 참여하고 여행의 리더, 일정, 예산 그리고 여행지를 함께 결정해보세요.` : `${title}. 참여하고 여행의 리더, 일정, 예산 그리고 여행지를 함께 결정해보세요.` }
-            keywords={"여행, 여행 일정, 여행지, 여행 계획, 여행 예산, 국내여행, 해외여행, MBTI"}
-            url={"https://eaexist.github.io/tripchemistry"}
-            image={"/static/images/meta/social-meta-iamge.jpg"}
-        />
+            <HelmetWrapper
+                title={`여행 타입 테스트 | 친구들과의 여행을 준비해보세요.`}
+                // description={ `DESCRIPTION` }
+                description={Object.values(profileList).length > 0 ? `${Object.values(profileList)[0].nickname}님의 ${title}. 참여하고 여행의 리더, 일정, 예산 그리고 여행지를 함께 결정해보세요.` : `${title}. 참여하고 여행의 리더, 일정, 예산 그리고 여행지를 함께 결정해보세요.`}
+                keywords={"여행, 여행 일정, 여행지, 여행 계획, 여행 예산, 국내여행, 해외여행, MBTI"}
+                url={"https://eaexist.github.io/tripchemistry"}
+                image={"/static/images/meta/social-meta-iamge.jpg"}
+            />
             <Toolbar />
             <RoutedMotionPage className="page min-fill-window flex block--gray block__body">
                 <SectionPaper className="block__body body__head">
@@ -224,53 +224,55 @@ function ChemistryContent({ }: ChemistryContentProps) {
                             isMember
                                 ?
                                 (
-                                    <motion.div>
-                                        {
-                                            isInviteOptionsOpen
-                                                ?
-                                                <motion.div {...FADEIN_VIEWPORT} key={String(isInviteOptionsOpen)}>
-                                                    <Grid container columnSpacing={2}>
-                                                        {
-                                                            [
-                                                                {
-                                                                    onClick: handleStartShare,
-                                                                    icon: 'share',
-                                                                    label: '링크 공유'
-                                                                },
-                                                                {
-                                                                    onClick: handleStartSearch,
-                                                                    icon: 'person_search',
-                                                                    label: '소셜 로그인 회원 검색'
-                                                                },
-                                                            ].map(({ onClick, icon, label }) => (
-                                                                <Grid item xs={6} display={"flex"} flexDirection={'column'}>
-                                                                    <Button
-                                                                        onClick={onClick}
-                                                                        startIcon={<Icon>{icon}</Icon>}
-                                                                        variant="outlined"
-                                                                        className="button--full"
-                                                                    >
-                                                                        {label}
-                                                                    </Button>
-                                                                </Grid>
+                                    <LazyMotion features={domAnimation}>
+                                        <m.div>
+                                            {
+                                                isInviteOptionsOpen
+                                                    ?
+                                                    <m.div {...FADEIN_VIEWPORT} key={String(isInviteOptionsOpen)}>
+                                                        <Grid container columnSpacing={2}>
+                                                            {
+                                                                [
+                                                                    {
+                                                                        onClick: handleStartShare,
+                                                                        icon: 'share',
+                                                                        label: '링크 공유'
+                                                                    },
+                                                                    {
+                                                                        onClick: handleStartSearch,
+                                                                        icon: 'person_search',
+                                                                        label: '소셜 로그인 회원 검색'
+                                                                    },
+                                                                ].map(({ onClick, icon, label }) => (
+                                                                    <Grid item xs={6} display={"flex"} flexDirection={'column'}>
+                                                                        <Button
+                                                                            onClick={onClick}
+                                                                            startIcon={<Icon>{icon}</Icon>}
+                                                                            variant="outlined"
+                                                                            className="button--full"
+                                                                        >
+                                                                            {label}
+                                                                        </Button>
+                                                                    </Grid>
 
-                                                            ))
-                                                        }
-                                                    </Grid>
-                                                </motion.div>
-                                                :
-                                                <motion.div className="flex">
-                                                    <Button
-                                                        onClick={() => setIsInviteOptionsOpen(true)}
-                                                        startIcon={<GroupAdd />}
-                                                        variant="outlined"
-                                                        className="button--full"
-                                                    >
-                                                        친구 초대하기
-                                                    </Button>
-                                                </motion.div>
-                                        }
-                                    </motion.div>
+                                                                ))
+                                                            }
+                                                        </Grid>
+                                                    </m.div>
+                                                    :
+                                                    <m.div className="flex">
+                                                        <Button
+                                                            onClick={() => setIsInviteOptionsOpen(true)}
+                                                            startIcon={<GroupAdd />}
+                                                            variant="outlined"
+                                                            className="button--full"
+                                                        >
+                                                            친구 초대하기
+                                                        </Button>
+                                                    </m.div>
+                                            }
+                                        </m.div>
+                                    </LazyMotion>
                                 )
                                 :
                                 <Button

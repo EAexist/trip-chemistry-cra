@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 /* React Packages */
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
 import { useSelector } from "react-redux";
 
 import { List, ListItem, Stack } from "@mui/material";
@@ -62,9 +62,10 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
 
     return (
         <>
+        <LazyMotion features={domAnimation}>
             <SectionPaper>
-                <motion.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.tripCharacter.title}</motion.h5>
-                <motion.div {...FADEIN_VIEWPORT} className="block__body">
+                <m.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.tripCharacter.title}</m.h5>
+                <m.div {...FADEIN_VIEWPORT} className="block__body">
                     <Stack justifyContent={'center'} alignItems={'start'}>
                         {
                             answeredProfileIdList.map((id, index) => (
@@ -81,7 +82,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                         }
                     </Stack>
                     <AnimatePresence mode={"wait"} initial={false}>
-                        <motion.div key={characterSectionActiveUserIndex} {...{...FADEIN, exit: "hidden" }} className="navigation-button__container">
+                        <m.div key={characterSectionActiveUserIndex} {...{...FADEIN, exit: "hidden" }} className="navigation-button__container">
                             <TestResultBlock key={characterSectionActiveUserIndex}id={answeredProfileIdList[characterSectionActiveUserIndex]} />
                             {
                                 (characterSectionActiveUserIndex > 0) &&
@@ -91,18 +92,18 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                                 (characterSectionActiveUserIndex < answeredProfileIdList.length - 1) &&
                                 <NavigationButton navigateTo="next" onClick={() => setCharacterSectionActiveUserIndex((prev) => prev < answeredProfileIdList.length - 1 ? prev + 1 : prev)} />
                             }
-                        </motion.div>
+                        </m.div>
                     </AnimatePresence>
                     <AnimatePresence mode={"wait"} initial={false}>
-                        <motion.p key={characterSectionActiveUserIndex} {...{...FADEIN, exit: "hidden" }} custom={0.5}>
+                        <m.p key={characterSectionActiveUserIndex} {...{...FADEIN, exit: "hidden" }} custom={0.5}>
                             {characterSectionCharacter?.body}
-                        </motion.p>
+                        </m.p>
                     </AnimatePresence>
-                </motion.div>
+                </m.div>
             </SectionPaper>
             <SectionPaper>
-                <motion.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.leadership.title}</motion.h5>
-                <motion.div {...FADEIN_VIEWPORT} className="block__body">
+                <m.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.leadership.title}</m.h5>
+                <m.div {...FADEIN_VIEWPORT} className="block__body">
                     <Stack sx={{ justifyContent: 'center' }}>
                         {
                             Object.keys(Object.values(leadershipAnswerToProfileList)).length > 0 &&
@@ -157,11 +158,11 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                             ))}
                         </p>
                     }
-                </motion.div>
+                </m.div>
             </SectionPaper>
             <SectionPaper>
-                <motion.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.schedule.title}</motion.h5>                
-                <motion.div {...FADEIN_VIEWPORT} className="block__body">
+                <m.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.schedule.title}</m.h5>                
+                <m.div {...FADEIN_VIEWPORT} className="block__body">
                 <List disablePadding>
                     {
                         (Object.values(testStrings.test.schedule.answers) as { icon: string, label: string, value: number }[]).map(({ icon, label, value }) => (
@@ -197,11 +198,11 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                             )
                         })
                     }
-                </motion.div>
+                </m.div>
             </SectionPaper>
             <SectionPaper>
-                <motion.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.budget.title}</motion.h5>
-                <motion.div  {...FADEIN_VIEWPORT} className="block__body">
+                <m.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.budget.title}</m.h5>
+                <m.div  {...FADEIN_VIEWPORT} className="block__body">
                     <div className="block--centered">
                         <ChemistrySlider {...SLIDERPROPS_CHEMISTRY_BUDGET_FOOD} />
                     </div>
@@ -221,24 +222,25 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                             )
                         })
                     }
-                </motion.div>
+                </m.div>
             </SectionPaper>
             <SectionPaper>
-                <motion.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.city.title}</motion.h5>
+                <m.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.city.title}</m.h5>
                 <ul>
                 {
                     sortedCityList && sortedCityList.map((cityClass) => (
-                        <motion.li {...FADEIN_VIEWPORT}>
+                        <m.li {...FADEIN_VIEWPORT}>
                             <CityChemistryContent cityClass={cityClass as keyof typeof TEST.city.subTests} />
-                        </motion.li>
+                        </m.li>
                     ))
                 }
                 </ul>
             </SectionPaper>
             {/* <SectionPaper>
-                <motion.h5 className="typography-heading">{" 친구에게 결과 공유하기 "}</motion.h5>
+                <m.h5 className="typography-heading">{" 친구에게 결과 공유하기 "}</m.h5>
             </SectionPaper> */}
             {/* <div /> */}
+            </LazyMotion>
         </>
     );
 }

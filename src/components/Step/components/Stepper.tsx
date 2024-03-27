@@ -2,7 +2,7 @@ import { PropsWithChildren, useEffect, useRef } from "react";
 
 /* Swiper */
 import { Swiper, SwiperRef } from 'swiper/react';
-import 'swiper/css/bundle';
+import 'swiper/css';
 
 import { SWIPERPROPS_STEPPER } from "../../../swiper/props";
 import { useStep } from "../StepContext";

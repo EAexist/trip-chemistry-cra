@@ -4,10 +4,11 @@ import { useCallback, useRef, useState } from "react";
 /* React Packages */
 import { Done, NavigateBefore, NavigateNext } from "@mui/icons-material";
 import { Button, IconButton, Toolbar } from "@mui/material";
-import { motion } from 'framer-motion';
+import { domAnimation, LazyMotion, m } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
-import SwiperCore from 'swiper';
+
 import { Swiper, SwiperRef, SwiperSlide, } from 'swiper/react';
+import SwiperType from "swiper";
 
 /* App */
 import { useHideAppbar } from "../../components/AppBar/AppBarContext";
@@ -22,7 +23,7 @@ import LoadRequiredContent, { AuthLoadRequiredContent } from "../LoadRequiredCon
 interface CreateChemistryContentProps {
 };
 
-function CreateChemistryContent({}: CreateChemistryContentProps) {
+function CreateChemistryContent({ }: CreateChemistryContentProps) {
 
     /* Constants */
     const maxTitleLength = 20;
@@ -39,7 +40,7 @@ function CreateChemistryContent({}: CreateChemistryContentProps) {
 
     /* States */
     const [title, setTItle] = useState("친구들과의 일본 우정 여행");
-    const [ swiper, setSwiper ] = useState<SwiperCore>();
+    const [swiper, setSwiper] = useState<SwiperType>();
     const isInputAllowed = title.length > 0
     const swiperRef = useRef<SwiperRef>(null);
 
@@ -92,66 +93,68 @@ function CreateChemistryContent({}: CreateChemistryContentProps) {
             >
                 {
                     isAppBarHidden &&
-                    <motion.div {...SLIDEINLEFT} className="page fill-window">
-                        {
-                            <Toolbar>
-                                {
-                                    <IconButton
-                                        edge="start"
-                                        aria-label="cancel"
-                                        onClick={swiper?.isBeginning ? handleClose : handleNavigatePrev}
-                                    >
-                                        <NavigateBefore />
-                                    </IconButton>
-
-                                }
-                                {
-                                    swiper?.isEnd
-                                        ? <Button
-                                            disabled={!isInputAllowed || !isConfirmAllowed}
-                                            onClick={handleConfirm}
-                                            variant='text'
-                                            aria-label="next"
-                                            startIcon={<Done />}
-                                        >
-                                            확인
-                                        </Button>
-                                        :
+                    <LazyMotion features={domAnimation}>
+                        <m.div {...SLIDEINLEFT} className="page fill-window">
+                            {
+                                <Toolbar>
+                                    {
                                         <IconButton
-                                            edge="end"
-                                            aria-label="next"
-                                            onClick={handleNavigateNext}
+                                            edge="start"
+                                            aria-label="cancel"
+                                            onClick={swiper?.isBeginning ? handleClose : handleNavigatePrev}
                                         >
-                                            <NavigateNext />
+                                            <NavigateBefore />
                                         </IconButton>
 
-                                }
-                            </Toolbar>
-                        }
-                        <Swiper
-                            {...SWIPERPROPS_PAGE}
-                            ref={swiperRef}
-                            className=""
-                            onSwiper={(swiper)=>setSwiper(swiper)}
-                        >
-                            <SwiperSlide key={"title"} className=''>
-                                {
-                                    ({ isActive }) => (
-                                        <div className="block--with-margin-x">
-                                            <TextFieldBlock
-                                                value={title}
-                                                setValue={setTItle}
-                                                getIsValueAllowed={getIsValueAllowed}
-                                                helperText={helperText}
-                                                title={"여행 제목을 입력해주세요."}
-                                                autoFocus={isActive}
-                                            />
-                                        </div>
-                                    )
-                                }
-                            </SwiperSlide>
-                        </Swiper>
-                    </motion.div>
+                                    }
+                                    {
+                                        swiper?.isEnd
+                                            ? <Button
+                                                disabled={!isInputAllowed || !isConfirmAllowed}
+                                                onClick={handleConfirm}
+                                                variant='text'
+                                                aria-label="next"
+                                                startIcon={<Done />}
+                                            >
+                                                확인
+                                            </Button>
+                                            :
+                                            <IconButton
+                                                edge="end"
+                                                aria-label="next"
+                                                onClick={handleNavigateNext}
+                                            >
+                                                <NavigateNext />
+                                            </IconButton>
+
+                                    }
+                                </Toolbar>
+                            }
+                            <Swiper
+                                {...SWIPERPROPS_PAGE}
+                                ref={swiperRef}
+                                className=""
+                                onSwiper={(swiper) => setSwiper(swiper)}
+                            >
+                                <SwiperSlide key={"title"} className=''>
+                                    {
+                                        ({ isActive }) => (
+                                            <div className="block--with-margin-x">
+                                                <TextFieldBlock
+                                                    value={title}
+                                                    setValue={setTItle}
+                                                    getIsValueAllowed={getIsValueAllowed}
+                                                    helperText={helperText}
+                                                    title={"여행 제목을 입력해주세요."}
+                                                    autoFocus={isActive}
+                                                />
+                                            </div>
+                                        )
+                                    }
+                                </SwiperSlide>
+                            </Swiper>
+                        </m.div>
+                    </LazyMotion>
                 }
             </AuthLoadRequiredContent>
         </LoadRequiredContent>

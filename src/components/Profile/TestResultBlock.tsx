@@ -6,7 +6,7 @@ import { TRIPTAG } from "../../common/app-const";
 import withUserProfile, { WithProfileProps } from "../../hocs/withUserProfile";
 import withFriendProfile from "../../hocs/withFriendProfile";
 import { useUserId } from "../../reducers/authReducer";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 interface TestResultBlockProps extends WithProfileProps {};
 
@@ -37,7 +37,7 @@ function TestResultBlock({ id, testResult }: TestResultBlockProps) {
 
 export default withFriendProfile(TestResultBlock);
 
-const MotionTestResultBlock = motion(withFriendProfile(TestResultBlock), { forwardMotionProps: true });
+const MotionTestResultBlock = m(withFriendProfile(TestResultBlock), { forwardMotionProps: true });
 
 const UserTestResultBlock = withUserProfile(TestResultBlock);
 export { MotionTestResultBlock, UserTestResultBlock };

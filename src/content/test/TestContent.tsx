@@ -5,12 +5,12 @@ import { useEffect, useRef, useState } from "react";
 
 import { ExpandMore, NavigateNext } from "@mui/icons-material";
 import { Button, ButtonBase, Card, CardContent, CardMedia, List, ListItem, ListItemButton, ListItemText, Stack, Tooltip, useTheme } from "@mui/material";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
+import { AnimatePresence, domAnimation, LazyMotion, m, useMotionValueEvent, useScroll } from "framer-motion";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 /* Swiper */
-import 'swiper/css/bundle';
+import 'swiper/css';
 import 'swiper/css/effect-coverflow'; /* Food Carousel */
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
@@ -81,7 +81,7 @@ function TestContent({ }: TestContentProps) {
     const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
 
     /* 첫 렌더 후 Scroll Resotration 중에 Top Nav 가 슬라이드 되는 모션을 방지함. */
-    const [ preventInitialSwipe, setPreventInitialSwipe ] = useState(true);
+    const [preventInitialSwipe, setPreventInitialSwipe] = useState(true);
 
     /* Event Handlers */
     const handleCityCardClick = (key: string, cityIndex: number) => {
@@ -152,7 +152,7 @@ function TestContent({ }: TestContentProps) {
         const timer = setTimeout(() => {
             setPreventInitialSwipe(false);
         }, 100);
-      }, []);
+    }, []);
 
     return (
         <LoadRequiredContent {...{
@@ -167,300 +167,302 @@ function TestContent({ }: TestContentProps) {
                 <div className="page">
                     <StepContext.Provider value={{ step, setStep }}>
                         <StepCheckpointContextProvider>
-                            <div className="top-nav" style={{ backgroundColor: theme.palette.gray.light }}>
-                            <motion.div {...FADEIN}  custom={0.2} >
-                                <Stepper className="block--with-margin-x top-nav__swiper" speed={preventInitialSwipe ? 0 : 500}>
+                            <LazyMotion features={domAnimation}>
+                                <div className="top-nav" style={{ backgroundColor: theme.palette.gray.light }}>
+                                    <m.div {...FADEIN} custom={0.2} >
+                                        <Stepper className="block--with-margin-x top-nav__swiper" speed={preventInitialSwipe ? 0 : 500}>
+                                            {
+                                                Object.entries(TEST_SECTIONS).map(([testName, { icon }], index) =>
+                                                    <SwiperSlide key={testName} className="top-nav__swiper">
+                                                        <SectionButton
+                                                            size={"small"}
+                                                            value={index}
+                                                            index={index}
+                                                            label={contentstrings.subTest[testName as keyof typeof contentstrings.subTest].label}
+                                                            sx={{ height: "100%", display: 'flex', alignItems: 'start', paddingTop: '8px' }}
+                                                            paperSx={{ opacity: 0.4 }}
+                                                            elevation={1}
+                                                        // className="ButtonGroup__item"
+                                                        >
+                                                            <TestAnswerBadge testName={testName as TestName} sx={{ height: 'fit-content', padding: "4px" }}>
+                                                                <PngIcon name={testName} size={"large"} />
+                                                            </TestAnswerBadge>
+                                                        </SectionButton>
+                                                    </SwiperSlide>
+                                                )
+                                            }
+                                        </Stepper>
+                                    </m.div>
+                                </div>
+                                <ScrollPageContainer onPageChange={(page) => setStep(page)} pages={Object.keys(TEST_SECTIONS).length}>
                                     {
-                                        Object.entries( TEST_SECTIONS ).map(([testName, { icon }], index) =>
-                                            <SwiperSlide key={testName} className="top-nav__swiper">
-                                                    <SectionButton
-                                                        size={"small"}
-                                                        value={index}
-                                                        index={index}
-                                                        label={contentstrings.subTest[testName as keyof typeof contentstrings.subTest].label}
-                                                        sx={{ height: "100%", display: 'flex', alignItems: 'start', paddingTop: '8px' }}
-                                                        paperSx={{ opacity: 0.4 }}
-                                                        elevation={1}
-                                                    // className="ButtonGroup__item"
-                                                    >
-                                                    <TestAnswerBadge testName={testName as TestName} sx={{ height: 'fit-content', padding: "4px" }}>
-                                                        <PngIcon name={testName} size={"large"} />
-                                                    </TestAnswerBadge>
-                                                    </SectionButton>
-                                            </SwiperSlide>
-                                        )
+                                        (["expectation", "activity"] as SetTestName[]).map((testName, index) => {
+                                            return (
+                                                <ScrollPageItem key={testName} page={index} className="flex">
+                                                    <TestSection>
+                                                        {/* https://codesandbox.io/p/sandbox/6gw7p4?file=/src/App.jsx */}
+                                                        <div className="flex-grow block--centered">
+                                                            <div className="block--with-margin-x block__body">
+                                                                <TestInstruction testName={testName as TestName} />
+                                                                <Stack flexWrap={"wrap"} justifyContent={"center"} rowGap={1}>
+                                                                    <TagSetTestAnswerChip testName={testName} />
+                                                                    <TagSetTestAnswerChip testName={testName} selected={false} />
+                                                                </Stack>
+                                                            </div>
+                                                        </div>
+                                                        <div className="block">
+                                                            <div className="test__title">
+                                                                <h2 className="test__title__heading typography-heading">{contentstrings.subTest[testName].title}</h2>
+                                                            </div>
+                                                            <div className="test__input">
+                                                            </div>
+                                                        </div>
+                                                    </TestSection>
+                                                </ScrollPageItem>
+                                            )
+                                        })
                                     }
-                                </Stepper>
-                            </motion.div>
-                            </div>
-                            <ScrollPageContainer onPageChange={(page) => setStep(page)} pages={Object.keys(TEST_SECTIONS).length}>
-                                {
-                                    (["expectation", "activity"] as SetTestName[]).map((testName, index) => {
-                                        return (
-                                            <ScrollPageItem key={testName} page={index} className="flex">
-                                                <TestSection>
-                                                    {/* https://codesandbox.io/p/sandbox/6gw7p4?file=/src/App.jsx */}
+                                    <ScrollPageItem key={"leadership"} page={2} className="flex">
+                                        <TestSection>
+                                            <div className="modal__container flex-grow">
+                                                {/* <TestInstructionModal testName="leadership" /> */}
+                                                <Stack spacing={-4}>
+                                                    {
+                                                        Object.entries(contentstrings.subTest.leadership.options).map(([value, { detail }]) => (
+                                                            <OptionCard key={value} isActive={Number(value) === leadershipAnswer}>
+
+                                                                {(Number(value) === leadershipAnswer) &&
+                                                                    <CardContent sx={{ textAlign: 'center' }}>
+                                                                        <div className="text">
+                                                                            <p>{detail}</p>
+                                                                        </div>
+                                                                    </CardContent>}
+
+                                                                <CardMedia
+                                                                    component="img"
+                                                                    alt={value}
+                                                                    height={"100%"}
+                                                                    image={getImgSrc("/test", `leadership_${value}-medium`, FORMATWEBP)}
+                                                                    srcSet={`${getImgSrc("/test", `leadership_${value}-medium`, FORMATWEBP)} 128w`}
+                                                                    sizes={'30vw'}
+                                                                />
+                                                            </OptionCard>
+                                                        ))
+                                                    }
+                                                </Stack>
+                                            </div>
+                                            <div className="block block__body">
+                                                <div className="test__title">
+                                                    <h2 className="test__title__heading typography-heading">{contentstrings.test.leadership.title}</h2>
+                                                </div>
+                                                <AnswerButtonGroup testName="leadership" />
+                                                <div />
+                                            </div>
+                                        </TestSection>
+                                    </ScrollPageItem>
+                                    <ScrollPageItem key={"schedule"} page={3} className="flex">
+                                        <TestSection >
+                                            <div className="flex-grow block--centered">
+                                                <Card className="test__google-map-container modal__container">
+                                                    <GoogleMapContext.Provider value={{ map: scheduleExampleMap as google.maps.Map, setMap: setScheduleExampleMap }}>
+                                                        <GoogleMap opts={OPTIONS_TEST_SCHEDULE}>
+                                                            <GoogleMapMarker {...TEST.schedule.subTests.schedule.airportPlace} />
+                                                            {
+                                                                (scheduleAnswer !== undefined) &&
+                                                                Object.entries(TEST.schedule.subTests.schedule.examples).map(([value, { places }]) => (
+                                                                    places.map((place) => (
+                                                                        <GoogleMapMarker key={place.label} {...place} isActive={Number(value) <= scheduleAnswer} />
+                                                                    ))
+                                                                ))
+                                                            }
+                                                        </GoogleMap>
+                                                    </GoogleMapContext.Provider>
+                                                </Card>
+                                            </div>
+                                            <div className="block block__body">
+                                                <div className="test__title">
+                                                    <h2 className="test__title__heading typography-heading">{contentstrings.test.schedule.title}</h2>
+                                                </div>
+                                                <AnswerButtonGroup testName="schedule" />
+                                                <div />
+                                            </div>
+                                        </TestSection>
+                                    </ScrollPageItem>
+                                    <ScrollPageItem key={"budget"} page={4} className="flex">
+                                        <TestSection >
+                                            {/* https://codesandbox.io/p/sandbox/6gw7p4?file=/src/App.jsx */}
+                                            <div className="flex-grow block--centered">
+                                                <Swiper {...SWIPERPROPS_FOODCARDCAROUSEL} className="carousel__swiper carousel--coverflow__swiper modal__container" ref={foodCarouselSwiperRef}>
+                                                    <TestInstruction testName="food" showBackdrop={true} className="block--centered" />
+                                                    {
+                                                        Object.values(TEST.food.examples).map((id, index) => (
+                                                            <SwiperSlide key={id} className="carousel__swiper carousel--coverflow__swiper">
+                                                                {({ isActive }) => (
+                                                                    id === "more"
+                                                                        ? (
+                                                                            <AnimatePresence mode={"wait"} initial={false}>
+                                                                                {
+                                                                                    isActive
+                                                                                        ? <m.div key={"summary"} {...{ ...FADEIN, exit: "hidden" }} style={{ width: "260px", height: "240px" }} className="block--centered block--with-padding">
+                                                                                            <div className="block-with-margin-x">
+                                                                                                <p>더 많은 식당 찾아보기</p>
+                                                                                                <List>
+                                                                                                    {
+                                                                                                        TEST.food.more.map((source) => (
+                                                                                                            <ListItem key={source}>
+                                                                                                                <a href={LINK[source as keyof typeof LINK].link} target="_blank" rel="noopener noreferrer">
+                                                                                                                    <ListItemButton >
+                                                                                                                        <ListItemText
+                                                                                                                            primary={
+                                                                                                                                <Stack>
+                                                                                                                                    <Logo id={source} size="small" />
+                                                                                                                                    <p>{commonStrings.linkType[source as keyof typeof commonStrings.linkType].name}</p>
+                                                                                                                                </Stack>
+                                                                                                                            }
+                                                                                                                            secondary={
+                                                                                                                                commonStrings.linkType[source as keyof typeof commonStrings.linkType].body
+                                                                                                                            }
+                                                                                                                        />
+                                                                                                                    </ListItemButton>
+                                                                                                                </a>
+                                                                                                            </ListItem>
+                                                                                                        ))
+                                                                                                    }
+                                                                                                </List>
+                                                                                            </div>
+                                                                                        </m.div>
+                                                                                        : <m.div key={"detail"} {...{ ...FADEIN, exit: "hidden" }} style={{ width: "200px", height: "240px", position: "absolute", opacity: 0.5 }} className="block--centered">
+                                                                                            <p>
+                                                                                                {`더 많은 식당\n찾아보기`}
+                                                                                            </p>
+                                                                                        </m.div>
+                                                                                }
+                                                                            </AnimatePresence>
+                                                                        )
+                                                                        : <FoodImageCard id={id} isActive={isActive} />
+                                                                )}
+                                                            </SwiperSlide>
+                                                        ))
+                                                    }
+                                                </Swiper>
+                                            </div>
+                                            <div className="block block__body">
+                                                <div className="test__title">
+                                                    <h2 className="test__title__heading typography-heading">{contentstrings.subTest.food.title}</h2>
+                                                </div>
+                                                {
+                                                    foodAnswer !== undefined
+                                                        ? <h4 className='typography-test-answer'>
+                                                            {priceText(foodAnswer)} {(foodAnswer === SLIDERPROPS_TEST_BUDGET_FOOD.max) ? '이상' : ''}
+                                                        </h4>
+                                                        // : <h4 className='typography-test-answer'>? 원</h4>
+                                                        : <></>
+                                                }
+                                                <div className="container--center" style={{ marginTop: 0 }}>
+                                                    <AnswerSlider testName="food" {...SLIDERPROPS_TEST_BUDGET_FOOD} />
+                                                </div>
+                                                <div />
+                                            </div>
+                                        </TestSection>
+                                    </ScrollPageItem>
+                                    {/* </SectionPaperWithStep> */}
+                                    {
+                                        Object.entries(TEST.city.subTests).map(([key, { examples }], index) => (
+                                            // <SectionPaperWithStep key={key} index={0e="section">
+                                            <ScrollPageItem key={key} page={5 + index} className="flex">
+                                                <TestSection >
                                                     <div className="flex-grow block--centered">
-                                                        <div className="block--with-margin-x block__body">
-                                                            <TestInstruction testName={testName as TestName} />
-                                                            <Stack flexWrap={"wrap"} justifyContent={"center"} rowGap={1}>
-                                                                <TagSetTestAnswerChip testName={testName} />
-                                                                <TagSetTestAnswerChip testName={testName} selected={false} />
-                                                            </Stack>
-                                                        </div>
+                                                        {/* <h4 className='carousel__title'>{contentstrings.subTest[key as keyof typeof contentstrings.subTest].title}</h4> */}
+                                                        <Swiper {...SWIPERPROPS_CAROUSEL} className="carousel__swiper">
+                                                            {
+                                                                examples.map((cityId, index) => (
+                                                                    <SwiperSlide key={cityId} className="carousel__swiper">
+                                                                        <ButtonBase onClick={() => handleCityCardClick(key, index)} className="block--full block__body">
+                                                                            <ImageCard
+                                                                                src={getImgSrc("/city", cityId, FORMATWEBP)}
+                                                                                title={cityId}
+                                                                                sx={{ width: "196px", height: "196px", borderRadius: "12px" }}
+                                                                                className="body__head"
+                                                                            />
+                                                                            <Stack>
+                                                                                <h3 className="typography-name">{commonStrings.city[cityId as keyof typeof commonStrings.city].name}</h3>
+                                                                                {
+                                                                                    NATION[CITY[cityId as keyof typeof CITY].nation as keyof typeof NATION].flag
+                                                                                    && <Flag id={CITY[cityId as keyof typeof CITY].nation} />
+                                                                                }
+                                                                            </Stack>
+                                                                        </ButtonBase>
+                                                                    </SwiperSlide>
+                                                                ))
+                                                            }
+                                                        </Swiper>
                                                     </div>
-                                                    <div className="block">
+                                                    <div className="block block__body">
                                                         <div className="test__title">
-                                                            <h2 className="test__title__heading typography-heading">{contentstrings.subTest[testName].title}</h2>
+                                                            <h2 className="test__title__heading typography-heading">{contentstrings.test.city.titleTextList.map((text) => (
+                                                                text === "/testName"
+                                                                    ? contentstrings.subTest[key as keyof typeof contentstrings.subTest].title
+                                                                    : (
+                                                                        text === "/particle"
+                                                                            ? contentstrings.subTest[key as keyof typeof contentstrings.subTest].particle
+                                                                            : text
+                                                                    )
+                                                            ))}</h2>
                                                         </div>
-                                                        <div className="test__input">
-                                                        </div>
+                                                        <AnswerButtonGroup testName={key as NumericTestName} />
+                                                        <div />
                                                     </div>
                                                 </TestSection>
                                             </ScrollPageItem>
-                                        )
-                                    })
-                                }
-                                <ScrollPageItem key={"leadership"} page={2} className="flex">
-                                    <TestSection>
-                                        <div className="modal__container flex-grow">
-                                            {/* <TestInstructionModal testName="leadership" /> */}
-                                            <Stack spacing={-4}>
-                                                {
-                                                    Object.entries(contentstrings.subTest.leadership.options).map(([value, { detail }]) => (
-                                                        <OptionCard key={value} isActive={Number(value) === leadershipAnswer}>
+                                        ))
+                                    }
+                                </ScrollPageContainer>
+                                <div>
+                                    <Tooltip
+                                        open={isConfirmTooltipOpen}
+                                        onClose={() => setIsConfirmTooltipOpen(false)}
+                                        onOpen={handleConfirmTooltipOpen}
+                                        title={
+                                            <Button onClick={handleConfirmTooltipClick} endIcon={<NavigateNext />}>
+                                                {contentstrings.main.tooltip_completeTest}
+                                            </Button>
+                                        }
 
-                                                            {(Number(value) === leadershipAnswer) &&
-                                                                <CardContent sx={{ textAlign: 'center' }}>
-                                                                    <div className="text">
-                                                                        <p>{detail}</p>
-                                                                    </div>
-                                                                </CardContent>}
-
-                                                            <CardMedia
-                                                                component="img"
-                                                                alt={value}
-                                                                height={"100%"}
-                                                                image={getImgSrc("/test", `leadership_${value}-medium`, FORMATWEBP)}
-                                                                srcSet={ `${getImgSrc("/test", `leadership_${value}-medium`, FORMATWEBP)} 128w` }
-                                                                sizes={ '30vw' }
-                                                            />
-                                                        </OptionCard>
-                                                    ))
-                                                }
-                                            </Stack>
-                                        </div>
-                                        <div className="block block__body">
-                                            <div className="test__title">
-                                                <h2 className="test__title__heading typography-heading">{contentstrings.test.leadership.title}</h2>
-                                            </div>
-                                            <AnswerButtonGroup testName="leadership" />
-                                            <div />
-                                        </div>
-                                    </TestSection>
-                                </ScrollPageItem>
-                                <ScrollPageItem key={"schedule"} page={3} className="flex">
-                                    <TestSection >
-                                        <div className="flex-grow block--centered">
-                                            <Card className="test__google-map-container modal__container">
-                                                <GoogleMapContext.Provider value={{ map: scheduleExampleMap as google.maps.Map, setMap: setScheduleExampleMap }}>
-                                                    <GoogleMap opts={OPTIONS_TEST_SCHEDULE}>
-                                                        <GoogleMapMarker {...TEST.schedule.subTests.schedule.airportPlace} />
-                                                        {
-                                                            (scheduleAnswer !== undefined) &&
-                                                            Object.entries(TEST.schedule.subTests.schedule.examples).map(([value, { places }]) => (
-                                                                places.map((place) => (
-                                                                    <GoogleMapMarker key={place.label} {...place} isActive={Number(value) <= scheduleAnswer} />
-                                                                ))
-                                                            ))
-                                                        }
-                                                    </GoogleMap>
-                                                </GoogleMapContext.Provider>
-                                            </Card>
-                                        </div>
-                                        <div className="block block__body">
-                                            <div className="test__title">
-                                                <h2 className="test__title__heading typography-heading">{contentstrings.test.schedule.title}</h2>
-                                            </div>
-                                            <AnswerButtonGroup testName="schedule" />
-                                            <div />
-                                        </div>
-                                    </TestSection>
-                                </ScrollPageItem>
-                                <ScrollPageItem key={"budget"} page={4} className="flex">
-                                    <TestSection >
-                                        {/* https://codesandbox.io/p/sandbox/6gw7p4?file=/src/App.jsx */}
-                                        <div className="flex-grow block--centered">
-                                            <Swiper {...SWIPERPROPS_FOODCARDCAROUSEL} className="carousel__swiper carousel--coverflow__swiper modal__container" ref={foodCarouselSwiperRef}>
-                                                <TestInstruction testName="food" showBackdrop={true} className="block--centered" />
-                                                {
-                                                    Object.values(TEST.food.examples).map((id, index) => (
-                                                        <SwiperSlide key={id} className="carousel__swiper carousel--coverflow__swiper">
-                                                            {({ isActive }) => (
-                                                                id === "more"
-                                                                    ? (
-                                                                        <AnimatePresence mode={"wait"} initial={false}>
-                                                                        {
-                                                                        isActive
-                                                                            ? <motion.div key={"summary"} {...{...FADEIN, exit: "hidden" }} style={{ width: "260px", height: "240px" }} className="block--centered block--with-padding">
-                                                                                <div className="block-with-margin-x">
-                                                                                    <p>더 많은 식당 찾아보기</p>
-                                                                                    <List>
-                                                                                        {
-                                                                                            TEST.food.more.map((source) => (
-                                                                                                <ListItem key={source}>
-                                                                                                    <a href={LINK[source as keyof typeof LINK].link} target="_blank" rel="noopener noreferrer">
-                                                                                                        <ListItemButton >
-                                                                                                            <ListItemText
-                                                                                                                primary={
-                                                                                                                    <Stack>
-                                                                                                                        <Logo id={source} size="small"/>
-                                                                                                                        <p>{commonStrings.linkType[source as keyof typeof commonStrings.linkType].name}</p>
-                                                                                                                    </Stack>
-                                                                                                                }
-                                                                                                                secondary={
-                                                                                                                    commonStrings.linkType[source as keyof typeof commonStrings.linkType].body
-                                                                                                                }
-                                                                                                            />
-                                                                                                        </ListItemButton>
-                                                                                                    </a>
-                                                                                                </ListItem>
-                                                                                            ))
-                                                                                        }
-                                                                                    </List>
-                                                                                </div>
-                                                                            </motion.div>
-                                                                            : <motion.div key={"detail"} {...{...FADEIN, exit: "hidden" }} style={{ width: "200px", height: "240px", position: "absolute", opacity: 0.5 }} className="block--centered">
-                                                                                <p>
-                                                                                    {`더 많은 식당\n찾아보기`}
-                                                                                </p>
-                                                                            </motion.div>
-                                                                            }
-                                                                            </AnimatePresence>
-                                                                    )
-                                                                    : <FoodImageCard id={id} isActive={isActive} />
-                                                            )}
-                                                        </SwiperSlide>
-                                                    ))
-                                                }
-                                            </Swiper>
-                                        </div>
-                                        <div className="block block__body">
-                                            <div className="test__title">
-                                                <h2 className="test__title__heading typography-heading">{contentstrings.subTest.food.title}</h2>
-                                            </div>
-                                            {
-                                                foodAnswer !== undefined
-                                                    ? <h4 className='typography-test-answer'>
-                                                        {priceText(foodAnswer)} {(foodAnswer === SLIDERPROPS_TEST_BUDGET_FOOD.max) ? '이상' : ''}
-                                                    </h4>
-                                                    // : <h4 className='typography-test-answer'>? 원</h4>
-                                                    : <></>
-                                            }
-                                            <div className="container--center" style={{ marginTop: 0 }}>
-                                                <AnswerSlider testName="food" {...SLIDERPROPS_TEST_BUDGET_FOOD} />
-                                            </div>
-                                            <div />
-                                        </div>
-                                    </TestSection>
-                                </ScrollPageItem>
-                                {/* </SectionPaperWithStep> */}
-                                {
-                                    Object.entries(TEST.city.subTests).map(([key, { examples }], index) => (
-                                        // <SectionPaperWithStep key={key} index={0e="section">
-                                        <ScrollPageItem key={key} page={5 + index} className="flex">
-                                            <TestSection >
-                                                <div className="flex-grow block--centered">
-                                                    {/* <h4 className='carousel__title'>{contentstrings.subTest[key as keyof typeof contentstrings.subTest].title}</h4> */}
-                                                    <Swiper {...SWIPERPROPS_CAROUSEL} className="carousel__swiper">
-                                                        {
-                                                            examples.map((cityId, index) => (
-                                                                <SwiperSlide key={cityId} className="carousel__swiper">
-                                                                    <ButtonBase onClick={() => handleCityCardClick(key, index)} className="block--full block__body">
-                                                                        <ImageCard
-                                                                            src={getImgSrc("/city", cityId, FORMATWEBP)}
-                                                                            title={cityId}
-                                                                            sx={{ width: "196px", height: "196px", borderRadius: "12px" }}
-                                                                            className="body__head"
-                                                                        />
-                                                                        <Stack>
-                                                                            <h3 className="typography-name">{commonStrings.city[cityId as keyof typeof commonStrings.city].name}</h3>
-                                                                            {
-                                                                                NATION[CITY[cityId as keyof typeof CITY].nation as keyof typeof NATION].flag
-                                                                                && <Flag id={CITY[cityId as keyof typeof CITY].nation} />
-                                                                            }
-                                                                        </Stack>
-                                                                    </ButtonBase>
-                                                                </SwiperSlide>
-                                                            ))
-                                                        }
-                                                    </Swiper>
-                                                </div>
-                                                <div className="block block__body">
-                                                    <div className="test__title">
-                                                        <h2 className="test__title__heading typography-heading">{contentstrings.test.city.titleTextList.map((text) => (
-                                                            text === "/testName"
-                                                                ? contentstrings.subTest[key as keyof typeof contentstrings.subTest].title
-                                                                : (
-                                                                    text === "/particle"
-                                                                        ? contentstrings.subTest[key as keyof typeof contentstrings.subTest].particle
-                                                                        : text
-                                                                )
-                                                        ))}</h2>
-                                                    </div>
-                                                    <AnswerButtonGroup testName={key as NumericTestName} />
-                                                    <div />
-                                                </div>
-                                            </TestSection>
-                                        </ScrollPageItem>
-                                    ))
-                                }
-                            </ScrollPageContainer>
-                            <div>
-                            <Tooltip
-                                open={isConfirmTooltipOpen}
-                                onClose={() => setIsConfirmTooltipOpen(false)}
-                                onOpen={handleConfirmTooltipOpen}
-                                title={
-                                    <Button onClick={handleConfirmTooltipClick} endIcon={<NavigateNext />}>
-                                        { contentstrings.main.tooltip_completeTest }
-                                    </Button>
-                                }
-
-                            >
-                                <span className="block--with-margin flex">
-                                    <Button
-                                        onClick={handleConfirmButtonClick}
-                                        disabled={!isAllTestAnswered}
-                                        variant="contained"
-                                        className="button--full"
                                     >
-                                        {contentstrings.main.confirmButton}
-                                    </Button>
-                                </span>
-                            </Tooltip>
-                            </div>
+                                        <span className="block--with-margin flex">
+                                            <Button
+                                                onClick={handleConfirmButtonClick}
+                                                disabled={!isAllTestAnswered}
+                                                variant="contained"
+                                                className="button--full"
+                                            >
+                                                {contentstrings.main.confirmButton}
+                                            </Button>
+                                        </span>
+                                    </Tooltip>
+                                </div>
+                            </LazyMotion>
                         </StepCheckpointContextProvider>
                     </StepContext.Provider>
                     {
                         showScrollDownIcon
                         &&
-                        <motion.div
+                        <m.div
                             animate={{ opacity: [1, 0.5, 1] }}
                             transition={{
                                 duration: 4,
-                                times:[0, 0.5, 1],
+                                times: [0, 0.5, 1],
                                 ease: "easeInOut",
                                 repeat: Infinity,
                             }}
                             className="floating--bottom block--centered block--with-padding--small"
                         >
                             <ExpandMore className="typography-gray" sx={{ fontSize: "40px" }} />
-                        </motion.div>
+                        </m.div>
                     }
                 </div >
             </AuthLoadRequiredContent>
-        </LoadRequiredContent>
+        </LoadRequiredContent >
     );
 }
 export default TestContent;

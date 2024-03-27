@@ -1,6 +1,6 @@
 import { PropsWithChildren, useRef } from "react";
 
-import { motion } from 'framer-motion';
+import { domAnimation, LazyMotion, m } from 'framer-motion';
 
 import { usePage } from "./PageContext";
 import { FADEIN } from "../../motion/props";
@@ -21,14 +21,16 @@ const ScrollPageItem = ({ page, children, className }: PropsWithChildren<ScrollP
 
     return (
         // (activePage === page) &&
-        <motion.div
-            ref={pageRef}
-            {...FADEIN}
-            // className={`ScrollPageItem fill-window ${className}`}
-            className={`fill-window ${className}`}
-        >
-            {children}
-        </motion.div>
+        <LazyMotion features={domAnimation}>
+            <m.div
+                ref={pageRef}
+                {...FADEIN}
+                // className={`ScrollPageItem fill-window ${className}`}
+                className={`fill-window ${className}`}
+            >
+                {children}
+            </m.div>
+        </LazyMotion>
     );
 };
 

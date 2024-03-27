@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
+import { domAnimation, LazyMotion, m } from "framer-motion";
 import { PropsWithChildren } from "react";
-import { SLIDEINLEFT } from "../props";
 import { useLocation } from "react-router-dom";
+import { SLIDEINLEFT } from "../props";
 
 interface RoutedMotionPageProps {
     className?: string;
@@ -31,9 +31,11 @@ const RoutedMotionPage = ({ className, children }: PropsWithChildren<RoutedMotio
         : undefined
 
     return (
-        <motion.div {...motionprops} className={`page ${className}`}>
+        <LazyMotion features={domAnimation}>
+        <m.div {...motionprops} className={`page ${className}`}>
             {children}
-        </motion.div>
+        </m.div>
+        </LazyMotion>
     )
 }
 

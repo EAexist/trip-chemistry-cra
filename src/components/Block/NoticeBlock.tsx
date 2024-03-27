@@ -3,7 +3,7 @@ import { PropsWithChildren } from "react";
 
 /* React Packages */
 import { Button, Toolbar } from "@mui/material";
-import { motion } from 'framer-motion';
+import { domAnimation, LazyMotion, m } from 'framer-motion';
 
 /* App */
 import LazyImage from "../LazyImage";
@@ -33,11 +33,12 @@ function NoticeBlock({
 
     return (
             <div className={`page flex ${isFullscreen ? 'fill-window' : ''}`}>
+            <LazyMotion features={domAnimation}>
                 {
                     isFullscreen &&
                     <Toolbar />
                 }
-                <motion.div {...SLIDEINUPINVIEW} className='flex-grow block--centered block__body block--with-padding'>
+                <m.div {...SLIDEINUPINVIEW} className='flex-grow block--centered block__body block--with-padding'>
                     {
                         title &&
                         <h2 className="typography-heading">
@@ -65,9 +66,10 @@ function NoticeBlock({
                         />
                     }
                     <p>{body}</p>
-                </motion.div>{
+                </m.div>
+                {
                     handleClick &&
-                    <motion.div {...FADEIN_INVIEW} className="block__body">
+                    <m.div {...FADEIN_INVIEW} className="block__body">
                         <div className="block--with-margin-x flex">
                             <Button
                                 onClick={handleClick}
@@ -83,8 +85,9 @@ function NoticeBlock({
                             </Button>
                         </div>
                         <div />
-                    </motion.div>
+                    </m.div>
                 }
+                </LazyMotion>
             </div>
     );
 }

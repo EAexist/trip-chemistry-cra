@@ -44,7 +44,8 @@ const HtmlCriticalPlugin = require("html-critical-webpack-plugin");
 /* Code Splitting */
 const LoadablePlugin = require('@loadable/webpack-plugin');
 
-
+/* Debug */
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 /*  !! @TODO [serverConfig, clientConfig module 정의 구분]
     .css, module.css 등 asset 관련 rule은 clientConfig에만 필요하고 serverConfig에서 제외해도 될 것 같은데 serverConfig에서 제외할 경우 오류 발생함.
@@ -255,6 +256,7 @@ const clientConfig = (env, argv) => {
       }),
       /* Loadable Components (Code Splitting) */
       new LoadablePlugin(),
+      new BundleAnalyzerPlugin()
     ].concat(
       devMode ? [new MiniCssExtractPlugin()]
         : [

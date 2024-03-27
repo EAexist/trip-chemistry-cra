@@ -1,4 +1,4 @@
 import { List } from "@mui/material";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
-export const MotionList = motion(List, { forwardMotionProps: true });
+export const MotionList = m(List, { forwardMotionProps: true });

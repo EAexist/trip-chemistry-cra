@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Close, Menu } from "@mui/icons-material";
 import { Avatar, Button, Divider, IconButton, ListItemAvatar, ListItemButton, ListItemText, AppBar as MuiAppBar, Toolbar, useTheme } from "@mui/material";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { CONTENTS } from "../../common/app-const";
@@ -111,10 +111,11 @@ function AppBar({ }: AppBarProps) {
             </MuiAppBar>
             {
                 animateDrawerClose &&
-                <AnimatePresence >
+                <LazyMotion features={domAnimation}>
+                <AnimatePresence>
                     {
                         openDrawer &&
-                        <motion.div
+                        <m.div
                             initial={"closed"}
                             animate={"open"}
                             exit={"closed"}
@@ -188,9 +189,10 @@ function AppBar({ }: AppBarProps) {
                                     }
                                 </MotionList>
                             </div>
-                        </motion.div>
+                        </m.div>
                     }
                 </AnimatePresence>
+                </LazyMotion>
             }
         </>
     );
