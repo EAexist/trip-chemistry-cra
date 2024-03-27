@@ -121,6 +121,14 @@ const babelLoader = (devMode) => ({
         },
       ],
     },
+    /* Tree-shaking on Swiper.js modules. ( https://stackoverflow.com/questions/71031894/why-isnt-webpack-tree-shaking-swiperjs-modules ) */
+    {
+      test: /\.(mjs)$/,
+      include: [
+        path.resolve(__dirname, 'node_modules/swiper/modules')
+      ],
+      sideEffects: false
+    }
     /*  src/public/ 경로의 자원은 로드하지 않음. copyPlugin 을 통해 dist/ 로 복사함. */
     /*  @TODO [추후에 image를 번들로 build 및 import 할 경우]  
         네트워크 성능 vs. 번들 사이즈 tradeoff 조정 위해  inline / resource 로드를 선택할 기준 파일 크기를 설정할 수 있음. 
@@ -257,9 +265,11 @@ const clientConfig = (env, argv) => {
       }),
       /* Loadable Components (Code Splitting) */
       new LoadablePlugin(),
-      new BundleAnalyzerPlugin({ analyzerMode : 'static' })
     ].concat(
-      devMode ? [new MiniCssExtractPlugin()]
+      devMode ? [
+        new MiniCssExtractPlugin(),
+        new BundleAnalyzerPlugin({ analyzerMode: 'static' })
+      ]
         : [
           /* Demián Renzulli. (2019-02-17). Defer non-critical CSS. web.dev.   
             ( https://web.dev/articles/defer-non-critical-css ) */
@@ -305,9 +315,14 @@ const clientConfig = (env, argv) => {
         mangleWasmImports: false,
         innerGraph: true,
         minimize: false,
-      }} : { },
-  resolve
-})};
+        providedExports: true,
+        usedExports: true,
+        // sideEffects: false,
+      }
+    } : {},
+    resolve
+  })
+};
 
 // module.exports = [ serverConfig ];
-module.exports = [clientConfig, serverConfig];
+module.exports = [ clientConfig, serverConfig ];
