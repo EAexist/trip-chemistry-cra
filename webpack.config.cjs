@@ -196,6 +196,7 @@ const serverConfig = (env, argv) => {
         PORT: 3001
       }),
       new Dotenv(),
+      new LoadablePlugin(),
     ].concat(
       devMode ? [new MiniCssExtractPlugin()]
         : [
@@ -217,7 +218,7 @@ const clientConfig = (env, argv) => {
   const devMode = argv.mode === 'development';
   return ({
     target: ['web', 'es2017'],
-    entry: './src/index_ssr.tsx',
+    entry: './src/index.tsx',
     output: {
       path: path.join(__dirname, '/dist'),
       publicPath: 'static/',
