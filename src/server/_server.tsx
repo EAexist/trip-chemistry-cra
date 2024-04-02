@@ -1,5 +1,5 @@
 // // https://medium.com/simform-engineering/how-to-implement-ssr-server-side-rendering-in-react-18-e49bc43e9531
-// import React from 'react';
+// ;
 // import express from "express";
 // import ReactDOMServer from "react-dom/server";
 // import { StaticRouter } from "react-router-dom/server";

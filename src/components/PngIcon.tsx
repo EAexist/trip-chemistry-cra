@@ -10,6 +10,7 @@ interface PngIconProps{
 function PngIcon({ name, size = "medium" } : PngIconProps ){
     const basePath = '/icon'
     const src = getImgSrc( basePath, `${name}-${size}`, FORMATWEBP );
+    // const src = getImgSrc( basePath, `${name}-${size}`, FORMATWEBP );
     return(
         <img 
             src={ src }

@@ -1,34 +1,20 @@
 {
   "compilerOptions": {
-    "target": "ES5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    // "preserveValueImports": false,
-    // "module": "CommonJS",
-    // "module": "NodeNext",
+    "target": "ESNext",
+    /**
+     * Setting `module` to `esnext` is the important part to make ts-loader and
+     * babel-loader work in this example setup.
+     *
+     * @see https://github.com/gregberge/loadable-components/issues/173#issuecomment-459915787
+     */
     "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": false,
     "jsx": "react-jsx",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "incremental": true,
+    "outDir": "lib",
+    "sourceMap": true
   },
-  "include": [
-    "src",
-    "src/content/login/.tsx"
-  ],
-  "ts-node": {
-    "esm": true
-  },
-  "noImplicitAny": false
+  "include": ["src/**/*", "others/App_.tsx", "others/app-node.tsx", "others/App.test.tsx", "others/App.tsx", "others/client.tsx", "others/index_.tsx", "others/index-node.tsx", "others/index-web.tsx", "others/main-node.tsx", "others/main-web.tsx", "others/path.ts", "others/prerender.jsx"]
 }

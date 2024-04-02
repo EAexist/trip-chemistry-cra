@@ -6,10 +6,15 @@ import { useGoogleMapContext } from "./GoogleMapContext";
 
 interface withGoogleMapMarkerProps {
     marker: google.maps.marker.AdvancedMarkerElement;
+    position?: google.maps.LatLngLiteral, 
+    isActive?: boolean 
 };
 
-const withGoogleMapMarker = <T extends withGoogleMapMarkerProps>( WrappedComponent: ComponentType<T> ) =>
-    ({ position = { lat: CENTER_FUKUOKA_TENJIN.lat, lng: CENTER_FUKUOKA_TENJIN.lng }, isActive = true, ...props }: Omit<T & { position?: google.maps.LatLngLiteral, isActive?: boolean }, keyof withGoogleMapMarkerProps>) => {
+const withGoogleMapMarker = <T extends withGoogleMapMarkerProps & { 
+        // position?: google.maps.LatLngLiteral, 
+        // isActive?: boolean 
+    }>( WrappedComponent: ComponentType<T> ) =>
+    ({ position = { lat: CENTER_FUKUOKA_TENJIN.lat, lng: CENTER_FUKUOKA_TENJIN.lng }, isActive = true, ...props }: Omit<T, 'marker'> & {}) => {
 
         const { map } = useGoogleMapContext();
         const [ marker, setMarker ] = useState<google.maps.marker.AdvancedMarkerElement>();

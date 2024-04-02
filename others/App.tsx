@@ -5,12 +5,10 @@ import { Outlet, Route, Routes } from 'react-router-dom';
 import loadable from '@loadable/component';
 
 /* App */
-import Page from './route/Page';
+// import Page from './route/Page';
 // import { store } from './store';
 
 import { TEST } from './common/app-const';
-import { store } from './store';
-import { Provider } from 'react-redux';
 
 /* [Performance][Code Splitting]  */
 /* 1. Static Import */
@@ -58,8 +56,8 @@ import { Provider } from 'react-redux';
 // const CreateChemistryContent = lazy(() => import('./content/chemistry/CreateChemistryContent'));
 
 /* 3. Loadable Components */
-// const Page = loadable(() => import(/* webpackChunkName: "Page" */ './route/Page'));
-// const PageWrapper = loadable(() => import(/* webpackChunkName: "PageWrapper" */ './route/PageWrapper'));
+const Page = loadable(() => import(/* webpackChunkName: "Page" */ './route/Page'));
+const PageWrapper = loadable(() => import(/* webpackChunkName: "PageWrapper" */ './route/PageWrapper'));
 const AuthRequiredRoute = loadable(() => import(/* webpackChunkName: "AuthRequiredRoute" */ './route/AuthRequiredRoute'));
 // const TestRequiredRoute = loadable(() => import('./route/TestRequiredRoute'));
 // const GuestRoute = loadable(() => import('./route/GuestRoute'));
@@ -86,12 +84,12 @@ function App() {
     return (
         // <AnimatePresence>
         // <ThemeProvider theme={theme}>
-            <Provider store={store}>
+            // <Provider store={store}>
                 <Routes>
-                    <Route path={'/'} element={<Page />} >
+                    <Route path={'/'} element={<PageWrapper />} >
                         {/* Debug */}
                         <Route key={'home'} path={'home'} element={<HomeContent />} />
-                        <Route key={'testPreview'} path={'testPreview'} element={<TestContent />} />
+                        {/* <Route key={'testPreview'} path={'testPreview'} element={<TestContent />} /> */}
                         {/* <Route key={'authRequired'} element={<AuthRequiredRoute />}>
                                 <Route key={'test'} path={'test'} element={<TestContent />} />
                             </Route>
@@ -110,7 +108,7 @@ function App() {
                         </Route> */}
                     </Route>
                 </Routes>
-            </Provider>
+            // </Provider>
         // </ThemeProvider>
         // </AnimatePresence>
     );
