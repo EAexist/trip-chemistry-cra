@@ -1,33 +1,36 @@
 import { whenDev } from "@craco/craco";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import CopyPlugin from "copy-webpack-plugin";
+import LoadablePlugin from "@loadable/webpack-plugin";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
+import webpack from "webpack";
 
 /* Dilan Nair. CRACO docs - configuration - Configuration Tips.
 ( https://craco.js.org/docs/configuration/getting-started/#configuration-tips ) */
 module.exports = {
     webpack: {
-        // plugins: {
-        //     add: [
-        //         new CopyPlugin({
-        //             patterns: [
-        //                 { from: "robots.txt", to: "robots.txt"},
-        //                 { from: "public/manifest.json", to: "manifest.json"},
-        //                 { from: "public/images", to: "images"}
-        //             ]
-        //         })
-        //     ],
-        // },
+        plugins: {
+            remove: [
+                new LoadablePlugin()
+            ],
+            add: [
+                // new webpack.optimize.LimitChunkCountPlugin({
+                //     maxChunks: 1,
+                // }),
+                whenDev(
+                    ()=>([ new BundleAnalyzerPlugin({ 
+                        analyzerMode: 'static',
+                        reportFilename: `../report/${process.env.npm_config_REPORT_NAME}/bundle_analysis.html`
+                    }) ]), 
+                    [ new BundleAnalyzerPlugin({ 
+                        analyzerMode: 'static',
+                        reportFilename: `../report/${process.env.npm_config_REPORT_NAME}/bundle_analysis.html`
+                    }) ]
+                )
+            ]
+        },
         configure: (webpackConfig, { env, paths }) => {
-            // const copyPluginInstance = webpackConfig.plugins.find(
-            //     webpackPlugin => webpackPlugin instanceof CopyPlugin
-            // );
-            // if (copyPluginInstance) {
-            //     copyPluginInstance.options.patterns = [
-            //         { from: "robots.txt", to: "robots.txt" },
-            //         { from: "public/manifest.json", to: "manifest.json" },
-            //         { from: "public/images", to: "images" }
-            //     ]
-            // }
+            // webpackConfig.publicPath = ''
             // webpackConfig.module.rules = [
             //     {
             //         test: /\.(ts|tsx)$/,

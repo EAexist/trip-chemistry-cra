@@ -1,0 +1,7 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Disallow: /guest/
+Disallow: /login/
+Disallow: /user/
+Disallow: /result/
+Disallow: /myChemistry/

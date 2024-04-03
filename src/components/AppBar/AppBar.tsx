@@ -9,11 +9,13 @@ import Logo from "../Logo";
 import { useAppBar } from "./AppBarContext";
 import loadable from "@loadable/component";
 
-const Drawer = loadable(() => import(
-    /* webpackChunkName: "Drawer" */ 
-    /* webpackPrefetch: true */
-    '../Drawer/Drawer'
-    ));
+import Drawer from "../Drawer/Drawer";
+
+// const Drawer = loadable(() => import(
+//     /* webpackChunkName: "Drawer" */ 
+//     /* webpackPrefetch: true */
+//     '../Drawer/Drawer'
+//     ));
 
 interface AppBarProps {
 };
