@@ -4,11 +4,12 @@ import { useCallback, useRef, useState } from "react";
 /* React Packages */
 import { Done, NavigateBefore, NavigateNext } from "@mui/icons-material";
 import { Button, IconButton, Toolbar } from "@mui/material";
-import { domAnimation, LazyMotion, m } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
+import LazyDomAnimation from "../../motion/LazyDomAnimation";
 
-import { Swiper, SwiperRef, SwiperSlide, } from 'swiper/react';
 import SwiperType from "swiper";
+import { Swiper, SwiperRef, SwiperSlide, } from 'swiper/react';
 
 /* App */
 import { useHideAppbar } from "../../components/AppBar/AppBarContext";
@@ -93,7 +94,7 @@ function CreateChemistryContent({ }: CreateChemistryContentProps) {
             >
                 {
                     isAppBarHidden &&
-                    <LazyMotion features={domAnimation}>
+                    <LazyDomAnimation>
                         <m.div {...SLIDEINLEFT} className="page fill-window">
                             {
                                 <Toolbar>
@@ -154,7 +155,7 @@ function CreateChemistryContent({ }: CreateChemistryContentProps) {
                                 </SwiperSlide>
                             </Swiper>
                         </m.div>
-                    </LazyMotion>
+                    </LazyDomAnimation>
                 }
             </AuthLoadRequiredContent>
         </LoadRequiredContent>

@@ -1,6 +1,7 @@
 
 import { Avatar, Divider, ListItemAvatar, ListItemButton, ListItemText, Toolbar, useTheme } from "@mui/material";
-import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
+import LazyDomAnimation from "../../motion/LazyDomAnimation";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { CONTENTS } from "../../common/app-const";
@@ -53,7 +54,7 @@ function Drawer({ open, onDrawerItemClick }: DrawerProps) {
     };
 
     return (
-        <LazyMotion features={domAnimation}>
+        <LazyDomAnimation>
             <AnimatePresence>
                 {
                     open &&
@@ -134,7 +135,7 @@ function Drawer({ open, onDrawerItemClick }: DrawerProps) {
                     </m.div>
                 }
             </AnimatePresence>
-        </LazyMotion>
+        </LazyDomAnimation>
     );
 }
 export default Drawer;

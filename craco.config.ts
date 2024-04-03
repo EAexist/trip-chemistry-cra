@@ -19,14 +19,13 @@ module.exports = {
                 //     maxChunks: 1,
                 // }),
                 whenDev(
-                    ()=>([ new BundleAnalyzerPlugin({ 
+                    ()=>([]), 
+                    ( process.env.npm_config_REPORT_NAME !== undefined ) 
+                    ? [ new BundleAnalyzerPlugin({ 
                         analyzerMode: 'static',
                         reportFilename: `../report/${process.env.npm_config_REPORT_NAME}/bundle_analysis.html`
-                    }) ]), 
-                    [ new BundleAnalyzerPlugin({ 
-                        analyzerMode: 'static',
-                        reportFilename: `../report/${process.env.npm_config_REPORT_NAME}/bundle_analysis.html`
-                    }) ]
+                    })] 
+                    : []
                 )
             ]
         },

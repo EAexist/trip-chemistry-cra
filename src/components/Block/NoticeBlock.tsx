@@ -3,11 +3,13 @@ import { PropsWithChildren } from "react";
 
 /* React Packages */
 import { Button, Toolbar } from "@mui/material";
-import { domAnimation, LazyMotion, m } from 'framer-motion';
+import { m } from 'framer-motion';
+import LazyDomAnimation from "../../motion/LazyDomAnimation";
 
 /* App */
-import LazyImage from "../LazyImage";
 import { FADEIN_INVIEW, SLIDEINUPINVIEW } from "../../motion/props";
+import LazyImage from "../LazyImage";
+
 
 interface NoticeBlockProps {
     handleClick?: () => void
@@ -33,7 +35,7 @@ function NoticeBlock({
 
     return (
             <div className={`page flex ${isFullscreen ? 'fill-window' : ''}`}>
-            <LazyMotion features={domAnimation}>
+            <LazyDomAnimation>
                 {
                     isFullscreen &&
                     <Toolbar />
@@ -87,7 +89,7 @@ function NoticeBlock({
                         <div />
                     </m.div>
                 }
-                </LazyMotion>
+                </LazyDomAnimation>
             </div>
     );
 }

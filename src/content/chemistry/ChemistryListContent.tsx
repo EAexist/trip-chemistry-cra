@@ -1,14 +1,15 @@
 /* React Packages */
 import { Add } from "@mui/icons-material";
 import { Button, Toolbar } from "@mui/material";
-import { domAnimation, LazyMotion, m } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
+import LazyDomAnimation from "../../motion/LazyDomAnimation";
 
 /* App */
-import ChemistrySummaryButton from "./component/ChemistrySummaryButton";
+import RoutedMotionPage from "../../motion/components/RoutedMotionPage";
 import { FADEIN_VIEWPORT, STAGGER_CHILDREN, VARIANTS_SLIDE_UP } from "../../motion/props";
 import { useChemistryIdList } from "../../reducers/authReducer";
-import RoutedMotionPage from "../../motion/components/RoutedMotionPage";
+import ChemistrySummaryButton from "./component/ChemistrySummaryButton";
 
 interface ChemistryListContentProps {
 
@@ -32,7 +33,7 @@ function ChemistryListContent({ }: ChemistryListContentProps) {
         {/* <div className="page  min-fill-window"> */}
             <Toolbar/>
             <div className="block--with-margin-x block__body">
-                <LazyMotion features={domAnimation}>
+                <LazyDomAnimation>
                 <m.h2 {...FADEIN_VIEWPORT} className="typography-heading">
                     내 여행
                 </m.h2>
@@ -56,7 +57,7 @@ function ChemistryListContent({ }: ChemistryListContentProps) {
                         </Button>
                     </m.li>
                 </m.ul>
-                </LazyMotion>
+                </LazyDomAnimation>
             </div>
         {/* </div> */}
         </RoutedMotionPage>

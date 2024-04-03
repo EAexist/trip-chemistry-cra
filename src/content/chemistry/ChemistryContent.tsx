@@ -1,15 +1,15 @@
 /* React */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 /* React Packages */
 import { AirplaneTicket, Close, Error, GroupAdd, NavigateBefore } from "@mui/icons-material";
 import { Alert, Avatar, Button, ButtonBase, Grid, Icon, IconButton, List, ListItem, ListItemAvatar, ListItemText, Modal, Paper, Stack, Toolbar } from "@mui/material";
-import { domAnimation, LazyMotion, m, useMotionValueEvent, useScroll } from "framer-motion";
+import { m } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import LazyDomAnimation from "../../motion/LazyDomAnimation";
 
 /* App */
-import { useStrings } from "../../texts";
 
 import FriendAvatar from "../../components/Avatar/FriendAvatar";
 import NoticeBlock from "../../components/Block/NoticeBlock";
@@ -224,7 +224,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                             isMember
                                 ?
                                 (
-                                    <LazyMotion features={domAnimation}>
+                                    <LazyDomAnimation>
                                         <m.div>
                                             {
                                                 isInviteOptionsOpen
@@ -272,7 +272,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                                                     </m.div>
                                             }
                                         </m.div>
-                                    </LazyMotion>
+                                    </LazyDomAnimation>
                                 )
                                 :
                                 <Button

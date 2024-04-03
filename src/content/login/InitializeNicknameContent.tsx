@@ -4,8 +4,9 @@ import { useState } from "react";
 /* React Packages */
 import { Close, Done } from "@mui/icons-material";
 import { Button, Grid } from "@mui/material";
-import { domAnimation, LazyMotion, m } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useDispatch } from "react-redux";
+import LazyDomAnimation from "../../motion/LazyDomAnimation";
 
 /* App */
 import { useLocation, useNavigate } from "react-router-dom";
@@ -34,7 +35,7 @@ function InitializeNicknameContent({ }: InitializeNicknameContentProps) {
     }
 
     const handleCancelLogin = () => {
-        navigate(`/${((state !== null) && state.cancelRedirectPath) ? state.cancelRedirectPath : ""}`, { state: { navigateDirection: 'prev' }});
+        navigate(`/${((state !== null) && state.cancelRedirectPath) ? state.cancelRedirectPath : ""}`, { state: { navigateDirection: 'prev' } });
     }
 
     const handleCloseConfirmCancelModal = () => {
@@ -53,38 +54,38 @@ function InitializeNicknameContent({ }: InitializeNicknameContentProps) {
         >
             {
                 // doRequireInitialization ?
-                    <>
-                        {
-                            isConfirmCancelModalOpen
-                            &&
-                            <LazyMotion features={domAnimation}>
+                <>
+                    {
+                        isConfirmCancelModalOpen
+                        &&
+                        <LazyDomAnimation>
                             <m.div {...SLIDEINUPINVIEW} className="page fill-window flex">
                                 <div className='block--with-margin-lg block__body block--centered flex-grow'>
                                     <h3 className='typography-label'>
                                         {`닉네임을 설정 중이에요.\n취소하고 처음으로 돌아갈까요?`}
                                     </h3>
-                                        <Grid container columnSpacing={4}>
-                                            <Grid item xs={6}>
-                                                <Button onClick={handleCloseConfirmCancelModal} startIcon={<Close />}>
-                                                    로그인 계속하기
-                                                </Button>
-                                            </Grid>
-                                            <Grid item xs={6} display={"flex"} justifyContent={"center"} >
-                                                <Button onClick={handleCancelLogin} startIcon={<Done />}>
-                                                    확인
-                                                </Button>
-                                            </Grid>
+                                    <Grid container columnSpacing={4}>
+                                        <Grid item xs={6}>
+                                            <Button onClick={handleCloseConfirmCancelModal} startIcon={<Close />}>
+                                                로그인 계속하기
+                                            </Button>
                                         </Grid>
-                                    </div>
+                                        <Grid item xs={6} display={"flex"} justifyContent={"center"} >
+                                            <Button onClick={handleCancelLogin} startIcon={<Done />}>
+                                                확인
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </div>
                             </m.div>
-                            </LazyMotion>
-                        }
-                        <SetNicknamePage
-                            handleClose={handleClose}
-                            doRequireInitialization={true}
-                        />
-                    </>
-                    // : <></>
+                        </LazyDomAnimation>
+                    }
+                    <SetNicknamePage
+                        handleClose={handleClose}
+                        doRequireInitialization={true}
+                    />
+                </>
+                // : <></>
             }
         </AuthLoadRequiredContent>
     );

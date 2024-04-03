@@ -2,8 +2,9 @@
 import { useEffect, useState } from "react";
 
 /* React Packages */
-import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { useSelector } from "react-redux";
+import LazyDomAnimation from "../../motion/LazyDomAnimation";
 
 import { List, ListItem, Stack } from "@mui/material";
 
@@ -16,13 +17,13 @@ import FriendAvatar from "../../components/Avatar/FriendAvatar";
 import NavigationButton from "../../components/Button/NavigationButton";
 import ToggleButton from "../../components/Button/ToggleButton";
 import ProfileImage from "../../components/Profile/ProfileImage";
-import ChemistrySlider from "./component/ChemistrySlider";
 import TestResultBlock from "../../components/Profile/TestResultBlock";
 import useValueToProfileIdList from "../../hooks/useValueToProfileIdList";
 import { FADEIN, FADEIN_VIEWPORT } from "../../motion/props";
 import { useChemistry, useProfileAll, useProfileIdList, useSortedCityList } from "../../reducers/chemistryReducer";
 import { RootState } from "../../store";
 import CityChemistryContent from "./CityChemistryContent";
+import ChemistrySlider from "./component/ChemistrySlider";
 
 interface ChemistryDetailContentProps {
 
@@ -62,7 +63,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
 
     return (
         <>
-        <LazyMotion features={domAnimation}>
+        <LazyDomAnimation>
             <SectionPaper>
                 <m.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.tripCharacter.title}</m.h5>
                 <m.div {...FADEIN_VIEWPORT} className="block__body">
@@ -240,7 +241,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                 <m.h5 className="typography-heading">{" 친구에게 결과 공유하기 "}</m.h5>
             </SectionPaper> */}
             {/* <div /> */}
-            </LazyMotion>
+            </LazyDomAnimation>
         </>
     );
 }

@@ -5,9 +5,10 @@ import { useEffect, useRef, useState } from "react";
 
 import { ExpandMore, NavigateNext } from "@mui/icons-material";
 import { Button, ButtonBase, Card, CardContent, CardMedia, List, ListItem, ListItemButton, ListItemText, Stack, Tooltip, useTheme } from "@mui/material";
-import { AnimatePresence, domAnimation, LazyMotion, m, useMotionValueEvent, useScroll } from "framer-motion";
+import { AnimatePresence, m, useMotionValueEvent, useScroll } from "framer-motion";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import LazyDomAnimation from "../../motion/LazyDomAnimation";
 
 /* Swiper */
 import 'swiper/css';
@@ -23,6 +24,7 @@ import TestSection from "../../components/Block/TestSection";
 import FoodImageCard from "../../components/Card/FoodImageCard";
 import ImageCard from "../../components/Card/ImageCard";
 import OptionCard from "../../components/Card/OptionCard";
+import Flag from "../../components/Flag";
 import GoogleMapContext from "../../components/GoogleMap/common/GoogleMapContext";
 import { OPTIONS_TEST_SCHEDULE } from "../../components/GoogleMap/common/options";
 import GoogleMap from "../../components/GoogleMap/ui/GoogleMap";
@@ -47,7 +49,6 @@ import AnswerSlider from "./component/AnswerSlider";
 import TagSetTestAnswerChip from "./component/TagSetTestAnswerChip";
 import TestAnswerBadge from "./component/TestAnswerBadge";
 import TestInstruction from "./component/TestInstruction";
-import Flag from "../../components/Flag";
 
 interface TestContentProps {
 
@@ -167,7 +168,7 @@ function TestContent({ }: TestContentProps) {
                 <div className="page">
                     <StepContext.Provider value={{ step, setStep }}>
                         <StepCheckpointContextProvider>
-                            <LazyMotion features={domAnimation}>
+                            <LazyDomAnimation>
                                 <div className="top-nav" style={{ backgroundColor: theme.palette.gray.light }}>
                                     <m.div {...FADEIN} custom={0.2} >
                                         <Stepper className="block--with-margin-x top-nav__swiper" speed={preventInitialSwipe ? 0 : 500}>
@@ -441,7 +442,7 @@ function TestContent({ }: TestContentProps) {
                                         </span>
                                     </Tooltip>
                                 </div>
-                            </LazyMotion>
+                            </LazyDomAnimation>
                         </StepCheckpointContextProvider>
                     </StepContext.Provider>
                     {

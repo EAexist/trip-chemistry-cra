@@ -1,9 +1,10 @@
 import { PropsWithChildren, useRef } from "react";
 
-import { domAnimation, LazyMotion, m } from 'framer-motion';
+import { m } from 'framer-motion';
+import LazyDomAnimation from "../../motion/LazyDomAnimation";
 
-import { usePage } from "./PageContext";
 import { FADEIN } from "../../motion/props";
+import { usePage } from "./PageContext";
 
 /* ScrollPageItem
     Wrapper that renderes wrapped element when sticky container is scrolled to corresponding page(prop) 
@@ -21,7 +22,7 @@ const ScrollPageItem = ({ page, children, className }: PropsWithChildren<ScrollP
 
     return (
         // (activePage === page) &&
-        <LazyMotion features={domAnimation}>
+        <LazyDomAnimation>
             <m.div
                 ref={pageRef}
                 {...FADEIN}
@@ -30,7 +31,7 @@ const ScrollPageItem = ({ page, children, className }: PropsWithChildren<ScrollP
             >
                 {children}
             </m.div>
-        </LazyMotion>
+        </LazyDomAnimation>
     );
 };
 

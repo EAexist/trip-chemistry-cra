@@ -1,9 +1,10 @@
 /* React */
 /* React Packages */
 import { Button, Toolbar } from "@mui/material";
-import { domAnimation, LazyMotion, m } from "framer-motion";
+import { m } from "framer-motion";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import LazyDomAnimation from "../../motion/LazyDomAnimation";
 
 import { UserTestResultBlock } from "../../components/Profile/TestResultBlock";
 import { FADEIN_VIEWPORT } from "../../motion/props";
@@ -32,7 +33,7 @@ function ResultContent({ }: ResultContentProps) {
     return (
         <div className="page">
             <Toolbar />
-            <LazyMotion features={domAnimation}>
+            <LazyDomAnimation>
                 <m.div  {...FADEIN_VIEWPORT} className="block__body block--with-padding-x">
                     {/* <SectionPaper className="body__head"> */}
                     <m.h5 className="typography-heading">{strings.sections.tripCharacter.title}</m.h5>
@@ -55,7 +56,7 @@ function ResultContent({ }: ResultContentProps) {
                     </div>
                     <div />
                 </m.div>
-            </LazyMotion>
+            </LazyDomAnimation>
         </div>
     );
 }
