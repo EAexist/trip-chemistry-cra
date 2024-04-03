@@ -4,6 +4,7 @@ import CopyPlugin from "copy-webpack-plugin";
 import LoadablePlugin from "@loadable/webpack-plugin";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import webpack from "webpack";
+import path from "path";
 
 /* Dilan Nair. CRACO docs - configuration - Configuration Tips.
 ( https://craco.js.org/docs/configuration/getting-started/#configuration-tips ) */
@@ -11,9 +12,9 @@ module.exports = {
     webpack: {
         plugins: {
             remove: [
-                new LoadablePlugin()
             ],
             add: [
+                new LoadablePlugin(),
                 // new webpack.optimize.LimitChunkCountPlugin({
                 //     maxChunks: 1,
                 // }),
@@ -30,6 +31,16 @@ module.exports = {
             ]
         },
         configure: (webpackConfig, { env, paths }) => {
+            // webpackConfig.module.rules = webpackConfig.module.rules.concat([
+            //     /* Tree-shaking on Swiper.js modules. ( https://stackoverflow.com/questions/71031894/why-isnt-webpack-tree-shaking-swiperjs-modules ) */
+            //     {
+            //       test: /\.(mjs)$/,
+            //       include: [
+            //         path.resolve(__dirname, 'node_modules/swiper/modules')
+            //       ],
+            //       sideEffects: false
+            //     }
+            // ])            
             // webpackConfig.publicPath = ''
             // webpackConfig.module.rules = [
             //     {

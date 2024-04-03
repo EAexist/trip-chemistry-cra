@@ -11,26 +11,26 @@ import { TEST } from './common/app-const';
 
 /* [Performance][Code Splitting]  */
 /* 1. Static Import */
-import AuthRequiredRoute from './route/AuthRequiredRoute';
-import TestRequiredRoute from './route/TestRequiredRoute';
-import GuestRoute from './route/GuestRoute';
-import AuthRecommendedPage from './route/AuthRecommendedPage';
+// import AuthRequiredRoute from './route/AuthRequiredRoute';
+// import TestRequiredRoute from './route/TestRequiredRoute';
+// import GuestRoute from './route/GuestRoute';
+// import AuthRecommendedPage from './route/AuthRecommendedPage';
 
-import HomeContent from './content/home/HomeContent';
-import ChemistryContent from './content/chemistry/ChemistryContent';
-import SearchAndInviteFriendContent from './content/chemistry/SearchAndInviteFriendContent';
-import CityDetailContent from './content/city/CityDetailContent';
-import TestContent from './content/test/TestContent';
+// import HomeContent from './content/home/HomeContent';
+// import ChemistryContent from './content/chemistry/ChemistryContent';
+// import SearchAndInviteFriendContent from './content/chemistry/SearchAndInviteFriendContent';
+// import CityDetailContent from './content/city/CityDetailContent';
+// import TestContent from './content/test/TestContent';
 
-import AuthContent from './content/login/AuthContent';
-import InitializeNicknameContent from './content/login/InitializeNicknameContent';
-import KakaoAuthRedirectPage from './content/login/KakaoAuthRedirectPage';
+// import AuthContent from './content/login/AuthContent';
+// import InitializeNicknameContent from './content/login/InitializeNicknameContent';
+// import KakaoAuthRedirectPage from './content/login/KakaoAuthRedirectPage';
 
-import UserContent from './content/user/UserContent';
-import EditNicknameContent from './content/login/EditNicknameContent';
-import ResultContent from './content/result/ResultContent';
-import ChemistryListContent from './content/chemistry/ChemistryListContent';
-import CreateChemistryContent from './content/chemistry/CreateChemistryContent';
+// import UserContent from './content/user/UserContent';
+// import EditNicknameContent from './content/login/EditNicknameContent';
+// import ResultContent from './content/result/ResultContent';
+// import ChemistryListContent from './content/chemistry/ChemistryListContent';
+// import CreateChemistryContent from './content/chemistry/CreateChemistryContent';
 
 /* 2. Lzay Import */
 // const AuthRequiredRoute = lazy(() => import('./route/AuthRequiredRoute'));
@@ -55,27 +55,27 @@ import CreateChemistryContent from './content/chemistry/CreateChemistryContent';
 // const CreateChemistryContent = lazy(() => import('./content/chemistry/CreateChemistryContent'));
 
 /* 3. Loadable Components */
-// import loadable from '@loadable/component';
-// const AuthRequiredRoute = loadable(() => import(/* webpackChunkName: "AuthRequiredRoute" */ './route/AuthRequiredRoute'));
-// const TestRequiredRoute = loadable(() => import('./route/TestRequiredRoute'));
-// const GuestRoute = loadable(() => import('./route/GuestRoute'));
-// const AuthRecommendedPage = loadable(() => import(/* webpackChunkName: "AuthRecommendedPage" */ './route/AuthRecommendedPage'));
+import loadable from '@loadable/component';
+const AuthRequiredRoute = loadable(() => import(/* webpackChunkName: "AuthRequiredRoute" */ './route/AuthRequiredRoute'));
+const TestRequiredRoute = loadable(() => import( /* webpackChunkName: "TestRequiredRoute" */'./route/TestRequiredRoute'));
+const GuestRoute = loadable(() => import( /* webpackChunkName: "GuestRoute" */'./route/GuestRoute'));
+const AuthRecommendedPage = loadable(() => import(/* webpackChunkName: "AuthRecommendedPage" */ './route/AuthRecommendedPage'));
 
-// const HomeContent = loadable(() => import(/* webpackChunkName: "HomeContent" */ './content/home/HomeContent'));
-// const ChemistryContent = loadable(() => import('./content/chemistry/ChemistryContent'));
-// const SearchAndInviteFriendContent = loadable(() => import('./content/chemistry/SearchAndInviteFriendContent'));
-// const CityDetailContent = loadable(() => import('./content/city/CityDetailContent'));
-// const TestContent = loadable(() => import(/* webpackChunkName: "TestContent" */ './content/test/TestContent'));
+const HomeContent = loadable(() => import(/* webpackChunkName: "HomeContent" */ './content/home/HomeContent'));
+const ChemistryContent = loadable(() => import( /* webpackChunkName: "ChemistryContent" */'./content/chemistry/ChemistryContent'));
+const SearchAndInviteFriendContent = loadable(() => import( /* webpackChunkName: "SearchAndInviteFriendContent" */'./content/chemistry/SearchAndInviteFriendContent'));
+const CityDetailContent = loadable(() => import( /* webpackChunkName: "CityDetailContent" */'./content/city/CityDetailContent'));
+const TestContent = loadable(() => import(/* webpackChunkName: "TestContent" */ './content/test/TestContent'));
 
-// const AuthContent = loadable(() => import('./content/login/AuthContent'));
-// const InitializeNicknameContent = loadable(() => import('./content/login/InitializeNicknameContent'));
-// const KakaoAuthRedirectPage = loadable(() => import('./content/login/KakaoAuthRedirectPage'));
+const AuthContent = loadable(() => import( /* webpackChunkName: "AuthContent" */'./content/login/AuthContent'));
+const InitializeNicknameContent = loadable(() => import( /* webpackChunkName: "InitializeNicknameContent" */'./content/login/InitializeNicknameContent'));
+const KakaoAuthRedirectPage = loadable(() => import( /* webpackChunkName: "KakaoAuthRedirectPage" */'./content/login/KakaoAuthRedirectPage'));
 
-// const UserContent = loadable(() => import('./content/user/UserContent'));
-// const EditNicknameContent = loadable(() => import('./content/login/EditNicknameContent'));
-// const ResultContent = loadable(() => import('./content/result/ResultContent'));
-// const ChemistryListContent = loadable(() => import('./content/chemistry/ChemistryListContent'));
-// const CreateChemistryContent = loadable(() => import('./content/chemistry/CreateChemistryContent'));
+const UserContent = loadable(() => import( /* webpackChunkName: "UserContent" */'./content/user/UserContent'));
+const EditNicknameContent = loadable(() => import( /* webpackChunkName: "EditNicknameContent" */'./content/login/EditNicknameContent'));
+const ResultContent = loadable(() => import( /* webpackChunkName: "ResultContent" */'./content/result/ResultContent'));
+const ChemistryListContent = loadable(() => import( /* webpackChunkName: "ChemistryListContent" */'./content/chemistry/ChemistryListContent'));
+const CreateChemistryContent = loadable(() => import( /* webpackChunkName: "CreateChemistryContent" */'./content/chemistry/CreateChemistryContent'));
 
 const sessionRoute =
     <>
