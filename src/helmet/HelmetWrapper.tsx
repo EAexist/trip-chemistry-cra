@@ -1,4 +1,6 @@
-import { Helmet } from "react-helmet-async";
+
+import { Helmet } from "react-helmet";
+// import { Helmet } from "react-helmet-async";
 
 interface HelmetWrapperProps {
     title?: string
@@ -12,8 +14,7 @@ interface HelmetWrapperProps {
 const HelmetWrapper = ( props: HelmetWrapperProps ) => {
       return (
         <Helmet>
-          <title>{props.title}</title>
-  
+          <title>{props.title}</title>  
           <meta name="description" content={props.description} />
           <meta name="keywords" content={props.keywords} />
           <meta name="author" content="Hyeon" />

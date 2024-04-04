@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Outlet, ScrollRestoration } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import AppBar from "../components/AppBar/AppBar";
+import { AppBarContextProvider } from "../components/AppBar/AppBarContext";
 import { AuthLoadRequiredContent } from "../content/LoadRequiredContent";
+import HelmetWrapper from "../helmet/HelmetWrapper";
 import { asyncKakaoLoginByAccessToken, disableAutoLogin, useAuthorize, useIsAutoLoginEnabled } from "../reducers/authReducer";
 import { AppDispatch } from "../store";
-import { HelmetProvider } from "react-helmet-async";
-import { AppBarContextProvider } from "../components/AppBar/AppBarContext";
-import HelmetWrapper from "../helmet/HelmetWrapper";
-import AppBar from "../components/AppBar/AppBar";
 
 interface PageProps {
 
@@ -50,31 +49,30 @@ function Page({ }: PageProps) {
     }, [isAutoLoginEnabaled, dispatch]);
 
     return (
-        <HelmetProvider>
-        <AppBarContextProvider>
-            <HelmetWrapper
-                title={"여행 타입 테스트"}
-                description={"여행 타입 테스트로 친구들과 함께 떠나는 여행 준비하기. 나의 여행 MBTI는 뭘까? 여행 계획, 여행 일정, 여행 예산, 그리고 여행지까지 서로 다른 취향을 맞춰봐!"}
-                keywords={"여행, 여행 일정, 여행지, 여행 계획, 여행 예산, 국내여행, 해외여행, MBTI"}
-                url={"https://eaexist.github.io/tripchemistry"}
-                image={"/static/images/meta/social-meta-iamge.jpg"}
-            />
-            <AuthLoadRequiredContent
-                isEnabled={isAutoLoginEnabaled}
-                handleFail={handleFail}
-                handleSuccess={handleSuccess}
-                showHandleFailButton={false}
-            >
-                {
-                    ! isAutoLoginEnabaled
-                    &&
-                    <>
-                        <AppBar />
-                        <Outlet />
-                    </>
-                }
-                {/* https://reactrouter.com/en/main/components/scroll-restoration */}
-                {/* <ScrollRestoration
+            <AppBarContextProvider>
+                <HelmetWrapper
+                    title={"여행 타입 테스트"}
+                    description={"여행 타입 테스트로 친구들과 함께 떠나는 여행 준비하기. 나의 여행 MBTI는 뭘까? 여행 계획, 여행 일정, 여행 예산, 그리고 여행지까지 서로 다른 취향을 맞춰봐!"}
+                    keywords={"여행, 여행 일정, 여행지, 여행 계획, 여행 예산, 국내여행, 해외여행, MBTI"}
+                    url={"https://eaexist.github.io/tripchemistry"}
+                    image={"/static/images/meta/social-meta-iamge.jpg"}
+                />
+                <AuthLoadRequiredContent
+                    isEnabled={isAutoLoginEnabaled}
+                    handleFail={handleFail}
+                    handleSuccess={handleSuccess}
+                    showHandleFailButton={false}
+                >
+                    {
+                        // !isAutoLoginEnabaled
+                        // &&
+                        <>
+                            <AppBar />
+                            <Outlet />
+                        </>
+                    }
+                    {/* https://reactrouter.com/en/main/components/scroll-restoration */}
+                    {/* <ScrollRestoration
                 getKey={(location, matches) => {
                     const paths = ["/chemistry"];
                     console.log(`[ScrollRestoration] ${location.pathname}`)
@@ -86,9 +84,8 @@ function Page({ }: PageProps) {
                         location.key;
                 }}
             /> */}
-            </AuthLoadRequiredContent>
-        </AppBarContextProvider>
-        </HelmetProvider>
+                </AuthLoadRequiredContent>
+            </AppBarContextProvider>
     );
 }
 export default Page;

@@ -15,11 +15,8 @@ module.exports = {
             ],
             add: [
                 new LoadablePlugin(),
-                // new webpack.optimize.LimitChunkCountPlugin({
-                //     maxChunks: 1,
-                // }),
                 // whenDev(
-                //     () => ([]),
+                //     () => [],
                 //     (process.env.npm_config_REPORT_NAME !== undefined)
                 //         ? [new BundleAnalyzerPlugin({
                 //             analyzerMode: 'static',
