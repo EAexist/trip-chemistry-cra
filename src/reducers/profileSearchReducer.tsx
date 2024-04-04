@@ -12,13 +12,13 @@ import { HEADERS_AXIOS } from "../common/app-const";
 import { IProfile, IProfileId } from "../interfaces/IProfile";
 import { IWithLoadStatus, LoadStatus } from "../interfaces/enums/LoadStatus";
 
-type IProfileprofileSearchState = IWithLoadStatus<{
+type IProfileSearchState = IWithLoadStatus<{
     searchedProfileList: IProfile[],
     flaggedProfileList: { [id: IProfileId]: IProfile },
 }>;
 
 /* State */
-const initialState: IProfileprofileSearchState = {
+const initialState: IProfileSearchState = {
     data: {
         searchedProfileList: [],
         flaggedProfileList: {},
@@ -136,5 +136,6 @@ const useProfileSearchStatus = () => {
 }
 
 export default profileSearchSlice.reducer;
+export type { IProfileSearchState }
 export const { resetSearch, addFlagged, deleteFlagged } = profileSearchSlice.actions;
 export { asyncSearchProfile, useSearchedProfileList, useFlaggedProfileList, useProfileSearchStatus };

@@ -437,6 +437,7 @@ const useGuestLogin = () => {
 }
 
 export default authSlice.reducer;
+export type { IAuthState };
 export const { authorize, setLoadStatus, setIsInitialized, disableAutoLogin } = authSlice.actions;
 export { asyncGuestSignIn, asyncKakaoLogin, asyncKakaoLoginByAccessToken, asyncKakaoLogout };
 
@@ -445,3 +446,4 @@ export { useChemistryIdList, useHasAnsweredTest, useIsAuthorized, useIsAutoLogin
 
 /* Selector & Dispatch Hooks */
 export { useAuthLoadStatus, useAuthorize, useGetProfile, useGuestLogin };
+

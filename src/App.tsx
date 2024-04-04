@@ -60,6 +60,8 @@ const AuthRequiredRoute = loadable(() => import(/* webpackChunkName: "AuthRequir
 const TestRequiredRoute = loadable(() => import( /* webpackChunkName: "TestRequiredRoute" */'./route/TestRequiredRoute'));
 const GuestRoute = loadable(() => import( /* webpackChunkName: "GuestRoute" */'./route/GuestRoute'));
 const AuthRecommendedPage = loadable(() => import(/* webpackChunkName: "AuthRecommendedPage" */ './route/AuthRecommendedPage'));
+const ChemistryReducerProvider = loadable(() => import(/* webpackChunkName: "ChemistryReducerProvider" */ './reducers/ChemistryReducerProvider'));
+// import ChemistryReducerProvider from './reducers/ChemistryReducerProvider';
 
 const HomeContent = loadable(() => import(/* webpackChunkName: "HomeContent" */ './content/home/HomeContent'));
 const ChemistryContent = loadable(() => import( /* webpackChunkName: "ChemistryContent" */'./content/chemistry/ChemistryContent'));
@@ -80,7 +82,7 @@ const CreateChemistryContent = loadable(() => import( /* webpackChunkName: "Crea
 const sessionRoute =
     <>
         <Route key={'home'} path={'home'} element={<HomeContent />} />
-        <Route key={'chemistry'} path={'chemistry/:chemistryId'} element={<Outlet />} >
+        <Route key={'chemistry'} path={'chemistry/:chemistryId'} element={<ChemistryReducerProvider />} >
             <Route key={'index'} index element={<ChemistryContent />} />
             <Route key={'searchAndInviteFriend'} path={'searchAndInviteFriend'} element={<SearchAndInviteFriendContent />} />
         </Route>
@@ -138,6 +140,7 @@ function App() {
                                 }
                             </Route> */}
                 <Route key={'index'} element={<Outlet />} >
+                    <Route key={'testPreview'} path={'testPreview'} element={<TestContent />} />
                     {sessionRoute}
                 </Route>
                 <Route key={'guest'} path={'guest/:id'} element={<GuestRoute />}>

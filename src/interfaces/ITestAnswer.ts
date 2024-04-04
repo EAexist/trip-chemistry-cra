@@ -60,3 +60,5 @@ export const testAnswerToDTO: (testAnswer: ITestAnswer) => ITestAnswerDTO = ( te
         activity: testAnswer.activity.selected,
     } as ITestAnswerDTO
 );
+
+export type ITestName = keyof ITestAnswer;

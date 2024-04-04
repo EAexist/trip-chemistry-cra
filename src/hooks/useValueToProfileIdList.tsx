@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
 import { IProfileId } from "../interfaces/IProfile";
-import { TestName } from "../reducers/testAnswerReducer";
 import { useTestAnswerObject } from "../reducers/chemistryReducer";
+import { ITestName } from "../interfaces/ITestAnswer";
 
 interface IvalueToProfiles {[value: string] : IProfileId[]};
 
-const useValueToProfileIdList = ( testName: TestName ) => {
+const useValueToProfileIdList = ( testName: ITestName ) => {
 
     /* @TODO 완성 후 testAnswerDefault 제거 */
     // const testAnswerDefault = useSelector(( state:RootState )=>(state.testAnswer.data[testName.testName][testName.subTestName]));

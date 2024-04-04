@@ -9,16 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 /* App */
 import { HEADERS_AXIOS, TEST_TYPE } from "../common/app-const";
-import { ITestAnswer, ITestAnswerDTO, testAnswerToDTO } from "../interfaces/ITestAnswer";
+import { ITestAnswer, ITestAnswerDTO, ITestName, testAnswerToDTO } from "../interfaces/ITestAnswer";
 import { AppDispatch, RootState } from "../store";
 import { useUserId } from "./authReducer";
 import { ExpectationTag } from "../interfaces/enums/ExpectationTag";
 import { ActivityTag } from "../interfaces/enums/ActivityTag";
 import { IWithLoadStatus, LoadStatus } from "../interfaces/enums/LoadStatus";
 
-
-
-type TestName = keyof ITestAnswer;
 export type NumericTestName = keyof Omit<ITestAnswer, "activity" | "expectation">;
 export type SetTestName = keyof Pick<ITestAnswer, "activity" | "expectation">;
 
@@ -46,7 +43,9 @@ export const sampleTestAnswer : ITestAnswer = {
     nature: 4,
 };
 
-const initialState : IWithLoadStatus<ITestAnswer> = {
+type ITestAnswerState = IWithLoadStatus<ITestAnswer>
+
+const initialState : ITestAnswerState  = {
     data: sampleTestAnswer,
     // data: defaultTestAnswer,
     loadStatus : LoadStatus.REST
@@ -128,7 +127,7 @@ const testAnswerSlice = createSlice({
     },
 });
 
-export const useTestAnswer = ( testName: TestName ) => {
+export const useTestAnswer = ( testName: ITestName ) => {
     const dispatch = useDispatch();
     return(
         [ 
@@ -146,7 +145,7 @@ export const useTagSetAnswer = ( testName: SetTestName, selected = true ) => {
     );
 };
 
-export const useIsTestAnswered = ( testName: TestName ) => {
+export const useIsTestAnswered = ( testName: ITestName ) => {
     return(
         useSelector(( state:RootState )=>(
             ( typeof state.testAnswer.data[testName] !== "object" )
@@ -193,6 +192,7 @@ const useSubmitAnswer = () => {
 }
 
 export default testAnswerSlice.reducer;
+export type { ITestAnswerState } 
 export { useSubmitAnswer, useTestAnswerStatus };
 export const { addTagAnswer, deleteTagAnswer } = testAnswerSlice.actions;
-export type { ITestAnswer, TestName };
+export type { ITestAnswer };

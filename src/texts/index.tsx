@@ -49,12 +49,12 @@ function useContentString( key: ContentKey ) {
 }
 
 // interface useTestStringProps {
-//     testName: TestName;
+//     testName: ITestName;
 //     subTestName?: SubTestName;
 // };
 // function useTestString({ testName, subTestName }: useTestStringProps) {
 
-//     const baseStrings = usePageString('test')[testName as TestName];
+//     const baseStrings = usePageString('test')[testName as ITestName];
 
 //     return(
 //         subTestName ? baseStrings.subTests[subTestName as SubTestName] : baseStrings

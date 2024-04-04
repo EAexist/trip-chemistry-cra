@@ -18,15 +18,15 @@ module.exports = {
                 // new webpack.optimize.LimitChunkCountPlugin({
                 //     maxChunks: 1,
                 // }),
-                whenDev(
-                    ()=>([]), 
-                    ( process.env.npm_config_REPORT_NAME !== undefined ) 
-                    ? [ new BundleAnalyzerPlugin({ 
-                        analyzerMode: 'static',
-                        reportFilename: `../report/${process.env.npm_config_REPORT_NAME}/bundle_analysis.html`
-                    })] 
-                    : []
-                )
+                // whenDev(
+                //     () => ([]),
+                //     (process.env.npm_config_REPORT_NAME !== undefined)
+                //         ? [new BundleAnalyzerPlugin({
+                //             analyzerMode: 'static',
+                //             reportFilename: `../report/${process.env.npm_config_REPORT_NAME}/bundle_analysis.html`
+                //         })]
+                //         : []
+                // )
             ]
         },
         configure: (webpackConfig, { env, paths }) => {
@@ -76,4 +76,29 @@ module.exports = {
             return webpackConfig;
         },
     },
+    babel: {
+        plugins: [
+            /* ! Not Required
+                Material UI - Guides - Minimizing Bundle Size
+            ( https://mui.com/material-ui/guides/minimizing-bundle-size/#option-two-use-a-babel-plugin ) */
+            // [
+            //   'babel-plugin-import',
+            //   {
+            //     libraryName: '@mui/material',
+            //     libraryDirectory: '',
+            //     camel2DashComponentName: false,
+            //   },
+            //   'core',
+            // ],
+            // [
+            //   'babel-plugin-import',
+            //   {
+            //     libraryName: '@mui/icons-material',
+            //     libraryDirectory: '',
+            //     camel2DashComponentName: false,
+            //   },
+            //   'icons',
+            // ],
+        ],
+    }
 };

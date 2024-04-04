@@ -2,17 +2,17 @@ import { Slider, SliderOwnProps, Stack } from "@mui/material";
 
 import useValueToProfileIdList from "../../../hooks/useValueToProfileIdList";
 import useProfileIdListByAnswer from "../../../hooks/useProfileIdListByAnswer";
-import { TestName } from "../../../reducers/testAnswerReducer";
 import FriendAvatar from "../../../components/Avatar/FriendAvatar";
+import { ITestName } from "../../../interfaces/ITestAnswer";
 
 interface ChemistrySliderProps extends SliderOwnProps {
-    testName: TestName
+    testName: ITestName
     min: number
     max: number
     step: number
 };
 
-const SliderValueLabel = ({ testName, value }: { testName: TestName, value: number }) => {
+const SliderValueLabel = ({ testName, value }: { testName: ITestName, value: number }) => {
 
     const { userList } = useProfileIdListByAnswer(testName, value);
 
@@ -93,10 +93,10 @@ export type { ChemistrySliderProps };
 
 
 // interface ValueLabelComponentProps extends SliderValueLabelProps {
-//     testName: TestName;
+//     testName: ITestName;
 // }
 
-// const valueLabelComponent_ = (testName: TestName) => ({ value, children }: SliderValueLabelProps) => {
+// const valueLabelComponent_ = (testName: ITestName) => ({ value, children }: SliderValueLabelProps) => {
 
 //     const { userList, ascendingOrder } = useProfileIdListByAnswer(testName, value);
 //     const isEven = ascendingOrder % 2 === 0;

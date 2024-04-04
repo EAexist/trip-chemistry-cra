@@ -12,14 +12,13 @@ import { HEADERS_AXIOS } from "../common/app-const";
 import { IChemistry, defaultChemistry } from "../interfaces/IChemistry";
 import { IProfile, IProfileId, defaultProfile } from "../interfaces/IProfile";
 import { IWithLoadStatus, LoadStatus } from "../interfaces/enums/LoadStatus";
-import { TestName } from "./testAnswerReducer";
+import { ITestName } from "../interfaces/ITestAnswer";
 
 interface IChemistryCreateDTO extends Pick<IChemistry, "title" | "titleCity"> {
     userId: IProfileId;
 };
 
 type IChemistryState = IWithLoadStatus<IChemistry>;
-
 
 const initialState: IChemistryState = {
     data: defaultChemistry,
@@ -189,7 +188,7 @@ const useChemistryLoadStatus = () => {
     ] as const);
 }
 
-const useTestAnswerObject = (testName: TestName) => {
+const useTestAnswerObject = ( testName: ITestName ) => {
 
     return (
         useSelector((state: RootState) =>
@@ -238,6 +237,7 @@ function useProfileAll<T extends (keyof IProfile) | IProfile>(idList?: IProfileI
 }
 
 export default chemistrySlice.reducer;
+export type { IChemistryState }
 export const { clearChemistry } = chemistrySlice.actions;
 export { asyncGetChemistry, useChemistry, useChemistryId, useChemistryLoadStatus, useCityChemistry, useIsChemistryEnabled, useProfile, useProfileAll, useProfileIdList, useSortedCityList, useTestAnswerObject };
 

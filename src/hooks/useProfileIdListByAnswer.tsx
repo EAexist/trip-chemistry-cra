@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
 import { IProfileId } from "../interfaces/IProfile";
-import { TestName } from "../reducers/testAnswerReducer";
 import { useTestAnswerObject } from "../reducers/chemistryReducer";
+import { ITestName } from "../interfaces/ITestAnswer";
 
-const useProfileIdListByAnswer = ( testName: TestName, answer: number ) => {
+const useProfileIdListByAnswer = ( testName: ITestName, answer: number ) => {
 
     const [ userList, setProfileList ] = useState< IProfileId[]>([] as  IProfileId[]);
     const [ ascendingOrder, setAscendingOrder ] = useState( -1 );

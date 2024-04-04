@@ -8,7 +8,7 @@
 // /* Component */
 // import { RootState } from "../store";
 // import { IWithLoadStatus, LoadStatus, IProfileId } from ".";
-// import { ITestAnswer, TestName } from "./testAnswerReducer";
+// import { ITestAnswer, ITestName } from "./testAnswerReducer";
 // import { ITestResult, defaultTestResult } from "../interfaces/ITestResult";
 // import { HEADERS_AXIOS } from "../common/app-const";
 // import { useUserId } from "./authReducer";
@@ -432,7 +432,7 @@
 //     return (idList);
 // }
 
-// const useTestAnswerObject = (testName: TestName) => {
+// const useTestAnswerObject = (testName: ITestName) => {
 
 //     useEffect(() => {
 //         console.log(`[useTestAnswerObject] Using`);

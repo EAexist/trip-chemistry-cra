@@ -1,7 +1,7 @@
 import { ComponentType } from "react";
 
 import { NumericTestName, useTestAnswer } from "../reducers/testAnswerReducer";
-// import { BudgetResponse, SubTestName, TestAnswer, TestName } from "../interface/interfaces";
+// import { BudgetResponse, SubTestName, TestAnswer, ITestName } from "../interface/interfaces";
 
 interface WithTestAnswerProps{
     testName: NumericTestName,

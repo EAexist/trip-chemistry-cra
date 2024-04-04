@@ -17,7 +17,7 @@ import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 /* App */
 import { CITY, LINK, NATION, SLIDERPROPS_TEST_BUDGET_FOOD, TEST, TEST_SECTIONS } from "../../common/app-const";
-import { RootState } from "../../store";
+import { defaultReudcer, RootState, store } from "../../store";
 import { useStrings } from "../../texts";
 
 import TestSection from "../../components/Block/TestSection";
@@ -39,7 +39,7 @@ import SectionButton from "../../components/Step/components/SectionButton";
 import Stepper from "../../components/Step/components/Stepper";
 import { FADEIN } from "../../motion/props";
 import { useGetProfile } from "../../reducers/authReducer";
-import { NumericTestName, SetTestName, TestName, useIsAllTestAnswered, useSubmitAnswer, useTestAnswerStatus } from "../../reducers/testAnswerReducer";
+import testAnswerReducer, { NumericTestName, SetTestName, useIsAllTestAnswered, useSubmitAnswer, useTestAnswerStatus } from "../../reducers/testAnswerReducer";
 import { SWIPERPROPS_CAROUSEL, SWIPERPROPS_FOODCARDCAROUSEL } from "../../swiper/props";
 import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
 import { priceText } from "../../utils/priceText";
@@ -49,6 +49,9 @@ import AnswerSlider from "./component/AnswerSlider";
 import TagSetTestAnswerChip from "./component/TagSetTestAnswerChip";
 import TestAnswerBadge from "./component/TestAnswerBadge";
 import TestInstruction from "./component/TestInstruction";
+import { combineReducers } from "@reduxjs/toolkit";
+import withReducer from "../../hocs/withReducer";
+import { ITestName } from "../../interfaces/ITestAnswer";
 
 interface TestContentProps {
 
@@ -116,6 +119,13 @@ function TestContent({ }: TestContentProps) {
     // }
 
     /* Side Effects */
+    // useEffect(()=>{
+    //     const newRootReducer = combineReducers({
+    //         ...defaultReudcer,
+    //         testAnswer: testAnswerReducer
+    //       })          
+    //       store.replaceReducer(newRootReducer)
+    // }, [])
 
     /* Test Answer Side Effects */
     useEffect(() => {
@@ -185,7 +195,7 @@ function TestContent({ }: TestContentProps) {
                                                             elevation={1}
                                                         // className="ButtonGroup__item"
                                                         >
-                                                            <TestAnswerBadge testName={testName as TestName} sx={{ height: 'fit-content', padding: "4px" }}>
+                                                            <TestAnswerBadge testName={testName as ITestName} sx={{ height: 'fit-content', padding: "4px" }}>
                                                                 <PngIcon name={testName} size={"large"} />
                                                             </TestAnswerBadge>
                                                         </SectionButton>
@@ -204,7 +214,7 @@ function TestContent({ }: TestContentProps) {
                                                         {/* https://codesandbox.io/p/sandbox/6gw7p4?file=/src/App.jsx */}
                                                         <div className="flex-grow block--centered">
                                                             <div className="block--with-margin-x block__body">
-                                                                <TestInstruction testName={testName as TestName} />
+                                                                <TestInstruction testName={testName as ITestName} />
                                                                 <Stack flexWrap={"wrap"} justifyContent={"center"} rowGap={1}>
                                                                     <TagSetTestAnswerChip testName={testName} />
                                                                     <TagSetTestAnswerChip testName={testName} selected={false} />
@@ -466,4 +476,4 @@ function TestContent({ }: TestContentProps) {
         </LoadRequiredContent >
     );
 }
-export default TestContent;
+export default withReducer(TestContent)({ testAnswer: testAnswerReducer })

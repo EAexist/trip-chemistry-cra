@@ -17,9 +17,10 @@ import TextFieldBlock from "../../components/Block/TextFieldBlock";
 import useCreateChemistry from "../../hooks/useCreateChemistry";
 import { SLIDEINLEFT } from "../../motion/props";
 import { useGetProfile } from "../../reducers/authReducer";
-import { useChemistryId, useChemistryLoadStatus } from "../../reducers/chemistryReducer";
+import chemistryReducer, { useChemistryId, useChemistryLoadStatus } from "../../reducers/chemistryReducer";
 import { SWIPERPROPS_PAGE } from "../../swiper/props";
 import LoadRequiredContent, { AuthLoadRequiredContent } from "../LoadRequiredContent";
+import withReducer from "../../hocs/withReducer";
 
 interface CreateChemistryContentProps {
 };
@@ -161,7 +162,8 @@ function CreateChemistryContent({ }: CreateChemistryContentProps) {
         </LoadRequiredContent>
     );
 }
-export default CreateChemistryContent;
+
+export default withReducer(CreateChemistryContent)({ chemistry: chemistryReducer });
 
 // <SwiperSlide key={"0"} className=''>
 // <div className="block--with-margin-x block__body">
