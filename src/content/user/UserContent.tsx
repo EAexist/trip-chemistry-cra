@@ -4,14 +4,14 @@
 import { Edit, Help } from "@mui/icons-material";
 import { Button, ButtonBase, Icon, IconButton, Stack, Toolbar } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 /* App */
 import UserAvatar from "../../components/Avatar/UserAvatar";
 import KakaoLoginButton from "../../components/Button/KakaoLoginButton";
-import RoutedMotionPage from "../../motion/components/RoutedMotionPage";
+import useNavigateWithGuestContext from "../../hooks/useNavigateWithGuestContext";
 import { IUserProfile } from "../../interfaces/IUserProfile";
 import { AuthProvider } from "../../interfaces/enums/AuthProvider";
+import RoutedMotionPage from "../../motion/components/RoutedMotionPage";
 import { asyncKakaoLogout, useUserProfile } from "../../reducers/authReducer";
 import { AppDispatch } from "../../store";
 import { AuthLoadRequiredContent } from "../LoadRequiredContent";
@@ -22,7 +22,7 @@ function UserContent({ }: UserContentProps) {
 
     /* Hooks */
     const dispatch = useDispatch<AppDispatch>();
-    const navigate = useNavigate();
+    const navigate = useNavigateWithGuestContext();
 
     /* Reducers */
     const { id, authProvider, nickname } = useUserProfile() as IUserProfile;

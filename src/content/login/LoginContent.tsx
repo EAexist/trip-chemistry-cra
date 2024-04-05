@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 /* React Packages */
-import { Button, Stack, Toolbar } from "@mui/material";
+import { Button, Grid, Stack, Toolbar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -25,19 +25,19 @@ function LoginContent({ }: LoginContentProps) {
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
-    const [ url, setUrl ] = useState<string>(KAKAO_AUTH_URL_BASE);
+    const [url, setUrl] = useState<string>(KAKAO_AUTH_URL_BASE);
 
     /* Reducers */
     const doRequireInitialization = useSelector((state: RootState) => state.auth.data.doRequireInitialization);
 
     const handleAuthSuccess = () => {
 
-        /* If user has logined before, fetch the profile. Else, component in path /setNickname handles the process. */
+        /* If user has logined before, fetch the profile. Else, InitializeNicknameContent (/initializeNickname) handles the process. */
         if (!doRequireInitialization) {
             dispatch(authorize());
         }
         else {
-            navigate('/login/initializeNickname', { state : { loginRedirectPath : pathname } });
+            navigate('/login/initializeNickname', { state: { loginRedirectPath: pathname } });
         }
     }
 
@@ -48,9 +48,9 @@ function LoginContent({ }: LoginContentProps) {
     useEffect(() => {
         console.log(`[LoginContent] pathname=${pathname}`);
         const urlObject = new URL(url);
-        urlObject.searchParams.set('state', pathname );
+        urlObject.searchParams.set('state', pathname);
         setUrl(urlObject.toString());
-    }, [ url, pathname ]);
+    }, [url, pathname]);
 
     useEffect(() => {
         const urlObject = new URL(url);
@@ -78,25 +78,31 @@ function LoginContent({ }: LoginContentProps) {
                         }
                     </h2>
                     <div>
-                        <Stack direction={"column"} spacing={2} alignItems={"stretch"}>
-                            <KakaoLoginButton />
-                            <Button
-                                onClick={handleGuestSignIn}
-                                variant="outlined"
-                                sx={{ height: "48px" }}
-                            >
-                                로그인 없이 바로 시작하기
-                            </Button>
-                        </Stack>
+                        {/* <Stack direction={"column"} spacing={2} alignItems={"stretch"} width={"200px"}> */}
+                            <Grid container direction={"column"} rowSpacing={2}>
+                                <Grid item>
+                                    <KakaoLoginButton />
+                                </Grid>
+                                <Grid item>
+                                    <Button
+                                        onClick={handleGuestSignIn}
+                                        variant="outlined"
+                                        sx={{ width: '183px', height: '45px' }}
+                                    >
+                                        로그인 없이 시작하기
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        {/* </Stack> */}
                     </div>
                     <div style={{ marginTop: "128px" }} />
                     <div>
-                    <p className="typography-note">
-                        <Help fontSize="inherit" />
-                        {
-                            "카카오 로그인을 이용하면\n링크를 잃어버려도 테스트 결과를 안전하게 불러올 수 있어요."
-                        }
-                    </p>
+                        <p className="typography-note">
+                            <Help fontSize="inherit" />
+                            {
+                                "카카오 로그인을 이용하면\n링크를 잃어버려도 테스트 결과를 안전하게 불러올 수 있어요."
+                            }
+                        </p>
                     </div>
                 </div>
             </RoutedMotionPage>

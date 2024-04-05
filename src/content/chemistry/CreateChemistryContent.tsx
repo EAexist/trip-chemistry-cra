@@ -5,7 +5,6 @@ import { useCallback, useRef, useState } from "react";
 import { Done, NavigateBefore, NavigateNext } from "@mui/icons-material";
 import { Button, IconButton, Toolbar } from "@mui/material";
 import { m } from 'framer-motion';
-import { useNavigate } from "react-router-dom";
 import LazyDomAnimation from "../../motion/LazyDomAnimation";
 
 import SwiperType from "swiper";
@@ -14,13 +13,14 @@ import { Swiper, SwiperRef, SwiperSlide, } from 'swiper/react';
 /* App */
 import { useHideAppbar } from "../../components/AppBar/AppBarContext";
 import TextFieldBlock from "../../components/Block/TextFieldBlock";
+import withReducer from "../../hocs/withReducer";
 import useCreateChemistry from "../../hooks/useCreateChemistry";
+import useNavigateWithGuestContext from "../../hooks/useNavigateWithGuestContext";
 import { SLIDEINLEFT } from "../../motion/props";
 import { useGetProfile } from "../../reducers/authReducer";
 import chemistryReducer, { useChemistryId, useChemistryLoadStatus } from "../../reducers/chemistryReducer";
 import { SWIPERPROPS_PAGE } from "../../swiper/props";
 import LoadRequiredContent, { AuthLoadRequiredContent } from "../LoadRequiredContent";
-import withReducer from "../../hocs/withReducer";
 
 interface CreateChemistryContentProps {
 };
@@ -32,7 +32,7 @@ function CreateChemistryContent({ }: CreateChemistryContentProps) {
 
     /* Hooks */
     const createChemistry = useCreateChemistry();
-    const navigate = useNavigate();
+    const navigate = useNavigateWithGuestContext();
     const isAppBarHidden = useHideAppbar();
 
     /* Reducers */

@@ -4,16 +4,16 @@ import { useEffect } from "react";
 /* React Packages */
 import { StarBorder, ThumbUp } from "@mui/icons-material";
 import { CardActionArea, CardContent, Divider, Rating, Stack } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 /* App */
 import { TEST } from "../../common/app-const";
+import FriendAvatar from "../../components/Avatar/FriendAvatar";
 import ImageCard from "../../components/Card/ImageCard";
+import useNavigateWithGuestContext from "../../hooks/useNavigateWithGuestContext";
 import useValueToProfileIdList from "../../hooks/useValueToProfileIdList";
 import { useCityChemistry } from "../../reducers/chemistryReducer";
 import { useStrings } from "../../texts";
 import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
-import FriendAvatar from "../../components/Avatar/FriendAvatar";
 
 interface CityChemistryContentProps {
     cityClass: keyof typeof TEST.city.subTests;
@@ -21,7 +21,7 @@ interface CityChemistryContentProps {
 
 function CityChemistryContent({ cityClass }: CityChemistryContentProps) {
 
-    const navigate = useNavigate();
+    const navigate = useNavigateWithGuestContext();
 
     const testStrings = useStrings().public.contents.test;
     const valueToProfileList = useValueToProfileIdList(cityClass);

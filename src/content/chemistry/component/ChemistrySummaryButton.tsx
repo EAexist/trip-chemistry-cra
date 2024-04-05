@@ -1,10 +1,10 @@
 import { Card, CardActionArea, CardContent, Stack } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { HEADERS_AXIOS } from "../../../common/app-const";
-import { IChemistry, defaultChemistry } from "../../../interfaces/IChemistry";
 import LabeledAvatar from "../../../components/Avatar/LabeledAvatar";
+import useNavigateWithGuestContext from "../../../hooks/useNavigateWithGuestContext";
+import { IChemistry, defaultChemistry } from "../../../interfaces/IChemistry";
 
 interface ChemistrySummaryButtonProps {
     id: String
@@ -13,7 +13,7 @@ interface ChemistrySummaryButtonProps {
 function ChemistrySummaryButton({ id }: ChemistrySummaryButtonProps) {
 
     /* Hooks */
-    const navigate = useNavigate();
+    const navigate = useNavigateWithGuestContext();
 
     /* State */
     const [chemistry, setChemistry] = useState<IChemistry>(defaultChemistry);

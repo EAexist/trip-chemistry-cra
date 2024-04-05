@@ -1,7 +1,7 @@
 /* React Packages */
 // import { lazy, Suspense } from 'react';
 // import { Provider } from 'react-redux';
-import { Outlet, Route, Routes } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 
 /* App */
 import Page from './route/Page';
@@ -58,7 +58,7 @@ import { TEST } from './common/app-const';
 import loadable from '@loadable/component';
 const AuthRequiredRoute = loadable(() => import(/* webpackChunkName: "AuthRequiredRoute" */ './route/AuthRequiredRoute'));
 const TestRequiredRoute = loadable(() => import( /* webpackChunkName: "TestRequiredRoute" */'./route/TestRequiredRoute'));
-const GuestRoute = loadable(() => import( /* webpackChunkName: "GuestRoute" */'./route/GuestRoute'));
+// const GuestRoute = loadable(() => import( /* webpackChunkName: "GuestRoute" */'./route/GuestRoute'));
 const AuthRecommendedPage = loadable(() => import(/* webpackChunkName: "AuthRecommendedPage" */ './route/AuthRecommendedPage'));
 const ChemistryReducerProvider = loadable(() => import(/* webpackChunkName: "ChemistryReducerProvider" */ './reducers/ChemistryReducerProvider'));
 // import ChemistryReducerProvider from './reducers/ChemistryReducerProvider';
@@ -69,7 +69,7 @@ const SearchAndInviteFriendContent = loadable(() => import( /* webpackChunkName:
 const CityDetailContent = loadable(() => import( /* webpackChunkName: "CityDetailContent" */'./content/city/CityDetailContent'));
 const TestContent = loadable(() => import(/* webpackChunkName: "TestContent" */ './content/test/TestContent'));
 
-const AuthContent = loadable(() => import( /* webpackChunkName: "AuthContent" */'./content/login/AuthContent'));
+// const AuthContent = loadable(() => import( /* webpackChunkName: "AuthContent" */'./content/login/AuthContent'));
 const InitializeNicknameContent = loadable(() => import( /* webpackChunkName: "InitializeNicknameContent" */'./content/login/InitializeNicknameContent'));
 const KakaoAuthRedirectPage = loadable(() => import( /* webpackChunkName: "KakaoAuthRedirectPage" */'./content/login/KakaoAuthRedirectPage'));
 
@@ -81,7 +81,8 @@ const CreateChemistryContent = loadable(() => import( /* webpackChunkName: "Crea
 
 const sessionRoute =
     <>
-        <Route key={'home'} path={'home'} element={<HomeContent />} />
+        <Route path="/" element={<Navigate to="home" />} />
+        <Route key={'home'} index path={'home'} element={<HomeContent />} />
         <Route key={'chemistry'} path={'chemistry/:chemistryId'} element={<ChemistryReducerProvider />} >
             <Route key={'index'} index element={<ChemistryContent />} />
             <Route key={'searchAndInviteFriend'} path={'searchAndInviteFriend'} element={<SearchAndInviteFriendContent />} />
@@ -112,7 +113,7 @@ const sessionRoute =
             </Route>
         </Route>
         {/* [SEO, Authorization] Routes are protected from access-by-URL. Can only be accessed by useNavigate Hook (/initializeNickname) or redirection from Kakao Auth API Page (/kakaoAuthRedirect). Routes are excluded in robots.txt. URL Accesses are redirected to login page. */}
-        <Route key={'login'} path={'login'} element={<AuthContent />} >
+        <Route key={'login'} path={'login'} element={<Outlet />} >
             <Route key={'initializeNickname'} path={'initializeNickname'} element={<InitializeNicknameContent />} />
             <Route key={'redirectURI'} path={'kakaoAuthRedirect'} element={<KakaoAuthRedirectPage />} />
         </Route>
@@ -143,9 +144,13 @@ function App() {
                     <Route key={'testPreview'} path={'testPreview'} element={<TestContent />} />
                     {sessionRoute}
                 </Route>
-                <Route key={'guest'} path={'guest/:id'} element={<GuestRoute />}>
+                {/* [ Deprecated ] 
+                    게스트 로그인 사용자를 위한 route 를  구분된 path로 관리 e.g. domain/guest/{guestId}/{pathname}
+                    -> 통합된 path 에서 query parameter 를통해 관리 e.g. domain/{pathname}?guestId={guestId}                
+                */}
+                {/* <Route key={'guest'} path={'guest/:id'} element={<GuestRoute />}>
                     {sessionRoute}
-                </Route>
+                </Route> */}
             </Route>
         </Routes>
         // </Provider>

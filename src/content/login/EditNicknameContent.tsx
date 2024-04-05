@@ -3,9 +3,9 @@
 /* React Packages */
 
 /* App */
-import { useNavigate } from "react-router-dom";
-import SetNicknamePage from "./SetNicknamePage";
+import useNavigateWithGuestContext from "../../hooks/useNavigateWithGuestContext";
 import { AuthLoadRequiredContent } from "../LoadRequiredContent";
+import SetNicknamePage from "./SetNicknamePage";
 
 interface EditNicknameContentProps {
 };
@@ -13,7 +13,7 @@ interface EditNicknameContentProps {
 function EditNicknameContent({ }: EditNicknameContentProps) {
 
     /* Hooks */
-    const navigate = useNavigate();
+    const navigate = useNavigateWithGuestContext();
 
     /* Reducers */
 
@@ -23,10 +23,6 @@ function EditNicknameContent({ }: EditNicknameContentProps) {
     const handleClose = () => {
         navigate('/user', { state: { navigateDirection: 'prev' }});
     }
-
-    // const handleSuccess = () => {
-    //     navigate('/user');
-    // }
 
     return (
         <AuthLoadRequiredContent

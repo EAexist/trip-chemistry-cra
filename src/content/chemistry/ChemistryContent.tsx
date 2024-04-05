@@ -6,7 +6,7 @@ import { AirplaneTicket, Close, Error, GroupAdd, NavigateBefore } from "@mui/ico
 import { Alert, Avatar, Button, ButtonBase, Grid, Icon, IconButton, List, ListItem, ListItemAvatar, ListItemText, Modal, Paper, Stack, Toolbar } from "@mui/material";
 import { m } from "framer-motion";
 import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import LazyDomAnimation from "../../motion/LazyDomAnimation";
 
 /* App */
@@ -15,6 +15,7 @@ import FriendAvatar from "../../components/Avatar/FriendAvatar";
 import NoticeBlock from "../../components/Block/NoticeBlock";
 import SectionPaper from "../../components/Paper/SectionPaper";
 import HelmetWrapper from "../../helmet/HelmetWrapper";
+import useNavigateWithGuestContext from "../../hooks/useNavigateWithGuestContext";
 import { LoadStatus } from "../../interfaces/enums/LoadStatus";
 import RoutedMotionPage from "../../motion/components/RoutedMotionPage";
 import { FADEIN_VIEWPORT } from "../../motion/props";
@@ -33,7 +34,7 @@ interface ChemistryContentProps {
 function ChemistryContent({ }: ChemistryContentProps) {
 
     /* Hooks */
-    const navigate = useNavigate();
+    const navigate = useNavigateWithGuestContext();
     const dispatch = useDispatch<AppDispatch>();
     const params = useParams();
     const chemistryId = params.chemistryId ? params.chemistryId : "";

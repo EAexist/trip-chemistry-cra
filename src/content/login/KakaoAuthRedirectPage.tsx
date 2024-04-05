@@ -3,6 +3,7 @@
 /* React Packages */
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import useKakaoLogin from "../../hooks/useKakaoLogin";
 import { IUserProfile } from "../../interfaces/IUserProfile";
 import { LoadStatus } from "../../interfaces/enums/LoadStatus";
@@ -16,10 +17,14 @@ interface KakaoAuthRedirectPageProps {
 function KakaoAuthRedirectPage({ }: KakaoAuthRedirectPageProps) {
 
     /* Hooks */
+    const [ searchParams ] = useSearchParams();
+    const loginRedirectPath = searchParams.get('state');
+
     const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
     const authorize = useAuthorize();
-    useKakaoLogin();
     const userProfile = useUserProfile() as IUserProfile;
+    useKakaoLogin();
 
     /* Reducers */
     const [ authLoadStatus, setAuthLoadStatus ] = useAuthLoadStatus();
@@ -30,6 +35,12 @@ function KakaoAuthRedirectPage({ }: KakaoAuthRedirectPageProps) {
             console.log(`[KakaoAuthRedirectPage] kakaoAccessToken=${userProfile.kakaoAccessToken}`);
             window.localStorage.setItem("kakaoAccessToken", userProfile.kakaoAccessToken );
             authorize();
+            /* [ 게스트 -> 카카오 계정으로 전환한 경우 ]
+                닉네임 초기화 없이 바로 리다이렉트 */
+            navigate(`${
+                    loginRedirectPath
+                    ? loginRedirectPath
+                    : "home"}`);
             setAuthLoadStatus( LoadStatus.REST );
         }
     }, [ authLoadStatus, authorize, setAuthLoadStatus, userProfile ]);

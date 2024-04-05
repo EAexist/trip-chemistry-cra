@@ -7,7 +7,6 @@ import { ExpandMore, NavigateNext } from "@mui/icons-material";
 import { Button, ButtonBase, Card, CardContent, CardMedia, List, ListItem, ListItemButton, ListItemText, Stack, Tooltip, useTheme } from "@mui/material";
 import { AnimatePresence, m, useMotionValueEvent, useScroll } from "framer-motion";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import LazyDomAnimation from "../../motion/LazyDomAnimation";
 
 /* Swiper */
@@ -17,7 +16,7 @@ import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 /* App */
 import { CITY, LINK, NATION, SLIDERPROPS_TEST_BUDGET_FOOD, TEST, TEST_SECTIONS } from "../../common/app-const";
-import { defaultReudcer, RootState, store } from "../../store";
+import { RootState } from "../../store";
 import { useStrings } from "../../texts";
 
 import TestSection from "../../components/Block/TestSection";
@@ -37,6 +36,9 @@ import { StepCheckpointContextProvider } from "../../components/Step/StepCheckpo
 import StepContext from "../../components/Step/StepContext";
 import SectionButton from "../../components/Step/components/SectionButton";
 import Stepper from "../../components/Step/components/Stepper";
+import withReducer from "../../hocs/withReducer";
+import useNavigateWithGuestContext from "../../hooks/useNavigateWithGuestContext";
+import { ITestName } from "../../interfaces/ITestAnswer";
 import { FADEIN } from "../../motion/props";
 import { useGetProfile } from "../../reducers/authReducer";
 import testAnswerReducer, { NumericTestName, SetTestName, useIsAllTestAnswered, useSubmitAnswer, useTestAnswerStatus } from "../../reducers/testAnswerReducer";
@@ -49,9 +51,6 @@ import AnswerSlider from "./component/AnswerSlider";
 import TagSetTestAnswerChip from "./component/TagSetTestAnswerChip";
 import TestAnswerBadge from "./component/TestAnswerBadge";
 import TestInstruction from "./component/TestInstruction";
-import { combineReducers } from "@reduxjs/toolkit";
-import withReducer from "../../hocs/withReducer";
-import { ITestName } from "../../interfaces/ITestAnswer";
 
 interface TestContentProps {
 
@@ -59,7 +58,7 @@ interface TestContentProps {
 
 function TestContent({ }: TestContentProps) {
 
-    const navigate = useNavigate();
+    const navigate = useNavigateWithGuestContext();
     const theme = useTheme();
 
     /* contentstrings */
@@ -176,9 +175,9 @@ function TestContent({ }: TestContentProps) {
                 isEnabled: isAnswerSubmitted,
             }}>
                 <div className="page">
-                    <StepContext.Provider value={{ step, setStep }}>
-                        <StepCheckpointContextProvider>
-                            <LazyDomAnimation>
+                    <LazyDomAnimation>
+                        <StepContext.Provider value={{ step, setStep }}>
+                            <StepCheckpointContextProvider>
                                 <div className="top-nav" style={{ backgroundColor: theme.palette.gray.light }}>
                                     <m.div {...FADEIN} custom={0.2} >
                                         <Stepper className="block--with-margin-x top-nav__swiper" speed={preventInitialSwipe ? 0 : 500}>
@@ -187,6 +186,7 @@ function TestContent({ }: TestContentProps) {
                                                     <SwiperSlide key={testName} className="top-nav__swiper">
                                                         <SectionButton
                                                             size={"small"}
+                                                            labelSize={"large"}
                                                             value={index}
                                                             index={index}
                                                             label={contentstrings.subTest[testName as keyof typeof contentstrings.subTest].label}
@@ -452,25 +452,25 @@ function TestContent({ }: TestContentProps) {
                                         </span>
                                     </Tooltip>
                                 </div>
-                            </LazyDomAnimation>
-                        </StepCheckpointContextProvider>
-                    </StepContext.Provider>
-                    {
-                        showScrollDownIcon
-                        &&
-                        <m.div
-                            animate={{ opacity: [1, 0.5, 1] }}
-                            transition={{
-                                duration: 4,
-                                times: [0, 0.5, 1],
-                                ease: "easeInOut",
-                                repeat: Infinity,
-                            }}
-                            className="floating--bottom block--centered block--with-padding--small"
-                        >
-                            <ExpandMore className="typography-gray" sx={{ fontSize: "40px" }} />
-                        </m.div>
-                    }
+                            </StepCheckpointContextProvider>
+                        </StepContext.Provider>
+                        {
+                            showScrollDownIcon
+                            &&
+                            <m.div
+                                animate={{ opacity: [1, 0.2, 1] }}
+                                transition={{
+                                    duration: 2.5,
+                                    times: [0, 0.5, 1],
+                                    ease: "easeInOut",
+                                    repeat: Infinity,
+                                }}
+                                className="floating--bottom block--centered block--with-padding--small"
+                            >
+                                <ExpandMore className="typography-gray" sx={{ fontSize: "40px" }} />
+                            </m.div>
+                        }
+                    </LazyDomAnimation>
                 </div >
             </AuthLoadRequiredContent>
         </LoadRequiredContent >

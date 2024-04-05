@@ -9,12 +9,13 @@ import { useDispatch } from "react-redux";
 import LazyDomAnimation from "../../motion/LazyDomAnimation";
 
 /* App */
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { SLIDEINUPINVIEW } from "../../motion/props";
-import { authorize, setIsInitialized } from "../../reducers/authReducer";
+import { authorize, setIsInitialized, useUserProfile } from "../../reducers/authReducer";
 import { AppDispatch } from "../../store";
 import { AuthLoadRequiredContent } from "../LoadRequiredContent";
 import SetNicknamePage from "./SetNicknamePage";
+import { IUserProfile } from "../../interfaces/IUserProfile";
 
 interface InitializeNicknameContentProps {
 };
@@ -29,13 +30,16 @@ function InitializeNicknameContent({ }: InitializeNicknameContentProps) {
     /* States */
     const [isConfirmCancelModalOpen, setIsConfirmCancelModalOpen] = useState(false);
 
+    /* Reducers */
+    const { id: userId, authProvider } = useUserProfile() as IUserProfile;
+
     /* Event Handlers */
     const handleClose = () => {
         setIsConfirmCancelModalOpen(true);
     }
 
     const handleCancelLogin = () => {
-        navigate(`/${((state !== null) && state.cancelRedirectPath) ? state.cancelRedirectPath : ""}`, { state: { navigateDirection: 'prev' } });
+        navigate(`${((state !== null) && state.loginRedirectPath) ? state.loginRedirectPath : ""}`, { state: { navigateDirection: 'prev' } });
     }
 
     const handleCloseConfirmCancelModal = () => {
@@ -46,9 +50,20 @@ function InitializeNicknameContent({ }: InitializeNicknameContentProps) {
         // dispatch(asyncGetSampleProfiles());
         dispatch(setIsInitialized());
         dispatch(authorize());
+        navigate(`${((state !== null) && state.loginRedirectPath)
+                ? state.loginRedirectPath
+                : "home"}${(authProvider === 'GUEST')
+                ? `?guestId=${userId}`
+                : ''
+            }`);
     }
 
     return (
+        /* Allow access by navigate( path, { state: {loginRedirectPath} }) only.
+            Redirect access by URL to Homepage.
+        */
+        (state && state.loginRedirectPath)
+            ?
         <AuthLoadRequiredContent
             handleSuccess={handleSuccess}
         >
@@ -88,6 +103,7 @@ function InitializeNicknameContent({ }: InitializeNicknameContentProps) {
                 // : <></>
             }
         </AuthLoadRequiredContent>
+        : <Navigate to={'/home'} />
     );
 }
 export default InitializeNicknameContent;

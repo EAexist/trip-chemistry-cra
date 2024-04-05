@@ -13,6 +13,7 @@ import { useIsAuthorized, useUserInfo } from "../../reducers/authReducer";
 import { useStrings } from "../../texts";
 import UserAvatar from "../Avatar/UserAvatar";
 import PngIcon from "../PngIcon";
+import useNavigateWithGuestContext from "../../hooks/useNavigateWithGuestContext";
 
 interface DrawerProps {
     open: boolean
@@ -22,9 +23,9 @@ interface DrawerProps {
 function Drawer({ open, onDrawerItemClick }: DrawerProps) {
 
     /* Hooks */
-    const navigate = useNavigate();
+    const navigate = useNavigateWithGuestContext();
     const strings = useStrings();
-    const { pathname } = useLocation();
+    const { pathname, search } = useLocation();
     const { zIndex } = useTheme();
 
     /* Reducers */
@@ -32,9 +33,9 @@ function Drawer({ open, onDrawerItemClick }: DrawerProps) {
     const user = useUserInfo();
 /*  */
     /* Event handlers  */
-    const handleDrawerItemClick = (content: string) => {
+    const handleDrawerItemClick = (path: string) => {
         onDrawerItemClick();
-        navigate(`${content}`);
+        navigate(path);
     };
 
     const variants_drawer = {

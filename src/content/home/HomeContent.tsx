@@ -18,6 +18,7 @@ import { AUTOPLAY_DELAY, SWIPER_SPEED } from "../../swiper";
 import PaginationDiv from "../../swiper/components/PaginationDiv";
 import SwiperAutoplayProgress from "../../swiper/components/SwiperAutoplayProgress";
 import { useStrings } from "../../texts";
+import useNavigateWithGuestContext from "../../hooks/useNavigateWithGuestContext";
 
 interface HomeContentProps {
 
@@ -29,7 +30,7 @@ function HomeContent({ }: HomeContentProps) {
     const strings = useStrings().public.contents.home;
 
     /* Hookes */
-    const navigate = useNavigate();
+    const navigate = useNavigateWithGuestContext();
 
     /* States */
     const [ showFloatingButton ] = useState<boolean>(true);

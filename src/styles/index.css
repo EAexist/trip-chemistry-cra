@@ -13,18 +13,21 @@
 
     --width__profile: 40px;
     --width__profile--large: 64px;
+    --width__profile--xlarge: 72px;
     --width__profile__content--small: 44px;
     --width__profile__content--medium: 48px;
 
     --min-height__window: 640px;
 }
 * {
+    margin: 0;
+    
     /* font-family: Apple SD Gothic Neo, sans-serif; */
-    font-family: , sans-serif;
+    font-family: Noto Sans KR, sans-serif;
     font-optical-sizing: auto;
   
     /* Debug */
-    /* outline: 1px solid red; */
+    outline: 1px solid red;
   }
   
   ul {
@@ -223,10 +226,10 @@ body {
     min-height: var(--min-height__window);
 }
 
-
 /**** Block ****/
 .width-full {
-    width: 100%;
+    /* width: 100%; */
+    /* height: auto; */
 }
 
 .page {
@@ -750,6 +753,13 @@ body {
 
 .Label__label-large {
     width: var(--width__profile--large);
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+    margin-top: 4px;
+}
+
+.Label__label-xlarge {
+    width: var(--width__profile--xlarge);
     line-height: 1.4;
     overflow-wrap: anywhere;
     margin-top: 4px;

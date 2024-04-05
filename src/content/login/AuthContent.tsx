@@ -20,28 +20,33 @@ function AuthContent({ }: AuthContentProps) {
     const { id: userId, authProvider } = useUserProfile() as IUserProfile;
 
     useEffect(() => {
+        if (state)
+            console.log(`[AuthContent] ${state}`);
         if (state && state.loginRedirectPath)
             console.log(`[AuthContent] ${state.loginRedirectPath}`);
-    }, [ state ])
+    }, [state])
 
     return (
-        isAuthorized
-            ?
-            <Navigate to={`${(authProvider === 'GUEST')
-                ? `/guest/${userId}`
-                : ''}${((state !== null) && state.loginRedirectPath)
-                    ? state.loginRedirectPath.split('/guest')[0]
-                    : '/home'}
-                    `} />
-            :
+        // isAuthorized
+        //     ?
+        //     <Navigate to={`${
+        //         ((state !== null) && state.loginRedirectPath)
+        //         ? state.loginRedirectPath
+        //         : '/home'}${
+        //             (authProvider === 'GUEST')
+        //             ? `?guestId=${userId}`
+        //             : ''}
+        //             `} />
+        //     :
             /* Allow access by navigate( path, { state: {loginRedirectPath} }) only.
                 Redirect access by URL to Homepage.
             */
             (state && state.loginRedirectPath)
-            ?
-            <Outlet />
-            :
-            <Navigate to={'../home'} />
+                ?
+                <Outlet />
+                :
+                // <Navigate to={'/home'} />
+                <></>
     );
 }
 export default AuthContent;

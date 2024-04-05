@@ -10,6 +10,7 @@ import { useAppBar } from "./AppBarContext";
 import loadable from "@loadable/component";
 
 import Drawer from "../Drawer/Drawer";
+import useNavigateWithGuestContext from "../../hooks/useNavigateWithGuestContext";
 
 // const Drawer = loadable(() => import(
 //     /* webpackChunkName: "Drawer" */ 
@@ -24,7 +25,7 @@ function AppBar({ }: AppBarProps) {
 
     /* Hooks */
 
-    const navigate = useNavigate();
+    const navigate = useNavigateWithGuestContext();
     const strings = useStrings();
     const openAppBar = useAppBar();
 

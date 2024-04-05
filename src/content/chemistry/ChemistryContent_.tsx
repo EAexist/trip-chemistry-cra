@@ -31,7 +31,7 @@
 // function ChemistryContent({ }: ChemistryContentProps) {
 
 //     const strings = useStrings().public.contents.chemistry;
-//     const navigate = useNavigate();
+//     const navigate = useNavigateWithGuestContext();
 //     const dispatch = useDispatch<AppDispatch>();
 
 //     /* Reducers */

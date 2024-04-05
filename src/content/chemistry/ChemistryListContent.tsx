@@ -2,10 +2,10 @@
 import { Add } from "@mui/icons-material";
 import { Button, Toolbar } from "@mui/material";
 import { m } from 'framer-motion';
-import { useNavigate } from "react-router-dom";
 import LazyDomAnimation from "../../motion/LazyDomAnimation";
 
 /* App */
+import useNavigateWithGuestContext from "../../hooks/useNavigateWithGuestContext";
 import RoutedMotionPage from "../../motion/components/RoutedMotionPage";
 import { FADEIN_VIEWPORT, STAGGER_CHILDREN, VARIANTS_SLIDE_UP } from "../../motion/props";
 import { useChemistryIdList } from "../../reducers/authReducer";
@@ -18,7 +18,7 @@ interface ChemistryListContentProps {
 function ChemistryListContent({ }: ChemistryListContentProps) {
 
     /* Hooks */
-    const navigate = useNavigate();
+    const navigate = useNavigateWithGuestContext();
 
     /* Reducers */
     const chemistryIdList = useChemistryIdList();

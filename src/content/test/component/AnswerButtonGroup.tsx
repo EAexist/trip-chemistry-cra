@@ -16,7 +16,7 @@ function AnswerButtonGroup( { testName, answer, setAnswer } : AnswerButtonGroupP
     }   
 
     return(
-        <Stack direction={"row"} spacing={2} justifyContent="space-around" alignItems="stretch" className="ButtonGroup--in-body"> 
+        <Stack direction={"row"} spacing={2} justifyContent="space-around" alignItems="stretch" className="ButtonGroup--in-body" height="96px"> 
         {
             ( Object.values(strings.answers) as { icon: string, display: string, label: string, value: number }[]).map(({ icon, display, label, value }) =>(
                 <ToggleLabeledButton 
@@ -26,10 +26,11 @@ function AnswerButtonGroup( { testName, answer, setAnswer } : AnswerButtonGroupP
                      selected={ value === answer } 
                      onChange={ (_, value) => handleAnswerChange( value ) } 
                      label={label} 
+                     labelSize={"xlarge"}
                      paperSx={{ }}
                 >
                     {
-                        <p className="typography-label" style={{ color: "inherit" }}>{ icon }</p>
+                        <p className="" style={{ color: "inherit" }}>{ icon }</p>
                     }
                 </ToggleLabeledButton>
             ))

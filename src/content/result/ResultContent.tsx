@@ -3,13 +3,13 @@
 import { Button, Toolbar } from "@mui/material";
 import { m } from "framer-motion";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import LazyDomAnimation from "../../motion/LazyDomAnimation";
 
 import { UserTestResultBlock } from "../../components/Profile/TestResultBlock";
 import { FADEIN_VIEWPORT } from "../../motion/props";
 import { RootState } from "../../store";
 import { useStrings } from "../../texts";
+import useNavigateWithGuestContext from "../../hooks/useNavigateWithGuestContext";
 
 interface ResultContentProps {
 
@@ -19,7 +19,7 @@ function ResultContent({ }: ResultContentProps) {
 
     const strings = useStrings().public.contents.result;
 
-    const navigate = useNavigate();
+    const navigate = useNavigateWithGuestContext();
 
     /* Reducers */
     const character = useSelector((state: RootState) =>

@@ -3,12 +3,10 @@ import { useEffect, useState } from "react";
 
 /* React Packages */
 import { ButtonBase } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 /* App */
 import { KAKAO_AUTH_URL_BASE } from "../../common/auth";
-import { AppDispatch } from "../../store";
 import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
 
 interface KakaoLoginButtonProps {
@@ -17,8 +15,6 @@ interface KakaoLoginButtonProps {
 
 function KakaoLoginButton({ }: KakaoLoginButtonProps) {
 
-    const dispatch = useDispatch<AppDispatch>();
-    const navigate = useNavigate();
     const { state, pathname } = useLocation();
     const [url, setUrl] = useState<string>(KAKAO_AUTH_URL_BASE);
 
@@ -53,7 +49,7 @@ function KakaoLoginButton({ }: KakaoLoginButtonProps) {
     return (
         <a href={url}>
             <ButtonBase>
-                <img height={'48px'} width={'96px'} src={getImgSrc("/kakao", "kakao_login_large_narrow", FORMATWEBP)} alt={"kakao_login"} className="width-full"/>
+                <img height={'45px'} width={'183px'} src={getImgSrc("/kakao", "kakao_login_large_narrow", FORMATWEBP)} alt={"kakao_login"} className="width-full"/>
             </ButtonBase>
         </a>
     );

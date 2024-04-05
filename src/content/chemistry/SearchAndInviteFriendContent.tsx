@@ -18,6 +18,7 @@ import { useProfileIdList } from '../../reducers/chemistryReducer';
 import { addFlagged, asyncSearchProfile, deleteFlagged, resetSearch, useAddProfiles, useFlaggedProfileList, useProfileSearchStatus, useSearchedProfileList } from '../../reducers/profileSearchReducer';
 import { AppDispatch } from '../../store';
 import { useStrings } from '../../texts';
+import useNavigateWithGuestContext from '../../hooks/useNavigateWithGuestContext';
 
 
 interface SearchAndInviteFriendContentProps {
@@ -31,7 +32,7 @@ function SearchAndInviteFriendContent({ handleSucess }: SearchAndInviteFriendCon
     const commonStrings = useStrings().public.common;
 
     /* Hooks */
-    const navigate = useNavigate();
+    const navigate = useNavigateWithGuestContext();
     const dispatch = useDispatch<AppDispatch>(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
     const isAppBarHidden = useHideAppbar();
 

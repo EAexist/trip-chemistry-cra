@@ -10,9 +10,10 @@ interface ToggleLabeledButtonProps extends ToggleButtonProps {
     sx? : SxProps<Theme>;
     paperSx? : SxProps<Theme>;
     elevation? : number;
+    labelSize? : 'medium' | 'large' | 'xlarge';
 };
 
-const ToggleLabeledButton = ({ label, children, onChange, size ="small", value, selected, contained = false, sx, paperSx, elevation = 0, className }: PropsWithChildren<ToggleLabeledButtonProps>) => {
+const ToggleLabeledButton = ({ label, children, onChange, size ="small", labelSize = 'medium', value, selected, contained = false, sx, paperSx, elevation = 0, className }: PropsWithChildren<ToggleLabeledButtonProps>) => {
     
     const [ elevated, setElevated ] = useState(false);
 
@@ -38,7 +39,7 @@ const ToggleLabeledButton = ({ label, children, onChange, size ="small", value, 
     >
         <Label
             label={label}
-            labelSize="large"
+            labelSize={labelSize}
             isActive={selected}
         >
             <Paper                

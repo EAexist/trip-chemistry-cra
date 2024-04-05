@@ -17,7 +17,6 @@ interface ScrollPageContainerProps {
 const ScrollPageContainer = ({ onPageChange, pages, children }: PropsWithChildren<ScrollPageContainerProps>) => {
 
     const [page, setPage] = useState<number>();
-    const navigate = useNavigate();
     const { pathname } = useLocation();
     // const [ pages, setPages ] = useState<number>(0);
 
@@ -45,11 +44,11 @@ const ScrollPageContainer = ({ onPageChange, pages, children }: PropsWithChildre
         if (page) {
             onPageChange && onPageChange(page);
         }
-    }, [page, onPageChange, pathname, navigate])
+    }, [page, onPageChange, pathname ])
 
     return (
         <div ref={ref} className="ScrollPageContainer">
-        {children}
+            { children }
             {/* {
                 Array.from({ length: pages }, (value, index) => (
                     <Step key={index} index={index} className="fill-window" style={{ visibility: "hidden" }}/>

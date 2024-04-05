@@ -9,6 +9,7 @@ import NoticeBlock from "../components/Block/NoticeBlock";
 import { useHasAnsweredTest } from "../reducers/authReducer";
 import { RootState } from "../store";
 import getImgSrc, { FORMATWEBP } from "../utils/getImgSrc";
+import useNavigateWithGuestContext from "../hooks/useNavigateWithGuestContext";
 
 interface TestRequiredRouteProps {
 
@@ -16,7 +17,7 @@ interface TestRequiredRouteProps {
 
 function TestRequiredRoute({ }: TestRequiredRouteProps) {
 
-    const navigate = useNavigate();
+    const navigate = useNavigateWithGuestContext();
 
     /* Reducers */
     const nickname = useSelector((state: RootState) => state.auth.data.profile.nickname )
