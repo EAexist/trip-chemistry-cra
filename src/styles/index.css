@@ -1,5 +1,11 @@
-@import "./font.css"; 
-  
+/*  index.css 
+    기본 css */
+/* @import "./font.css";  */
+@import "./pretendard-subset.css"; 
+/* https://github.com/orioncactus/pretendard */
+/* @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"); */
+/* @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css"); */
+
 :root {
     --margin-x: 24px;
     --margin-x--small: 12px;
@@ -12,6 +18,7 @@
     --topnav-height: 96px;
 
     --width__profile: 40px;
+    
     --width__profile--large: 64px;
     --width__profile--xlarge: 72px;
     --width__profile__content--small: 44px;
@@ -21,9 +28,7 @@
 }
 * {
     margin: 0;
-    
-    /* font-family: Apple SD Gothic Neo, sans-serif; */
-    font-family: Noto Sans KR, sans-serif;
+    font-family: "Pretendard Variable", Pretendard, sans-serif;
     font-optical-sizing: auto;
   
     /* Debug */
@@ -62,11 +67,13 @@ img {
     height: '100%';
 }
 
+/* ( https://homepage.skcarrental.com/ ) */
 body {
-    line-height: 1.7;
-    letter-spacing: 0em;
-    font-size: 16px;
-    font-weight: 400;
+    letter-spacing: -.033em;
+    font-size: 14px;
+    line-height: 22px; 
+    font-style: normal;
+    color: #50555c;
 }
 
 /**** Typography ****/
@@ -95,22 +102,25 @@ body {
 }
 
 .typography-body {
-    line-height: 1.7;
-    font-size: 16px;
-    font-weight: 400;
-    word-break: keep-all;
-    margin: 0;
-    white-space: pre-line;
-    /* color: #1d1d1f; */
-    color: #4e5968;
+    letter-spacing: -.033em;
+    font-size: 14px;
+    line-height: 22px; 
+    font-style: normal;
+    color: #50555c;
 }
 
 .typography-heading {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 700;
-    /* letter-spacing: 0em; */
-    line-height: 1.7;
-    /* color: #1d1d1f; */
+    line-height: 30px;
+    color: #2e3033;
+}
+
+.typography-subHeading {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    color: #2e3033;
 }
 
 .typography-heading-large {
@@ -118,20 +128,17 @@ body {
     text-align: center;
     font-size: 27px;
     font-weight: 700;
-    /* letter-spacing: 0em; */
     line-height: 1.7;
     /* color: #1d1d1f; */
 }
 
 .typography-label {
-
     &,
     &>p,
     .MuiTextField-root>& {
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 700;
-        /* letter-spacing: 0em; */
-        line-height: 1.7;
+        line-height: 18px;
         /* color: #1d1d1f; */
     }
 }
@@ -160,11 +167,10 @@ body {
 
 .typography--profile-label,
 .typography--profile-label>p {
-    font-size: 11px;
+    font-size: 12px;
+    line-height: 16px;
     font-weight: 300;
-    /* letter-spacing: 0em; */
-    line-height: 1;
-    color: rgb(107, 118, 132);
+    /* color: #858B93; */
 }
 
 .typography--profile-label--active,
@@ -405,9 +411,7 @@ body {
 
 .MuiButton-root {
     &.MuiButtonBase-root {
-        line-height: 1.7;
-        font-size: 16px;
-        font-weight: 400;
+        font-weight: 700;
         word-break: keep-all;
         white-space: pre-line;
 

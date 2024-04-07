@@ -17,7 +17,7 @@
     "start:client": "react-scripts start",
     "start:client:prod": "serve -s build",
     "build": "craco build",
-    "start": "craco build && concurrently \"serve -s build\" \"wait-on -c wait-on.config.json http://localhost:3000/home && npm run lighthouse\" ",
+    "start": "concurrently \"serve -s build\" \"wait-on -c wait-on.config.json http://localhost:3000/home && npm run lighthouse\" ",
     "start-dev": "craco start",
     "lighthouse": "lighthouse http://localhost:3000/home --output-path=report/%npm_config_REPORT_NAME%/home.html",
     "test": "react-scripts test"

@@ -75,8 +75,8 @@ export const theme = createTheme({
     ...defaultTheme,
     typography: {
         fontFamily: [
-            'Noto Sans KR',
-            'sans-serif'
+            '\"Pretendard Variable\"',
+            'Pretendard'
         ].join(','),
     },
     // transitions: {
