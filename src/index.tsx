@@ -14,10 +14,10 @@ const root = createRoot(document.getElementById('root'));
 
 root.render(
   <ThemeProvider theme={theme}>
-    <Provider store={store}>
+    {/* <Provider store={store}> */}
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </Provider>
+    {/* </Provider> */}
   </ThemeProvider>
 );

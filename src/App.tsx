@@ -56,6 +56,8 @@ import { TEST } from './common/app-const';
 
 /* 3. Loadable Components */
 import loadable from '@loadable/component';
+import { Provider } from 'react-redux';
+import { store } from './store';
 const AuthRequiredRoute = loadable(() => import(/* webpackChunkName: "AuthRequiredRoute" */ './route/AuthRequiredRoute'));
 const TestRequiredRoute = loadable(() => import( /* webpackChunkName: "TestRequiredRoute" */'./route/TestRequiredRoute'));
 // const GuestRoute = loadable(() => import( /* webpackChunkName: "GuestRoute" */'./route/GuestRoute'));
@@ -124,7 +126,7 @@ function App() {
     return (
         // <AnimatePresence>
         // <ThemeProvider theme={theme}>
-        // <Provider store={store}>
+        <Provider store={store}>
         <Routes>
             <Route path={'/'} element={<Page />} >
                 {/* Debug */}
@@ -153,7 +155,7 @@ function App() {
                 </Route> */}
             </Route>
         </Routes>
-        // </Provider>
+        </Provider>
         // </ThemeProvider>
         // </AnimatePresence>
     );

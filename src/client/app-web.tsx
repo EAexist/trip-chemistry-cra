@@ -1,6 +1,6 @@
-import React, { FunctionComponent } from 'react'
-import { Route, Link, Routes } from 'react-router-dom'
 import loadable from '@loadable/component'
+import { FunctionComponent } from 'react'
+import { Link, Route, Routes } from 'react-router-dom'
 
 const Home = loadable(() => import('./pages/home'))
 const About = loadable(() => import('./pages/about'))

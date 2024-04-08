@@ -72,17 +72,44 @@ module.exports = (target) => ({
           },
         ],
       },
+      {
+        test: /\.css$/,
+        exclude: /\.module\.css$/i, // 모듈 파일 제외 설정
+        use: [
+          /* Do not use style-loader and mini-css-extract-plugin together. ( https://github.com/webpack-contrib/css-loader#recommend ) */
+          development ? "style-loader" : MiniCssExtractPlugin.loader,
+          // "style-loader",
+          // MiniCssExtractPlugin.loader,
+          "css-loader",
+          "postcss-loader",
+        ]
+      },
+      {
+        test: /\.module\.css$/i,
+        use: [
+          /* Do not use style-loader and mini-css-extract-plugin together. ( https://github.com/webpack-contrib/css-loader#recommend ) */
+          development ? "style-loader" : MiniCssExtractPlugin.loader,
+          // "style-loader",
+          // MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [
     new LoadablePlugin(),
-    // new CleanWebpackPlugin({
-    //   /**
-    //    * during rebuilds (watch mode) we do not clean old files
-    //    * @see https://github.com/johnagan/clean-webpack-plugin/issues/152#issuecomment-509028712
-    //    */
-    //   cleanStaleWebpackAssets: false,
-    // }),
+    new CleanWebpackPlugin({
+      /**
+       * during rebuilds (watch mode) we do not clean old files
+       * @see https://github.com/johnagan/clean-webpack-plugin/issues/152#issuecomment-509028712
+       */
+      cleanStaleWebpackAssets: false,
+    }),
     // new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/]),
   ],
   // watchOptions: {
