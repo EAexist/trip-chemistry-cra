@@ -73,9 +73,7 @@ function LoginContent({ }: LoginContentProps) {
                 <div className="flex-grow block--centered-row block__body">
                     <div style={{ marginTop: "128px" }} />
                     <h2 className="typography-heading">
-                        {
-                            "로그인 방식을 선택해주세요."
-                        }
+                        로그인 방식을 선택해주세요
                     </h2>
                     <div>
                         {/* <Stack direction={"column"} spacing={2} alignItems={"stretch"} width={"200px"}> */}
@@ -86,10 +84,10 @@ function LoginContent({ }: LoginContentProps) {
                                 <Grid item>
                                     <Button
                                         onClick={handleGuestSignIn}
-                                        variant="outlined"
+                                        variant="contained"
                                         sx={{ width: '183px', height: '45px' }}
                                     >
-                                        로그인 없이 시작하기
+                                        게스트 로그인
                                     </Button>
                                 </Grid>
                             </Grid>

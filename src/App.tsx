@@ -9,6 +9,8 @@ import Page from './route/Page';
 
 import { TEST } from './common/app-const';
 
+import './styles/index.css';
+// import './styles/pretendard-subset.css';
 /* [Performance][Code Splitting]  */
 /* 1. Static Import */
 // import AuthRequiredRoute from './route/AuthRequiredRoute';

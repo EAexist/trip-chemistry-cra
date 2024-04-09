@@ -14,7 +14,9 @@
     "moduleResolution": "node",
     "incremental": true,
     "outDir": "lib",
-    "sourceMap": true
+    "sourceMap": true,
+    // "baseUrl": "src"
   },
+  // "include": ["src"]
   "include": ["src/**/*", "others/App_.tsx", "others/app-node.tsx", "others/App.test.tsx", "others/App.tsx", "others/client.tsx", "others/index_.tsx", "others/index-node.tsx", "others/index-web.tsx", "others/main-node.tsx", "others/main-web.tsx", "others/path.ts", "others/prerender.jsx"]
 }

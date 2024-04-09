@@ -116,24 +116,24 @@ function LoadRequiredContent({
     }, [status, isPending, handleSuccess, setStatus, isEnabled, handleFail, showHandleFailButton])
 
     return (
-        isEnabled ?
-            ((delayedStatus === LoadStatus.REST) || (delayedStatus === LoadStatus.PENDING))
-                ? <>
-                    {children}{
-                        (delayedStatus === LoadStatus.PENDING) &&
-                        <div className='backdrop block--centered' style={{ width: '100vw', height: '100vh' }}>
-                            <CircularProgress />
-                        </div>
-                    }
-                </>
-                :
-                <NoticeBlock
-                    title={"여행 타입 테스트"}
-                    alt={delayedStatus}
-                    src={getImgSrc('/info', delayedStatus, FORMATWEBP)}
-                    {...noticeBlockProps[delayedStatus]}
-                />
-            : children
+        <>
+            {
+                isEnabled && ((delayedStatus === LoadStatus.FAIL) || (delayedStatus === LoadStatus.MISS))
+                    ? <NoticeBlock
+                        title={"여행 타입 테스트"}
+                        alt={delayedStatus}
+                        src={getImgSrc('/info', delayedStatus, FORMATWEBP)}
+                        {...noticeBlockProps[delayedStatus]}
+                    />
+                    : children
+            }
+            {
+                isEnabled && (delayedStatus === LoadStatus.PENDING)
+                && <div className='backdrop block--centered' style={{ width: '100vw', height: '100vh' }}>
+                    <CircularProgress />
+                </div>
+            }
+        </>
     );
 }
 export default LoadRequiredContent;

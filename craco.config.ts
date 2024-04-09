@@ -1,13 +1,29 @@
-import { when, whenDev } from "@craco/craco";
+import { when, whenDev, whenProd } from "@craco/craco";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import CopyPlugin from "copy-webpack-plugin";
 import LoadablePlugin from "@loadable/webpack-plugin";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
-import webpack from "webpack";
+import webpack, { DefinePlugin } from "webpack";
 import path from "path";
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import BrotliPlugin from "brotli-webpack-plugin";
+import CompressionPlugin from "compression-webpack-plugin";
+import nodeExternals from "webpack-node-externals";
 
-console.log(`Hello Config.\n\tNODE_ENV=${process.env.NODE_ENV}\n\tnpm_config_SSR=${process.env.npm_config_SSR}`)
+const isSsr = process.env.npm_config_SSR === 'true'
+const isTargetWeb = process.env.npm_config_TARGET === 'web';
+
+console.log(`Hello Config. \
+    \n\tNODE_ENV=${process.env.NODE_ENV} \
+    \n\tnpm_config_SSR=${process.env.npm_config_SSR} \ 
+    \n\tnpm_config_TARGET=${process.env.npm_config_TARGET} \
+    \n\tisSsr=${isSsr} \
+    \n\tisTargetWeb=${isTargetWeb} \
+`)
+
 const DIST_PATH = path.resolve(__dirname, './dist')
+
 console.log(`DIST_PATH=${DIST_PATH}`);
 
 /* Dilan Nair. CRACO docs - configuration - Configuration Tips.
@@ -16,30 +32,50 @@ module.exports = {
     webpack: {
         plugins: {
             remove: [
+                (!(isTargetWeb)) && new HtmlWebpackPlugin()
             ],
             add: [
-                new LoadablePlugin(),
-                // whenDev(
-                //     () => [],
-                //     (process.env.npm_config_REPORT_NAME !== undefined)
-                //         ? [new BundleAnalyzerPlugin({
-                //             analyzerMode: 'static',
-                //             reportFilename: `../report/${process.env.npm_config_REPORT_NAME}/bundle_analysis.html`
-                //         })]
-                //         : []
-                // )
+                [ new LoadablePlugin(), 'append' ],
+                [ new CleanWebpackPlugin({
+                    /**
+                     * during rebuilds (watch mode) we do not clean old files
+                     * @see https://github.com/johnagan/clean-webpack-plugin/issues/152#issuecomment-509028712
+                     */
+                    cleanStaleWebpackAssets: false,
+                }), 'append' ],
+                ... (isSsr) ? [
+                    new DefinePlugin({
+                        'process.env.PUBLIC_URL': '/static/',
+                    }),
+                    ... (isTargetWeb ? whenProd(() => [
+                        [
+                        new CompressionPlugin({
+                            test: /\.js$|\.css$|\.html$/,
+                        }), 'append' ],
+                        [
+                        new BrotliPlugin({
+                            test: /\.js$|\.css$|\.html$/,
+                        }), 'append' ],
+                    ]) as any[] : [] )
+                    ]
+                : [],
+                ...( (process.env.npm_config_REPORT_NAME !== undefined)
+                ? whenProd(()=> (
+                        [[new BundleAnalyzerPlugin({
+                            analyzerMode: 'static',
+                            reportFilename: `../report/${process.env.npm_config_REPORT_NAME}/bundle_analysis.html`
+                        }), 'append']]
+                    )) as any [] : [] )
             ]
         },
         configure: (webpackConfig, { env, paths }) => {
 
-            if (process.env.npm_config_SSR === 'true') {
-                // webpackConfig.mode = process.env.NODE_ENV
-                // webpackConfig.entry = when( process.env.npm_config_SSR === 'true', () => path.resolve(__dirname, './src/client/main-web.tsx'), webpackConfig.entry )
-                webpackConfig.target = 'web'
-                webpackConfig.entry = './src/client/main-web.tsx'
+            if (isSsr) {
+                webpackConfig.target = process.env.npm_config_TARGET
+                webpackConfig.entry = `./src/client/main-${process.env.npm_config_TARGET}.tsx`
                 webpackConfig.output = {
                     filename: whenDev(() => '[name].js', '[name]-bundle-[chunkhash:8].js'),
-                    path: path.join(DIST_PATH, 'web'),
+                    path: path.join(DIST_PATH, (isTargetWeb) ? 'js' : 'node'),
                     /**
                      * In the client app we use `__webpack_public_path__` to set `publicPath`
                      * during runtime. We are not required to set it here actually. On the
@@ -48,11 +84,33 @@ module.exports = {
                      * Read more about an environment based publich-path here:
                      * @see https://webpack.js.org/guides/public-path/
                      */
-                    publicPath: '/static/',
+                    publicPath: `/static/${(isTargetWeb) ? 'js/' : ''}`,
+                    ...(!isTargetWeb) ?
+                        {
+                            libraryTarget: 'commonjs2',
+                        }
+                        : {}
+
+                }
+                webpackConfig.externals = [nodeExternals(), ... ( !isTargetWeb ) ? ['@loadable/component'] : []]
+
+                if (isTargetWeb) {
+                    const htmlWebpackPluginInstance = webpackConfig.plugins.find(
+                        plugin => plugin instanceof HtmlWebpackPlugin
+                    );
+                    if (htmlWebpackPluginInstance) {
+                        htmlWebpackPluginInstance.options.template = path.resolve(__dirname, './public/index-node.html');
+                        htmlWebpackPluginInstance.options.filename = '../index.html';
+                        htmlWebpackPluginInstance.options.inject = false
+                    }
+                }
+                if (!isTargetWeb) {
+                    webpackConfig.node = {
+                        __dirname: false,
+                        __filename: false,
+                    }
                 }
             }
-
-            // webpackConfig.entry = whenDev(()=> path.resolve(__dirname, './src/client/main-web.tsx'), webpackConfig.entry )
             webpackConfig.module.rules = webpackConfig.module.rules.concat([
                 /* Tree-shaking on Swiper.js modules. ( https://stackoverflow.com/questions/71031894/why-isnt-webpack-tree-shaking-swiperjs-modules ) */
                 {
@@ -63,7 +121,7 @@ module.exports = {
                     sideEffects: false
                 }
             ])
-            webpackConfig.optimization = whenDev(() => ({}), webpackConfig.optimization)
+            // webpackConfig.optimization.splitChunks = { chunks: 'all' }
             // webpackConfig.publicPath = ''
             // webpackConfig.module.rules = [
             //     {
