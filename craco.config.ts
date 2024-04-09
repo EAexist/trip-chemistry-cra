@@ -35,37 +35,43 @@ module.exports = {
                 (!(isTargetWeb)) && new HtmlWebpackPlugin()
             ],
             add: [
-                [ new LoadablePlugin(), 'append' ],
-                [ new CleanWebpackPlugin({
+                [new LoadablePlugin(), 'append'],
+                [new CleanWebpackPlugin({
                     /**
                      * during rebuilds (watch mode) we do not clean old files
                      * @see https://github.com/johnagan/clean-webpack-plugin/issues/152#issuecomment-509028712
                      */
                     cleanStaleWebpackAssets: false,
-                }), 'append' ],
-                ... (isSsr) ? [
-                    new DefinePlugin({
-                        'process.env.PUBLIC_URL': '/static/',
-                    }),
-                    ... (isTargetWeb ? whenProd(() => [
-                        [
-                        new CompressionPlugin({
-                            test: /\.js$|\.css$|\.html$/,
-                        }), 'append' ],
-                        [
-                        new BrotliPlugin({
-                            test: /\.js$|\.css$|\.html$/,
-                        }), 'append' ],
-                    ]) as any[] : [] )
-                    ]
-                : [],
-                ...( (process.env.npm_config_REPORT_NAME !== undefined)
-                ? whenProd(()=> (
+                }), 'append'],
+                ...when(isSsr, () =>
+                    [
+                        new DefinePlugin({
+                            'process.env.PUBLIC_URL': '/static/',
+                        }),
+                        ...when(isTargetWeb, () =>
+                            whenProd(() => [
+                                [
+                                    new CompressionPlugin({
+                                        test: /\.js$|\.css$|\.html$/,
+                                    })
+                                    , 'append'
+                                ],
+                                [
+                                    new BrotliPlugin({
+                                        test: /\.js$|\.css$|\.html$/,
+                                    })
+                                    , 'append'
+                                ],
+                            ], []) as any[]
+                        , []) as any[]
+                    ], []) as any[] ,
+                ...((process.env.npm_config_REPORT_NAME !== undefined)
+                    ? whenProd(() => (
                         [[new BundleAnalyzerPlugin({
                             analyzerMode: 'static',
                             reportFilename: `../report/${process.env.npm_config_REPORT_NAME}/bundle_analysis.html`
                         }), 'append']]
-                    )) as any [] : [] )
+                    ), []) as any[] : [])
             ]
         },
         configure: (webpackConfig, { env, paths }) => {
@@ -92,8 +98,8 @@ module.exports = {
                         : {}
 
                 }
-                webpackConfig.externals = [nodeExternals(), ... ( !isTargetWeb ) ? ['@loadable/component'] : []]
-
+                // webpackConfig.externals = [nodeExternals(), ... (!isTargetWeb) ? ['@loadable/component'] : []]
+                webpackConfig.externals = when(!isTargetWeb, () => [nodeExternals(), '@loadable/component'], webpackConfig.externals ) 
                 if (isTargetWeb) {
                     const htmlWebpackPluginInstance = webpackConfig.plugins.find(
                         plugin => plugin instanceof HtmlWebpackPlugin

@@ -177,7 +177,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
             Open Graph Protocol Metadata for SNS(Kakaotalk, Instagram) Share.
         */}
             <HelmetWrapper
-                title={`여행 타입 테스트 | 친구들과의 여행을 준비해보세요.`}
+                title={`여행 타입 테스트 | 친구들과 떠나는 여행을 준비해보세요.`}
                 // description={ `DESCRIPTION` }
                 description={Object.values(profileList).length > 0 ? `${Object.values(profileList)[0].nickname}님의 ${title}. 참여하고 여행의 리더, 일정, 예산 그리고 여행지를 함께 결정해보세요.` : `${title}. 참여하고 여행의 리더, 일정, 예산 그리고 여행지를 함께 결정해보세요.`}
                 keywords={"여행, 여행 일정, 여행지, 여행 계획, 여행 예산, 국내여행, 해외여행, MBTI"}

@@ -18,6 +18,7 @@ import { ThemeProvider } from '@mui/material/styles'
 import { theme } from '../theme'
 import { CssBaseline } from '@mui/material';
 import expressStaticGzip from 'express-static-gzip';
+import { HelmetProvider, HelmetServerState } from 'react-helmet-async';
 
 /**
  * Can be e.g. your CDN Domain (https://cdn.example.com) in production with
@@ -35,7 +36,7 @@ app.use('/static', expressStaticGzip(path.join(__dirname, '../../dist'), {
   enableBrotli: true,
   orderPreference: ['br'],
   serveStatic: {
-      maxAge: 31536000000
+    maxAge: 31536000000
   }
 }));
 
@@ -74,6 +75,10 @@ app.get('/robots.txt', async (req, res) => {
 /* Routes */
 app.get('*', async (req, res) => {
 
+  /* React Helmet Async */
+  const helmetContext : { helmet?: HelmetServerState } = {};
+
+  /* Loadable Component Chunks */
   const jsx = webExtractor.collectChunks(
     createElement(App as any, { url: req.url }),
   )
@@ -83,17 +88,21 @@ app.get('*', async (req, res) => {
   const { extractCriticalToChunks, constructStyleTagsFromChunks } = createEmotionServer(cache);
 
   const appHtml = renderToString(
-    <CacheProvider value={cache}>
-      <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline
+    <HelmetProvider context={helmetContext}>
+      <CacheProvider value={cache}>
+        <ThemeProvider theme={theme}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline
             to build upon. */}
-        <CssBaseline />
-        {jsx}
-      </ThemeProvider>
-    </CacheProvider>
+          <CssBaseline />
+          {jsx}
+        </ThemeProvider>
+      </CacheProvider>
+    </HelmetProvider>
   )
+  /* React Helmet Async */
+  const { helmet } = helmetContext;
 
-  // Grab the CSS from emotion
+  /* Material UI: Grab the CSS from emotion */
   const emotionChunks = extractCriticalToChunks(appHtml);
   const emotionCss = constructStyleTagsFromChunks(emotionChunks);
 
@@ -107,8 +116,9 @@ app.get('*', async (req, res) => {
 
   const htmlTemplate = await fs.promises.readFile(path.resolve(__dirname, '../../dist/index.html'), 'utf-8');
   const html = htmlTemplate
-    .replace('<meta id="emotionCss"/>',emotionCss)
+    .replace('<meta id="emotionCss"/>', emotionCss)
     .replace('<meta id="styleTags"/>', webExtractor.getStyleTags())
+    .replace('<meta id="helmet"/>', `${helmet.title.toString()}${helmet.priority.toString()}${helmet.meta.toString()}${helmet.link.toString()}`)
     .replace('<div id="root"></div>', `<div id="root">${appHtml}</div>${webExtractor.getScriptTags()}`);
   res.set('content-type', 'text/html')
   res.send(html);

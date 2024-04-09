@@ -5,18 +5,17 @@ import { createRoot } from 'react-dom/client'
 import App from './App'
 import { theme } from './theme'
 
-import './styles/index.css';
-import { Provider } from 'react-redux'
-import { store } from './store'
+import { HelmetProvider } from 'react-helmet-async'
+import './styles/index.css'
 
 const root = createRoot(document.getElementById('root'));
 
 root.render(
-  <ThemeProvider theme={theme}>
-    {/* <Provider store={store}> */}
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    {/* </Provider> */}
-  </ThemeProvider>
+    <HelmetProvider>
+        <ThemeProvider theme={theme}>
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        </ThemeProvider>
+    </HelmetProvider>
 );
