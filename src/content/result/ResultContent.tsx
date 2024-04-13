@@ -34,17 +34,17 @@ function ResultContent({ }: ResultContentProps) {
         <div className="page">
             <Toolbar />
             <LazyDomAnimation>
-                <m.div  {...FADEIN_VIEWPORT} className="block__body block--with-padding-x">
+                <m.div  {...FADEIN_VIEWPORT} className="block__body--large block--with-padding-x">
                     {/* <SectionPaper className="body__head"> */}
                     <m.h5 className="typography-heading">{strings.sections.tripCharacter.title}</m.h5>
-                    <div className="block__body">
+                    <div style={{ marginTop: '-1rem' }}>
                         <UserTestResultBlock />
-                        {
-                            character.body.split("\n").map((text) =>
-                                <p key={text}>{text}</p>
-                            )
-                        }
                     </div>
+                    {
+                        character.body.split("\n").map((text) =>
+                            <p key={text}>{text}</p>
+                        )
+                    }
                     <div className="flex">
                         <Button
                             onClick={handleChemistryButtonClick}
@@ -54,8 +54,7 @@ function ResultContent({ }: ResultContentProps) {
                             {strings.navigateToChemistryButton}
                         </Button>
                     </div>
-                    <div />
-                </m.div>
+                </m.div>            
             </LazyDomAnimation>
         </div>
     );

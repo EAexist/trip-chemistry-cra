@@ -98,7 +98,7 @@ function CreateChemistryContent({ }: CreateChemistryContentProps) {
                     <LazyDomAnimation>
                         <m.div {...SLIDEINLEFT} className="page fill-window">
                             {
-                                <Toolbar>
+                                <Toolbar  className="block--with-margin-x" >
                                     {
                                         <IconButton
                                             edge="start"
@@ -166,7 +166,7 @@ function CreateChemistryContent({ }: CreateChemistryContentProps) {
 export default withReducer(CreateChemistryContent)({ chemistry: chemistryReducer });
 
 // <SwiperSlide key={"0"} className=''>
-// <div className="block--with-margin-x block__body">
+// <div className="block--with-margin-x block__body--large">
 //     <h2 className="typography-body">
 //         연결 방식을 선택해주세요.
 //     </h2>

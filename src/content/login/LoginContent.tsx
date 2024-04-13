@@ -68,41 +68,36 @@ function LoginContent({ }: LoginContentProps) {
         <AuthLoadRequiredContent {...{
             handleSuccess: handleAuthSuccess,
         }}>
-            <RoutedMotionPage>
-                <Toolbar />
-                <div className="flex-grow block--centered-row block__body">
+            <RoutedMotionPage className="flex fill-window">
+                <div className="flex-grow block--centered-row block__body--large">
                     <div style={{ marginTop: "128px" }} />
                     <h2 className="typography-label">
                         로그인하고 테스트를 시작해보세요
                     </h2>
-                    <div/>
-                    <div>
-                        {/* <Stack direction={"column"} spacing={2} alignItems={"stretch"} width={"200px"}> */}
-                            <Grid container direction={"column"} rowSpacing={2}>
-                                <Grid item>
-                                    <KakaoLoginButton />
-                                </Grid>
-                                <Grid item>
-                                    <Button
-                                        onClick={handleGuestSignIn}
-                                        variant="contained"
-                                        sx={{ width: '183px', height: '45px' }}
-                                    >
-                                        게스트 로그인
-                                    </Button>
-                                </Grid>
+                    <div className="block--with-padding block--with-padding--large">
+                        <Grid container direction={"column"} rowSpacing={2}>
+                            <Grid item>
+                                <KakaoLoginButton />
                             </Grid>
-                        {/* </Stack> */}
+                            <Grid item>
+                                <Button
+                                    onClick={handleGuestSignIn}
+                                    variant="contained"
+                                    sx={{ width: '183px', height: '45px' }}
+                                >
+                                    게스트 로그인
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </div>
-                    <div style={{ marginTop: "128px" }} />
-                    <div>
-                        <p className="typography-note">
-                            <Help fontSize="inherit" />
-                            {
-                                "카카오 로그인을 이용하면\n링크를 잃어버려도 테스트 결과를 안전하게 불러올 수 있어요."
-                            }
-                        </p>
-                    </div>
+                </div>
+                <div className="block--with-margin block--with-margin--large block--centered">
+                    <p className="typography-note block--width-large">
+                        <Help fontSize="inherit" />
+                        {
+                            "카카오 로그인을 이용하면\n링크를 잃어버려도 내 테스트 결과를 안전하게 불러올 수 있어요."
+                        }
+                    </p>
                 </div>
             </RoutedMotionPage>
         </AuthLoadRequiredContent>

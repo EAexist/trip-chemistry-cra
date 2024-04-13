@@ -40,7 +40,7 @@ function NoticeBlock({
                     isFullscreen &&
                     <Toolbar />
                 }
-                <m.div {...SLIDEINUPINVIEW} className='flex-grow block--centered block__body block--with-padding'>
+                <m.div {...SLIDEINUPINVIEW} className='flex-grow block--centered block__body--large block--with-padding block--with-padding--large'>
                     {
                         title &&
                         <h2 className="typography-heading">
@@ -71,7 +71,7 @@ function NoticeBlock({
                 </m.div>
                 {
                     handleClick &&
-                    <m.div {...FADEIN_INVIEW} className="block__body">
+                    <m.div {...FADEIN_INVIEW} className="block__body--large">
                         <div className="block--with-margin-x flex">
                             <Button
                                 onClick={handleClick}

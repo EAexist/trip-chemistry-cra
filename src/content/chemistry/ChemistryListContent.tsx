@@ -29,17 +29,17 @@ function ChemistryListContent({ }: ChemistryListContentProps) {
     }
 
     return (
-        <RoutedMotionPage className="page fill-window flex block--gray">
+        <RoutedMotionPage className="page fill-window flex">
         {/* <div className="page  min-fill-window"> */}
             <Toolbar/>
-            <div className="block--with-margin-x block__body">
+            <div className="block--with-margin-x block__body--large">
                 <LazyDomAnimation>
                 <m.h2 {...FADEIN_VIEWPORT} className="typography-heading">
                     내 여행
                 </m.h2>
                 <m.ul {...STAGGER_CHILDREN} custom={0.5} className="block__body">
                     {
-                        Object.values(chemistryIdList).map((id) => (
+                        Object.values(chemistryIdList).map((id, index) => (
                             <m.li variants={VARIANTS_SLIDE_UP}>
                                 <ChemistrySummaryButton id={id} />
                             </m.li>

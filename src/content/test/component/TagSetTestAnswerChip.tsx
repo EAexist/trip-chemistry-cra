@@ -37,7 +37,7 @@ const TagSetTestAnswerChip = ({ testName, selected = true }: TagSetTestAnswerChi
                 tagSet.map(( tag ) => (    
                     <Chip 
                         key={tag}
-                        label={ tagToLabel[ tag as keyof typeof tagToLabel ] }
+                        label={ `${selected ? '# ' : ''}${tagToLabel[ tag as keyof typeof tagToLabel ]}` }
                         onClick={ selected ? () => handleDelete(tag) : () => handleClick(tag) }
                         // onClick={ selected ? undefined : () => handleClick(tag) }
                         // onDelete={ selected ? () => handleDelete(tag) :  undefined }

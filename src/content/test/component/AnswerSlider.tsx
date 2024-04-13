@@ -27,7 +27,6 @@ function AnswerSlider( { answer, setAnswer, ...sliderOwnProps } : AnswerSliderPr
             value={ answer }
             onChange={ handleAnswerChange }
             marks
-            sx={{ width: '24rem', zIndex: 1 }}
             {...sliderOwnProps}
         />
     );

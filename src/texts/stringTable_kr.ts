@@ -973,7 +973,7 @@ const stringTable_kr = {
                 "sections": {
                     "tripCharacter":
                     {
-                        title: "테스트 결과 보기",
+                        title: "내 여행 타입",
                         icon: "pets",
                         typeIntro: "내 여행 MBTI는",
                     },

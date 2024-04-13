@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 /* React Packages */
 
 import { ExpandMore, NavigateNext } from "@mui/icons-material";
-import { Button, ButtonBase, Card, CardContent, CardMedia, List, ListItem, ListItemButton, ListItemText, Stack, Tooltip, useTheme } from "@mui/material";
+import { Button, ButtonBase, Card, CardContent, CardMedia, Divider, List, ListItem, ListItemButton, ListItemText, Stack, Toolbar, Tooltip, useTheme } from "@mui/material";
 import { AnimatePresence, m, useMotionValueEvent, useScroll } from "framer-motion";
 import { useSelector } from "react-redux";
 import LazyDomAnimation from "../../motion/LazyDomAnimation";
@@ -79,7 +79,7 @@ function TestContent({ }: TestContentProps) {
     const foodCarouselSwiperRef = useRef<SwiperRef>(null);
     const [scheduleExampleMap, setScheduleExampleMap] = useState<google.maps.Map | null>();
     const [isConfirmTooltipOpen, setIsConfirmTooltipOpen] = useState(false);
-    const [step, setStep] = useState(0);
+    const [ step, setStep ] = useState(0);
     const [showScrollDownIcon, setShowScrollDownIcon] = useState(true);
     const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
 
@@ -88,7 +88,7 @@ function TestContent({ }: TestContentProps) {
 
     /* Event Handlers */
     const handleCityCardClick = (key: string, cityIndex: number) => {
-        navigate(`../city/${key}`, { state: { initialIndex: cityIndex } });
+        navigate(`city/${key}`, { state: { initialIndex: cityIndex } });
     };
 
     const handleConfirmTooltipOpen = () => {
@@ -148,7 +148,7 @@ function TestContent({ }: TestContentProps) {
     const { scrollY } = useScroll();
 
     useMotionValueEvent(scrollY, "change", (latest) => {
-        console.log(`[TestContent] ScrollY Change`);
+        // console.log(`[TestContent] ScrollY Change`);
         if (scrollY.get() > window.innerHeight) {
             setShowScrollDownIcon(false);
         }
@@ -178,22 +178,19 @@ function TestContent({ }: TestContentProps) {
                     <LazyDomAnimation>
                         <StepContext.Provider value={{ step, setStep }}>
                             <StepCheckpointContextProvider>
-                                <div className="top-nav" style={{ backgroundColor: theme.palette.gray.light }}>
-                                    <m.div {...FADEIN} custom={0.2} >
-                                        <Stepper className="block--with-margin-x top-nav__swiper" speed={preventInitialSwipe ? 0 : 500}>
+                                <div className="top-nav">
+                                    <m.div {...FADEIN} custom={0.2}>
+                                        <Stepper className="block--with-padding-x top-nav__swiper" speed={preventInitialSwipe ? 0 : 500}>
                                             {
                                                 Object.entries(TEST_SECTIONS).map(([testName, { icon }], index) =>
                                                     <SwiperSlide key={testName} className="top-nav__swiper">
                                                         <SectionButton
-                                                            size={"small"}
                                                             labelSize={"large"}
                                                             value={index}
                                                             index={index}
                                                             label={contentstrings.subTest[testName as keyof typeof contentstrings.subTest].label}
                                                             sx={{ height: "100%", display: 'flex', alignItems: 'start', paddingTop: '8px' }}
-                                                            paperSx={{ opacity: 0.4 }}
-                                                            elevation={1}
-                                                        // className="ButtonGroup__item"
+                                                            elevation={0}
                                                         >
                                                             <TestAnswerBadge testName={testName as ITestName} sx={{ height: 'fit-content', padding: "4px" }}>
                                                                 <PngIcon name={testName} size={"large"} />
@@ -204,6 +201,7 @@ function TestContent({ }: TestContentProps) {
                                             }
                                         </Stepper>
                                     </m.div>
+                                    <Divider />
                                 </div>
                                 <ScrollPageContainer onPageChange={(page) => setStep(page)} pages={Object.keys(TEST_SECTIONS).length}>
                                     {
@@ -213,7 +211,7 @@ function TestContent({ }: TestContentProps) {
                                                     <TestSection>
                                                         {/* https://codesandbox.io/p/sandbox/6gw7p4?file=/src/App.jsx */}
                                                         <div className="flex-grow block--centered">
-                                                            <div className="block--with-margin-x block__body">
+                                                            <div className="block--with-margin-x block__body--large">
                                                                 <TestInstruction testName={testName as ITestName} />
                                                                 <Stack flexWrap={"wrap"} justifyContent={"center"} rowGap={1}>
                                                                     <TagSetTestAnswerChip testName={testName} />
@@ -262,7 +260,7 @@ function TestContent({ }: TestContentProps) {
                                                     }
                                                 </Stack>
                                             </div>
-                                            <div className="block block__body">
+                                            <div className="block block__body--large">
                                                 <div className="test__title">
                                                     <h2 className="test__title__heading typography-heading">{contentstrings.test.leadership.title}</h2>
                                                 </div>
@@ -290,7 +288,7 @@ function TestContent({ }: TestContentProps) {
                                                     </GoogleMapContext.Provider>
                                                 </Card>
                                             </div>
-                                            <div className="block block__body">
+                                            <div className="block block__body--large">
                                                 <div className="test__title">
                                                     <h2 className="test__title__heading typography-heading">{contentstrings.test.schedule.title}</h2>
                                                 </div>
@@ -303,18 +301,18 @@ function TestContent({ }: TestContentProps) {
                                         <TestSection >
                                             {/* https://codesandbox.io/p/sandbox/6gw7p4?file=/src/App.jsx */}
                                             <div className="flex-grow block--centered">
-                                                <Swiper {...SWIPERPROPS_FOODCARDCAROUSEL} className="carousel__swiper carousel--coverflow__swiper modal__container" ref={foodCarouselSwiperRef}>
+                                                <Swiper {...SWIPERPROPS_FOODCARDCAROUSEL} className="carousel__swiper modal__container" ref={foodCarouselSwiperRef} style={{ marginBottom : "48px" }}>
                                                     <TestInstruction testName="food" showBackdrop={true} className="block--centered" />
                                                     {
                                                         Object.values(TEST.food.examples).map((id, index) => (
-                                                            <SwiperSlide key={id} className="carousel__swiper carousel--coverflow__swiper">
+                                                            <SwiperSlide key={id} className="carousel__swiper-slide--coverflow" style={{ width: "196px", height: "196px", borderRadius: "12px" }}>
                                                                 {({ isActive }) => (
                                                                     id === "more"
                                                                         ? (
                                                                             <AnimatePresence mode={"wait"} initial={false}>
                                                                                 {
                                                                                     isActive
-                                                                                        ? <m.div key={"summary"} {...{ ...FADEIN, exit: "hidden" }} style={{ width: "260px", height: "240px" }} className="block--centered block--with-padding">
+                                                                                        ? <m.div key={"summary"} {...{ ...FADEIN, exit: "hidden" }} style={{ width: "260px", height: "240px" }} className="block--centered block--with-padding block--with-padding--large">
                                                                                             <div className="block-with-margin-x">
                                                                                                 <p>더 많은 식당 찾아보기</p>
                                                                                                 <List>
@@ -369,9 +367,9 @@ function TestContent({ }: TestContentProps) {
                                                         // : <h4 className='typography-test-answer'>? 원</h4>
                                                         : <></>
                                                 }
-                                                <div className="container--center" style={{ marginTop: 0 }}>
+                                                {/* <div className="container--center" style={{ marginTop: 0 }}> */}
                                                     <AnswerSlider testName="food" {...SLIDERPROPS_TEST_BUDGET_FOOD} />
-                                                </div>
+                                                {/* </div> */}
                                                 <div />
                                             </div>
                                         </TestSection>
@@ -387,8 +385,9 @@ function TestContent({ }: TestContentProps) {
                                                         <Swiper {...SWIPERPROPS_CAROUSEL} className="carousel__swiper">
                                                             {
                                                                 examples.map((cityId, index) => (
-                                                                    <SwiperSlide key={cityId} className="carousel__swiper">
-                                                                        <ButtonBase onClick={() => handleCityCardClick(key, index)} className="block--full block__body">
+                                                                    <SwiperSlide key={cityId} className="carousel__swiper-slide--auto">
+                                                                        <ButtonBase onClick={() => handleCityCardClick(key, index)} className="block--full">
+                                                                            <div className="block__body">
                                                                             <ImageCard
                                                                                 src={getImgSrc("/city", cityId, FORMATWEBP)}
                                                                                 title={cityId}
@@ -396,20 +395,21 @@ function TestContent({ }: TestContentProps) {
                                                                                 className="body__head"
                                                                             />
                                                                             <Stack>
-                                                                                <h3 className="typography-name">{commonStrings.city[cityId as keyof typeof commonStrings.city].name}</h3>
+                                                                                <h3 className="typography-label">{commonStrings.city[cityId as keyof typeof commonStrings.city].name}</h3>
                                                                                 {
                                                                                     NATION[CITY[cityId as keyof typeof CITY].nation as keyof typeof NATION].flag
                                                                                     && <Flag id={CITY[cityId as keyof typeof CITY].nation} />
                                                                                 }
                                                                             </Stack>
+                                                                            </div>
                                                                         </ButtonBase>
                                                                     </SwiperSlide>
                                                                 ))
                                                             }
                                                         </Swiper>
                                                     </div>
-                                                    <div className="block block__body">
-                                                        <div className="test__title">
+                                                    <div className="block block__body--large">
+                                                        <div className="test__title body__head">
                                                             <h2 className="test__title__heading typography-heading">{contentstrings.test.city.titleTextList.map((text) => (
                                                                 text === "/testName"
                                                                     ? contentstrings.subTest[key as keyof typeof contentstrings.subTest].title
@@ -465,9 +465,9 @@ function TestContent({ }: TestContentProps) {
                                     ease: "easeInOut",
                                     repeat: Infinity,
                                 }}
-                                className="floating--bottom block--centered block--with-padding--small"
+                                className="floating--bottom block--centered"
                             >
-                                <ExpandMore className="typography-gray" sx={{ fontSize: "40px" }} />
+                                <ExpandMore className="typography-gray block--with-margin" sx={{ fontSize: "40px" }} />
                             </m.div>
                         }
                     </LazyDomAnimation>

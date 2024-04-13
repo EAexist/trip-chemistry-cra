@@ -8,29 +8,32 @@ import withFriendProfile from "../../hocs/withFriendProfile";
 import { useUserId } from "../../reducers/authReducer";
 import { m } from "framer-motion";
 
-interface TestResultBlockProps extends WithProfileProps {};
+interface TestResultBlockProps extends WithProfileProps { };
 
 function TestResultBlock({ id, testResult }: TestResultBlockProps) {
 
-    const tripTagToLabel = useStrings().public.tripTag; 
+    const tripTagToLabel = useStrings().public.tripTag;
     const userId = useUserId();
 
     return (
-        <div className="block__body">
+        <div className="block__body--large">
             {
-                ( id === userId ) 
-                ?
-                <UserProfileImage/>
-                :
-                <ProfileImage id={ id } />
+                (id === userId)
+                    ?
+                    <UserProfileImage />
+                    :
+                    <ProfileImage id={id} />
             }
-            <Stack justifyContent={"center"} flexWrap={"wrap"} rowGap={1} >
-                {
-                testResult.tripTagList?.map(( tag ) =>
-                    <Chip key={ tag } icon={<Icon>{ TRIPTAG[tag] }</Icon>} label={ tripTagToLabel[tag] } />
-                )
-                }
-            </Stack>
+            {
+                ( testResult.tripTagList.length > 0 ) &&
+                <Stack justifyContent={"center"} flexWrap={"wrap"} rowGap={1} >
+                    {
+                        testResult.tripTagList.map((tag) =>
+                            <Chip key={tag} icon={<Icon>{TRIPTAG[tag]}</Icon>} label={tripTagToLabel[tag]} />
+                        )
+                    }
+                </Stack>
+            }
         </div>
     );
 }

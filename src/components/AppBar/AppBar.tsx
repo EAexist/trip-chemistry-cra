@@ -55,9 +55,9 @@ function AppBar({ }: AppBarProps) {
     return (
         openAppBar &&
         <>
-            <MuiAppBar elevation={1}>
-                <Toolbar className="">
-                    <Button onClick={handleTitleButtonClick} className='app-title' startIcon={<Logo id={"app"} />}>
+            <MuiAppBar>
+                <Toolbar className="block--with-margin-x">
+                    <Button onClick={handleTitleButtonClick} startIcon={<Logo id={"app"} />} style={{ fontWeight: 400 }}>
                         {strings.public.common.title}
                     </Button>
                     {

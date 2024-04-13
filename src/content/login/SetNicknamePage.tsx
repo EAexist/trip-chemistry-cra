@@ -57,7 +57,7 @@ function SetNicknamePage({
     return (
         isAppBarHidden &&
         <RoutedMotionPage>
-            <Toolbar>
+            <Toolbar className="block--with-margin-x">
                 <IconButton
                     aria-label="cancel"
                     onClick={handleClose}

@@ -11,57 +11,50 @@
     --margin-x--small: 12px;
     --margin-x--large: 40px;
 
-    --margin-top: 2em;
+    --margin-top: 1em;
     --margin-top--small: 1em;
+    --margin-top--large: 2em;
 
     --appbar-height: 52px;
-    --topnav-height: 96px;
+    --topnav-height: 100px;
 
     --width__profile: 40px;
-    
-    --width__profile--large: 64px;
-    --width__profile--xlarge: 72px;
-    --width__profile__content--small: 44px;
-    --width__profile__content--medium: 48px;
+    --width__profile--large: 56px;
+    --width__profile--xlarge: 56px;
+    --width__profile__content--small: 36px;
+    --width__profile__content--medium: 44px;
+    --border-radius--small: 12px;
 
     --min-height__window: 640px;
 }
+
 * {
     margin: 0;
+    padding: 0;
     /* font-family: "Pretendard Variable", Pretendard, sans-serif; */
     font-family: "Pretendard Variable", Pretendard, sans-serif;
     font-optical-sizing: auto;
-  
+
     /* Debug */
-    outline: 1px solid red;
-  }
-  
-  ul {
+    /* outline: 1px solid red; */
+}
+
+ul {
     list-style-type: none;
     padding-inline-start: 0;
-  }
-  
-  h1, h2, h3, h4, h5, h6, p, button {
-    line-height: 1.7;
-    font-size: 16px;
-    font-weight: 400;
-    word-break: keep-all;
-    margin: 0;
-    white-space: pre-line;
-    /* color: #1d1d1f; */
-    color: #4e5968;
-  }
-  p:after {
-    content:"";
-    display:inline-block;
-    width:0px;
-  }
-  
-  a {
+}
+
+p:after {
+    content: "";
+    display: inline-block;
+    width: 0px;
+}
+
+a {
     text-decoration: none;
     color: inherit;
-  }
-  
+}
+
 img {
     object-fit: 'contain';
     width: '100%';
@@ -69,51 +62,277 @@ img {
 }
 
 /* ( https://homepage.skcarrental.com/ ) */
-body {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+button {
     letter-spacing: -.033em;
+    font-weight: 400;
     font-size: 14px;
-    line-height: 22px; 
-    font-style: normal;
+    line-height: 22px;
     color: #50555c;
+    word-break: keep-all;
+    margin: 0;
+    white-space: pre-line;
+    padding: 0 4px;
+}
+
+/**** General ****/
+.sticky {
+    position: sticky;
+    top: 0;
+}
+
+.scroll-target {
+    scroll-margin-top: var(--appbar-height);
+}
+
+/* flex */
+.flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-grow {
+    flex-grow: 1;
+}
+
+.flex-end,
+.flex-end.MuiCardActionArea-root {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
+}
+
+.disabled {
+    opacity: 0.4;
+}
+
+.fill-window,
+.fill-window.MuiPaper-root {
+    height: 100vh;
+    min-height: var(--min-height__window);
+}
+
+/**** Block ****/
+.width-full {
+    width: 100%;
+    /* height: auto; */
+}
+
+.page {
+    width: 100vw;
+    max-width: 100%;
+    /* outline: 2px solid red; */
+}
+
+.block--white {
+    background-color: white;
+}
+
+.block--round {
+    border-radius: 16px;
+}
+
+.block--large {
+    height: 128px;
+    width: 100%
+}
+
+.block--xlarge {
+    height: 144px;
+    width: 100%
+}
+
+.block--width-large {
+    max-width: 220px;
+}
+
+.block--with-padding,
+.block--with-padding.MuiPaper-root {
+    padding-top: var(--margin-top);
+    padding-bottom: var(--margin-top);
+    padding-left: var(--margin-x);
+    padding-right: var(--margin-x);
+}
+
+.block--with-padding--large,
+.block--with-padding--large.MuiPaper-root {
+    padding-top: var(--margin-top--large);
+    padding-bottom: var(--margin-top--large);
+}
+
+.block--with-margin,
+.block--with-margin.MuiButton-root {
+    margin-top: var(--margin-top);
+    margin-bottom: var(--margin-top);
+    margin-left: var(--margin-x);
+    margin-right: var(--margin-x);
+}
+
+.block--with-margin--small,
+.block--with-margin--small.MuiStack-root {
+    margin: var(--margin-x--small);
+}
+
+.block--with-margin--large {
+    margin-top: var(--margin-top--large);
+    margin-bottom: var(--margin-top--large);
+}
+
+.block--with-margin-x,
+.block--with-margin-x.MuiButton-root .block--with-margin-x.swiper {
+    margin-left: var(--margin-x);
+    margin-right: var(--margin-x);
+}
+
+.block--with-padding-x,
+.block--with-padding-x.swiper,
+.block--with-padding-x.MuiButtonBase-root {
+    padding-left: var(--margin-x);
+    padding-right: var(--margin-x);
+}
+
+.block--with-padding-y{
+    padding-top: var(--margin-top);
+    padding-bottom: var(--margin-top);
+}
+
+.block--centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.block--centered-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.block--full {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.container--center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+}
+
+.block__body {
+
+    &>*,
+    &>div,
+    &>li {
+        margin-top: var(--margin-top);
+    }
+
+    &>.MuiButton-root {
+        margin-top: 1.0em;
+    }
+
+    &>h2 {
+        margin-top: 1.2em;
+    }
+
+    &>h3 {
+        margin-top: 0.8em;
+    }
+
+    &>h4,
+    &>p {
+        margin-top: 0.8em;
+    }
+
+    &>.typography-label,
+    &>.typography-label_ {
+        margin-top: 0.4em;
+    }
+
+    &>.MuiStack-root {
+        margin-top: 0.8em;
+    }
+
+    &>.body__head,
+    &>.body__head.swiper-slide {
+        margin-top: 0;
+    }
+}
+
+.block__body--large {
+
+    &>*,
+    &>div {
+        margin-top: var(--margin-top--large);
+    }
+
+    &>.body__head,
+    &>.body__head.swiper-slide {
+        margin-top: 0;
+    }
+}
+
+
+.body__head {
+    margin-top: 0;
+}
+
+.block--gray,
+.block--gray.MuiPaper-root {
+    background-color: #F2F4F6;
+}
+
+.tip--bottom {
+    position: absolute;
+    bottom: var(--margin-top--large);
+}
+
+.floating--bottom {
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    overflow: hidden;
+    bottom: 0;
+}
+
+.floating-placeholder--bottom {
+    margin-top: var(--margin-top);
+    margin-bottom: var(--margin-top);
+    visibility: hidden;
 }
 
 /**** Typography ****/
-.typography-white {
-    & p,
-    & h2,
-    & h3,
-    & h4,
-    & h5,
-    & h6,
-    & * {
-        color: rgba(250, 250, 250);
-    }
+.typography-center {
+    text-align: center;
 }
 
-.typography-gray {
-    & * {
-        color: rgb(107, 118, 132);
-    }
-}
-
-.typography-white--light {
-    & * {
-        color: rgba(253, 253, 255, 0.75);
-    }
-}
-
-.typography-body {
-    letter-spacing: -.033em;
+.typography-body, .typography-body.MuiButton-text.MuiButtonBase-root {
+    font-weight: 400;
     font-size: 14px;
-    line-height: 22px; 
-    font-style: normal;
-    color: #50555c;
 }
 
 .typography-heading {
-    font-size: 24px;
+    padding-left: 4px;
     font-weight: 700;
-    line-height: 30px;
+    font-size: 18px;
+    line-height: 28px;
     color: #2e3033;
 }
 
@@ -124,22 +343,18 @@ body {
     color: #2e3033;
 }
 
-.typography-heading-large {
-    max-width: 90%;
-    text-align: center;
-    font-size: 27px;
-    font-weight: 700;
-    line-height: 1.7;
-    /* color: #1d1d1f; */
+.typography-heading--large {
+    font-size: 20px;
 }
 
 .typography-label {
+
     &,
     &>p,
     .MuiTextField-root>& {
-        font-size: 18px;
+        /* font-size: 18px; */
         font-weight: 700;
-        line-height: 18px;
+        /* line-height: 18px; */
         /* color: #1d1d1f; */
     }
 }
@@ -149,13 +364,11 @@ body {
 }
 
 .typography-note,
+.typography-note.MuiButton-text.MuiButtonBase-root,
 .typography-note>p {
-
-    font-size: 14px;
-    font-weight: 400;
-    /* letter-spacing: 0em; */
-    line-height: 1.7;
-    /* color: #76846B; */
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 300;
 }
 
 .typography-marks {
@@ -192,197 +405,22 @@ body {
     }
 }
 
-/**** General ****/
-.sticky {
-    position: sticky;
-    top: 0;
+/* Color */
+.typography-white {
+    color: rgba(250, 250, 250);
 }
 
-.scroll-target {
-    scroll-margin-top: var(--appbar-height);
-}
-
-/* flex */
-.flex {
-    display: flex;
-    flex-direction: column;
-}
-
-.flex-row {
-    display: flex;
-    flex-direction: row;
-}
-
-.flex-grow {
-    flex-grow: 1;
-}
-
-.flex-end,
-.flex-end.MuiCardActionArea-root {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-end;
-}
-.disabled {
-    opacity: 0.4;
-}
-.fill-window,
-.fill-window.MuiPaper-root {
-    height: 100vh;
-    min-height: var(--min-height__window);
-}
-
-/**** Block ****/
-.width-full {
-    /* width: 100%; */
-    /* height: auto; */
-}
-
-.page {
-    width: 100vw;
-    max-width: 100%;
-    overflow-x: visible;
-}
-
-.block--large {
-    height: 128px;
-    width: 100%
-}
-
-.block--xlarge {
-    height: 144px;
-    width: 100%
-}
-
-.block--with-padding,
-.block--with-padding.MuiPaper-root {
-    padding-top: var(--margin-top);
-    padding-bottom: var(--margin-top);
-    padding-left: var(--margin-x);
-    padding-right: var(--margin-x);
-}
-
-.block--with-padding--small,
-.block--with-padding--small.MuiPaper-root {
-    padding-top: var(--margin-top--small);
-    padding-bottom: var(--margin-top--small);
-    padding-left: var(--margin-x--small);
-    padding-right: var(--margin-x--small);
-}
-
-.block--with-margin,
-.block--with-margin.MuiButton-root {
-    margin-top: var(--margin-top);
-    margin-bottom: var(--margin-top);
-    margin-left: var(--margin-x);
-    margin-right: var(--margin-x);
-}
-
-.block--with-margin--small {
-    margin: var(--margin-x--small);
-}
-
-.block--with-margin-x,
-.block--with-margin-x.MuiButton-root {
-    margin-left: var(--margin-x);
-    margin-right: var(--margin-x);
-}
-
-.block--with-padding-x,
-.block--with-padding-x.MuiButton-root,
-.block--with-padding-x.MuiButtonBase-root {
-    padding-left: var(--margin-x);
-    padding-right: var(--margin-x);
-}
-
-.block--centered {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.block--centered-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.block--full {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-}
-
-.container--center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.block__body {
-
-    &>* {
-        margin-top: var(--margin-top);
-    }
-
-    &>.MuiButton-root {
-        margin-top: 1.0em;
-    }
-
-    &>h2 {
-        margin-top: 1.2em;
-    }
-
-    &>h3 {
-        margin-top: 0.8em;
-    }
-
-    &>h4,
-    &>p {
-        margin-top: 0.8em;
-    }
-
-    &>.typography-label,
-    &>.typography-label_ {
-        margin-top: 0.4em;
-    }
-
-    &>.MuiStack-root {
-        margin-top: 0.8em;
-    }
-
-    &>.body__head,
-    &>.body__head.swiper-slide {
-        margin-top: 0;
+.typography-gray {
+    & * {
+        color: rgb(107, 118, 132);
     }
 }
 
-.body__head {
-    margin-top: 0;
+.typography-white--light {
+    & * {
+        color: rgba(253, 253, 255, 0.75);
+    }
 }
-
-.block--gray {
-    background-color: #F2F4F6;
-}
-
-.floating--bottom {
-    position: fixed;
-    z-index: 100;
-    width: 100%;
-    overflow: hidden;
-    bottom: 0;
-}
-.floating-placeholder--bottom {
-    margin-top: var(--margin-top);
-    margin-bottom: var(--margin-top);
-    visibility: hidden;
-}
-
 
 /**** Components ****/
 
@@ -399,8 +437,10 @@ body {
     height: var(--appbar-height);
 }
 
-.MuiAvatar-root>* {
-    color: inherit;
+.MuiAvatar-root {
+    &>* {
+        color: inherit;
+    }
 }
 
 .MuiAvatar-contained,
@@ -410,18 +450,16 @@ body {
     }
 }
 
+.MuiButtonBase-root {
+    display: block;
+}
+
 .MuiButton-root {
     &.MuiButtonBase-root {
-        font-weight: 700;
-        word-break: keep-all;
-        white-space: pre-line;
 
         &.button--full {
             border-radius: 12px;
-            padding: 12px;            
-            & p {
-                font-weight: 700;
-            }
+            padding: 12px;
         }
     }
 
@@ -431,19 +469,6 @@ body {
         }
     }
 }
-
-.MuiButton-text {
-    &.MuiButtonBase-root {
-        color: inherit;
-        border-radius: 0;
-        line-height: inherit;
-        font-size: inherit;
-        font-weight: inherit;
-        word-break: inherit;
-        white-space: inherit;
-    }
-}
-
 
 .MuiCardActionArea-root {
     height: 100%;
@@ -463,7 +488,7 @@ body {
 
 .MuiListItemAvatar-root {
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
 }
 
 .MuiListItemButton-root.Mui-selected {
@@ -500,6 +525,7 @@ body {
         text-align: center;
     }
 }
+
 .MuiToggleButton-root {
     &.MuiButtonBase-root {
         padding: 0;
@@ -509,12 +535,9 @@ body {
 }
 
 .MuiToolbar-root {
-    height: var(--appbar-height);
+    /* height: var(--appbar-height);
     margin-left: var(--margin-x);
-    margin-right: var(--margin-x);
-}
-
-.MuiToolbar-root {
+    margin-right: var(--margin-x); */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -551,6 +574,13 @@ body {
     position: fixed;
     top: 0;
     background-color: white;
+}
+
+/* ImageCard */
+.ImageCard.MuiCard-root {
+    & * {
+        color: rgba(250, 250, 250);
+    }
 }
 
 /* ProfileImage */
@@ -599,6 +629,7 @@ body {
 .Logo {
     width: auto;
 }
+
 .Logo--small {
     height: 1.2rem;
 }
@@ -617,14 +648,16 @@ body {
         overflow: visible;
         width: 100%;
     }
+}
 
+.carousel__swiper-slide--auto {
     &.swiper-slide {
         width: fit-content;
         height: fit-content;
     }
 }
 
-.carousel--coverflow__swiper {
+.carousel__swiper-slide--coverflow {
 
     &.swiper-slide {
         visibility: hidden;
@@ -661,12 +694,15 @@ body {
 
 /* TopNav */
 .top-nav {
-    z-index: 1000;
     position: fixed;
     top: var(--appbar-height);
-    height: var(--topnav-height);
     width: 100%;
-    overflow: hidden;
+    background-color: white;
+    z-index: 1;
+}
+
+.divider--bottom {
+    bottom: 0px;
 }
 
 .top-nav__placeholder {
@@ -674,14 +710,13 @@ body {
 }
 
 .top-nav__swiper {
-    overflow: visible;
 
     /* &::-webkit-scrollbar {
         display: none;
     } */
 
     &.swiper {
-        height: 100%;
+        height: var(--topnav-height);
     }
 
     &.swiper-slide {
@@ -692,6 +727,12 @@ body {
 }
 
 /* flag */
+.Flag {
+    &.Flag--outlined{
+        outline: 1px gray solid;
+    }
+}
+
 .fi {
     outline-color: rgb(107, 118, 132);
     outline-width: 1px;
@@ -703,7 +744,7 @@ body {
 
 /* ButtonGroup */
 .ButtonGroup--in-body {
-    margin-top: 1.2rem;
+    margin-top: 1em;
 }
 
 /* PlaceHolder */
@@ -726,7 +767,7 @@ body {
     justify-content: center;
 
     &.ToggleLabeledButton__paper--small {
-        border-radius: 16px;
+        border-radius: var(--border-radius--small);
         width: var(--width__profile__content--small);
         height: var(--width__profile__content--small);
     }
@@ -758,7 +799,7 @@ body {
 
 .Label__label-large {
     width: var(--width__profile--large);
-    line-height: 1.4;
+    /* line-height: 1.4; */
     overflow-wrap: anywhere;
     margin-top: 4px;
 }
@@ -820,10 +861,6 @@ body {
 .test__google-map-container {
     width: 100%;
     height: 288px;
-}
-
-.test__instruction {
-    text-align: center;
 }
 
 /* Google Map */

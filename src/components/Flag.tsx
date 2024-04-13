@@ -2,9 +2,10 @@ import getImgSrc, { FORMATSVG } from "../utils/getImgSrc";
 
 interface FlagProps extends React.ImgHTMLAttributes<HTMLImageElement> {
     id: string;
+    outlined?: boolean;
 };
 
-function Flag({ id, ...props }: FlagProps) {
+function Flag({ id, outlined = true, ...props }: FlagProps) {
 
     return (
         <img
@@ -12,7 +13,7 @@ function Flag({ id, ...props }: FlagProps) {
             alt={id}
             width={"16px"}
             height={"12px"}
-            className={`Flag`}
+            className={`Flag ${outlined ? 'Flag--outlined' : ''}`}
             {...props}
         />
     )

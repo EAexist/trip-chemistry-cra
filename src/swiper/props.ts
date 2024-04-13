@@ -47,7 +47,7 @@ export const SWIPERPROPS_HOMECONTENT : SwiperOptions | { className: string } = {
 export const SWIPERPROPS_STEPPER : SwiperOptions | { className: string } = {
     // modules: [ Navigation ],
     slidesPerView: 'auto',
-    spaceBetween: 16,
+    spaceBetween: 12,
 }
 
 export const SWIPERPROPS_CAROUSEL : SwiperOptions | { className: string } = {

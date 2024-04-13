@@ -75,7 +75,7 @@ function InitializeNicknameContent({ }: InitializeNicknameContentProps) {
                         &&
                         <LazyDomAnimation>
                             <m.div {...SLIDEINUPINVIEW} className="page fill-window flex">
-                                <div className='block--with-margin-lg block__body block--centered flex-grow'>
+                                <div className='block--with-margin-lg block__body--large block--centered flex-grow'>
                                     <h3 className='typography-label'>
                                         {`닉네임을 설정 중이에요.\n취소하고 처음으로 돌아갈까요?`}
                                     </h3>

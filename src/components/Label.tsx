@@ -10,7 +10,7 @@ interface LabelProps {
 function Label({ label, labelSize = 'medium', children, isActive = false }: PropsWithChildren<LabelProps>) {
 
     return (
-        <div className={"Label block__body"}>
+        <div className={"Label block__body--large"}>
             <div className="body__head">
             { children }
             </div>

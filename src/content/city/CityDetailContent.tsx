@@ -1,34 +1,33 @@
 /* React */
-import { useState } from "react";
 
 /* React Packages */
-import { ArrowRight, ExpandMore, NavigateBefore, ThumbUp } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionSummary, AppBar, Button, CardContent, Divider, Icon, IconButton, ListItemAvatar, ListItemText, Rating, Stack, Toolbar } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { ArrowRight, NavigateBefore } from "@mui/icons-material";
+import { AppBar, Button, CardContent, IconButton, Stack, Toolbar } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 /* Swiper */
-import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import 'swiper/css/pagination'; /* Page */
 import 'swiper/css/navigation'; /* Page */
+import 'swiper/css/pagination'; /* Page */
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 /* App */
 import { CITY, NATION, TEST } from "../../common/app-const";
-import { SWIPERPROPS_CITYDETAILCONTENT } from "../../swiper/props";
-import FriendAvatar from "../../components/Avatar/FriendAvatar";
+import { useHideAppbar } from "../../components/AppBar/AppBarContext";
 import ImageCard from "../../components/Card/ImageCard";
+import Flag from "../../components/Flag";
 import Logo from "../../components/Logo";
-import { MotionList } from "../../motion/components/MotionList";
-import { MotionListItem } from "../../motion/components/MotionListItem";
 import RoutedMotionPage from "../../motion/components/RoutedMotionPage";
 import PaginationDiv from "../../swiper/components/PaginationDiv";
-import { useHideAppbar } from "../../components/AppBar/AppBarContext";
-import { IProfile } from "../../interfaces/IProfile";
-import { VARIANTS_STAGGER_CHILDREN } from "../../motion/props";
-import { useCityChemistry, useIsChemistryEnabled, useProfileAll } from "../../reducers/chemistryReducer";
+import { SWIPERPROPS_CITYDETAILCONTENT } from "../../swiper/props";
 import { useStrings } from "../../texts";
 import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
-import Flag from "../../components/Flag";
+
+import loadable from "@loadable/component";
+import { useSelector } from "react-redux";
+import useNavigateWithGuestContext from "../../hooks/useNavigateWithGuestContext";
+import { RootState } from "../../store";
+const ChemistryResultAccordion = loadable(() => import( /* webpackChunkName: "ChemistryResultAccordion" */ './ChemistryResultAccordion'));
 
 interface CityDetailContentProps {
     cityClass: keyof typeof TEST.city.subTests;
@@ -37,12 +36,9 @@ interface CityDetailContentProps {
 function CityDetailContent({ cityClass }: CityDetailContentProps) {
 
     /* Hooks */
-    const navigate = useNavigate();
+    const navigate = useNavigateWithGuestContext();
     const { state } = useLocation();
     const isAppBarHidden = useHideAppbar();
-
-    /* States */
-    const [expanded, setExpanded] = useState<boolean>(false);
 
     /* Constants */
     const strings = useStrings().public.contents.test;
@@ -50,33 +46,17 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
 
     /* Event Handlers */
     const handleClose = () => {
-        navigate(-1);
+        console.log(`[CityDetailContent] handleClose`)
+        navigate('../../');
     };
 
-    const handleChange = (event: React.SyntheticEvent, isExpanded: boolean) => {
-        setExpanded(isExpanded);
-    };
-
-    /* Reducers */
-    const isChemistryEnabled = useIsChemistryEnabled();
-    const score = useCityChemistry(cityClass);
-    const answerList = (useProfileAll() as IProfile[]).map(({ id, testAnswer }) =>
-        ({ id: id, answer: testAnswer[cityClass] })
-    ).sort((a, b) => (b.answer as number) - (a.answer as number));
-
-    // useSelector((state: RootState) =>
-    //     isChemistryEnabled
-    //         ? Object.entries(state.chemistry.data.profileList).map(([id, { testAnswer }]) => (
-    //             { id: id, answer: testAnswer[cityClass] }
-    //         )).sort((a, b) => (b.answer as number) - (a.answer as number))
-    //         : []
-    // )
+    const isChemistryDefined = useSelector( (state: RootState) => ( state.chemistry !== undefined ) );
 
     return (
         isAppBarHidden &&
         <RoutedMotionPage>
             <AppBar>
-                <Toolbar className="margin-x">
+                <Toolbar className="block--with-margin-x">
                     <IconButton
                         edge="start"
                         aria-label="close"
@@ -85,7 +65,7 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                         <NavigateBefore />
                     </IconButton>
 
-                    <h5 className="typography-note " style={{ position: "absolute", width: "100%", textAlign: "center" }}>{strings.test.city.title}</h5>
+                    <h5 className="typography-note " style={{ position: "absolute", width: "100%", textAlign: "center", zIndex: -1 }}>{strings.test.city.title}</h5>
                 </Toolbar>
             </AppBar>
             <Toolbar />
@@ -93,61 +73,9 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                 <h2 className="typography-heading">{strings.subTest[cityClass as keyof typeof strings.subTest].title}</h2>
             </div>
             {
-                isChemistryEnabled &&
-                <div className="block--with-margin-x">
-                    <Accordion expanded={expanded} onChange={handleChange}>
-                        <AccordionSummary
-                            expandIcon={
-                                <ExpandMore />
-                            }
-                            aria-controls="scores"
-                            id="scores"
-                            sx={{ padding: 0 }}
-                        >
-                            <Stack justifyContent={'space-between'} style={{ width: "100%" }}>
-                                <Stack>
-                                    <Rating value={score} readOnly precision={0.5} size={"small"} />
-                                    <p>{Math.round(score * 10) / 10}</p>
-                                    {
-                                        (score > 3.4) &&
-                                        <ThumbUp fontSize="inherit" />
-                                    }
-                                </Stack>
-                                <p className="typography-note">
-                                    {
-                                        expanded
-                                            ? "답변 접기"
-                                            : "친구들의 답변 보기"
-                                    }
-                                </p>
-                            </Stack>
-                        </AccordionSummary>
-                        <AccordionDetails sx={{ padding: 0 }}>
-                            {
-                                expanded &&
-                                <MotionList initial={"closed"} animate={"open"} variants={VARIANTS_STAGGER_CHILDREN}>
-                                    {
-                                        answerList.map(({ id, answer }) => (
-                                            <MotionListItem>
-                                                <ListItemAvatar>
-                                                    <FriendAvatar id={id} />
-                                                </ListItemAvatar>
-                                                <ListItemText primary={
-                                                    <Stack>
-                                                        <Rating value={Number(answer)} readOnly precision={0.5} size={"small"} />
-                                                        <p className="typography-note">{strings.test.city.answers[answer as keyof typeof strings.test.city.answers].label}</p>
-                                                    </Stack>
-                                                } />
-                                            </MotionListItem>
-                                        ))
-                                    }
-                                </MotionList>
-                            }
-                        </AccordionDetails>
-                    </Accordion>
-                </div>
+                isChemistryDefined &&
+                <ChemistryResultAccordion cityClass={cityClass} />
             }
-            <Divider variant="middle" />
             <Swiper {...SWIPERPROPS_CITYDETAILCONTENT} initialSlide={state && state.initialIndex ? state.initialIndex : 0} className="">
                 <div slot="container-start" >
                     <PaginationDiv className='pageSwiper-pagination' sx={{ justifyContent: 'center' }} />
@@ -164,12 +92,12 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                                     sx={{ height: "320px" }}
                                 >
                                     <CardContent>
-                                        <Stack className="typography-white">
-                                            <h2 className="typography-heading">{commonStrings.city[cityId as keyof typeof commonStrings.city].name}</h2>
-                                            <h3 className="typography-heading">{cityId}</h3>
+                                        <Stack spacing={0}>
+                                            <h2 className="typography-heading typography-heading--large typography-white">{commonStrings.city[cityId as keyof typeof commonStrings.city].name}</h2>
+                                            <h3 className="typography-heading typography-white">{cityId}</h3>
                                             {
                                                 NATION[CITY[cityId as keyof typeof CITY].nation as keyof typeof NATION].flag
-                                                && <Flag id={CITY[cityId as keyof typeof CITY].nation} />
+                                                && <Flag id={CITY[cityId as keyof typeof CITY].nation} style={{ marginLeft : 8 }} outlined={false} />
                                             }
                                         </Stack>
                                     </CardContent>
@@ -179,7 +107,6 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                                 <div>
                                     <a href={CITY[cityId as keyof typeof CITY].link} target="_blank" rel="noopener noreferrer" className="flex">
                                         <Button variant={"contained"} color="gray" className="button--full" endIcon={<ArrowRight />}>
-                                            {/* <Stack> */}
                                             {
                                                 commonStrings.linkTextList.map((text) => (
                                                     text === "/link" ? commonStrings.linkType[CITY[cityId as keyof typeof CITY].linkType as keyof typeof commonStrings.linkType].name
@@ -188,24 +115,18 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                                                         )
                                                 ))
                                             }
-
-                                            {/* </Stack> */}
                                         </Button>
                                     </a>
                                 </div>
-                                <div>
                                     <Stack>
                                         <p className="typography-note">{commonStrings.reference}{commonStrings.linkType[CITY[cityId as keyof typeof CITY].linkType as keyof typeof commonStrings.linkType].name}</p>
                                         <Logo id={CITY[cityId as keyof typeof CITY].linkType} />
                                     </Stack>
-                                </div>
                                 <div />
                             </div>
                         </SwiperSlide>
                     ))
                 }
-                {/* <NavigationButton navigateTo="prev" position="fixed" className="pageSwiper-prevEl" />
-                    <NavigationButton navigateTo="next" position="fixed" className="pageSwiper-nextEl" /> */}
             </Swiper>
         </RoutedMotionPage>
     );

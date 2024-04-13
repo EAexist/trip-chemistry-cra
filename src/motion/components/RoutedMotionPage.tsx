@@ -33,9 +33,9 @@ const RoutedMotionPage = ({ className, children }: PropsWithChildren<RoutedMotio
 
     return (
         <LazyDomAnimation>
-        <m.div {...motionprops} className={`page ${className}`}>
-            {children}
-        </m.div>
+            <m.div {...motionprops} className={`page ${className}`}>
+                {children}
+            </m.div>
         </LazyDomAnimation>
     )
 }

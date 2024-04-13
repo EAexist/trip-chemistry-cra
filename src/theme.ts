@@ -46,7 +46,6 @@ declare module '@mui/material/styles' {
     }
 }
 
-
 const defaultTheme = createTheme({
     palette: {
         primary: {
@@ -88,7 +87,7 @@ export const theme = createTheme({
     components: {
         MuiAppBar: {
             defaultProps: {
-                elevation: 1,
+                elevation: 0,
                 color: 'secondary'
                 // style: {
                 //     backgroundColor: defaultTheme.palette.secondary.main,
@@ -131,9 +130,20 @@ export const theme = createTheme({
                         backgroundColor: defaultTheme.palette.gray.light
                     },
                 },
+                {
+                    props: { variant: 'text' },
+                    style: {
+                        color: defaultTheme.palette.secondary.contrastText,
+                    },
+                },
             ],
             defaultProps: {
                 disableElevation: true
+            }
+        },
+        MuiCard: {
+            defaultProps: {
+                elevation: 0
             }
         },
         MuiIcon: {

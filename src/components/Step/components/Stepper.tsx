@@ -21,6 +21,7 @@ function Stepper({ className, children, ...props } : PropsWithChildren<StepperPr
 
     /* Side Effects */
     useEffect(() => {
+        console.log(`[Stepper] step=${step}`)
         topNavSwiperRef.current?.swiper.slideTo( step );
     }, [ step ])
 

@@ -1,5 +1,8 @@
-import sharp from 'sharp';
-import fs from 'fs';
+// import sharp from 'sharp';
+// import fs from 'fs';
+
+const sharp = require("sharp");
+const fs = require("fs");
 
 const resize = ( directory, width, height, suffix ) => {
     const path = `./public/images/${directory}`
@@ -17,6 +20,6 @@ const resize = ( directory, width, height, suffix ) => {
 // resize( 'icon', 512, 512, '-large' );
 
 // resize( 'logos', 256, 256, '-small' );
-// resize( 'logos', 256, 256, '-medium' );
+resize( 'icon', 256, 256, '-medium' );
 
-resize( 'test', 480, 480, '-medium' );
+// resize( 'test', 480, 480, '-medium' );

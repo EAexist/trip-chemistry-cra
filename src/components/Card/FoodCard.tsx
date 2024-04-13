@@ -28,7 +28,7 @@ const FoodCard = ({ id, isActive, ...props }: FoodCardProps) => {
             <a href={isActive ? data.link : undefined} target="_blank" rel="noopener noreferrer">
                 <CardActionArea disabled={!isActive}>
                     <CardMedia component={"img"} image={getImgSrc("/food", data.restaurant, FORMATWEBP)} alt={strings.name} height={"160"} />
-                    <CardContent className="block__body">
+                    <CardContent className="block__body--large">
                         <Stack className="body__head">
                             <h3 className="typography-name"> {strings.name}</h3>
                         </Stack>

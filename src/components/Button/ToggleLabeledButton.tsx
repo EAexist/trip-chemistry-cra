@@ -1,6 +1,6 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 
-import { Button, Paper, SxProps, ToggleButtonProps, useTheme } from "@mui/material";
+import { Button, ButtonBase, Paper, SxProps, ToggleButtonProps, useTheme } from "@mui/material";
 import { Theme } from "@emotion/react";
 import Label from "../Label";
 
@@ -13,7 +13,7 @@ interface ToggleLabeledButtonProps extends ToggleButtonProps {
     labelSize? : 'medium' | 'large' | 'xlarge';
 };
 
-const ToggleLabeledButton = ({ label, children, onChange, size ="small", labelSize = 'medium', value, selected, contained = false, sx, paperSx, elevation = 0, className }: PropsWithChildren<ToggleLabeledButtonProps>) => {
+const ToggleLabeledButton = ({ label, children, onChange, size ="medium", labelSize = 'medium', value, selected, contained = false, sx, paperSx, elevation = 0, className }: PropsWithChildren<ToggleLabeledButtonProps>) => {
     
     const [ elevated, setElevated ] = useState(false);
 
@@ -26,8 +26,8 @@ const ToggleLabeledButton = ({ label, children, onChange, size ="small", labelSi
     }, [ selected ])
 
     return (
-    <Button
-        variant="base"
+    <ButtonBase
+        // variant="base"
         onClick={(e) => {
             if (onChange)
                 onChange(e, value);
@@ -35,7 +35,7 @@ const ToggleLabeledButton = ({ label, children, onChange, size ="small", labelSi
         onMouseEnter={ selected ? undefined : ()=>setElevated(true)}
         onMouseLeave={ selected ? undefined : ()=>setElevated(false)}
         className={className}
-        sx={sx}
+        sx={{...sx, height: "fit-content" }}
     >
         <Label
             label={label}
@@ -54,10 +54,11 @@ const ToggleLabeledButton = ({ label, children, onChange, size ="small", labelSi
                         color: theme.palette.primary.contrastText
                     }
                     :{
+                        backgroundColor: theme.palette.secondary.dark,
                     }
                     :
                     {
-                        // backgroundColor: theme.palette.secondary.dark,
+                        backgroundColor: theme.palette.secondary.dark,
                         ...paperSx
                     })
                 }}
@@ -66,6 +67,6 @@ const ToggleLabeledButton = ({ label, children, onChange, size ="small", labelSi
                 {children}
             </Paper>   
         </Label>
-    </Button>
+    </ButtonBase>
 )}
 export default ToggleLabeledButton;

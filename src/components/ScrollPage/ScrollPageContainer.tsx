@@ -41,27 +41,27 @@ const ScrollPageContainer = ({ onPageChange, pages, children }: PropsWithChildre
     useEffect(() => {
         console.log(`[ScrollPageContainer]\n\tpage=${page}`);
         /* onPageChange Event Handlers from props */
-        if (page) {
+        if ( page !== undefined ) {
             onPageChange && onPageChange(page);
         }
-    }, [page, onPageChange, pathname ])
+    }, [ page, onPageChange, pathname ])
 
     return (
         <div ref={ref} className="ScrollPageContainer">
-            { children }
-            {/* {
+            {/* { children } */}
+            {
                 Array.from({ length: pages }, (value, index) => (
-                    <Step key={index} index={index} className="fill-window" style={{ visibility: "hidden" }}/>
+                    <div className="fill-window" style={{ visibility: "hidden" }}/>
                 ))
             }
-            <div className="fill-window" />
+            {/* <div className="fill-window" /> */}
             <div className="ScrollPageContainer__viewport-container">
                 <div ref={pageRef} className="ScrollPageContainer__viewport fill-window">
                     <PageContext.Provider value={{ activePage: page }}>
                         {children}
                     </PageContext.Provider>
                 </div>
-            </div> */}
+            </div>
         </div>
     );
 }

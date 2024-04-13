@@ -16,7 +16,7 @@ import { asyncKakaoLogout, useUserProfile } from "../../reducers/authReducer";
 import { AppDispatch } from "../../store";
 import { AuthLoadRequiredContent } from "../LoadRequiredContent";
 
-interface UserContentProps {};
+interface UserContentProps { };
 
 function UserContent({ }: UserContentProps) {
 
@@ -39,11 +39,11 @@ function UserContent({ }: UserContentProps) {
     }
 
     const handleLogoutSuccess = () => {
-        window.localStorage.setItem("kakaoAccessToken", "" );
+        window.localStorage.setItem("kakaoAccessToken", "");
     }
 
     const handleEdit = () => {
-        navigate('setNickname', { state: { navigateDirection: 'next' }});
+        navigate('setNickname', { state: { navigateDirection: 'next' } });
     }
 
 
@@ -51,58 +51,60 @@ function UserContent({ }: UserContentProps) {
         <AuthLoadRequiredContent
             handleSuccess={handleLogoutSuccess}
         >
-        <RoutedMotionPage className="flex fill-window">
-            <Toolbar />
-            <div className='flex-grow block--centered block__body'>
-                <div>
-                <ButtonBase onClick={handleClickAvatar}>
-                    <UserAvatar sx={{ height: "128px", width: "128px" }} showLabel={false} />
-                </ButtonBase>
-                <Toolbar>
-                    <IconButton
-                        edge="start"
-                        onClick={handleEdit}
-                        disabled
-                    >
-                        <Icon />
-                    </IconButton>
-                    <p className="typography-heading">{nickname}</p>
-                    <IconButton
-                        edge="end"
-                        aria-label="edit"
-                        onClick={handleEdit}
-                    >
-                        <Edit />
-                    </IconButton>
-                </Toolbar>
+            <RoutedMotionPage className="flex fill-window">
+                <Toolbar />
+                <div className='flex-grow block--centered block__body--large'>
+                    <div>
+                        <ButtonBase onClick={handleClickAvatar}>
+                            <UserAvatar sx={{ height: "128px", width: "128px" }} showLabel={false} />
+                        </ButtonBase>
+                        <Toolbar>
+                            <IconButton
+                                edge="start"
+                                onClick={handleEdit}
+                                disabled
+                            >
+                                <Icon />
+                            </IconButton>
+                            {/* <div className="block--center"> */}
+                            <p className="typography-heading  typography-heading--large">{nickname}</p>
+                            {/* </div> */}
+                            <IconButton
+                                edge="end"
+                                aria-label="edit"
+                                onClick={handleEdit}
+                            >
+                                <Edit />
+                            </IconButton>
+                        </Toolbar>
+                    </div>
+                    <div>
+                        <Stack direction={'column'}>
+                            {
+                                (AuthProvider[authProvider] === AuthProvider.GUEST)
+                                    ?
+                                    <KakaoLoginButton />
+                                    :
+                                    <Button onClick={handleLogout} variant="outlined">
+                                        로그아웃
+                                    </Button>
+                            }
+                        </Stack>
+                    </div>
                 </div>
-                <div>
-                    <Stack direction={'column'}>
-                        {
-                            (AuthProvider[authProvider] === AuthProvider.GUEST)
-                                ?
-                                <KakaoLoginButton />
-                                :
-                                <Button onClick={handleLogout} variant="outlined">
-                                    로그아웃
-                                </Button>
-                        }
-                    </Stack>
-                </div>
-                        {
-                            (AuthProvider[authProvider] === AuthProvider.GUEST)
-                            &&
-                            <div>
-                                <p className="typography-note">
-                                    <Help fontSize="inherit"/>
-                                    {
-                                        "카카오 로그인을 이용하면\n링크를 잃어버려도 내 테스트 결과를 안전하게 불러올 수 있어요."
-                                    }
-                                </p>
-                            </div>
-                        }
-            </div>
-        </RoutedMotionPage>
+                {
+                    (AuthProvider[authProvider] === AuthProvider.GUEST)
+                    &&
+                    <div className="block--with-margin block--with-margin--large block--centered">
+                        <p className="typography-note block--width-large">
+                            <Help fontSize="inherit" />
+                            {
+                                "카카오 로그인을 이용하면\n링크를 잃어버려도 내 테스트 결과를 안전하게 불러올 수 있어요."
+                            }
+                        </p>
+                    </div>
+                }
+            </RoutedMotionPage>
         </AuthLoadRequiredContent>
     );
 }

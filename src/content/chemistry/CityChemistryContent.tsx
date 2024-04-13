@@ -29,7 +29,7 @@ function CityChemistryContent({ cityClass }: CityChemistryContentProps) {
     const score = useCityChemistry(cityClass);
 
     const handleClick = () => {
-        navigate(`../city/${cityClass}`);
+        navigate(`city/${cityClass}`);
     }
 
     useEffect(() => {
@@ -37,51 +37,53 @@ function CityChemistryContent({ cityClass }: CityChemistryContentProps) {
     }, [cityClass])
 
     return (
-        <div className="block__body">
-                <ImageCard
-                    src={getImgSrc("/city", TEST.city.subTests[cityClass].examples[0], FORMATWEBP)}
-                    title={cityClass}
-                    gradient="bottom"
-                    className="block--xlarge"
-                >
-                    <CardActionArea onClick={handleClick} className="flex-end">
+        // <div className="block__body">
+            <ImageCard
+                src={getImgSrc("/city", TEST.city.subTests[cityClass].examples[0], FORMATWEBP)}
+                title={cityClass}
+                gradient="bottom"
+                className="block--xlarge"
+            >
+                <CardActionArea onClick={handleClick} className="flex-end">
                     <CardContent>
-                        <Stack justifyContent={"space-between"} className="typography-white">
-                            <Stack>
-                                <h2 className="typography-label">{testStrings.subTest[cityClass as keyof typeof testStrings.subTest].title}</h2>
-                            </Stack>
-                            <Stack>
-                                <Rating value={score} readOnly precision={0.5} size={"small"} emptyIcon={<StarBorder fontSize="inherit" sx={{ color: "white" }} />} />
+                        <Stack justifyContent={"space-between"} >
+                            <h2 className="typography-heading">{testStrings.subTest[cityClass as keyof typeof testStrings.subTest].title}</h2>
+                            <Stack spacing={0}>
+                                <Rating value={score} readOnly precision={0.5} emptyIcon={<StarBorder fontSize="inherit" />} sx={{ fontSize: "inherit" }} />
                                 <p>{Math.round(score * 10) / 10}</p>
                                 {
                                     (score > 3.4) &&
-                                    <ThumbUp fontSize="inherit" sx={{ color: "white" }} />
+                                    <ThumbUp fontSize="inherit" sx={{ marginLeft : "8px" }} />
                                 }
                             </Stack>
                         </Stack>
                     </CardContent>
-                    </CardActionArea>
-                </ImageCard>
-            <Stack flexWrap={"wrap"} spacing={2} divider={<Divider variant="middle" orientation="vertical" flexItem />}>
-                {
-                    Object.entries(valueToProfileList).reverse().map(([value, idList], index) => (
-                        <Stack sx={{ flexWrap: "wrap" }}>
-                            <div className="block--centered">
-                                <Rating value={Number(value)} readOnly max={Number(value)} sx={{ fontSize: "14px" }}/>
-                                <p className="typography-note">{testStrings.test.city.answers[Number(value) as keyof typeof testStrings.test.city.answers].label}</p>
-                            </div>
-                            <Stack spacing={0.75}>
-                                {
-                                    idList.map((id) => (
-                                        <FriendAvatar id={id} />
-                                    ))
-                                }
-                            </Stack>
-                        </Stack>
-                    ))
-                }
-            </Stack>
-        </div>
+                </CardActionArea>
+            </ImageCard>
+            // <Stack
+            //     flexWrap={"wrap"}
+            //     spacing={0}
+            //     gap={1}
+            // >
+            //     {
+            //         Object.entries(valueToProfileList).reverse().map(([value, idList], index) => (
+            //             <Stack sx={{ flexWrap: "wrap" }}>
+            //                 <div className="block--centered">
+            //                     <Rating value={Number(value)} readOnly max={Number(value)} sx={{ fontSize: "14px" }} />
+            //                     <p className="typography-note">{testStrings.test.city.answers[Number(value) as keyof typeof testStrings.test.city.answers].label}</p>
+            //                 </div>
+            //                 <Stack spacing={-0.5}>
+            //                     {
+            //                         idList.map((id) => (
+            //                             <FriendAvatar id={id} />
+            //                         ))
+            //                     }
+            //                 </Stack>
+            //             </Stack>
+            //         ))
+            //     }
+            // </Stack>
+        // </div>
     );
 }
 export default CityChemistryContent;

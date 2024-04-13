@@ -58,7 +58,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
     /* States */
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
     const [isLinkCopiedAlertOpen, setIsLinkCopiedAlertOpen] = useState(false);
-    const [isInviteOptionsOpen, setIsInviteOptionsOpen] = useState(false);
+    // const [isInviteOptionsOpen, setIsInviteOptionsOpen] = useState(false);
     // const [characterSectionActiveIProfileId, setCharacterSectionActiveIProfileId] = useState<IProfileId | undefined>(userId);
 
     /* Event Handlers */
@@ -82,9 +82,9 @@ function ChemistryContent({ }: ChemistryContentProps) {
         setIsShareModalOpen(true);
     }
 
-    const handleStartSearch = () => {
-        navigate('searchAndInviteFriend', { state: { navigateDirection: 'next' } });
-    }
+    // const handleStartSearch = () => {
+    //     navigate('searchAndInviteFriend', { state: { navigateDirection: 'next' } });
+    // }
 
     const handleCloseShareModal = () => {
         setIsShareModalOpen(false);
@@ -147,11 +147,11 @@ function ChemistryContent({ }: ChemistryContentProps) {
     }, [chemistryLoadStatus, dispatch, setChemistryLoadStatus]);
 
 
-    useEffect(() => {
-        if (isShareModalOpen === false) {
-            setIsInviteOptionsOpen(false);
-        }
-    }, [isShareModalOpen])
+    // useEffect(() => {
+    //     if (isShareModalOpen === false) {
+    //         setIsInviteOptionsOpen(false);
+    //     }
+    // }, [isShareModalOpen])
 
     /* Motion */
     // const { scrollY } = useScroll();
@@ -185,18 +185,17 @@ function ChemistryContent({ }: ChemistryContentProps) {
                 image={"/static/images/meta/social-meta-iamge.jpg"}
             />
             <Toolbar />
-            <RoutedMotionPage className="page min-fill-window flex block--gray block__body">
+            <RoutedMotionPage className="page min-fill-window flex block--gray block__body--large">
                 <SectionPaper className="block__body body__head">
                     <div className="body__head typography-note">
                         {
                             isMember &&
-                            <Button onClick={handleClickNavigateBefore} sx={{ padding: 0 }} startIcon={<NavigateBefore />}>
+                            <Button onClick={handleClickNavigateBefore} sx={{ padding: 0 }} startIcon={<NavigateBefore />} className="typography-note">
                                 여행 목록
                             </Button>
                         }
                     </div>
                     <h2 className="typography-heading" style={{ marginTop: '0.5rem' }}>{title}</h2>
-                    <div>
                         <List>
                             {
                                 Object.values(profileList).map(({ id, nickname, testAnswer }) =>
@@ -205,28 +204,36 @@ function ChemistryContent({ }: ChemistryContentProps) {
                                         className={`${(testAnswer === null) && 'disabled'}`}
                                         secondaryAction={
                                             (testAnswer === null) &&
-                                            <Stack>
-                                                <Error />
-                                                <p className='typography-note'>테스트 기다리는 중</p>
+                                            <Stack className='typography-note' spacing={0} >
+                                                <Error sx={{ fontSize: 18 }}/>
+                                                <p >테스트 기다리는 중</p>
                                             </Stack>
                                         }
                                     >
                                         <ListItemAvatar>
                                             <FriendAvatar id={id} showLabel={false} />
                                         </ListItemAvatar>
-                                        <ListItemText primary={nickname} />
+                                        <ListItemText primary={nickname} className="typography-note" />
                                     </ListItem>
                                 )
                             }
                         </List>
-                    </div>
-                    <div>
                         {
                             isMember
                                 ?
                                 (
                                     <LazyDomAnimation>
-                                        <m.div>
+                                        <m.div className="flex">
+                                            <Button
+                                                onClick={handleStartShare}
+                                                startIcon={<GroupAdd />}
+                                                variant="outlined"
+                                                className="button--full"
+                                            >
+                                                친구 초대하기
+                                            </Button>
+                                        </m.div>
+                                        {/* <m.div>
                                             {
                                                 isInviteOptionsOpen
                                                     ?
@@ -242,7 +249,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                                                                     {
                                                                         onClick: handleStartSearch,
                                                                         icon: 'person_search',
-                                                                        label: '소셜 로그인 회원 검색'
+                                                                        label: '로그인 계정 검색'
                                                                     },
                                                                 ].map(({ onClick, icon, label }) => (
                                                                     <Grid item xs={6} display={"flex"} flexDirection={'column'}>
@@ -272,7 +279,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                                                         </Button>
                                                     </m.div>
                                             }
-                                        </m.div>
+                                        </m.div> */}
                                     </LazyDomAnimation>
                                 )
                                 :
@@ -285,7 +292,6 @@ function ChemistryContent({ }: ChemistryContentProps) {
                                     참여하기
                                 </Button>
                         }
-                    </div>
                 </SectionPaper>
                 {
                     isChemistryEnabled
@@ -310,7 +316,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                 }
                 {
                     isMember && !hasAnsweredTest &&
-                    <div className="placeholder" style={{ marginTop: 0 }}>
+                    <div className="block--white" style={{ marginTop: 0 }}>
                         <div className="placeholder--button--full block--with-margin" />
                     </div>
                 }

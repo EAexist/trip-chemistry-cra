@@ -28,12 +28,13 @@ const FoodImageCard = ({ id, isActive, ...props }: FoodImageCardProps) => {
     return (
         <a href={isActive ? data.link : undefined} target="_blank" rel="noopener noreferrer">
             <ButtonBase className="block--full" disabled={!isActive}>
-                <ImageCard src={getImgSrc("/food", data.restaurant, FORMATWEBP)} title={strings.name} sx={{ width: "196px", height: "196px", borderRadius: "12px" }} />
-                <div className="block__body block--centered" style={isActive ? {} : { position: 'absolute', top: '100%', opacity: 0.5 }}>
-                    <h3 className="typography-name"> {strings.name}</h3>
+            <div className="block__body">
+                <ImageCard src={getImgSrc("/food", data.restaurant, FORMATWEBP)} title={strings.name} sx={{ width: "196px", height: "196px", borderRadius: "12px" }} className="body__head" />
+                <div style={{ opacity: isActive ? 1 : 0.5, width: "100%", textAlign: "start" }} className="block__body">
+                    <h3 className="typography-label body__head">{strings.name}</h3>
                     {
                         isActive &&
-                        <Stack className="typography--profile-label">
+                        <Stack className="typography-note" spacing={0.25}>
                             <p> {strings.restaurantName}</p>
                             <Divider orientation="vertical" variant="middle" flexItem/>
                             <p> {cityName}</p>
@@ -43,6 +44,7 @@ const FoodImageCard = ({ id, isActive, ...props }: FoodImageCardProps) => {
                             }
                         </Stack>
                     }
+                </div>
                 </div>
             </ButtonBase>
         </a>

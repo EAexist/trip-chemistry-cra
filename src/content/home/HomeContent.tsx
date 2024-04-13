@@ -75,7 +75,7 @@ function HomeContent({ }: HomeContentProps) {
                 {(strings.sections as { title: string, body: string }[]).map(({ title, body }, index) => (
                     <SwiperSlide key={title} style={{ overflowY: 'visible', display: 'flex', flexDirection: 'column' }}>
                         <Toolbar />
-                        <div className="block--with-margin-x block__body flex-grow flex" style={{ justifyContent: "end" }}>
+                        <div className="block--with-margin-x block__body--large flex-grow flex" style={{ justifyContent: "end" }}>
                             <h3 className="typography-heading">{title}</h3>
                             <p className="">{body}</p>
                         </div>
@@ -85,7 +85,7 @@ function HomeContent({ }: HomeContentProps) {
                     </SwiperSlide>
                 ))}
                 <div slot="container-end">
-                    <div className="block--with-margin-x block__body">
+                    <div className="block--with-margin-x block__body--large">
                         <Stack>
                             {
                                 swiper &&

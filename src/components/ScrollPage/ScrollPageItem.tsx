@@ -21,7 +21,7 @@ const ScrollPageItem = ({ page, children, className }: PropsWithChildren<ScrollP
     const pageRef = useRef<HTMLDivElement>(null);
 
     return (
-        // (activePage === page) &&
+        (activePage === page) &&
         <LazyDomAnimation>
             <m.div
                 ref={pageRef}
