@@ -26,7 +26,16 @@ export const VARIANTS_FADEIN: Variants = {
             duration: 0.25,
         }
     },
-    visible: (delay = 0) => ({
+    hidden_delay: ( delay = 0 ) => ({
+        opacity: 0,
+        transition: {
+            stiffness: 1000,
+            ease: "easeInOut",
+            duration: 0.5,
+            delay : delay
+        },
+    }),
+    visible: ( delay = 0 ) => ({
         opacity: 1,
         transition: {
             stiffness: 1000,
@@ -36,6 +45,35 @@ export const VARIANTS_FADEIN: Variants = {
         },
     })
 };
+
+
+export const VARIANTS_FADEOUT: Variants = {
+    hidden: ( delay = 0 ) => ({
+        opacity: 0,
+        transition: {
+            stiffness: 1000,
+            ease: "easeInOut",
+            duration: 0.5,
+            delay : delay
+        },
+    }),
+    visible: {
+        opacity: 1,
+        transition: {
+            stiffness: 1000,
+            ease: "easeInOut",
+            duration: 0.5,
+        },
+    }
+};
+
+
+export const FADEOUT : MotionProps = {
+    initial: "visible",
+    exit: "hidden",
+    variants: VARIANTS_FADEOUT,
+};
+
 
 export const FADEIN : MotionProps = {
     initial: "hidden",

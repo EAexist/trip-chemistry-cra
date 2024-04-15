@@ -33,7 +33,6 @@ function StepCheckpointContextProvider({ children }: PropsWithChildren) {
 /**** Custom Hooks ****/
 const useStepCheckpoint = () => useContext( StepCheckpointContext );
 
-
 export const useScrollToCheckpoint = () => {
 
     const { stepCheckpointList } = useContext( StepCheckpointContext );

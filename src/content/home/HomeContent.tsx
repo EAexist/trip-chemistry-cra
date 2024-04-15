@@ -33,7 +33,7 @@ function HomeContent({ }: HomeContentProps) {
     const navigate = useNavigateWithGuestContext();
 
     /* States */
-    const [ showFloatingButton ] = useState<boolean>(true);
+    const [showFloatingButton] = useState<boolean>(true);
     const [swiper, setSwiper] = useState<SwiperType>();
 
     /* Reducers */
@@ -45,17 +45,17 @@ function HomeContent({ }: HomeContentProps) {
 
     /* Swiper */
     const SWIPERPROPS_HOMECONTENT: SwiperOptions | { className: string } = {
-        modules: [ Pagination, Autoplay ],
+        modules: [Pagination, Autoplay],
         loop: true,
         // rewind: true,
         speed: SWIPER_SPEED,
         slidesPerView: 1,
         pagination: {
             clickable: true,
-            el: '.pageSwiper-pagination', 
+            el: '.pageSwiper-pagination',
         },
         // autoHeight: true,
-        autoplay : {
+        autoplay: {
             delay: AUTOPLAY_DELAY,
             disableOnInteraction: false,
         }
@@ -75,7 +75,7 @@ function HomeContent({ }: HomeContentProps) {
                 {(strings.sections as { title: string, body: string }[]).map(({ title, body }, index) => (
                     <SwiperSlide key={title} style={{ overflowY: 'visible', display: 'flex', flexDirection: 'column' }}>
                         <Toolbar />
-                        <div className="block--with-margin-x block__body--large flex-grow flex" style={{ justifyContent: "end" }}>
+                        <div className="block--with-margin-x block__body flex-grow flex" style={{ justifyContent: "end" }}>
                             <h3 className="typography-heading">{title}</h3>
                             <p className="">{body}</p>
                         </div>
@@ -86,21 +86,19 @@ function HomeContent({ }: HomeContentProps) {
                 ))}
                 <div slot="container-end">
                     <div className="block--with-margin-x block__body--large">
-                        <Stack>
+                        <Stack spacing={2}>
                             {
                                 swiper &&
                                 <SwiperAutoplayProgress swiper={swiper} />
                             }
                             <PaginationDiv className='pageSwiper-pagination pagination__bullets' />
-                            <div>
-                            </div>
                         </Stack>
-                    </div>
-                    <div className="floating-placeholder--bottom" style={{ visibility: 'hidden' }}>
-                        <div className="block--with-margin-x flex">
-                            <Button>
-                                {strings.startButton}
-                            </Button>
+                        <div className="floating-placeholder--bottom" style={{ visibility: 'hidden' }}>
+                            <div className="block--with-margin-x flex">
+                                <Button>
+                                    {strings.startButton}
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>

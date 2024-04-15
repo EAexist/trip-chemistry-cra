@@ -47,7 +47,7 @@ export const SWIPERPROPS_HOMECONTENT : SwiperOptions | { className: string } = {
 export const SWIPERPROPS_STEPPER : SwiperOptions | { className: string } = {
     // modules: [ Navigation ],
     slidesPerView: 'auto',
-    spaceBetween: 12,
+    spaceBetween: 16,
 }
 
 export const SWIPERPROPS_CAROUSEL : SwiperOptions | { className: string } = {
@@ -64,9 +64,10 @@ export const SWIPERPROPS_FOODCARDCAROUSEL : SwiperOptions | { className: string 
     effect: 'coverflow',
     coverflowEffect:{
         rotate: 0,
-        scale: 0.9,
-        depth: 350,
-        stretch: -16,
+        scale: 0.8,
+        slideShadows: false,
+        // depth: 350,
+        // stretch: -16,
     },
     // slidesPerView: 3,
     slidesPerView: 'auto',

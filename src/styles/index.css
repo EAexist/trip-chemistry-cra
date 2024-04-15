@@ -78,7 +78,7 @@ button {
     word-break: keep-all;
     margin: 0;
     white-space: pre-line;
-    padding: 0 4px;
+    /* padding: 0 4px; */
 }
 
 /**** General ****/
@@ -191,7 +191,7 @@ button {
 }
 
 .block--with-margin-x,
-.block--with-margin-x.MuiButton-root .block--with-margin-x.swiper {
+.block--with-margin-x.MuiButton-root, .block--with-margin-x.MuiList-root, .block--with-margin-x.swiper {
     margin-left: var(--margin-x);
     margin-right: var(--margin-x);
 }
@@ -639,7 +639,7 @@ button {
 }
 
 .Logo--large {
-    height: 2rem;
+    height: 2.5rem;
 }
 
 /* Carousel */

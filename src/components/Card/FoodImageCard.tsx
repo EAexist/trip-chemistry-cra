@@ -28,23 +28,23 @@ const FoodImageCard = ({ id, isActive, ...props }: FoodImageCardProps) => {
     return (
         <a href={isActive ? data.link : undefined} target="_blank" rel="noopener noreferrer">
             <ButtonBase className="block--full" disabled={!isActive}>
-            <div className="block__body">
-                <ImageCard src={getImgSrc("/food", data.restaurant, FORMATWEBP)} title={strings.name} sx={{ width: "196px", height: "196px", borderRadius: "12px" }} className="body__head" />
-                <div style={{ opacity: isActive ? 1 : 0.5, width: "100%", textAlign: "start" }} className="block__body">
-                    <h3 className="typography-label body__head">{strings.name}</h3>
+                <div className="block__body" style={{ opacity: isActive ? 1 : 0.5 }}>
+                    <ImageCard src={getImgSrc("/food", data.restaurant, FORMATWEBP)} title={strings.name} sx={{ width: "196px", height: "196px", borderRadius: "12px" }} className="body__head" />
                     {
                         isActive &&
-                        <Stack className="typography-note" spacing={0.25}>
-                            <p> {strings.restaurantName}</p>
-                            <Divider orientation="vertical" variant="middle" flexItem/>
-                            <p> {cityName}</p>
-                            {
-                                NATION[nationId].flag
-                                && <Flag id={nationId} />
-                            }
-                        </Stack>
+                        <div style={{ width: "100%", textAlign: "start" }} className="block__body">
+                            <h3 className="typography-label body__head">{strings.name}</h3>
+                            <Stack className="typography-note" spacing={0.5}>
+                                <p> {strings.restaurantName}</p>
+                                <Divider orientation="vertical" variant="middle" flexItem />
+                                <p> {cityName}</p>
+                                {
+                                    NATION[nationId].flag
+                                    && <Flag id={nationId} />
+                                }
+                            </Stack>
+                        </div>
                     }
-                </div>
                 </div>
             </ButtonBase>
         </a>

@@ -51,7 +51,7 @@ const ScrollPageContainer = ({ onPageChange, pages, children }: PropsWithChildre
             {/* { children } */}
             {
                 Array.from({ length: pages }, (value, index) => (
-                    <div className="fill-window" style={{ visibility: "hidden" }}/>
+                    <Step index={index} className="fill-window" style={{ visibility: "hidden" }}/>
                 ))
             }
             {/* <div className="fill-window" /> */}

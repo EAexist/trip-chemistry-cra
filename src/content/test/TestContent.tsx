@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from "react";
 
 /* React Packages */
 
-import { ExpandMore, NavigateNext } from "@mui/icons-material";
-import { Button, ButtonBase, Card, CardContent, CardMedia, Divider, List, ListItem, ListItemButton, ListItemText, Stack, Toolbar, Tooltip, useTheme } from "@mui/material";
+import { ArrowRight, ExpandMore, NavigateNext, RamenDining } from "@mui/icons-material";
+import { Box, Button, ButtonBase, Card, CardContent, CardMedia, Divider, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, ListSubheader, Stack, Toolbar, Tooltip, useTheme } from "@mui/material";
 import { AnimatePresence, m, useMotionValueEvent, useScroll } from "framer-motion";
 import { useSelector } from "react-redux";
 import LazyDomAnimation from "../../motion/LazyDomAnimation";
@@ -39,7 +39,7 @@ import Stepper from "../../components/Step/components/Stepper";
 import withReducer from "../../hocs/withReducer";
 import useNavigateWithGuestContext from "../../hooks/useNavigateWithGuestContext";
 import { ITestName } from "../../interfaces/ITestAnswer";
-import { FADEIN } from "../../motion/props";
+import { FADEIN, FADEOUT } from "../../motion/props";
 import { useGetProfile } from "../../reducers/authReducer";
 import testAnswerReducer, { NumericTestName, SetTestName, useIsAllTestAnswered, useSubmitAnswer, useTestAnswerStatus } from "../../reducers/testAnswerReducer";
 import { SWIPERPROPS_CAROUSEL, SWIPERPROPS_FOODCARDCAROUSEL } from "../../swiper/props";
@@ -79,7 +79,7 @@ function TestContent({ }: TestContentProps) {
     const foodCarouselSwiperRef = useRef<SwiperRef>(null);
     const [scheduleExampleMap, setScheduleExampleMap] = useState<google.maps.Map | null>();
     const [isConfirmTooltipOpen, setIsConfirmTooltipOpen] = useState(false);
-    const [ step, setStep ] = useState(0);
+    const [step, setStep] = useState(0);
     const [showScrollDownIcon, setShowScrollDownIcon] = useState(true);
     const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
 
@@ -118,13 +118,6 @@ function TestContent({ }: TestContentProps) {
     // }
 
     /* Side Effects */
-    // useEffect(()=>{
-    //     const newRootReducer = combineReducers({
-    //         ...defaultReudcer,
-    //         testAnswer: testAnswerReducer
-    //       })          
-    //       store.replaceReducer(newRootReducer)
-    // }, [])
 
     /* Test Answer Side Effects */
     useEffect(() => {
@@ -301,55 +294,53 @@ function TestContent({ }: TestContentProps) {
                                         <TestSection >
                                             {/* https://codesandbox.io/p/sandbox/6gw7p4?file=/src/App.jsx */}
                                             <div className="flex-grow block--centered">
-                                                <Swiper {...SWIPERPROPS_FOODCARDCAROUSEL} className="carousel__swiper modal__container" ref={foodCarouselSwiperRef} style={{ marginBottom : "48px" }}>
+                                                <Swiper {...SWIPERPROPS_FOODCARDCAROUSEL} className="carousel__swiper modal__container" ref={foodCarouselSwiperRef}>
                                                     <TestInstruction testName="food" showBackdrop={true} className="block--centered" />
                                                     {
                                                         Object.values(TEST.food.examples).map((id, index) => (
-                                                            <SwiperSlide key={id} className="carousel__swiper-slide--coverflow" style={{ width: "196px", height: "196px", borderRadius: "12px" }}>
-                                                                {({ isActive }) => (
-                                                                    id === "more"
-                                                                        ? (
-                                                                            <AnimatePresence mode={"wait"} initial={false}>
-                                                                                {
-                                                                                    isActive
-                                                                                        ? <m.div key={"summary"} {...{ ...FADEIN, exit: "hidden" }} style={{ width: "260px", height: "240px" }} className="block--centered block--with-padding block--with-padding--large">
-                                                                                            <div className="block-with-margin-x">
-                                                                                                <p>더 많은 식당 찾아보기</p>
+                                                            // <SwiperSlide key={id} className="carousel__swiper-slide--coverflow" style={{ width: "196px", height: "196px", borderRadius: "12px" }}>
+                                                            <SwiperSlide key={id} className="carousel__swiper-slide--coverflow" style={{ width: "fit-content" }}>
+                                                                {({ isActive }) => {
+                                                                    return (
+                                                                        id === "more"
+                                                                            ? (
+                                                                                isActive ?
+                                                                                    <m.div style={{ width: isActive ? "100vw" : "auto" }} layout layoutId="box" >
+                                                                                        <Box sx={{ borderRadius: "12px", bgcolor: 'gray.light', ...isActive ? {} : { width: "196px", height: "196px" } }} className={`block--centered block--with-padding-x ${isActive ? "block--with-margin-x" : ""}`}>
+                                                                                            {/* <AnimatePresence mode={"wait"} initial={false}> */}
                                                                                                 <List>
+                                                                                                    <ListSubheader sx={{ textAlign: "start", bgcolor: 'transparent' }}>더 많은 식당 찾아보기</ListSubheader>
                                                                                                     {
                                                                                                         TEST.food.more.map((source) => (
-                                                                                                            <ListItem key={source}>
-                                                                                                                <a href={LINK[source as keyof typeof LINK].link} target="_blank" rel="noopener noreferrer">
-                                                                                                                    <ListItemButton >
-                                                                                                                        <ListItemText
-                                                                                                                            primary={
-                                                                                                                                <Stack>
-                                                                                                                                    <Logo id={source} size="small" />
-                                                                                                                                    <p>{commonStrings.linkType[source as keyof typeof commonStrings.linkType].name}</p>
-                                                                                                                                </Stack>
-                                                                                                                            }
-                                                                                                                            secondary={
-                                                                                                                                commonStrings.linkType[source as keyof typeof commonStrings.linkType].body
-                                                                                                                            }
-                                                                                                                        />
-                                                                                                                    </ListItemButton>
-                                                                                                                </a>
-                                                                                                            </ListItem>
+                                                                                                            <ListItemButton disableGutters href={LINK[source as keyof typeof LINK].link} key={source} style={{ padding: 0 }}>
+                                                                                                                <ListItemAvatar>
+                                                                                                                    <Logo id={source} size="large" />
+                                                                                                                </ListItemAvatar>
+                                                                                                                <ListItemText
+                                                                                                                    primary={
+                                                                                                                        <h3 className="typography-label">{commonStrings.linkType[source as keyof typeof commonStrings.linkType].name}</h3>
+                                                                                                                    }
+                                                                                                                    secondary={
+                                                                                                                        <p className="">{commonStrings.linkType[source as keyof typeof commonStrings.linkType].body}</p>
+                                                                                                                    }
+                                                                                                                />
+                                                                                                            </ListItemButton>
                                                                                                         ))
                                                                                                     }
                                                                                                 </List>
-                                                                                            </div>
-                                                                                        </m.div>
-                                                                                        : <m.div key={"detail"} {...{ ...FADEIN, exit: "hidden" }} style={{ width: "200px", height: "240px", position: "absolute", opacity: 0.5 }} className="block--centered">
-                                                                                            <p>
-                                                                                                {`더 많은 식당\n찾아보기`}
-                                                                                            </p>
-                                                                                        </m.div>
-                                                                                }
-                                                                            </AnimatePresence>
-                                                                        )
-                                                                        : <FoodImageCard id={id} isActive={isActive} />
-                                                                )}
+                                                                                            {/* </AnimatePresence> */}
+                                                                                        </Box>
+                                                                                    </m.div>
+                                                                                    :
+                                                                                    <m.div layout layoutId="box">
+                                                                                        <Box sx={{ borderRadius: "12px", bgcolor: 'gray.light', width: "196px", height: "196px" }} className={`block--centered`} >
+                                                                                            <RamenDining />
+                                                                                        </Box>
+                                                                                    </m.div>
+                                                                            )
+                                                                            : <FoodImageCard id={id} isActive={isActive} />
+                                                                    )
+                                                                }}
                                                             </SwiperSlide>
                                                         ))
                                                     }
@@ -368,7 +359,7 @@ function TestContent({ }: TestContentProps) {
                                                         : <></>
                                                 }
                                                 {/* <div className="container--center" style={{ marginTop: 0 }}> */}
-                                                    <AnswerSlider testName="food" {...SLIDERPROPS_TEST_BUDGET_FOOD} />
+                                                <AnswerSlider testName="food" {...SLIDERPROPS_TEST_BUDGET_FOOD} />
                                                 {/* </div> */}
                                                 <div />
                                             </div>
@@ -388,19 +379,19 @@ function TestContent({ }: TestContentProps) {
                                                                     <SwiperSlide key={cityId} className="carousel__swiper-slide--auto">
                                                                         <ButtonBase onClick={() => handleCityCardClick(key, index)} className="block--full">
                                                                             <div className="block__body">
-                                                                            <ImageCard
-                                                                                src={getImgSrc("/city", cityId, FORMATWEBP)}
-                                                                                title={cityId}
-                                                                                sx={{ width: "196px", height: "196px", borderRadius: "12px" }}
-                                                                                className="body__head"
-                                                                            />
-                                                                            <Stack>
-                                                                                <h3 className="typography-label">{commonStrings.city[cityId as keyof typeof commonStrings.city].name}</h3>
-                                                                                {
-                                                                                    NATION[CITY[cityId as keyof typeof CITY].nation as keyof typeof NATION].flag
-                                                                                    && <Flag id={CITY[cityId as keyof typeof CITY].nation} />
-                                                                                }
-                                                                            </Stack>
+                                                                                <ImageCard
+                                                                                    src={getImgSrc("/city", cityId, FORMATWEBP)}
+                                                                                    title={cityId}
+                                                                                    sx={{ width: "196px", height: "196px", borderRadius: "12px" }}
+                                                                                    className="body__head"
+                                                                                />
+                                                                                <Stack>
+                                                                                    <h3 className="typography-label">{commonStrings.city[cityId as keyof typeof commonStrings.city].name}</h3>
+                                                                                    {
+                                                                                        NATION[CITY[cityId as keyof typeof CITY].nation as keyof typeof NATION].flag
+                                                                                        && <Flag id={CITY[cityId as keyof typeof CITY].nation} />
+                                                                                    }
+                                                                                </Stack>
                                                                             </div>
                                                                         </ButtonBase>
                                                                     </SwiperSlide>
