@@ -21,7 +21,7 @@ function LabeledAvatar({ characterId, showLabel = true, labelSize, nickname, tes
 
     return (
         // <Stack
-        //     spacing={-0.5}
+        //     spacing={0.5}
         //     direction={"column"}
         //     display={"flex"}
         //     flexDirection={"column"}
@@ -49,8 +49,8 @@ function LabeledAvatar({ characterId, showLabel = true, labelSize, nickname, tes
             labelSize={ labelSize }
         >
             <Avatar
-                alt={ nickname }
-                src={ getImgSrc('/character', imageId, FORMATWEBP) }
+                alt={ imageId }
+                src={ getImgSrc('/character', imageId, FORMATWEBP, "small" ) }
                 className={ `${ className }` }
                 style={{ backgroundColor: theme.palette.primary.light }}
                 { ...props as AvatarProps }

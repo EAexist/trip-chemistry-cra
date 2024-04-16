@@ -51,8 +51,8 @@ function ChemistrySummaryButton({ id }: ChemistrySummaryButtonProps) {
             <CardActionArea onClick={handleClick} className="flex-end">
                 <CardContent className="block__body">
                     <h2 className="typography-heading body__head">{chemistry.title}</h2>
-                    <div className="block--round block--white block--with-padding">
-                    <Stack spacing={-0.5}>
+                    <div className="block--round block--white block--with-padding block--with-padding--small">
+                    <Stack spacing={0.5}>
                         {
                             Object.values(chemistry.profileList).map(({ testResult, nickname }) => (
                                 <LabeledAvatar key={nickname} {...{ nickname, characterId: testResult && testResult.tripCharacter ? testResult.tripCharacter.id : "user" }} />

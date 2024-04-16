@@ -73,7 +73,7 @@ const ChemistryContent = loadable(() => import( /* webpackChunkName: "ChemistryC
 const CityDetailContent = loadable(() => import( /* webpackChunkName: "CityDetailContent" */'./content/city/CityDetailContent'));
 const TestContent = loadable(() => import(/* webpackChunkName: "TestContent" */ './content/test/TestContent'));
 
-// const AuthContent = loadable(() => import( /* webpackChunkName: "AuthContent" */'./content/login/AuthContent'));
+const LoginContent = loadable(() => import( /* webpackChunkName: "LoginContent" */'./content/login/LoginContent'));
 const InitializeNicknameContent = loadable(() => import( /* webpackChunkName: "InitializeNicknameContent" */'./content/login/InitializeNicknameContent'));
 const KakaoAuthRedirectPage = loadable(() => import( /* webpackChunkName: "KakaoAuthRedirectPage" */'./content/login/KakaoAuthRedirectPage'));
 
@@ -124,14 +124,18 @@ function App() {
                             {cityDetailRoute}
                         </Route>
                         {/* [SEO, Authorization] Hide Contents by style={ display: 'none' } when unAuthorized. Content must be rendered yet is visible. */}
-                        <Route key={'authRecommended'} element={<AuthRecommendedPage />}>
+                        {/* <Route key={'authRecommended'} element={<AuthRecommendedPage />}>
                             <Route key={'test'} path={'test'} element={<Outlet />} >
                                 <Route key={'index'} index element={<TestContent />} />
                                 {cityDetailRoute}
                             </Route>
-                        </Route>
+                        </Route> */}
                         {/* [SEO, Authorization] Routes are excluded in robots.txt. URL Accesses are redirected to login page. */}
                         <Route key={'authRequired'} element={<AuthRequiredRoute />}>
+                            <Route key={'test'} path={'test'} element={<Outlet />} >
+                                <Route key={'index'} index element={<TestContent />} />
+                                {cityDetailRoute}
+                            </Route>
                             <Route key={'user'} path={'user'} element={<Outlet />} >
                                 <Route key={'index'} index element={<UserContent />} />
                                 <Route key={'setNickname'} path={'setNickname'} element={<EditNicknameContent />} />
@@ -146,6 +150,7 @@ function App() {
                         </Route>
                         {/* [SEO, Authorization] Routes are protected from access-by-URL. Can only be accessed by useNavigate Hook (/initializeNickname) or redirection from Kakao Auth API Page (/kakaoAuthRedirect). Routes are excluded in robots.txt. URL Accesses are redirected to login page. */}
                         <Route key={'login'} path={'login'} element={<Outlet />} >
+                            <Route key={'index'} index element={<LoginContent />} />
                             <Route key={'initializeNickname'} path={'initializeNickname'} element={<InitializeNicknameContent />} />
                             <Route key={'redirectURI'} path={'kakaoAuthRedirect'} element={<KakaoAuthRedirectPage />} />
                         </Route>

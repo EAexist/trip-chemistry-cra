@@ -158,16 +158,19 @@ button {
     max-width: 220px;
 }
 
-.block--with-padding,
-.block--with-padding.MuiPaper-root {
+.block--with-padding {
     padding-top: var(--margin-top);
     padding-bottom: var(--margin-top);
     padding-left: var(--margin-x);
     padding-right: var(--margin-x);
 }
 
-.block--with-padding--large,
-.block--with-padding--large.MuiPaper-root {
+.block--with-padding--small {
+    padding-left: var(--margin-x--small);
+    padding-right: var(--margin-x--small);
+}
+
+.block--with-padding--large {
     padding-top: var(--margin-top--large);
     padding-bottom: var(--margin-top--large);
 }
@@ -180,8 +183,7 @@ button {
     margin-right: var(--margin-x);
 }
 
-.block--with-margin--small,
-.block--with-margin--small.MuiStack-root {
+.block--with-margin--small {
     margin: var(--margin-x--small);
 }
 
@@ -753,7 +755,7 @@ button {
 }
 
 .placeholder--button--full {
-    height: 52px;
+    height: 48px;
 }
 
 /* Navigation Button */

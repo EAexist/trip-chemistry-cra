@@ -380,7 +380,7 @@ function TestContent({ }: TestContentProps) {
                                                                         <ButtonBase onClick={() => handleCityCardClick(key, index)} className="block--full">
                                                                             <div className="block__body">
                                                                                 <ImageCard
-                                                                                    src={getImgSrc("/city", cityId, FORMATWEBP)}
+                                                                                    src={getImgSrc("/city", cityId, FORMATWEBP, "medium")}
                                                                                     title={cityId}
                                                                                     sx={{ width: "196px", height: "196px", borderRadius: "12px" }}
                                                                                     className="body__head"

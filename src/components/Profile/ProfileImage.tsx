@@ -17,7 +17,7 @@ function ProfileImage({ renderLabel, showCharacterLabel = true, id, nickname, te
     return (
         <div className="block--centered">
             <img
-                src={ getImgSrc('/character', tripCharacter.id, FORMATWEBP) }
+                src={ getImgSrc('/character', tripCharacter.id, FORMATWEBP, "large") }
                 alt={ nickname }
                 className="ProfileImage__image"
                 width={ "192px" }

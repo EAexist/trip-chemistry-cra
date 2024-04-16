@@ -85,7 +85,7 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                         <SwiperSlide key={cityId} className="">
                             <div className="block--with-margin-x block__body">
                                 <ImageCard
-                                    src={getImgSrc("/city", cityId, FORMATWEBP)}
+                                    src={getImgSrc("/city", cityId, FORMATWEBP, 'large')}
                                     title={cityId}
                                     className="body__head flex-end"
                                     gradient="bottom"

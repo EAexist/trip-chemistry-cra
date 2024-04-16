@@ -16,7 +16,7 @@ function TestResultBlock({ id, testResult }: TestResultBlockProps) {
     const userId = useUserId();
 
     return (
-        <div className="block__body--large">
+        <div className="block__body">
             {
                 (id === userId)
                     ?

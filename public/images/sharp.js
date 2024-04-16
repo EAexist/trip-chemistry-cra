@@ -10,7 +10,7 @@ const resize = ( directory, width, height, suffix ) => {
         if(( !file.includes("medium")) && ( !file.includes("large") ) && ( !file.includes("small") ) ){
             console.log(file);
             sharp(`${path}/${file}`)
-                .resize(width, height) // width, height
+                .resize(width, height, { fit: "outside" }) // width, height
                 .toFile(`${path}/${file.split('.')[0]}${suffix}.${file.split('.')[1]}.`);
         }
     });
@@ -20,6 +20,7 @@ const resize = ( directory, width, height, suffix ) => {
 // resize( 'icon', 512, 512, '-large' );
 
 // resize( 'logos', 256, 256, '-small' );
-resize( 'icon', 256, 256, '-medium' );
+resize( 'character', 128, 128, '-small' );
+resize( 'character', 256, 256, '-large' );
 
 // resize( 'test', 480, 480, '-medium' );

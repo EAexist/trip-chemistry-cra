@@ -65,7 +65,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
         <>
             <LazyDomAnimation>
                 <SectionPaper>
-                    <m.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.tripCharacter.title}</m.h5>
+                    <m.h2 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.tripCharacter.title}</m.h2>
                     <m.div {...FADEIN_VIEWPORT} className="block__body">
                         <Stack spacing={-0.25} justifyContent={'center'} alignItems={'start'}>
                             {
@@ -103,9 +103,9 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                     </m.div>
                 </SectionPaper>
                 <SectionPaper>
-                    <m.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.leadership.title}</m.h5>
+                    <m.h2 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.leadership.title}</m.h2>
                     <m.div {...FADEIN_VIEWPORT} className="block__body">
-                        <Stack sx={{ justifyContent: 'center' }}>
+                        <Stack display={'flex'} justifyContent={'center'}>
                             {
                                 Object.keys(Object.values(leadershipAnswerToProfileList)).length > 0 &&
                                 Object.values(leadershipAnswerToProfileList).reverse()[0].map((id) =>
@@ -119,7 +119,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                                 Object.entries(leadershipAnswerToProfileList).reverse().slice(1).map(([value, idList], index) => (
                                     <Stack sx={{ flexWrap: "wrap" }}>
                                         <p className="typography-note">{testStrings.test.leadership.answers[Number(value) as keyof typeof testStrings.test.leadership.answers].label}</p>
-                                        <Stack spacing={-0.5}>
+                                        <Stack spacing={0.5}>
                                             {
                                                 idList.map((id) => (
                                                     <FriendAvatar id={id} />
@@ -164,7 +164,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                     </m.div>
                 </SectionPaper>
                 <SectionPaper>
-                    <m.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.schedule.title}</m.h5>
+                    <m.h2 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.schedule.title}</m.h2>
                     <m.div {...FADEIN_VIEWPORT} className="block__body">
                         <div>
                         <List disablePadding>
@@ -173,7 +173,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                                     <ListItem disabled={!Object.keys(scheduleAnswerToProfiles).includes(String(value))} disablePadding={!Object.keys(scheduleAnswerToProfiles).includes(String(value))} disableGutters >
                                         <Stack>
                                             <div className={Object.keys(scheduleAnswerToProfiles).includes(String(value)) ? "typography-label" : ""}><p>{label}</p></div>
-                                            <Stack spacing={-0.5}>
+                                            <Stack spacing={0.5}>
                                                 {
                                                     (Object.keys(scheduleAnswerToProfiles).includes(String(value)) ? scheduleAnswerToProfiles[value] : []).map((id) => (
                                                         <FriendAvatar id={id} />
@@ -208,7 +208,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                     </m.div>
                 </SectionPaper>
                 <SectionPaper>
-                    <m.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.budget.title}</m.h5>
+                    <m.h2 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.budget.title}</m.h2>
                     <m.div  {...FADEIN_VIEWPORT} className="block__body">
                         <div className="block--centered">
                             <ChemistrySlider {...SLIDERPROPS_CHEMISTRY_BUDGET_FOOD} />
@@ -234,7 +234,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                     </m.div>
                 </SectionPaper>
                 <SectionPaper>
-                    <m.h5 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.city.title}</m.h5>
+                    <m.h2 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.city.title}</m.h2>
                     <ul className="block__body">
                         {
                             sortedCityList && sortedCityList.map((cityClass) => (

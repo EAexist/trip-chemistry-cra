@@ -107,7 +107,7 @@ function ChemistryResultAccordion({ cityClass }: ChemistryResultAccordionProps) 
                                                     <p className="typography-note">{strings.test.city.answers[Number(value) as keyof typeof strings.test.city.answers].label}</p>
                                             </ListItemAvatar>
                                             <ListItemText primary={
-                                                <Stack spacing={-0.5}>
+                                                <Stack spacing={0.5}>
                                                     {
                                                         idList.map((id) => (
                                                             <FriendAvatar id={id} />
