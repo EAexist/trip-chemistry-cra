@@ -23,7 +23,7 @@ const SliderValueLabel = ({ testName, value }: { testName: ITestName, value: num
                 <Stack spacing={0.5}>
                     {
                         userList.map((id) => (
-                            <FriendAvatar id={id} />
+                            <FriendAvatar key={id} id={id} />
                         ))
                     }
                 </Stack>
@@ -69,19 +69,18 @@ function ChemistrySlider({ testName, ...sliderOwnProps }: ChemistrySliderProps) 
                         height: 300,
                         zIndex: 1,
                     }}
-                    aria-label="restaurant budget"
+                    getAriaLabel={()=>(`friends' restaurant budget preference`)}
                     orientation="vertical"
                     size="small"
                     value={Object.keys(budgetAnswerToProfiles).map((answer) => Number(answer))}
                     marks
-                    // disabled
                     {...sliderOwnProps}
                 />
             </Stack>
             <div className="flex">
                 {
                     marks.map((value) => (
-                        <SliderValueLabel testName={testName} value={value} />
+                        <SliderValueLabel key={value} testName={testName} value={value} />
                     ))
                 }
             </div>

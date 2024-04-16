@@ -27,19 +27,19 @@ const ScrollPageContainer = ({ onPageChange, pages, children }: PropsWithChildre
     const { scrollY } = useScroll();
 
     useMotionValueEvent(scrollY, "change", (latest) => {
-        console.log(`[ScrollPageContainer] useMotionValueEvent\n\tscrollY.get()=${scrollY.get()}\n\tpageRef?.current?.offsetHeight=${pageRef?.current?.offsetHeight}`);
+        // console.log(`[ScrollPageContainer] useMotionValueEvent\n\tscrollY.get()=${scrollY.get()}\n\tpageRef?.current?.offsetHeight=${pageRef?.current?.offsetHeight}`);
         setPage(Math.min(Math.floor((scrollY.get() - (ref.current?.offsetTop as number)) / (pageRef?.current?.offsetHeight as number)), pages - 1));
     });
 
     /* Side Effect */
     useEffect(() => {
-        console.log(`[ScrollPageContainer] useEffect\n\tscrollY.get()=${scrollY.get()}\n\tpageRef?.current?.offsetHeight=${pageRef?.current?.offsetHeight}`);
+        // console.log(`[ScrollPageContainer] useEffect\n\tscrollY.get()=${scrollY.get()}\n\tpageRef?.current?.offsetHeight=${pageRef?.current?.offsetHeight}`);
         setPage(Math.floor((scrollY.get() - (ref.current?.offsetTop as number)) / (pageRef?.current?.offsetHeight as number)));
     }, [])
 
     /* Side Effect OnPageChange */
     useEffect(() => {
-        console.log(`[ScrollPageContainer]\n\tpage=${page}`);
+        // console.log(`[ScrollPageContainer]\n\tpage=${page}`);
         /* onPageChange Event Handlers from props */
         if ( page !== undefined ) {
             onPageChange && onPageChange(page);
@@ -48,13 +48,11 @@ const ScrollPageContainer = ({ onPageChange, pages, children }: PropsWithChildre
 
     return (
         <div ref={ref} className="ScrollPageContainer">
-            {/* { children } */}
             {
                 Array.from({ length: pages }, (value, index) => (
-                    <Step index={index} className="fill-window" style={{ visibility: "hidden" }}/>
+                    <Step key={index} index={index} className="fill-window" style={{ visibility: "hidden" }}/>
                 ))
             }
-            {/* <div className="fill-window" /> */}
             <div className="ScrollPageContainer__viewport-container">
                 <div ref={pageRef} className="ScrollPageContainer__viewport fill-window">
                     <PageContext.Provider value={{ activePage: page }}>

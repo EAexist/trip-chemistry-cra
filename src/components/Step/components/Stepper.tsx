@@ -22,7 +22,7 @@ function Stepper({ className, children, ...props } : PropsWithChildren<StepperPr
     /* Side Effects */
     useEffect(() => {
         console.log(`[Stepper] step=${step}`)
-        topNavSwiperRef.current?.swiper.slideTo( step );
+        topNavSwiperRef.current?.swiper.slideTo( step - 2 );
     }, [ step ])
 
     return(

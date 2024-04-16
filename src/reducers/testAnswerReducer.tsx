@@ -140,9 +140,8 @@ export const useTestAnswer = ( testName: ITestName ) => {
 };
 
 export const useTagSetAnswer = ( testName: SetTestName, selected = true ) => {
-    return(
-        useSelector(( state:RootState )=>( Array.from(state.testAnswer.data[testName][ selected ? "selected" : "unSelected" ].values() )) )
-    );
+    const answer = useSelector(( state:RootState )=>(state.testAnswer.data[testName][ selected ? "selected" : "unSelected" ] ))
+    return( Array.from(answer.values()) )
 };
 
 export const useIsTestAnswered = ( testName: ITestName ) => {

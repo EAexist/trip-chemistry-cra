@@ -238,6 +238,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                                         >
                                             친구 초대하기
                                         </Button>
+                                        /* [Deprecated] 친구 초대 방법 선택 > 링크 공유로 통합 */
                                         // <m.div>
                                         //     {
                                         //         isInviteOptionsOpen
@@ -351,7 +352,7 @@ function ChemistryContent({ }: ChemistryContentProps) {
                                             label: '더보기'
                                         },
                                     ].map(({ onClick, icon, label }) => (
-                                        <Grid item xs={3} display={"flex"} flexDirection={"column"} alignItems={"center"} >
+                                        <Grid key={label} item xs={3} display={"flex"} flexDirection={"column"} alignItems={"center"} >
                                             <ButtonBase onClick={onClick}>
                                                 <Stack direction={"column"}>
                                                     <Avatar>

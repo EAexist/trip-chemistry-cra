@@ -20,7 +20,7 @@ function AnswerButtonGroup({ testName, answer, setAnswer }: AnswerButtonGroupPro
             {/* <Stack display={"flex"} direction={"row"} justifyContent="space-around" alignItems="stretch" height="96px" sx={{ width: '100%' }}> */}
                 {
                     (Object.values(strings.answers) as { icon: string, display: string, label: string, value: number }[]).map(({ icon, display, label, value }) => (
-                        <Grid item xs={1} display={"flex"} justifyContent={"center"}>
+                        <Grid key={value} item xs={1} display={"flex"} justifyContent={"center"}>
                             <ToggleLabeledButton
                                 contained
                                 key={value}

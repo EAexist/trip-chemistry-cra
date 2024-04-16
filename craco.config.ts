@@ -78,7 +78,7 @@ module.exports = {
 
             if (isSsr) {
                 webpackConfig.target = process.env.npm_config_TARGET
-                webpackConfig.entry = `./src/client/main-${process.env.npm_config_TARGET}.tsx`
+                webpackConfig.entry = `./src/ssr/main-${process.env.npm_config_TARGET}.tsx`
                 webpackConfig.output = {
                     filename: whenDev(() => '[name].js', '[name]-bundle-[chunkhash:8].js'),
                     path: path.join(DIST_PATH, (isTargetWeb) ? 'js' : 'node'),

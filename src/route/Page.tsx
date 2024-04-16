@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Outlet, useSearchParams } from "react-router-dom";
+import { Outlet, ScrollRestoration, useSearchParams } from "react-router-dom";
 import AppBar from "../components/AppBar/AppBar";
 import { AppBarContextProvider } from "../components/AppBar/AppBarContext";
 import { AuthLoadRequiredContent } from "../content/LoadRequiredContent";
@@ -17,7 +17,7 @@ function Page({ }: PageProps) {
     /* Hooks */
     const dispatch = useDispatch<AppDispatch>();
     const authorize = useAuthorize();
-    const [ searchParams ] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const guestId = searchParams.get('guestId');
     const isAutoLoginEnabaled = useIsAutoLoginEnabled();
 
@@ -38,7 +38,7 @@ function Page({ }: PageProps) {
 
     /* 로컬 스토리지에 카카오 액세스 토큰이 남아 있을 경우 해당 정보를 이용해 로그인 */
     useEffect(() => {
-        if ( isAutoLoginEnabaled ) {
+        if (isAutoLoginEnabaled) {
             const kakaoAccessToken = window.localStorage.getItem("kakaoAccessToken");
             console.log(`[Page] useEffect\n\tkakaoAccessToken=${kakaoAccessToken}`);
 
@@ -49,13 +49,13 @@ function Page({ }: PageProps) {
                 dispatch(disableAutoLogin());
             }
         }
-    }, [ isAutoLoginEnabaled, dispatch ]);
+    }, [isAutoLoginEnabaled, dispatch]);
 
     /* Guest 접속 주소일 경우 주소의 id를 이용해 게스트로 로그인. */
 
     useEffect(() => {
-        console.log(`[useGuestLogin] guestId=${guestId}`);
         if ( guestId ) {
+            console.log(`[Page] useEffect guestId=${guestId}`);
             dispatch(asyncGuestLogin(guestId));
         }
     }, [ guestId, dispatch ])
@@ -69,33 +69,22 @@ function Page({ }: PageProps) {
                 url={"https://eaexist.github.io/tripchemistry"}
                 image={"/static/images/meta/social-meta-iamge.jpg"}
             />
+            {/* https://reactrouter.com/en/main/components/scroll-restoration */}
+            {/* <ScrollRestoration /> */}
+            <ScrollRestoration
+                getKey={(location, matches) => {
+                    console.log(`[ScrollRestoration] ${location.pathname}`);
+                    return location.pathname;
+                }}
+            />
             <AuthLoadRequiredContent
                 isEnabled={isAutoLoginEnabaled}
                 handleFail={handleFail}
                 handleSuccess={handleSuccess}
                 showHandleFailButton={false}
             >
-                {
-                    // !isAutoLoginEnabaled
-                    // &&
-                    <>
-                        <AppBar />
-                        <Outlet />
-                    </>
-                }
-                {/* https://reactrouter.com/en/main/components/scroll-restoration */}
-                {/* <ScrollRestoration
-                getKey={(location, matches) => {
-                    const paths = ["/chemistry"];
-                    console.log(`[ScrollRestoration] ${location.pathname}`)
-                    // return location.pathname;
-                    return paths.includes(location.pathname)
-                        ? // restore by pathname
-                        location.pathname
-                        : // everything else by location like the browser
-                        location.key;
-                }}
-            /> */}
+                <AppBar />
+                <Outlet />
             </AuthLoadRequiredContent>
         </AppBarContextProvider>
     );

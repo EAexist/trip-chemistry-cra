@@ -1,19 +1,9 @@
-import { hydrate } from 'react-dom'
-import { BrowserRouter } from 'react-router-dom'
-import { loadableReady } from '@loadable/component'
-
-import App from '../App'
-import { ThemeProvider } from '@mui/material'
-import { theme } from '../theme'
-
-loadableReady(() => {
-  const root = document.getElementById('app')
-  hydrate(
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>,
-    root
-  )
-})
+/**
+ * Entry point for Webpack
+ *
+ * ATTENTION: `path` is imported first so we can set the publicPath during
+ * runtime.
+ * @see https://webpack.js.org/guides/public-path/
+ */
+// import './path'
+import './client'

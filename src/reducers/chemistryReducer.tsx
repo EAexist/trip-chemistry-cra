@@ -174,7 +174,8 @@ const useCityChemistry = (cityClass: string) => {
 };
 
 const useSortedCityList = () => {
-    return (useSelector((state: RootState) => state.chemistry.data.cityChemistry ? Object.entries(state.chemistry.data.cityChemistry).sort((a, b) => (b[1] - a[1])).map(([cityClass, score]) => cityClass) : undefined));
+    const cityChemistry = useSelector((state: RootState) => state.chemistry.data.cityChemistry);
+    return (cityChemistry ? Object.entries(cityChemistry).sort((a, b) => (b[1] - a[1])).map(([cityClass, score]) => cityClass) : undefined);
 };
 
 const useChemistryLoadStatus = () => {
@@ -188,15 +189,15 @@ const useChemistryLoadStatus = () => {
     ] as const);
 }
 
-const useTestAnswerObject = ( testName: ITestName ) => {
+const useTestAnswerObject = (testName: ITestName) => {
 
     return (
         useSelector((state: RootState) =>
             Object.fromEntries(
                 Object.entries(state.chemistry.data?.profileList)
-                    .filter(([ , profile ]) => profile.testAnswer !== null )
-                    .map(([ id, profile ]) => {
-                        return ([ id, profile.testAnswer[testName] ] as const)
+                    .filter(([, profile]) => profile.testAnswer !== null)
+                    .map(([id, profile]) => {
+                        return ([id, profile.testAnswer[testName]] as const)
                     })
             )
             , shallowEqual
@@ -204,35 +205,49 @@ const useTestAnswerObject = ( testName: ITestName ) => {
     );
 };
 
-const useProfile = ( id: string, key?: keyof IProfile ) => {
+const useProfile = (id: string, key?: keyof IProfile) => {
     return (
-        useSelector((state: RootState) => Object.keys(state.chemistry.data.profileList).includes(id) 
-        ? key 
-        ? state.chemistry.data.profileList[id][key] 
-        : state.chemistry.data.profileList[id]  
-        : defaultProfile )
-    );
-} 
-
-const useProfileIdList = ( answeredProfileOnly : boolean = true ) => {
-    return (
-        useSelector((state: RootState) => Object.values(state.chemistry.data.profileList)
-            .filter( profile => answeredProfileOnly ? (profile.testAnswer !== null) : true )
-            .map( profile => profile.id )
-        , shallowEqual)
+        useSelector((state: RootState) => Object.keys(state.chemistry.data.profileList).includes(id)
+            ? key
+                ? state.chemistry.data.profileList[id][key]
+                : state.chemistry.data.profileList[id]
+            : defaultProfile)
     );
 }
 
-function useProfileAll<T extends (keyof IProfile) | IProfile>(idList?: IProfileId[], key?: keyof IProfile, answeredProfileOnly : boolean = true): T[] {
-    return (useSelector((state: RootState) =>
-        Object.values(state.chemistry.data.profileList).filter(({ id }) => idList ? idList.includes(id) : true)
-            .filter(({ testAnswer }) => answeredProfileOnly ? (testAnswer !== null) : true )
-            .map(( profile ) =>
+const useProfileIdList = (answeredProfileOnly: boolean = true) => {
+    return (
+        useSelector((state: RootState) => Object.values(state.chemistry.data.profileList)
+            .filter(profile => answeredProfileOnly ? (profile.testAnswer !== null) : true)
+            .map(profile => profile.id)
+            , shallowEqual)
+    );
+}
+
+function useProfileAll<T extends (keyof IProfile) | IProfile>(idList?: IProfileId[], key?: keyof IProfile, answeredProfileOnly: boolean = true) {
+    const profileList = Object.values(useSelector((state: RootState) => state.chemistry.data.profileList))
+
+    return (
+        profileList.filter(({ id }) => idList ? idList.includes(id) : true)
+            .filter(({ testAnswer }) => answeredProfileOnly ? (testAnswer !== null) : true)
+            .map((profile) =>
                 key
                     ? profile[key]
                     : profile
             )
-    ) as T[]
+    );
+}
+
+function filterProfile<T extends (keyof IProfile) | IProfile>(profileList: IProfile[], idList?: IProfileId[], key?: keyof IProfile, answeredProfileOnly: boolean = true) {
+
+    return (
+        profileList.filter(({ id }) => idList ? idList.includes(id) : true)
+            .filter(({ testAnswer }) => answeredProfileOnly ? (testAnswer !== null) : true)
+            .map((profile) =>
+                key
+                    ? profile[key]
+                    : profile
+            )
     );
 }
 
@@ -240,6 +255,7 @@ export default chemistrySlice.reducer;
 export type { IChemistryState }
 export const { clearChemistry } = chemistrySlice.actions;
 export { asyncGetChemistry, useChemistry, useChemistryId, useChemistryLoadStatus, useCityChemistry, useIsChemistryEnabled, useProfile, useProfileAll, useProfileIdList, useSortedCityList, useTestAnswerObject };
+export { filterProfile }
 
 /* Deprecated */
 /* 데이터 Fetch, 로드 상태 관리, 로드 전 초기 렌더 방지. */

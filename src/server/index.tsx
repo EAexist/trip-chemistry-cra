@@ -19,6 +19,8 @@ import { theme } from '../theme'
 import { CssBaseline } from '@mui/material';
 import expressStaticGzip from 'express-static-gzip';
 import { HelmetProvider, HelmetServerState } from 'react-helmet-async';
+import { createStaticHandler } from 'react-router-dom/server';
+import routes from '../routes';
 
 /**
  * Can be e.g. your CDN Domain (https://cdn.example.com) in production with
@@ -29,19 +31,7 @@ const STATIC_URL = '/static/'
 const nodeStats = path.resolve(__dirname, '../../dist/node/loadable-stats.json')
 const webStats = path.resolve(__dirname, '../../dist/js/loadable-stats.json')
 
-const app = express()
-
-
-app.use('/static', expressStaticGzip(path.join(__dirname, '../../dist'), {
-  enableBrotli: true,
-  orderPreference: ['br'],
-  serveStatic: {
-    maxAge: 31536000000
-  }
-}));
-
-/* Resources */
-app.use('/static', express.static(path.join(__dirname, '../../dist')))
+let handler = createStaticHandler(routes);
 
 /**
  * node extractor is used for the server-side rendering
@@ -65,6 +55,19 @@ const webExtractor = new ChunkExtractor({
   // publicPath: STATIC_URL,
 })
 
+
+const app = express()
+
+app.use('/static', expressStaticGzip(path.join(__dirname, '../../dist'), {
+  enableBrotli: true,
+  orderPreference: ['br'],
+  serveStatic: {
+    maxAge: 31536000000
+  }
+}));
+
+/* Resources */
+app.use('/static', express.static(path.join(__dirname, '../../dist')))
 /* [SEO] robots.tsx  */
 app.get('/robots.txt', async (req, res) => {
   console.log(`/robots.txt`);
@@ -80,7 +83,8 @@ app.get('*', async (req, res) => {
 
   /* Loadable Component Chunks */
   const jsx = webExtractor.collectChunks(
-    createElement(App as any, { url: req.url }),
+    // createElement(App as any, { url: req.url }),
+    createElement(App as any, { req, res }),
   )
 
   /* Material UI */

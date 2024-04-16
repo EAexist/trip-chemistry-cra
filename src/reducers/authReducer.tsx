@@ -445,5 +445,5 @@ export { asyncGuestSignIn, asyncKakaoLogin, asyncKakaoLoginByAccessToken, asyncK
 export { useChemistryIdList, useHasAnsweredTest, useIsAuthorized, useIsAutoLoginEnabled, useIsInitialized, useUserId, useUserInfo, useUserProfile };
 
 /* Selector & Dispatch Hooks */
-export { useAuthLoadStatus, useAuthorize, useGetProfile, useGuestLogin };
+export { useAuthLoadStatus, useAuthorize, useGetProfile };
 

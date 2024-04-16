@@ -1,20 +1,35 @@
-
-import { hydrate } from 'react-dom'
-import { BrowserRouter } from 'react-router-dom'
 import { loadableReady } from '@loadable/component'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-import App from '../App'
-import { ThemeProvider } from '@mui/material'
+// import App from './app-web'
+import { CacheProvider } from '@emotion/react'
+import { CssBaseline } from '@mui/material'
+import { ThemeProvider } from '@mui/material/styles'
+import { hydrateRoot } from 'react-dom/client'
+import { HelmetProvider } from 'react-helmet-async'
+import routes from '../routes'
+import createEmotionCache from '../ssr/createEmotionCache'
 import { theme } from '../theme'
 
+/*  React Router - Routers - Picking A Router. Remix Software, Inc.
+    ( https://reactrouter.com/en/main/guides/ssr ) */
+let router = createBrowserRouter(routes);
+
+const cache = createEmotionCache();
+
 loadableReady(() => {
-  const root = document.getElementById('app')
-  hydrate(
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>,
+  const root = document.getElementById('root')
+  hydrateRoot(
     root,
+    <HelmetProvider>
+      <CacheProvider value={cache}>
+        <ThemeProvider theme={theme}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline
+            to build upon. */}
+          <CssBaseline />
+          <RouterProvider router={router} />
+        </ThemeProvider>
+      </CacheProvider>
+    </HelmetProvider>
   )
 })

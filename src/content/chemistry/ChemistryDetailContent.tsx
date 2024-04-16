@@ -1,5 +1,5 @@
 /* React */
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 /* React Packages */
 import { AnimatePresence, m } from "framer-motion";
@@ -20,7 +20,7 @@ import ProfileImage from "../../components/Profile/ProfileImage";
 import TestResultBlock from "../../components/Profile/TestResultBlock";
 import useValueToProfileIdList from "../../hooks/useValueToProfileIdList";
 import { FADEIN, FADEIN_VIEWPORT } from "../../motion/props";
-import { useChemistry, useProfileAll, useProfileIdList, useSortedCityList } from "../../reducers/chemistryReducer";
+import { filterProfile, useChemistry, useProfileAll, useProfileIdList, useSortedCityList } from "../../reducers/chemistryReducer";
 import { RootState } from "../../store";
 import CityChemistryContent from "./CityChemistryContent";
 import ChemistrySlider from "./component/ChemistrySlider";
@@ -51,8 +51,9 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
         state.chemistry.data.profileList[answeredProfileIdList[characterSectionActiveUserIndex]]?.testResult.tripCharacter
     );
 
-    const leaderDataList = useProfileAll(chemistry?.leaderList, "nickname");
-    const follwerDataList = useProfileAll(answeredProfileIdList.filter(id => !chemistry?.leaderList.includes(id)), "nickname");
+    const profileList = Object.values(useSelector((state: RootState) =>state.chemistry.data.profileList))
+    const leaderDataList = filterProfile( profileList, chemistry?.leaderList, "nickname");
+    const follwerDataList = filterProfile( profileList, answeredProfileIdList.filter(id => !chemistry?.leaderList.includes(id)), "nickname");
     const leadershipAnswerToProfileList = useValueToProfileIdList("leadership");
 
     const sortedCityList = useSortedCityList();
@@ -109,7 +110,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                             {
                                 Object.keys(Object.values(leadershipAnswerToProfileList)).length > 0 &&
                                 Object.values(leadershipAnswerToProfileList).reverse()[0].map((id) =>
-                                    <ProfileImage id={id} showCharacterLabel={false} />
+                                    <ProfileImage key={id} id={id} showCharacterLabel={false} />
                                 )
                             }
                         </Stack>
@@ -117,12 +118,12 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                             {
                                 Object.keys(Object.values(leadershipAnswerToProfileList)).length > 1 &&
                                 Object.entries(leadershipAnswerToProfileList).reverse().slice(1).map(([value, idList], index) => (
-                                    <Stack sx={{ flexWrap: "wrap" }}>
+                                    <Stack key={value} sx={{ flexWrap: "wrap" }}>
                                         <p className="typography-note">{testStrings.test.leadership.answers[Number(value) as keyof typeof testStrings.test.leadership.answers].label}</p>
                                         <Stack spacing={0.5}>
                                             {
                                                 idList.map((id) => (
-                                                    <FriendAvatar id={id} />
+                                                    <FriendAvatar key={id} id={id} />
                                                 ))
                                             }
                                         </Stack>
@@ -132,31 +133,31 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                         </Stack>
                         <div className="block__body">
                             <p>
-                                {strings.sections.leadership.body.map((string: string | undefined) => (
+                                {strings.sections.leadership.body.map((string: string | undefined, index) => (
                                     string === "/idList"
                                         ? chemistry && leaderDataList.map((nickname, index) =>
-                                            <>
+                                            <Fragment key={nickname as string}>
                                                 {index > 0 && ", "}
                                                 <b>{` ${nickname} `}</b>
                                                 {strings.sections.leadership.idPostfix}
-                                            </>
+                                            </Fragment>
                                         )
-                                        : <>{string}</>
+                                        : <Fragment key={index}>{string}</Fragment>
                                 ))}
                             </p>
                             {
                                 (follwerDataList.length > 0) &&
                                 <p>
-                                    {strings.sections.leadership.detail.map((string: string | undefined) => (
+                                    {strings.sections.leadership.detail.map((string: string | undefined, index) => (
                                         string === "/idList"
-                                            ? chemistry && follwerDataList.map((nickname, index) =>
-                                                <>
+                                            ? chemistry && follwerDataList.map((nickname : string, index) =>
+                                                <Fragment  key={index}>
                                                     {index > 0 && ", "}
                                                     <b>{` ${nickname} `}</b>
                                                     {strings.sections.leadership.idPostfix}
-                                                </>
+                                                </Fragment>
                                             )
-                                            : <>{string}</>
+                                            : <Fragment  key={index}>{string}</Fragment>
                                     ))}
                                 </p>
                             }
@@ -167,37 +168,37 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                     <m.h2 {...FADEIN_VIEWPORT} className="typography-heading">{strings.sections.schedule.title}</m.h2>
                     <m.div {...FADEIN_VIEWPORT} className="block__body">
                         <div>
-                        <List disablePadding>
-                            {
-                                (Object.values(testStrings.test.schedule.answers) as { icon: string, label: string, value: number }[]).map(({ icon, label, value }) => (
-                                    <ListItem disabled={!Object.keys(scheduleAnswerToProfiles).includes(String(value))} disablePadding={!Object.keys(scheduleAnswerToProfiles).includes(String(value))} disableGutters >
-                                        <Stack>
-                                            <div className={Object.keys(scheduleAnswerToProfiles).includes(String(value)) ? "typography-label" : ""}><p>{label}</p></div>
-                                            <Stack spacing={0.5}>
-                                                {
-                                                    (Object.keys(scheduleAnswerToProfiles).includes(String(value)) ? scheduleAnswerToProfiles[value] : []).map((id) => (
-                                                        <FriendAvatar id={id} />
-                                                    ))
-                                                }
+                            <List disablePadding>
+                                {
+                                    (Object.values(testStrings.test.schedule.answers) as { label: string, value: number }[]).map(({ label, value }) => (
+                                        <ListItem key={label} disablePadding={!Object.keys(scheduleAnswerToProfiles).includes(String(value))} disableGutters>
+                                            <Stack>
+                                                <p className={Object.keys(scheduleAnswerToProfiles).includes(String(value)) ? "typography-label" : "disabled"}>{label}</p>
+                                                <Stack spacing={0.5}>
+                                                    {
+                                                        (Object.keys(scheduleAnswerToProfiles).includes(String(value)) ? scheduleAnswerToProfiles[value] : []).map((id) => (
+                                                            <FriendAvatar key={id} id={id} />
+                                                        ))
+                                                    }
+                                                </Stack>
                                             </Stack>
-                                        </Stack>
-                                        {/* <ListItemAvatar></ListItemAvatar> */}
-                                    </ListItem>
-                                )).reverse()
-                            }
-                        </List>
+                                            {/* <ListItemAvatar></ListItemAvatar> */}
+                                        </ListItem>
+                                    )).reverse()
+                                }
+                            </List>
                         </div>
                         <div className="block__body">
                             {
-                                chemistry?.scheduleChemistryText?.map((body) => {
+                                chemistry?.scheduleChemistryText?.map((body, index) => {
                                     const list = body.split(/(%\S*%)/)
                                     return (
-                                        <p>
+                                        <p key={index}>
                                             {
-                                                list.map((t) =>
+                                                list.map((t, index) =>
                                                     t[0] === "%"
-                                                        ? <b>{t.replaceAll('%', '')}</b>
-                                                        : <>{t}</>
+                                                        ? <b key={index}>{t.replaceAll('%', '')}</b>
+                                                        : <Fragment key={index}>{t}</Fragment>
                                                 )
                                             }
                                         </p>
@@ -215,15 +216,15 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                         </div>
                         <div className="block__body">
                             {
-                                chemistry?.budgetChemistryText?.map((body) => {
+                                chemistry?.budgetChemistryText?.map((body, index) => {
                                     const list = body.split(/(%\S*%)/)
                                     return (
-                                        <p>
+                                        <p key={index}>
                                             {
-                                                list.map((t) =>
+                                                list.map((t, index) =>
                                                     t[0] === "%"
-                                                        ? <b>{t.replaceAll('%', '')}</b>
-                                                        : <>{t}</>
+                                                        ? <b key={index}>{t.replaceAll('%', '')}</b>
+                                                        : <Fragment key={index}>{t}</Fragment>
                                                 )
                                             }
                                         </p>
@@ -238,7 +239,7 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                     <ul className="block__body">
                         {
                             sortedCityList && sortedCityList.map((cityClass) => (
-                                <m.li {...FADEIN_VIEWPORT}>
+                                <m.li key={cityClass} {...FADEIN_VIEWPORT}>
                                     <CityChemistryContent cityClass={cityClass as keyof typeof TEST.city.subTests} />
                                 </m.li>
                             ))

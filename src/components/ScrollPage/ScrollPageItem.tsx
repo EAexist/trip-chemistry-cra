@@ -26,8 +26,7 @@ const ScrollPageItem = ({ page, children, className }: PropsWithChildren<ScrollP
             <m.div
                 ref={pageRef}
                 {...FADEIN}
-                // className={`ScrollPageItem fill-window ${className}`}
-                className={`fill-window ${className}`}
+                className={`ScrollPageItem fill-window ${className}`}
             >
                 {children}
             </m.div>

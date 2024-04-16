@@ -141,7 +141,7 @@ function TestContent({ }: TestContentProps) {
     const { scrollY } = useScroll();
 
     useMotionValueEvent(scrollY, "change", (latest) => {
-        // console.log(`[TestContent] ScrollY Change`);
+        console.log(`[TestContent] ScrollY Change ${scrollY.get()}`);
         if (scrollY.get() > window.innerHeight) {
             setShowScrollDownIcon(false);
         }
@@ -263,7 +263,7 @@ function TestContent({ }: TestContentProps) {
                                         </TestSection>
                                     </ScrollPageItem>
                                     <ScrollPageItem key={"schedule"} page={3} className="flex">
-                                        <TestSection >
+                                        <TestSection>
                                             <div className="flex-grow block--centered">
                                                 <Card className="test__google-map-container modal__container">
                                                     <GoogleMapContext.Provider value={{ map: scheduleExampleMap as google.maps.Map, setMap: setScheduleExampleMap }}>
@@ -431,7 +431,7 @@ function TestContent({ }: TestContentProps) {
                                         }
 
                                     >
-                                        <span className="block--with-margin flex">
+                                        <span className="block--with-margin flex" style={{ marginTop: 0 }}>
                                             <Button
                                                 onClick={handleConfirmButtonClick}
                                                 disabled={!isAllTestAnswered}

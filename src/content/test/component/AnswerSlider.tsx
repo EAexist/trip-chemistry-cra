@@ -6,7 +6,7 @@ interface AnswerSliderProps extends WithTestAnswerProps, SliderOwnProps {
     // onChange: ( newValue : number ) => void;
 };
 
-function AnswerSlider( { answer, setAnswer, ...sliderOwnProps } : AnswerSliderProps ){
+function AnswerSlider( { testName, answer, setAnswer, ...sliderOwnProps } : AnswerSliderProps ){
 
     // const strings = useStrings().public.contents.test;   
 
