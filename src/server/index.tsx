@@ -58,6 +58,7 @@ const webExtractor = new ChunkExtractor({
 
 const app = express()
 
+/* Resources */
 app.use('/static', expressStaticGzip(path.join(__dirname, '../../dist'), {
   enableBrotli: true,
   orderPreference: ['br'],
@@ -66,8 +67,8 @@ app.use('/static', expressStaticGzip(path.join(__dirname, '../../dist'), {
   }
 }));
 
-/* Resources */
-app.use('/static', express.static(path.join(__dirname, '../../dist')))
+// app.use('/static', express.static(path.join(__dirname, '../../dist')))
+
 /* [SEO] robots.tsx  */
 app.get('/robots.txt', async (req, res) => {
   console.log(`/robots.txt`);
@@ -84,7 +85,7 @@ app.get('*', async (req, res) => {
   /* Loadable Component Chunks */
   const jsx = webExtractor.collectChunks(
     // createElement(App as any, { url: req.url }),
-    createElement(App as any, { req, res }),
+    createElement(App as any, { req: req, res: res }),
   )
 
   /* Material UI */

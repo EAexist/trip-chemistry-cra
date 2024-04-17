@@ -1,4 +1,4 @@
-import '../styles/PngIcon.css';
+// import '../styles/PngIcon.css';
 
 import getImgSrc, { FORMATWEBP } from "../utils/getImgSrc";
 

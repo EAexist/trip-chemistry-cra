@@ -22,7 +22,7 @@
     "build-server-dev": "rimraf ./dist/js && cross-env NODE_ENV=development FAST_REFRESH=false npm run build --SSR=true --TARGET=node",
     "build-server_": "rimraf ./dist/node && webpack --config webpack.server.js --SSR=true --TARGET=node",
     "build-lib": "rimraf ./lib && babel -d lib --extensions \".ts,.tsx\" ./src",
-    "build-ssr": "npm run build-client ; npm run build-client ; npm run build-lib",
+    "build-ssr": "npm run build-server ; npm run build-client ; npm run build-lib",
     "build-ssr-dev": "npm run build-client-dev ; npm run build-lib",
     "start-ssr": "node lib/server/index.js",
     "start-ssr-dev": "cross-env NODE_ENV=development node lib/server/index.js",
