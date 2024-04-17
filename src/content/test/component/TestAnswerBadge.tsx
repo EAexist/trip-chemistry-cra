@@ -14,7 +14,7 @@ function TestAnswerBadge({ testName, children, ...props }: PropsWithChildren<Tes
     const isAnswered = useIsTestAnswered( testName );
 
     return (
-        <Badge invisible={isAnswered} {...props} variant="dot" color="primary">
+        <Badge invisible={isAnswered} {...props} badgeContent={"!"} color="warning">
             { children }
         </Badge>
     );

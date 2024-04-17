@@ -1,7 +1,7 @@
 /* React */
 import { useState } from "react";
 
-/* React Packages */
+/* Externals */
 import { Close, Done } from "@mui/icons-material";
 import { Button, Grid } from "@mui/material";
 import { m } from 'framer-motion';

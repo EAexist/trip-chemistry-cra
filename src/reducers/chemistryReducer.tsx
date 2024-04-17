@@ -1,7 +1,7 @@
 /*** React ***/
 import { useCallback } from "react";
 
-/* React Packages */
+/* Externals */
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";

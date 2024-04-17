@@ -1,7 +1,7 @@
 // /* React */
 // import { useEffect, useRef, useState } from "react";
 
-// /* React Packages */
+// /* Externals */
 // import { useDispatch } from "react-redux";
 // import { useMotionValueEvent, useScroll } from "framer-motion"
 

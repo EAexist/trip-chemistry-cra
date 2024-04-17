@@ -12,7 +12,7 @@
     --margin-x--large: 40px;
 
     --margin-top: 1em;
-    --margin-top--small: 1em;
+    --margin-top--small: 0.4em;
     --margin-top--large: 2em;
 
     --appbar-height: 52px;
@@ -36,7 +36,7 @@
     font-optical-sizing: auto;
 
     /* Debug */
-    outline: 1px solid red;
+    /* outline: 1px solid red; */
 }
 
 ul {
@@ -140,7 +140,11 @@ button {
     background-color: white;
 }
 
-.block--round {
+.block--round,  {
+    border-radius: 12px;
+}
+
+.block--round--large {
     border-radius: 16px;
 }
 
@@ -165,7 +169,7 @@ button {
     padding-right: var(--margin-x);
 }
 
-.block--with-padding--small {
+.block--with-padding--small, .block--with-padding--small.MuiButton-root {
     padding-left: var(--margin-x--small);
     padding-right: var(--margin-x--small);
 }
@@ -457,12 +461,10 @@ button {
 }
 
 .MuiButton-root {
-    &.MuiButtonBase-root {
-
-        &.button--full {
-            border-radius: 12px;
-            padding: 12px;
-        }
+    
+    &.button--full {
+        border-radius: 12px;
+        padding: 12px;
     }
 
     & .MuiButtonBase-root {
@@ -546,6 +548,7 @@ button {
 }
 
 .MuiTooltip-tooltip {
+    padding: 24px;
     &>* {
         color: inherit;
     }

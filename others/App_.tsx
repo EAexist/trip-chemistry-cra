@@ -1,4 +1,4 @@
-// /* React Packages */
+// /* Externals */
 // import { ThemeProvider } from '@mui/material';
 
 // /* App */

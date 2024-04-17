@@ -1,4 +1,4 @@
-/* React Packages */
+/* Externals */
 import { Add } from "@mui/icons-material";
 import { Button, Toolbar } from "@mui/material";
 import { m } from 'framer-motion';
@@ -11,11 +11,7 @@ import { FADEIN_VIEWPORT, STAGGER_CHILDREN, VARIANTS_SLIDE_UP } from "../../moti
 import { useChemistryIdList } from "../../reducers/authReducer";
 import ChemistrySummaryButton from "./component/ChemistrySummaryButton";
 
-interface ChemistryListContentProps {
-
-};
-
-function ChemistryListContent({ }: ChemistryListContentProps) {
+function ChemistryListContent({ }) {
 
     /* Hooks */
     const navigate = useNavigateWithGuestContext();

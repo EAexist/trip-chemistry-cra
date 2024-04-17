@@ -1,5 +1,5 @@
 /* React */
-/* React Packages */
+/* Externals */
 import { Button, Toolbar } from "@mui/material";
 import { m } from "framer-motion";
 import { useSelector } from "react-redux";
@@ -31,10 +31,10 @@ function ResultContent({ }: ResultContentProps) {
         navigate('../myChemistry');
     }
     return (
-        <div className="page">
+        <div className="page fill-window flex">
             <Toolbar />
             <LazyDomAnimation>
-                <m.div  {...FADEIN_VIEWPORT} className="block__body--large block--with-padding-x">
+                <m.div  {...FADEIN_VIEWPORT} className="block__body--large block--with-padding-x flex-grow">
                     {/* <SectionPaper className="body__head"> */}
                     <m.h5 className="typography-heading">{strings.sections.tripCharacter.title}</m.h5>
                     <div style={{ marginTop: '-1rem' }}>
@@ -45,16 +45,16 @@ function ResultContent({ }: ResultContentProps) {
                             <p key={text}>{text}</p>
                         )
                     }
-                    <div className="flex">
-                        <Button
-                            onClick={handleChemistryButtonClick}
-                            variant="contained"
-                            className="button--full"
-                        >
-                            {strings.navigateToChemistryButton}
-                        </Button>
-                    </div>
-                </m.div>            
+                </m.div>       
+                <m.div  {...FADEIN_VIEWPORT} className="block--with-padding flex">
+                    <Button
+                        onClick={handleChemistryButtonClick}
+                        variant="contained"
+                        className="button--full"
+                    >
+                        {strings.navigateToChemistryButton}
+                    </Button>
+                </m.div>     
             </LazyDomAnimation>
         </div>
     );

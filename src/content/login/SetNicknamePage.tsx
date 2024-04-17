@@ -1,7 +1,7 @@
 /* React */
 import { useCallback, useContext, useState } from "react";
 
-/* React Packages */
+/* Externals */
 import { Done, NavigateBefore } from "@mui/icons-material";
 import { Button, IconButton, Toolbar } from "@mui/material";
 

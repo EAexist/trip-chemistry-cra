@@ -1,7 +1,7 @@
 /* React */
 import { useCallback } from "react";
 
-/* React Packages */
+/* Externals */
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { StatusCodes } from "http-status-codes";
@@ -18,9 +18,6 @@ import { IWithLoadStatus, LoadStatus } from "../interfaces/enums/LoadStatus";
 
 export type NumericTestName = keyof Omit<ITestAnswer, "activity" | "expectation">;
 export type SetTestName = keyof Pick<ITestAnswer, "activity" | "expectation">;
-
-/* Debug */
-
 
 export const sampleTestAnswer : ITestAnswer = {
     expectation: {
@@ -157,7 +154,7 @@ export const useIsTestAnswered = ( testName: ITestName ) => {
 export const useIsAllTestAnswered = ( ) => {
     return(
         useSelector(( state:RootState )=>(
-            Object.values( state.testAnswer.data  ).map(( answer ) => 
+            Object.values( state.testAnswer.data ).map(( answer ) => 
                 ( typeof answer !== "object" )
                 ? answer !== undefined  
                 : answer.selected.length >= TEST_TYPE.tagSet.selectedMinLength 
@@ -167,7 +164,9 @@ export const useIsAllTestAnswered = ( ) => {
 }
 
 const useTestAnswerStatus = () => {
-    const dispatch = useDispatch(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
+    /* Using useDispatch with createAsyncThunk. 
+    ( https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete ) */
+    const dispatch = useDispatch(); 
     const status = useSelector(( state:RootState )=>state.testAnswer.loadStatus);
     return ([
         status,
@@ -178,7 +177,7 @@ const useTestAnswerStatus = () => {
 }
 
 const useSubmitAnswer = () => {
-    const dispatch = useDispatch<AppDispatch>(); /* Using useDispatch with createAsyncThunk. https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete */
+    const dispatch = useDispatch<AppDispatch>(); 
     const { data } = useSelector(( state:RootState ) => state.testAnswer );
 
     const id = useUserId();

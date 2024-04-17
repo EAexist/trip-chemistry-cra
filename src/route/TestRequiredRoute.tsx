@@ -1,6 +1,6 @@
 /* React */
 
-/* React Packages */
+/* Externals */
 import { Outlet, useNavigate } from "react-router-dom";
 
 /* App */

@@ -1,7 +1,7 @@
 /* React */
 import { ChangeEvent } from "react";
 
-/* React Packages */
+/* Externals */
 import { Close } from "@mui/icons-material";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 

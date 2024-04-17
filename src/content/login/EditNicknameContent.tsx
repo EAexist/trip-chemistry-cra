@@ -1,6 +1,6 @@
 /* React */
 
-/* React Packages */
+/* Externals */
 
 /* App */
 import useNavigateWithGuestContext from "../../hooks/useNavigateWithGuestContext";

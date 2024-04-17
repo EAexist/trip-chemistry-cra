@@ -1,7 +1,7 @@
 /* React */
 import { ChangeEvent, useEffect, useState } from 'react';
 
-/* React Packages */
+/* Externals */
 import { Close, Done, NavigateBefore, QuestionMark, Search, Warning } from '@mui/icons-material';
 import { Button, Checkbox, Grid, Icon, IconButton, InputAdornment, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Stack, TextField, Toolbar } from '@mui/material';
 import { useDispatch } from 'react-redux';

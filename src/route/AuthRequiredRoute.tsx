@@ -1,7 +1,7 @@
 /* React */
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-/* React Packages */
+/* Externals */
 import { useEffect } from "react";
 import { useIsAuthorized } from "../reducers/authReducer";
 import LoginContent from "../content/login/LoginContent";

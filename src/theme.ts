@@ -114,6 +114,15 @@ export const theme = createTheme({
                 disableGutters: true,
             }
         },
+        MuiBadge: {
+            styleOverrides: {
+                badge: ({ ownerState }) => ({
+                    ...(ownerState.color === 'warning' && {
+                        backgroundColor: defaultTheme.palette.warning.light
+                    }),
+                }),
+            }
+        },
         MuiButton: {
             variants: [
                 {
@@ -156,6 +165,19 @@ export const theme = createTheme({
                 },
             ],
         },
+        MuiTooltip: {
+            defaultProps: {
+                enterTouchDelay: 0,
+                leaveTouchDelay: 5000,
+                sx: {
+                    '& .MuiTooltip-tooltip': {
+                        width: '124px',
+                        padding: '0px',
+                        color: "chocolate"
+                    },
+                }
+            }
+        },
         MuiToolbar: {
             defaultProps: {
                 disableGutters: true,
@@ -174,37 +196,5 @@ export const theme = createTheme({
                 size: "large",
             }
         },
-        // MuiToggleButton: {            
-        //     // variants: [
-        //     //     {
-        //     //         props: { variant: 'contained' },
-        //     //         style: {
-        //     //             padding: 0,
-        //     //             borderRadius: 0,
-        //     //             height: 'fit-content',
-        //     //         },
-        //     //     },
-        //     // ],
-        //     styleOverrides: {
-        //         root: ({ ownerState }) => ({
-        //             padding: 0,
-        //             borderRadius: 0,
-        //             ...(
-        //                 // ownerState.variant === 'contained' &&
-        //                 ownerState.selected ? {
-        //                 '&.MuiButtonBase-root, &.MuiButtonBase-root:hover': {
-        //                     backgroundColor: defaultTheme.palette.primary.main,
-        //                     color: `${defaultTheme.palette.secondary.main}`,
-        //                     // color: `white`,
-        //                 },                            
-        //             } : {
-        //                 '&.MuiButtonBase-root': {
-        //                     border: `4px ${defaultTheme.palette.primary.main}`,
-        //                     color: `${defaultTheme.palette.primary.main}`,
-        //                 }
-        //             }),
-        //         }),
-        //     },
-        // }
     }
 });

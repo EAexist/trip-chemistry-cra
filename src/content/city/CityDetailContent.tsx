@@ -1,9 +1,11 @@
 /* React */
 
-/* React Packages */
+/* Externals */
 import { ArrowRight, NavigateBefore } from "@mui/icons-material";
-import { AppBar, Button, CardContent, IconButton, Stack, Toolbar } from "@mui/material";
+import { AppBar, Button, CardContent, Divider, IconButton, Stack, Toolbar } from "@mui/material";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import loadable from "@loadable/component";
 
 /* Swiper */
 import 'swiper/css';
@@ -22,12 +24,11 @@ import PaginationDiv from "../../swiper/components/PaginationDiv";
 import { SWIPERPROPS_CITYDETAILCONTENT } from "../../swiper/props";
 import { useStrings } from "../../texts";
 import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
-
-import loadable from "@loadable/component";
-import { useSelector } from "react-redux";
 import useNavigateWithGuestContext from "../../hooks/useNavigateWithGuestContext";
 import { RootState } from "../../store";
-const ChemistryResultAccordion = loadable(() => import( /* webpackChunkName: "ChemistryResultAccordion" */ './ChemistryResultAccordion'));
+
+/* Loadable Components */
+const ChemistryResultAccordion = loadable(() => import( /* webpackChunkName: "ChemistryResultAccordion" */ './component/ChemistryResultAccordion'));
 
 interface CityDetailContentProps {
     cityClass: keyof typeof TEST.city.subTests;
@@ -50,7 +51,7 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
         navigate('../..');
     };
 
-    const isChemistryDefined = useSelector( (state: RootState) => ( state.chemistry !== undefined ) );
+    const isChemistryDefined = useSelector((state: RootState) => (state.chemistry !== undefined));
 
     return (
         isAppBarHidden &&
@@ -71,11 +72,14 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
             <Toolbar />
             <div className="block--with-margin-x block__body">
                 <h2 className="typography-heading">{strings.subTest[cityClass as keyof typeof strings.subTest].title}</h2>
+                {
+                    isChemistryDefined &&
+                    <ChemistryResultAccordion cityClass={cityClass} />
+                }
+                <div>
+                    <Divider />
+                </div>
             </div>
-            {
-                isChemistryDefined &&
-                <ChemistryResultAccordion cityClass={cityClass} />
-            }
             <Swiper {...SWIPERPROPS_CITYDETAILCONTENT} initialSlide={state && state.initialIndex ? state.initialIndex : 0} className="">
                 <div slot="container-start" >
                     <PaginationDiv className='pageSwiper-pagination' sx={{ justifyContent: 'center' }} />
@@ -97,7 +101,7 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                                             <h3 className="typography-heading typography-white">{cityId}</h3>
                                             {
                                                 NATION[CITY[cityId as keyof typeof CITY].nation as keyof typeof NATION].flag
-                                                && <Flag id={CITY[cityId as keyof typeof CITY].nation} style={{ marginLeft : 8 }} outlined={false} />
+                                                && <Flag id={CITY[cityId as keyof typeof CITY].nation} style={{ marginLeft: 8 }} outlined={false} />
                                             }
                                         </Stack>
                                     </CardContent>
@@ -118,10 +122,10 @@ function CityDetailContent({ cityClass }: CityDetailContentProps) {
                                         </Button>
                                     </a>
                                 </div>
-                                    <Stack>
-                                        <p className="typography-note">{commonStrings.reference}{commonStrings.linkType[CITY[cityId as keyof typeof CITY].linkType as keyof typeof commonStrings.linkType].name}</p>
-                                        <Logo id={CITY[cityId as keyof typeof CITY].linkType} />
-                                    </Stack>
+                                <Stack>
+                                    <p className="typography-note">{commonStrings.reference}{commonStrings.linkType[CITY[cityId as keyof typeof CITY].linkType as keyof typeof commonStrings.linkType].name}</p>
+                                    <Logo id={CITY[cityId as keyof typeof CITY].linkType} />
+                                </Stack>
                                 <div />
                             </div>
                         </SwiperSlide>

@@ -1,11 +1,10 @@
 /* React */
 import { useEffect, useRef, useState } from "react";
 
-/* React Packages */
-
-import { ArrowRight, ExpandMore, NavigateNext, RamenDining } from "@mui/icons-material";
-import { Box, Button, ButtonBase, Card, CardContent, CardMedia, Divider, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, ListSubheader, Stack, Toolbar, Tooltip, useTheme } from "@mui/material";
-import { AnimatePresence, m, useMotionValueEvent, useScroll } from "framer-motion";
+/* Externals */
+import { ExpandMore, NavigateNext, RamenDining } from "@mui/icons-material";
+import { Alert, Box, Button, ButtonBase, Card, CardContent, CardMedia, Divider, List, ListItemAvatar, ListItemButton, ListItemText, ListSubheader, Stack, Tooltip } from "@mui/material";
+import { m, useMotionValueEvent, useScroll } from "framer-motion";
 import { useSelector } from "react-redux";
 import LazyDomAnimation from "../../motion/LazyDomAnimation";
 
@@ -15,10 +14,7 @@ import 'swiper/css/effect-coverflow'; /* Food Carousel */
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
 /* App */
-import { CITY, LINK, NATION, SLIDERPROPS_TEST_BUDGET_FOOD, TEST, TEST_SECTIONS } from "../../common/app-const";
-import { RootState } from "../../store";
-import { useStrings } from "../../texts";
-
+import { CITY, LINK, NATION, SLIDERPROPS_TEST_BUDGET_FOOD, TEST, TEST_SECTIONS, TEST_TYPE } from "../../common/app-const";
 import TestSection from "../../components/Block/TestSection";
 import FoodImageCard from "../../components/Card/FoodImageCard";
 import ImageCard from "../../components/Card/ImageCard";
@@ -39,10 +35,12 @@ import Stepper from "../../components/Step/components/Stepper";
 import withReducer from "../../hocs/withReducer";
 import useNavigateWithGuestContext from "../../hooks/useNavigateWithGuestContext";
 import { ITestName } from "../../interfaces/ITestAnswer";
-import { FADEIN, FADEOUT } from "../../motion/props";
+import { FADEIN } from "../../motion/props";
 import { useGetProfile } from "../../reducers/authReducer";
 import testAnswerReducer, { NumericTestName, SetTestName, useIsAllTestAnswered, useSubmitAnswer, useTestAnswerStatus } from "../../reducers/testAnswerReducer";
+import { RootState } from "../../store";
 import { SWIPERPROPS_CAROUSEL, SWIPERPROPS_FOODCARDCAROUSEL } from "../../swiper/props";
+import { useStrings } from "../../texts";
 import getImgSrc, { FORMATWEBP } from "../../utils/getImgSrc";
 import { priceText } from "../../utils/priceText";
 import LoadRequiredContent, { AuthLoadRequiredContent } from "../LoadRequiredContent";
@@ -51,7 +49,7 @@ import AnswerSlider from "./component/AnswerSlider";
 import TagSetTestAnswerChip from "./component/TagSetTestAnswerChip";
 import TestAnswerBadge from "./component/TestAnswerBadge";
 import TestInstruction from "./component/TestInstruction";
-
+import UnAnsweredTestAlertButton from "./component/UnAnsweredTestAlertButton";
 interface TestContentProps {
 
 };
@@ -59,17 +57,17 @@ interface TestContentProps {
 function TestContent({ }: TestContentProps) {
 
     const navigate = useNavigateWithGuestContext();
-    const theme = useTheme();
 
-    /* contentstrings */
+    /* Strings */
     const contentstrings = useStrings().public.contents.test;
     const commonStrings = useStrings().public.common;
 
     /* Reducers */
-    const isAllTestAnswered = useIsAllTestAnswered();
     const leadershipAnswer = useSelector((state: RootState) => state.testAnswer.data.leadership);
     const scheduleAnswer = useSelector((state: RootState) => state.testAnswer.data.schedule) as number;
     const foodAnswer = useSelector((state: RootState) => state.testAnswer.data.food) as number;
+
+    const isAllTestAnswered = useIsAllTestAnswered();
 
     const getProfile = useGetProfile();
     const submitAnswer = useSubmitAnswer();
@@ -97,9 +95,6 @@ function TestContent({ }: TestContentProps) {
         }
     };
 
-    const handleConfirmTooltipClick = () => {
-        /* @TODO Scroll To First UnAnswered Test Section. */
-    }
 
     const handleConfirmButtonClick = () => {
         submitAnswer();
@@ -111,14 +106,9 @@ function TestContent({ }: TestContentProps) {
     };
     const handleLoadSuccess = () => {
         navigate('../result');
-        // setIsAnswerSubmitted(false);
     }
-    // const handleFail = () => {
-    //     navigate('test');
-    // }
 
     /* Side Effects */
-
     /* Test Answer Side Effects */
     useEffect(() => {
         if (foodAnswer !== undefined) {
@@ -308,26 +298,26 @@ function TestContent({ }: TestContentProps) {
                                                                                     <m.div style={{ width: isActive ? "100vw" : "auto" }} layout layoutId="box" >
                                                                                         <Box sx={{ borderRadius: "12px", bgcolor: 'gray.light', ...isActive ? {} : { width: "196px", height: "196px" } }} className={`block--centered block--with-padding-x ${isActive ? "block--with-margin-x" : ""}`}>
                                                                                             {/* <AnimatePresence mode={"wait"} initial={false}> */}
-                                                                                                <List>
-                                                                                                    <ListSubheader sx={{ textAlign: "start", bgcolor: 'transparent' }}>더 많은 식당 찾아보기</ListSubheader>
-                                                                                                    {
-                                                                                                        TEST.food.more.map((source) => (
-                                                                                                            <ListItemButton disableGutters href={LINK[source as keyof typeof LINK].link} key={source} style={{ padding: 0 }}>
-                                                                                                                <ListItemAvatar>
-                                                                                                                    <Logo id={source} size="large" />
-                                                                                                                </ListItemAvatar>
-                                                                                                                <ListItemText
-                                                                                                                    primary={
-                                                                                                                        <h3 className="typography-label">{commonStrings.linkType[source as keyof typeof commonStrings.linkType].name}</h3>
-                                                                                                                    }
-                                                                                                                    secondary={
-                                                                                                                        <p className="">{commonStrings.linkType[source as keyof typeof commonStrings.linkType].body}</p>
-                                                                                                                    }
-                                                                                                                />
-                                                                                                            </ListItemButton>
-                                                                                                        ))
-                                                                                                    }
-                                                                                                </List>
+                                                                                            <List>
+                                                                                                <ListSubheader sx={{ textAlign: "start", bgcolor: 'transparent' }}>더 많은 식당 찾아보기</ListSubheader>
+                                                                                                {
+                                                                                                    TEST.food.more.map((source) => (
+                                                                                                        <ListItemButton disableGutters href={LINK[source as keyof typeof LINK].link} key={source} style={{ padding: 0 }}>
+                                                                                                            <ListItemAvatar>
+                                                                                                                <Logo id={source} size="large" />
+                                                                                                            </ListItemAvatar>
+                                                                                                            <ListItemText
+                                                                                                                primary={
+                                                                                                                    <h3 className="typography-label">{commonStrings.linkType[source as keyof typeof commonStrings.linkType].name}</h3>
+                                                                                                                }
+                                                                                                                secondary={
+                                                                                                                    <p className="">{commonStrings.linkType[source as keyof typeof commonStrings.linkType].body}</p>
+                                                                                                                }
+                                                                                                            />
+                                                                                                        </ListItemButton>
+                                                                                                    ))
+                                                                                                }
+                                                                                            </List>
                                                                                             {/* </AnimatePresence> */}
                                                                                         </Box>
                                                                                     </m.div>
@@ -419,29 +409,21 @@ function TestContent({ }: TestContentProps) {
                                         ))
                                     }
                                 </ScrollPageContainer>
-                                <div>
-                                    <Tooltip
-                                        open={isConfirmTooltipOpen}
-                                        onClose={() => setIsConfirmTooltipOpen(false)}
-                                        onOpen={handleConfirmTooltipOpen}
-                                        title={
-                                            <Button onClick={handleConfirmTooltipClick} endIcon={<NavigateNext />}>
-                                                {contentstrings.main.tooltip_completeTest}
-                                            </Button>
-                                        }
-
+                                {
+                                    !isAllTestAnswered &&
+                                    <div className="flex block--with-margin" style={{ marginTop: 0 }}>
+                                        <UnAnsweredTestAlertButton />
+                                    </div>
+                                }
+                                <div className="flex block--with-margin" style={{ marginTop: 0 }}>
+                                    <Button
+                                        onClick={handleConfirmButtonClick}
+                                        disabled={!isAllTestAnswered}
+                                        variant="contained"
+                                        className="button--full"
                                     >
-                                        <span className="block--with-margin flex" style={{ marginTop: 0 }}>
-                                            <Button
-                                                onClick={handleConfirmButtonClick}
-                                                disabled={!isAllTestAnswered}
-                                                variant="contained"
-                                                className="button--full"
-                                            >
-                                                {contentstrings.main.confirmButton}
-                                            </Button>
-                                        </span>
-                                    </Tooltip>
+                                        {contentstrings.main.confirmButton}
+                                    </Button>
                                 </div>
                             </StepCheckpointContextProvider>
                         </StepContext.Provider>

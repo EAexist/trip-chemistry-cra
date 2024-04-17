@@ -1,7 +1,7 @@
 /* React */
 import { useState } from "react";
 
-/* React Packages */
+/* Externals */
 import { Button, Stack, Toolbar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 

@@ -15,8 +15,8 @@ const AuthRequiredRoute = loadable(() => import(/* webpackChunkName: "AuthRequir
 const TestRequiredRoute = loadable(() => import( /* webpackChunkName: "TestRequiredRoute" */'./route/TestRequiredRoute'));
 // const GuestRoute = loadable(() => import( /* webpackChunkName: "GuestRoute" */'./route/GuestRoute'));
 const AuthRecommendedPage = loadable(() => import(/* webpackChunkName: "AuthRecommendedPage" */ './route/AuthRecommendedPage'));
-const ChemistryReducerProvider = loadable(() => import(/* webpackChunkName: "ChemistryReducerProvider" */ './reducers/ChemistryReducerProvider'));
-// import ChemistryReducerProvider from './reducers/ChemistryReducerProvider';
+const ChemistryRoute = loadable(() => import(/* webpackChunkName: "ChemistryRoute" */ './reducers/ChemistryRoute'));
+// import ChemistryRoute from './reducers/ChemistryRoute';
 
 /* Public Contents */
 const HomeContent = loadable(() => import(/* webpackChunkName: "HomeContent" */ './content/home/HomeContent'));
@@ -69,7 +69,7 @@ const routes = createRoutesFromElements(
             <Route key={'testPreview'} path={'testPreview'} element={<TestContent />} />
             <Route path="/" element={<Navigate to="home" />} />
             <Route key={'home'} index path={'home'} element={<HomeContent />} />
-            <Route key={'chemistry'} path={'chemistry/:chemistryId'} element={<ChemistryReducerProvider />} >
+            <Route key={'chemistry'} path={'chemistry/:chemistryId'} element={<ChemistryRoute />} >
                 <Route key={'index'} index element={<ChemistryContent />} />
                 {/* @TODO 닉네임을 통한 사용자 검색 및 친구 초대 */}
                 {/* <Route key={'searchAndInviteFriend'} path={'searchAndInviteFriend'} element={<SearchAndInviteFriendContent />} /> */}

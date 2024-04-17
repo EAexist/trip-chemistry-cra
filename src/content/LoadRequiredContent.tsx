@@ -1,7 +1,7 @@
 /* React */
 import { PropsWithChildren, useEffect, useState } from "react";
 
-/* React Packages */
+/* Externals */
 import { CircularProgress } from "@mui/material";
 
 /* App */

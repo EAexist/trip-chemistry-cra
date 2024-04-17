@@ -1,6 +1,6 @@
 /* React */
 
-/* React Packages */
+/* Externals */
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";

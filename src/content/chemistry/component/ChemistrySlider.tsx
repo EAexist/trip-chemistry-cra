@@ -91,12 +91,12 @@ function ChemistrySlider({ testName, ...sliderOwnProps }: ChemistrySliderProps) 
 export default ChemistrySlider;
 export type { ChemistrySliderProps };
 
-
+/* Deprecated */
 // interface ValueLabelComponentProps extends SliderValueLabelProps {
 //     testName: ITestName;
 // }
 
-// const valueLabelComponent_ = (testName: ITestName) => ({ value, children }: SliderValueLabelProps) => {
+// const valueLabelComponent = (testName: ITestName) => ({ value, children }: SliderValueLabelProps) => {
 
 //     const { userList, ascendingOrder } = useProfileIdListByAnswer(testName, value);
 //     const isEven = ascendingOrder % 2 === 0;

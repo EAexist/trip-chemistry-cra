@@ -1,12 +1,12 @@
 /* React */
 import { Fragment, useEffect, useState } from "react";
 
-/* React Packages */
+/* Externals */
 import { AnimatePresence, m } from "framer-motion";
 import { useSelector } from "react-redux";
 import LazyDomAnimation from "../../motion/LazyDomAnimation";
 
-import { List, ListItem, Stack } from "@mui/material";
+import { List, ListItem, ListItemAvatar, ListItemText, Stack } from "@mui/material";
 
 /* App */
 import { SLIDERPROPS_CHEMISTRY_BUDGET_FOOD, TEST } from "../../common/app-const";
@@ -25,11 +25,7 @@ import { RootState } from "../../store";
 import CityChemistryContent from "./CityChemistryContent";
 import ChemistrySlider from "./component/ChemistrySlider";
 
-interface ChemistryDetailContentProps {
-
-};
-
-function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
+function ChemistryDetailContent({ }) {
 
     /* Constants */
     const testStrings = useStrings().public.contents.test;
@@ -51,9 +47,9 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
         state.chemistry.data.profileList[answeredProfileIdList[characterSectionActiveUserIndex]]?.testResult.tripCharacter
     );
 
-    const profileList = Object.values(useSelector((state: RootState) =>state.chemistry.data.profileList))
-    const leaderDataList = filterProfile( profileList, chemistry?.leaderList, "nickname");
-    const follwerDataList = filterProfile( profileList, answeredProfileIdList.filter(id => !chemistry?.leaderList.includes(id)), "nickname");
+    const profileList = Object.values(useSelector((state: RootState) => state.chemistry.data.profileList))
+    const leaderDataList = filterProfile(profileList, chemistry?.leaderList, "nickname");
+    const follwerDataList = filterProfile(profileList, answeredProfileIdList.filter(id => !chemistry?.leaderList.includes(id)), "nickname");
     const leadershipAnswerToProfileList = useValueToProfileIdList("leadership");
 
     const sortedCityList = useSortedCityList();
@@ -150,14 +146,14 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                                 <p>
                                     {strings.sections.leadership.detail.map((string: string | undefined, index) => (
                                         string === "/idList"
-                                            ? chemistry && follwerDataList.map((nickname : string, index) =>
-                                                <Fragment  key={index}>
+                                            ? chemistry && follwerDataList.map((nickname: string, index) =>
+                                                <Fragment key={index}>
                                                     {index > 0 && ", "}
                                                     <b>{` ${nickname} `}</b>
                                                     {strings.sections.leadership.idPostfix}
                                                 </Fragment>
                                             )
-                                            : <Fragment  key={index}>{string}</Fragment>
+                                            : <Fragment key={index}>{string}</Fragment>
                                     ))}
                                 </p>
                             }
@@ -170,19 +166,22 @@ function ChemistryDetailContent({ }: ChemistryDetailContentProps) {
                         <div>
                             <List disablePadding>
                                 {
-                                    (Object.values(testStrings.test.schedule.answers) as { label: string, value: number }[]).map(({ label, value }) => (
-                                        <ListItem key={label} disablePadding={!Object.keys(scheduleAnswerToProfiles).includes(String(value))} disableGutters>
-                                            <Stack>
+                                    ( Object.values(testStrings.test.schedule.answers) as { label: string, value: number }[] ).map(({ label, value }) => (
+                                        <ListItem key={label} disablePadding={Object.keys(scheduleAnswerToProfiles).includes(String(value))} disableGutters>
+                                            <ListItemAvatar style={{ width: "100px" }} className="block--centered">
                                                 <p className={Object.keys(scheduleAnswerToProfiles).includes(String(value)) ? "typography-label" : "disabled"}>{label}</p>
-                                                <Stack spacing={0.5}>
-                                                    {
-                                                        (Object.keys(scheduleAnswerToProfiles).includes(String(value)) ? scheduleAnswerToProfiles[value] : []).map((id) => (
-                                                            <FriendAvatar key={id} id={id} />
-                                                        ))
-                                                    }
+                                            </ListItemAvatar>
+                                            <ListItemText primary={
+                                                <Stack>
+                                                    <Stack spacing={0.5}>
+                                                        {
+                                                            (Object.keys(scheduleAnswerToProfiles).includes(String(value)) ? scheduleAnswerToProfiles[value] : []).map((id) => (
+                                                                <FriendAvatar key={id} id={id} />
+                                                            ))
+                                                        }
+                                                    </Stack>
                                                 </Stack>
-                                            </Stack>
-                                            {/* <ListItemAvatar></ListItemAvatar> */}
+                                            } sx={{ marginLeft: "16px" }} />
                                         </ListItem>
                                     )).reverse()
                                 }

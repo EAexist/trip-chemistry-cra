@@ -1,7 +1,7 @@
 /* React */
 import { useCallback, useRef, useState } from "react";
 
-/* React Packages */
+/* Externals */
 import { Done, NavigateBefore, NavigateNext } from "@mui/icons-material";
 import { Button, IconButton, Toolbar } from "@mui/material";
 import { m } from 'framer-motion';
@@ -22,10 +22,7 @@ import chemistryReducer, { useChemistryId, useChemistryLoadStatus } from "../../
 import { SWIPERPROPS_PAGE } from "../../swiper/props";
 import LoadRequiredContent, { AuthLoadRequiredContent } from "../LoadRequiredContent";
 
-interface CreateChemistryContentProps {
-};
-
-function CreateChemistryContent({ }: CreateChemistryContentProps) {
+function CreateChemistryContent({ }) {
 
     /* Constants */
     const maxTitleLength = 20;

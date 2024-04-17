@@ -1,13 +1,17 @@
+/* React */
 import { PropsWithChildren, useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 
+/* Framer Motion */
 import { useMotionValueEvent, useScroll } from "framer-motion";
 
-import PageContext from "./PageContext";
+/* App */
 import Step from "../Step/components/Step";
-import { useLocation, useNavigate } from "react-router-dom";
+import PageContext from "./PageContext";
 
-/* ScrollPageContainer
-    Sticky Container, which displays paged items according to the amount of scroll in the container.*/
+/*  ScrollPageContainer
+    Description: Sticky Container, which displays paged items according to the amount of scroll in the container.
+*/
 
 interface ScrollPageContainerProps {
     pages: number;
@@ -18,7 +22,6 @@ const ScrollPageContainer = ({ onPageChange, pages, children }: PropsWithChildre
 
     const [page, setPage] = useState<number>();
     const { pathname } = useLocation();
-    // const [ pages, setPages ] = useState<number>(0);
 
     const ref = useRef<HTMLDivElement>(null);
     const pageRef = useRef<HTMLDivElement>(null);

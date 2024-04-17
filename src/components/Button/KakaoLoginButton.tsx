@@ -1,7 +1,7 @@
 /* React */
 import { useEffect, useState } from "react";
 
-/* React Packages */
+/* Externals */
 import { ButtonBase } from "@mui/material";
 import { useLocation } from "react-router-dom";
 

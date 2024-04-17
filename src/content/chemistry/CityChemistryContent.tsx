@@ -1,7 +1,7 @@
 /* React */
 import { useEffect } from "react";
 
-/* React Packages */
+/* Externals */
 import { StarBorder, ThumbUp } from "@mui/icons-material";
 import { CardActionArea, CardContent, Divider, Rating, Stack } from "@mui/material";
 

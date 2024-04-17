@@ -1,7 +1,7 @@
 /* React */
 import { PropsWithChildren } from "react";
 
-/* React Packages */
+/* Externals */
 import { Button, Toolbar } from "@mui/material";
 import { m } from 'framer-motion';
 import LazyDomAnimation from "../../motion/LazyDomAnimation";

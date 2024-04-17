@@ -1,7 +1,7 @@
 /* React */
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-/* React Packages */
+/* Externals */
 import { IUserProfile } from "../../interfaces/IUserProfile";
 import { useIsAuthorized, useUserProfile } from "../../reducers/authReducer";
 import { useEffect } from "react";

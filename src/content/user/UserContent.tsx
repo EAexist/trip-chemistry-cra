@@ -1,6 +1,6 @@
 /* React */
 
-/* React Packages */
+/* Externals */
 import { Edit, Help } from "@mui/icons-material";
 import { Button, ButtonBase, Icon, IconButton, Stack, Toolbar } from "@mui/material";
 import { useDispatch } from "react-redux";

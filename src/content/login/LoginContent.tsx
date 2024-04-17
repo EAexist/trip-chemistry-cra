@@ -1,7 +1,7 @@
 /* React */
 import { useEffect, useState } from "react";
 
-/* React Packages */
+/* Externals */
 import { Button, Grid, Stack, Toolbar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
