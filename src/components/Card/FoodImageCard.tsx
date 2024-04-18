@@ -51,5 +51,4 @@ const FoodImageCard = ({ id, isActive, ...props }: FoodImageCardProps) => {
     )
 }
 
-
 export default FoodImageCard;

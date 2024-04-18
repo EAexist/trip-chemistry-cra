@@ -20,7 +20,7 @@ const resize = ( directory, width, height, suffix ) => {
 // resize( 'icon', 512, 512, '-large' );
 
 // resize( 'logos', 256, 256, '-small' );
-resize( 'character', 128, 128, '-small' );
-resize( 'character', 256, 256, '-large' );
+// resize( 'info', 128, 128, '-small' );
+resize( 'info', 384, 384, '-xlarge' );
 
 // resize( 'test', 480, 480, '-medium' );
