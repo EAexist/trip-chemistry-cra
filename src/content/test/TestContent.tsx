@@ -186,7 +186,7 @@ function TestContent({ }: TestContentProps) {
                                     </m.div>
                                     <Divider />
                                 </div>
-                                <ScrollPageContainer onPageChange={(page) => setStep(page)} pages={Object.keys(TEST_SECTIONS).length}>
+                                <ScrollPageContainer onPageChange={(page) => setStep(page)} pages={Object.keys(TEST_SECTIONS).length} isEnabled={false}>
                                     {
                                         (["expectation", "activity"] as SetTestName[]).map((testName, index) => {
                                             return (
@@ -342,10 +342,9 @@ function TestContent({ }: TestContentProps) {
                                                 </div>
                                                 {
                                                     foodAnswer !== undefined
-                                                        ? <h4 className='typography-test-answer'>
+                                                        ? <p className='typography-test-answer'>
                                                             {priceText(foodAnswer)} {(foodAnswer === SLIDERPROPS_TEST_BUDGET_FOOD.max) ? '이상' : ''}
-                                                        </h4>
-                                                        // : <h4 className='typography-test-answer'>? 원</h4>
+                                                        </p>
                                                         : <></>
                                                 }
                                                 {/* <div className="container--center" style={{ marginTop: 0 }}> */}

@@ -20,16 +20,16 @@ interface ScrollPageItemProps {
 
 const ScrollPageItem = ({ page, children, className }: PropsWithChildren<ScrollPageItemProps>) => {
 
-    const { activePage } = usePage();
+    const { isEnabled, activePage } = usePage();
     const pageRef = useRef<HTMLDivElement>(null);
 
     return (
-        (activePage === page) &&
+        ( (!isEnabled) || (activePage === page) )&&
         <LazyDomAnimation>
             <m.div
                 ref={pageRef}
                 {...FADEIN}
-                className={`ScrollPageItem fill-window ${className}`}
+                className={`ScrollPageItem fill-window ${isEnabled ? 'ScrollPageItem--enabled' : ''} ${className}`}
             >
                 {children}
             </m.div>

@@ -2,9 +2,10 @@ import { PropsWithChildren, createContext, useContext } from "react";
 
 interface PageContextProps {
     activePage?: number; 
+    isEnabled?: boolean
 };
 
-const PageContext = createContext<PageContextProps>( {} as PageContextProps );
+const PageContext = createContext<PageContextProps>( { isEnabled : true } as PageContextProps );
 
 const usePage = () => useContext(PageContext);
 

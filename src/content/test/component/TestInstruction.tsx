@@ -23,7 +23,7 @@ function TestInstruction({ testName, isAnswered, className, showBackdrop = false
             <div className={ `${className} ${showBackdrop ? "backdrop" : ""}`}>
                 <Stack justifyContent={"center"}>
                     <Help sx={{ fontSize : 18 }}/>
-                    <h4 className='typography--center typography-note'>{instruction}</h4>
+                    <p className='typography-note'>{instruction}</p>
                 </Stack>
             </div>
 

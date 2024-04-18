@@ -325,10 +325,6 @@ button {
 }
 
 /**** Typography ****/
-.typography-center {
-    text-align: center;
-}
-
 .typography-body, .typography-body.MuiButton-text.MuiButtonBase-root {
     font-weight: 400;
     font-size: 14px;
@@ -625,9 +621,12 @@ button {
 
 /* ScrollPageItem */
 .ScrollPageItem {
+    width: 100%;
+}
+
+.ScrollPageItem--enabled {
     position: absolute;
     top: 0;
-    width: 100%;
 }
 
 /* Logo */

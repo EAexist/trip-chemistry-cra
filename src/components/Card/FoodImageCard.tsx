@@ -26,10 +26,10 @@ const FoodImageCard = ({ id, isActive, ...props }: FoodImageCardProps) => {
     }, [])
 
     return (
-        <a href={isActive ? data.link : undefined} target="_blank" rel="noopener noreferrer">
-            <ButtonBase className="block--full" disabled={!isActive}>
+        // <a href={isActive ? data.link : undefined} target="_blank" rel="noopener noreferrer">
+            <ButtonBase href={data.link} className="block--full" disabled={!isActive}>
                 <div className="block__body" style={{ opacity: isActive ? 1 : 0.5 }}>
-                    <ImageCard src={getImgSrc("/food", data.restaurant, FORMATWEBP)} title={strings.name} sx={{ width: "196px", height: "196px", borderRadius: "12px" }} className="body__head" />
+                    <ImageCard aria-label={`Visit ${data.linkType} to learn more about restaurant ${strings.restaurantName}`} src={getImgSrc("/food", data.restaurant, FORMATWEBP)} title={strings.name} sx={{ width: "196px", height: "196px", borderRadius: "12px" }} className="body__head" />
                     {
                         isActive &&
                         <div style={{ width: "100%", textAlign: "start" }} className="block__body">
@@ -47,7 +47,7 @@ const FoodImageCard = ({ id, isActive, ...props }: FoodImageCardProps) => {
                     }
                 </div>
             </ButtonBase>
-        </a>
+        // </a>
     )
 }
 

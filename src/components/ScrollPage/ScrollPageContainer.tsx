@@ -14,13 +14,14 @@ import PageContext from "./PageContext";
 */
 
 interface ScrollPageContainerProps {
-    pages: number;
-    onPageChange?: (page: number) => void;
+    pages: number
+    onPageChange?: (page: number) => void
+    isEnabled?: boolean
 };
 
-const ScrollPageContainer = ({ onPageChange, pages, children }: PropsWithChildren<ScrollPageContainerProps>) => {
+const ScrollPageContainer = ({ onPageChange, pages, isEnabled=true, children }: PropsWithChildren<ScrollPageContainerProps>) => {
 
-    const [page, setPage] = useState<number>();
+    const [ page, setPage ] = useState<number>();
     const { pathname } = useLocation();
 
     const ref = useRef<HTMLDivElement>(null);
@@ -56,13 +57,15 @@ const ScrollPageContainer = ({ onPageChange, pages, children }: PropsWithChildre
                     <Step key={index} index={index} className="fill-window" style={{ visibility: "hidden" }}/>
                 ))
             }
-            <div className="ScrollPageContainer__viewport-container">
-                <div ref={pageRef} className="ScrollPageContainer__viewport fill-window">
-                    <PageContext.Provider value={{ activePage: page }}>
-                        {children}
-                    </PageContext.Provider>
+            {
+                <div className={`ScrollPageContainer__viewport-container`}>
+                    <div ref={pageRef} className={`ScrollPageContainer__viewport ${isEnabled ? "fill-window" : ""}`}>
+                        <PageContext.Provider value={{ activePage: page, isEnabled }}>
+                            {children}
+                        </PageContext.Provider>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
     );
 }
