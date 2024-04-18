@@ -14,7 +14,8 @@
     "moduleResolution": "node",
     "incremental": true,
     "outDir": "lib",
-    "sourceMap": true,
+    "sourceMap": true
+    // "types": ["@remix-run/node"],
     // "baseUrl": "src"
   },
   // "include": ["src"]
