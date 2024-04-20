@@ -14,6 +14,7 @@ import RoutedMotionPage from "../../motion/components/RoutedMotionPage";
 import { asyncGuestSignIn, authorize } from "../../reducers/authReducer";
 import { AppDispatch, RootState } from "../../store";
 import { AuthLoadRequiredContent } from "../LoadRequiredContent";
+import env from "../../env";
 
 interface LoginContentProps {
 
@@ -54,8 +55,8 @@ function LoginContent({ }: LoginContentProps) {
 
     useEffect(() => {
         const urlObject = new URL(url);
-        urlObject.searchParams.set('client_id', `${process.env.REACT_APP_KAKAO_REST_API_KEY}`);
-        urlObject.searchParams.set('redirect_uri', `${process.env.REACT_APP_KAKAO_REDIRECT_URL}`);
+        urlObject.searchParams.set('client_id', `${env.REACT_APP_KAKAO_REST_API_KEY}`);
+        urlObject.searchParams.set('redirect_uri', `${env.REACT_APP_KAKAO_REDIRECT_URL}`);
         urlObject.searchParams.set('response_type', 'code');
         setUrl(urlObject.toString());
     }, []);

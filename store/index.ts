@@ -3,6 +3,7 @@ import authReducer, { IAuthState } from "../reducers/authReducer";
 import { IChemistryState } from "../reducers/chemistryReducer";
 import profileSearchReducer, { IProfileSearchState } from "../reducers/profileSearchReducer";
 import { ITestAnswerState } from "../reducers/testAnswerReducer";
+import env from "../env";
 
 export const store: EnhancedStore<{
     auth: IAuthState;
@@ -26,7 +27,7 @@ export const store: EnhancedStore<{
     // middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     //     serializableCheck: false,
     // }),
-    devTools: process.env.NODE_ENV !== 'production',
+    devTools: env.NODE_ENV !== 'production',
 });
 
 export const defaultReudcer = {

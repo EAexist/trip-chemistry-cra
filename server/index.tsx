@@ -24,7 +24,7 @@ import routes from '../routes';
 
 /**
  * Can be e.g. your CDN Domain (https://cdn.example.com) in production with
- * `process.env.CDN_DOMAIN` for instance.
+ * `env.CDN_DOMAIN` for instance.
  */
 const STATIC_URL = '/static/'
 
