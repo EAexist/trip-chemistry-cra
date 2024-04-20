@@ -127,40 +127,6 @@ module.exports = {
                     sideEffects: false
                 }
             ])
-            // webpackConfig.optimization.splitChunks = { chunks: 'all' }
-            // webpackConfig.publicPath = ''
-            // webpackConfig.module.rules = [
-            //     {
-            //         test: /\.(ts|tsx)$/,
-            //         exclude: /(node_modules|others|ssr)/,
-            //         use: [
-            //             'babel-loader',
-            //             {
-            //                 loader: 'ts-loader',
-            //                 options: {
-            //                     onlyCompileBundledFiles: true,
-            //                 },
-            //             }
-            //         ]
-            //     },
-            //     {
-            //         test: /\.css$/,
-            //         exclude: /\.module\.css$/i, // 모듈 파일 제외 설정
-            //         use: [
-            //             whenDev(() => "style-loader", MiniCssExtractPlugin.loader), // Do not use style-loader and mini-css-extract-plugin together. ( https://github.com/webpack-contrib/css-loader#recommend )
-            //             "css-loader",
-            //             "postcss-loader",
-            //         ]
-            //     },
-            //     {
-            //         test: /\.module\.css$/i,
-            //         use: [
-            //             whenDev(() => "style-loader", MiniCssExtractPlugin.loader), // Do not use style-loader and mini-css-extract-plugin together. ( https://github.com/webpack-contrib/css-loader#recommend )
-            //             "css-loader",
-            //             "postcss-loader",
-            //         ],
-            //     },
-            // ]
             return webpackConfig;
         },
     },
