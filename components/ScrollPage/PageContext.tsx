@@ -1,0 +1,21 @@
+import { PropsWithChildren, createContext, useContext } from "react";
+
+interface PageContextProps {
+    activePage?: number; 
+    isEnabled?: boolean
+};
+
+const PageContext = createContext<PageContextProps>( { isEnabled : true } as PageContextProps );
+
+const usePage = () => useContext(PageContext);
+
+const PageContextProvider = ( { value, children }: PropsWithChildren<{ value : PageContextProps }> ) => {
+    return(
+        <PageContext.Provider value={ value }>
+            { children }
+        </PageContext.Provider>
+    )
+}
+
+export default PageContext;
+export { usePage, PageContextProvider }; 
