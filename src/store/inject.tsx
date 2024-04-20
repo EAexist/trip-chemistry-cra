@@ -13,7 +13,7 @@
 // export default function configure(initialState) {
 //   const store : EnhancedStore = configureStore({
 //     reducer: createReducer(),
-//     devTools: process.env.NODE_ENV !== 'production',
+//     devTools: env.NODE_ENV !== 'production',
 //   })
 
 //   // Add a dictionary to keep track of the registered async reducers
