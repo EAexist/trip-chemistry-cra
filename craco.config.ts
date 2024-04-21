@@ -127,6 +127,11 @@ module.exports = {
                     sideEffects: false
                 }
             ])
+            /** 
+             * https://velog.io/@eenaree/eslint-tsconfig-paths
+            */
+            webpackConfig.resolve.extensions = [ '.ts', '.tsx', ...webpackConfig.resolve.extensions ]
+            webpackConfig.resolve.alias = { "~" : path.join(__dirname, 'src'), ...webpackConfig.resolve.alias }
             return webpackConfig;
         },
     },
