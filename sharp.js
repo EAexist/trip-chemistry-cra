@@ -25,11 +25,11 @@ const resize = ( directory, width, height, suffix ) => {
 //     });
 // }
 
-resize( 'icon', 256, 256, '-medium' );
+// resize( 'icon', 256, 256, '-medium' );
 // resize( 'icon', 512, 512, '-large' );
 
 // resize( 'logos', 256, 256, '-small' );
 // resize( 'test/schedule', 128, 128, '-medium' );
-// resize( 'logos', 512, 512, '-medium' );
+resize( 'logos', 512, 512, '-medium' );
 
 // resize( 'test', 480, 480, '-medium' );
