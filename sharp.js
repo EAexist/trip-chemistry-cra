@@ -4,10 +4,10 @@
 const sharp = require("sharp");
 const fs = require("fs");
 
-const resize = ( directory, width, height, suffix ) => {
+const resize = ( directory, width, height, suffix, name ) => {
     const path = `./public/images/${directory}`
     fs.readdirSync(path).forEach(file => {
-        if(( !file.includes("medium")) && ( !file.includes("large") ) && ( !file.includes("small") ) ){
+        if(( !file.includes("medium")) && ( !file.includes("large") ) && ( !file.includes("small") ) && (( name !== undefined ) && file.includes(name) ) ){
             console.log(file);
             sharp(`${path}/${file}`)
                 .resize(width, height, { fit: "inside" }) // width, height
@@ -25,11 +25,14 @@ const resize = ( directory, width, height, suffix ) => {
 //     });
 // }
 
-// resize( 'icon', 256, 256, '-medium' );
-// resize( 'icon', 512, 512, '-large' );
+// resize( 'icon', 20, 20, '-small' );
+resize( 'icon', 256, 256, '-medium', 'raiseHand' );
+// resize( 'icon', 512, 512, '-large', 'app' );
 
 // resize( 'logos', 256, 256, '-small' );
+// resize( 'logos', 512, 512, '-medium' );
+// resize( 'logos', 512, 512, '-medium' );
+
 // resize( 'test/schedule', 128, 128, '-medium' );
-resize( 'logos', 512, 512, '-medium' );
 
 // resize( 'test', 480, 480, '-medium' );
