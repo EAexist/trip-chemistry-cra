@@ -1,0 +1,80 @@
+/* @font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 100;
+  src: 
+  url("./AppleSDGothicNeo/AppleSDGothicNeoT.woff2") format("woff2");
+  font-display: swap;
+} */
+/* @font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 200;
+  src: 
+  url("./AppleSDGothicNeo/AppleSDGothicNeoUL.woff2") format("woff2");
+  font-display: swap;
+} */
+@font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 300;
+  src: 
+  url("./AppleSDGothicNeo/AppleSDGothicNeoL.woff2") format("woff2");
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 400;
+  src: 
+  url("AppleSDGothicNeo/AppleSDGothicNeoR.woff2") format("woff2");
+  font-display: swap;
+}
+/* @font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 500;
+  src: 
+  url("./AppleSDGothicNeo/AppleSDGothicNeoM.woff2") format("woff2");
+  font-display: swap;
+} */
+/* @font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 600;
+  src: 
+  url("./AppleSDGothicNeo/AppleSDGothicNeoSB.woff2") format("woff2");
+  font-display: swap;
+} */
+@font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 700;
+  src: 
+  url("./AppleSDGothicNeo/AppleSDGothicNeoB.woff2") format("woff2");
+  font-display: swap;
+}
+/* @font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 800;
+  src: 
+  url("./AppleSDGothicNeo/AppleSDGothicNeoEB.woff2") format("woff2");
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Apple SD Gothic Neo';
+  font-style: normal;
+  font-weight: 900;
+  src: 
+  url("./AppleSDGothicNeo/AppleSDGothicNeoH.woff2") format("woff2");
+  font-display: swap;
+} */
+
+/* @font-face {
+  font-family: 'SF Pro Display';
+  font-style: normal;
+  font-weight: 600;
+  src: url("./SF-Pro-Display/SF-Pro-Display-Semibold.otf") format("opentype");
+} */
+
