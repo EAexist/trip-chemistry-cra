@@ -35,6 +35,12 @@ module.exports = {
                 (!(isTargetWeb)) && new HtmlWebpackPlugin()
             ],
             add: [
+                [new CopyPlugin({ patterns: [
+                    { from: 'public/images', to: 'images/' },
+                    { from: 'public/robots.txt', to: 'robots.txt' },
+                    { from: 'public/favicon.ico', to: 'favicon.ico' },
+                    { from: 'public/manifest.json', to: 'manifest.json' },
+                ] }), 'append'],
                 [new LoadablePlugin(), 'append'],
                 [new CleanWebpackPlugin({
                     /**
