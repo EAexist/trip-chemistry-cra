@@ -52,7 +52,7 @@ module.exports = {
                 ...when(isSsr, () =>
                     [
                         new DefinePlugin({
-                            'process.env.PUBLIC_URL': '/static/',
+                            'process.env.REACT_APP_PUBLIC_URL': '/static/',
                         }),
                         ...when(isTargetWeb, () =>
                             whenProd(() => [
