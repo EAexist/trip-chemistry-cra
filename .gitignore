@@ -15,7 +15,7 @@
 /lib
 
 # asset
-# /public/resources
+/public/resources
 
 # misc
 .DS_Store
