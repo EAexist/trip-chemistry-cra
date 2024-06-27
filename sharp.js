@@ -30,9 +30,9 @@ const resize = ( directory, width, height, suffix, name ) => {
 // resize( 'icon', 512, 512, '-large', 'app' );
 
 // resize( 'logos', 256, 256, '-small' );
-resize( 'logos', 512, 512, '-medium' );
+// resize( 'logos', 512, 512, '-medium' );
 // resize( 'logos', 512, 512, '-medium' );
 
-// resize( 'test/schedule', 128, 128, '-medium' );
+resize( 'test/schedule', 512, 512, '-medium' );
 
 // resize( 'test', 480, 480, '-medium' );
