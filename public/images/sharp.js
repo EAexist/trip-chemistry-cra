@@ -19,8 +19,8 @@ const resize = ( directory, width, height, suffix ) => {
 // resize( 'icon', 256, 256, '-small' );
 // resize( 'icon', 512, 512, '-large' );
 
-// resize( 'logos', 256, 256, '-small' );
+resize( 'logos', 512, 512, '-medium' );
 // resize( 'info', 128, 128, '-small' );
-resize( 'info', 384, 384, '-xlarge' );
+// resize( 'info', 384, 384, '-xlarge' );
 
 // resize( 'test', 480, 480, '-medium' );
