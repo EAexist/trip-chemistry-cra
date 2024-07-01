@@ -26,13 +26,13 @@ const resize = ( directory, width, height, suffix, name ) => {
 // }
 
 // resize( 'icon', 20, 20, '-small' );
-// resize( 'icon', 256, 256, '-medium', 'raiseHand' );
+resize( 'icon', 256, 256, '-medium');
 // resize( 'icon', 512, 512, '-large', 'app' );
 
 // resize( 'logos', 256, 256, '-small' );
 // resize( 'logos', 512, 512, '-medium' );
 // resize( 'logos', 512, 512, '-medium' );
 
-resize( 'test/schedule', 512, 512, '-medium' );
+// resize( 'test/schedule', 512, 512, '-medium' );
 
 // resize( 'test', 480, 480, '-medium' );
