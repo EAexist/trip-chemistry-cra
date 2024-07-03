@@ -14,6 +14,14 @@ const resize = ( directory, width, height, suffix, name ) => {
                 .toFile(`${path}/${file.split('.')[0]}${suffix}.${file.split('.')[1]}.`);
         }
     });
+    // fs.readdirSync(path).forEach(file => {
+    //     if(( file.includes("medium")) ){
+    //         console.log(file);
+    //         sharp(`${path}/${file}`)
+    //             .resize(width, height, { fit: "inside" }) // width, height
+    //             .toFile(`${path}/${file.split('.')[0].split('-medium')[0]}${suffix}.${file.split('.')[1]}.`);
+    //     }
+    // });
 }
 
 // const rename = ( path ) => {
@@ -35,4 +43,4 @@ resize( 'icon', 256, 256, '-medium');
 
 // resize( 'test/schedule', 512, 512, '-medium' );
 
-// resize( 'test', 480, 480, '-medium' );
+// resize( 'city', 512, 512, '-small' );
