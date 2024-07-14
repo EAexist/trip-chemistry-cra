@@ -34,7 +34,8 @@ const resize = ( directory, width, height, suffix, name ) => {
 // }
 
 // resize( 'icon', 20, 20, '-small' );
-resize( 'icon', 256, 256, '-medium');
+// resize( 'icon', 256, 256, '-medium');
+resize( 'animated-icons', 512, 512, '-large');
 // resize( 'icon', 512, 512, '-large', 'app' );
 
 // resize( 'logos', 256, 256, '-small' );
