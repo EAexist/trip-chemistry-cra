@@ -1,13 +1,13 @@
 {
     "headers": [
-      {
-        "source": "/static/js/*",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "max-age=0, s-maxage=31536000, immutable"
-          }
-        ]
-      }
+        {
+            "source": "/static/js/*",
+            "headers": [
+                {
+                    "key": "Cache-Control",
+                    "value": "max-age=0, s-maxage=31536000, immutable"
+                }
+            ]
+        }
     ]
-  }
+}
