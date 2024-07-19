@@ -1,4 +1,4 @@
-export function GET(request: Request) {
+export function GET(request) {
     // return new Response(`Hello from ${process.env.VERCEL_REGION}`);
     return new Response(`Hello`);
 }
