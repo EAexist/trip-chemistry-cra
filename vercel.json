@@ -8,6 +8,15 @@
                     "value": "max-age=0, s-maxage=31536001, immutable"
                 }
             ]
+        },
+        {
+            "source": "/static/css/(.*)",
+            "headers": [
+                {
+                    "key": "Cache-Control",
+                    "value": "max-age=0, s-maxage=31536001, immutable"
+                }
+            ]
         }
     ]
 }
