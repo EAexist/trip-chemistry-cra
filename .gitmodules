@@ -1,4 +1,3 @@
 [submodule "src"]
 	path = src
-	url = https://github.com/EAexist/trip-chemistry-src
-	branch = develop
+	url = https://github.com/EAexist/trip-chemistry-src.git
