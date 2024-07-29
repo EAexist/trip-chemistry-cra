@@ -174,13 +174,13 @@ module.exports = (target) => ({
         ],
       },
       /* Tree-shaking on Swiper.js modules. ( https://stackoverflow.com/questions/71031894/why-isnt-webpack-tree-shaking-swiperjs-modules ) */
-      {
-        test: /\.(mjs)$/,
-        include: [
-          path.resolve(__dirname, 'node_modules/swiper/modules')
-        ],
-        sideEffects: false
-      }
+      // {
+      //   test: /\.(mjs)$/,
+      //   include: [
+      //     path.resolve(__dirname, 'node_modules/swiper/modules')
+      //   ],
+      //   sideEffects: false
+      // }
     ],
   },
   plugins: [
