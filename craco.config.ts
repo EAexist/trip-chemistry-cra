@@ -29,6 +29,9 @@ console.log(`DIST_PATH=${DIST_PATH}`);
 /* Dilan Nair. CRACO docs - configuration - Configuration Tips.
 ( https://craco.js.org/docs/configuration/getting-started/#configuration-tips ) */
 module.exports = {
+    devServer: {
+      port: 3001
+    },
     webpack: {
         plugins: {
             remove: [
