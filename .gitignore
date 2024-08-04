@@ -23,6 +23,7 @@ build*/
 /lighthouse
 .DS_Store
 .env*
+*.sh
 
 npm-debug.log*
 yarn-debug.log*
