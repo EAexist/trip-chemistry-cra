@@ -20,6 +20,7 @@
 # misc
 .DS_Store
 .env*
+!.env.development
 .deprecated
 
 npm-debug.log*
