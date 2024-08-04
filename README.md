@@ -11,7 +11,7 @@
 
 ## Demo
 
-https://trip-chemistry-0-1.vercel.app/ (version 0.1)
+https://trip-chemistry-0-1.vercel.app (version 0.1)
 
 
 ## Stack
