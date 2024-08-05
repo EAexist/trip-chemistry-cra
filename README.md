@@ -17,7 +17,7 @@ https://trip-chemistry-0-1.vercel.app (version 0.1)
 ## Stack
 - React 
 - TypeScript
-- 
+  
 100% 타입스크립트 기반으로 작성되었습니다.
 
 
