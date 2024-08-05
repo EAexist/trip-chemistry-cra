@@ -18,12 +18,12 @@ https://trip-chemistry-0-1.vercel.app (version 0.1)
 - React 
 - TypeScript
   
-100% 타입스크립트 기반으로 작성되었습니다.
+타입스크립트 기반으로 작성되었습니다.
 
 
 ## More
 
-이 디렉토리는 프로젝트의 업데이트 이전 버전으로, 최신 버전은 Remix 기반 SSR을 사용합니다. [이곳](https://github.com/EAexist/trip-chemistry)에서 확인할 수 있습니다.
+이 디렉토리는 프로젝트의 업데이트 이전 Single Page Application (SPA) 버전으로, 최신 버전은 Remix 기반 SSR을 사용합니다. [이곳](https://github.com/EAexist/trip-chemistry)에서 확인할 수 있습니다.
 
 프로젝트의 기획, 개발 및 최적화 과정에 대한 기록은 [이곳](https://bush-hippodraco-59e.notion.site/3b8d391b051447d5a2fc444a373d6e99)에서 확인할 수 있습니다.
 
